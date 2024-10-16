@@ -11,7 +11,7 @@
 CREATE DATABASE sae_51;
 \c sae_51
 
---Table contenant les informations sur les utilisateurs (MDP hash : MD5)
+--Table contenant les informations sur les utilisateurs
 CREATE TABLE users (
     login text PRIMARY KEY,
     nom text,
@@ -21,12 +21,14 @@ CREATE TABLE users (
     token text
 );
 
+
+--MDP hashés avec Bcrypt (12 passes)
 --Compte admin par défaut (MDP "Admin")
-INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Admin1', 'Originel', 'Admin', 'Admin', 'e3afed0047b08059d0fada10f400c1e5','');
+INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Admin1', 'Originel', 'Admin', 'Admin', '$2a$12$7bJpdP/8n6Yn.2MdqQoSUO/wEAlzkYpySZGr5NShaDUjfLx3uyUAC','');
 --Compte admin par défaut (MDP "Technicien")
-INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Technicien1', 'Originel', 'Technicien', 'Technicien', '61c42e9e5647205c90235b3361be8ad7','');
+INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Technicien1', 'Originel', 'Technicien', 'Technicien', '$2a$12$qBymfjA8iwr45xmhyMdwWO9Ax1Kzl5EAjqwioXJHGKI3AKLxsSkiW','');
 --Compte admin par défaut (MDP "Utilisateur")
-INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Utilisateur1', 'Originel', 'Utilisateur', 'Utilisateur', 'f628ae7eac054bc61babf042677832ee','');
+INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Utilisateur1', 'Originel', 'Utilisateur', 'Utilisateur', '$2a$12$eEmBwtSF27lOZVL6KbgI9udTtnsEucsEvOJgzEGNISh.IatJtyWbi','');
 
 
 

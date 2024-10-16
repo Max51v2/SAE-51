@@ -31,41 +31,38 @@ then
 fi
 
 
-#Copie des fichiers dans le répertoire d'Apache2 (NE PAS TOUCHER)
-GitRep="/home/"$USER"/Bureau/SAE-51/Web/"
-ApacheRep="/var/www/gmao"
+#Copie des fichiers dans le répertoire de Nginx (NE PAS TOUCHER)
+#GitRep="/home/"$USER"/Bureau/SAE-51/Web/"
+#NginxRep="/var/www/gmao"
 
-#Vidage du Répertoire Apache
-sudo rm -rf $ApacheRep"/"*
+#Vidage du Répertoire Nginx
+#sudo rm -rf $NginxRep"/"*
 
 #Création répertoire Javadoc
-sudo mkdir -p /var/www/gmao/Javadoc
+#sudo mkdir -p /var/www/gmao/Javadoc
+
 
 #Copie des fichiers
-sudo cp -r $GitRep* $ApacheRep"/"
-
-# Fin NE PAS TOUCHER
+#sudo cp -r $GitRep* $NginxRep"/"
 
 
-#Récupération du status du daemon apache2
-#apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
+#Récupération du status du daemon Nginx
+#Nginx=`systemctl status !!! remplacer !!! | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
 
-#Demarrage de apache2 si il est éteint
-#if [ "$apache2" = "inactive" ]
+#Demarrage de Nginx si il est éteint
+#if [ "$Nginx" = "inactive" ]
 #then
     #demarrage
-#    echo "demarrage de apache2"
-#    sudo systemctl start apache2
+#    echo "demarrage de Nginx"
+#    sudo systemctl start !!! remplacer !!!
 
 #    echo
 #fi
 
-#On recharge apache2 car le contenu du rep a changé
-#sudo systemctl daemon-reload
+#On recharge Nginx car le contenu du rep a changé
+#sudo systemctl reload !!! remplacer !!!
 
 
-#Section reconstruction BD
-#Recupération option utilisateur
 clear
 
 echo "Souhaitez-vous reconstruire la Base de Données ? [O/N]
@@ -85,6 +82,7 @@ then
 fi
 
 
+
 #Affichage du status des opérations
 clear
 echo "Compte rendu exécution :"
@@ -95,15 +93,9 @@ echo "Status PostgreSQL : "$PostgreSQL
 
 echo
 
-#Récupération du status du daemon apache2
-apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-echo "Status apache2 : "$apache2
-
-echo
-
-#Récupération du status du daemon tomcat
-#tomcat=`systemctl status tomcat | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-#echo "Status tomcat : "$tomcat
+#Récupération du status du daemon Nginx
+#Nginx=`systemctl status !!! remplacer !!! | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
+#echo "Status Nginx : "$Nginx
 
 #echo
 

@@ -16,7 +16,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   MDP : leffe
 |    |
 |    |   *Demarrer les daemons + actualiser BD + Web
-|    |   /home/$USER/Bureau/SAE-52/Serveur/Start.sh
+|    |   /home/$USER/Bureau/SAE-51/Serveur/Start.sh
 |    |
 |    |   *Le copier-coller est suporté entre la VM et l'hôte et vise-versa
 |    |
@@ -35,7 +35,7 @@ utiliser VSCode au lieu de NetBEANS
 |    +-----------------------PostgreSQL-----------------------  
 |    |
 |    |   *Connexion à la BD
-|    |   sudo -u postgres psql sae_52
+|    |   sudo -u postgres psql sae_51
 |    |
 |    |   *Aide commandes 
 |    |   \?
@@ -82,7 +82,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à Github
 |    |
 |    |   Cloner un répertoire Github sur le BUREAU (obligatoire avant de commencer) :
-|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau NetBEANS)
+|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-51" > Bureau NetBEANS)
 |    |
 |    |   Remplacer le répertoire Github local par celui en ligne (si tu veux reset les modifs du projet)
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Source control graph" > cliquer sur l'icon pull
@@ -102,7 +102,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM) :
 |    |   => Apache : https://[@IP VM]/[NomPage]
 |    |   => Tomcat (administration) : http://[@IP VM]:8443
-|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/[NomServlet]    (IMPORTANT : pour accès servlet > voir exemple login.html)
+|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE51/[NomServlet]    (IMPORTANT : pour accès servlet > voir exemple login.html)
 |    |   => Javadoc : https://[@IP VM]/Javadoc/index.html
 |    |   ==> déjà enregistré dans les marques page sur la VM
 |    |
@@ -137,7 +137,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   sudo apt-get install git
 |    |
 |    |   *Script de demarrage des daemons
-|    |   chmod u+x /home/$USER/Bureau/SAE-52/Serveur/Start.sh
+|    |   chmod u+x /home/$USER/Bureau/SAE-51/Serveur/Start.sh
 |    |   
 |    |   *Demarrage deamons (une fois installation terminée): voir section VM > Général
 |    |
@@ -190,7 +190,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   create role Technicien WITH LOGIN PASSWORD 'Technicien';
 |    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |
-|    |   \i /home/[nom session]/Bureau/SAE-52/Serveur/PostgreSQL_config.sql
+|    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/PostgreSQL_config.sql
 |    |
 |    +---------------------------------------------------------
 |
@@ -262,7 +262,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   sudo chown -R tomcat webapps/ work/ temp/ logs/ conf/
 |    |   sudo chmod o+x /opt/tomcat/bin/
 |    |
-|    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/tomcat.service /etc/systemd/system/tomcat.service
+|    |   sudo cp /home/$USER/Bureau/SAE-51/Serveur/tomcat.service /etc/systemd/system/tomcat.service
 |    |   sudo nano /etc/systemd/system/tomcat.service
 |    |   *Modifier cette ligne "Environment=JAVA_HOME=/usr/java[VERSION JDK]" en changeant "[VERSION JDK]"
 |    |   => vous pouvez trouver la version en tapant les commandes suivantes :
@@ -295,7 +295,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |
 |    |   sudo netbeans --jdkhome /usr/java/[version jdk]
 |    |
-|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/$USER/Bureau/SAE-52/NetBEANS/SAE52  
+|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/$USER/Bureau/SAE-1/NetBEANS/SAE51
 |    |
 |    |   *Ajout serveur Tomcat
 |    |   Tools > Server > Apache Tomcat or TomEE > Server location : "/opt/tomcat/" | username : "admin | login : "leffe"
@@ -317,15 +317,15 @@ utiliser VSCode au lieu de NetBEANS
 |    |   cd /certs
 |    |
 |    |   *Entrer un MDP (ici leffe) et les informations demandées (peu importe le contenu)
-|    |   sudo openssl req -x509 -nodes -days 10000 -newkey rsa:4096 -keyout /certs/SAE52.key -out /certs/SAE52.crt
+|    |   sudo openssl req -x509 -nodes -days 10000 -newkey rsa:4096 -keyout /certs/SAE51.key -out /certs/SAE51.crt
 |    |
 |    |   *Apache
 |    |   sudo nano /etc/apache2/sites-available/gmao.conf
 |    |   => 1ère ligne : remplacer le port 80 par 443
 |    |   *Ajouter les lignes suivantes :
 |    |   ==> SSLEngine on
-|    |   ==> SSLCertificateFile /certs/SAE52.crt
-|    |   ==> SSLCertificateKeyFile /certs/SAE52.key
+|    |   ==> SSLCertificateFile /certs/SAE51.crt
+|    |   ==> SSLCertificateKeyFile /certs/SAE51.key
 |    |
 |    |   sudo a2enmod ssl
 |    |   sudo systemctl daemon-reload
@@ -333,13 +333,13 @@ utiliser VSCode au lieu de NetBEANS
 |    |
 |    |   *Tomcat
 |    |   cd /certs
-|    |   sudo openssl pkcs12 -export -in SAE52.crt -inkey SAE52.key -out SAE52.p12 -name tomcat
+|    |   sudo openssl pkcs12 -export -in SAE51.crt -inkey SAE51.key -out SAE51.p12 -name tomcat
 |    |   => MDP : leffe
 |    |   
-|    |   sudo /usr/java/[version JDK] bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
+|    |   sudo /usr/java/[version JDK] bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE51.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
 |    |   => MDP keytool "administrateur"
 |    |
-|    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/server.xml /opt/tomcat/conf/server.xml
+|    |   sudo cp /home/$USER/Bureau/SAE-51/Serveur/server.xml /opt/tomcat/conf/server.xml
 |    |
 |    +---------------------------------------------------------
 |
@@ -347,7 +347,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |
 |    |   Il faut se connecter aux sites suivants et "Avancé" > "Accepter le risque et poursuivre" (si ce n'est pas fait, il y aura une erreur CORS !!!) :
 |    |   => Apache : https://[@IP VM]/
-|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/
+|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE51/
 |    |
 |    +---------------------------------------------------------
 |
@@ -372,7 +372,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   => Vider le cache snapd et journaux (VirtualBox (Windows))
 |    |   ==> ouvrir un cmd
 |    |   ==> cd C:\Program Files\Oracle\VirtualBox
-|    |   ==> VBoxManage modifyvm SAE-52 --nested-hw-virt on
+|    |   ==> VBoxManage modifyvm SAE-51 --nested-hw-virt on
 |    |   ==> VBoxManage modifymedium <chemin-du-fichier.vdi> --compact
 |    |
 |    +---------------------------------------------------------
