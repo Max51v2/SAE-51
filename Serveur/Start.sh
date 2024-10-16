@@ -1,16 +1,11 @@
 #!/bin/bash
 # Auteur original : Maxime VALLET (SAE 52)
 # Modifications : Maxime VALLET
-# Version : 0.1
+# Version : 0.4
 
 #à modifier :
 #Nginx
 #NetBeans
-
-#Récupperation de la version de Java
-clear
-cd /usr/java
-Java_version=`ls | head -n 1`
 
 
 clear
@@ -32,36 +27,35 @@ fi
 
 
 #Copie des fichiers dans le répertoire de Nginx (NE PAS TOUCHER)
-#GitRep="/home/"$USER"/Bureau/SAE-51/Web/"
-#NginxRep="/var/www/gmao"
+GitRep="/home/"$USER"/Bureau/SAE-51/Web/"
+NginxRep="/var/www/sae-51"
 
 #Vidage du Répertoire Nginx
-#sudo rm -rf $NginxRep"/"*
+sudo rm -rf $NginxRep"/"*
 
 #Création répertoire Javadoc
-#sudo mkdir -p /var/www/gmao/Javadoc
+sudo mkdir -p /var/www/gmao/Javadoc
 
 
 #Copie des fichiers
-#sudo cp -r $GitRep* $NginxRep"/"
+sudo cp -r $GitRep* $NginxRep"/"
 
 
 #Récupération du status du daemon Nginx
-#Nginx=`systemctl status !!! remplacer !!! | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
+Nginx=`systemctl status nginx | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
 
 #Demarrage de Nginx si il est éteint
-#if [ "$Nginx" = "inactive" ]
-#then
+if [ "$Nginx" = "inactive" ]
+then
     #demarrage
-#    echo "demarrage de Nginx"
-#    sudo systemctl start !!! remplacer !!!
+    echo "demarrage de Nginx"
+    sudo systemctl start nginx
 
-#    echo
-#fi
+    echo
+fi
 
 #On recharge Nginx car le contenu du rep a changé
-#sudo systemctl reload !!! remplacer !!!
-
+sudo systemctl reload nginx
 
 clear
 
@@ -78,7 +72,7 @@ clear
 if [ "$option" = "o" ] || [ "$option" = "O" ]
 then
     #Connexion à la base
-    psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_51;" -f "/home/"$USER"/Bureau/SAE-51/Serveur/PostgreSQL_config.sql"
+    psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_51;" -f "/home/"$USER"/Bureau/SAE-51/Serveur/Configuration/PostgreSQL_config.sql"
 fi
 
 

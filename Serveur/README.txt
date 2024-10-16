@@ -1,6 +1,6 @@
 Auteur original : Maxime VALLET (SAE 52)
 Modifications : Maxime VALLET
-Version : 0.1
+Version : 0.4
 
 à modifier :
 remplacer apache par Nginx
@@ -13,6 +13,7 @@ utiliser VSCode au lieu de NetBEANS
 |    +-------------------------Général-------------------------  
 |    |
 |    |   Lien VM : TBD
+|    |   login : sae-51
 |    |   MDP : leffe
 |    |
 |    |   *Demarrer les daemons + actualiser BD + Web
@@ -24,11 +25,13 @@ utiliser VSCode au lieu de NetBEANS
 |
 |    +-------------------------VSCode--------------------------
 |    |
-|    |   VSCode est intégré dans la VM
-|    |
 |    |   *Modifier le nom et l'@ mail
 |    |   git config --global user.name "[Prenom Nom]"
 |    |   git config --global user.email "[@ Mail]"
+|    |
+|    |   *Importer des librairies au projet
+|    |   => aller sur "https://mvnrepository.com/" et chercher la librairie => version dans le projet => files => view all => dl la jar
+|    |   => https://stackoverflow.com/questions/4955635/how-to-add-local-jar-files-to-a-maven-project > réponse "Thorbjørn Ravn Andersen"
 |    |
 |    +---------------------------------------------------------
 |
@@ -56,23 +59,6 @@ utiliser VSCode au lieu de NetBEANS
 |    |
 |    +---------------------------------------------------------
 |
-|    +------------------------NetBEANS------------------------- 
-|    |
-|    |   *NetBEANS est lancé par Start.sh sur demande
-|    |
-|    |   *commande
-|    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
-|    |   
-|    |   *Au lancement du projet, si la fenêtre requesting keyreing apparait mais que NetBEANS ne demande pas de MDP, il faut redémarrer NetBEANS
-|    |
-|    |   *MDP projet : "leffe"
-|    |
-|    |   *Interface administration (accessible depuis localhost uniquement)
-|    |   login : "admin"
-|    |   MDP : "leffe"
-|    |
-|    +---------------------------------------------------------
-|
 |    +-------------------CONCLUSION A LIRE--------------------- 
 |    |
 |    |   Pour lancer les daemons, actualiser les fichiers Web et reconstruire la DB, lancez Start.sh (cf. section VM > Général)
@@ -92,7 +78,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   => menu détaillé bouton commit > commit and push > Ajouter un commentaire (non commenté) > valider (en haut à droite)
 |    |
 |    |   *Certificat de l'authorité de certification
-|    |   => *Même après ajout, le navigateur affiche toujours que la connexion n'est pas sécurisé car le certificat est auto-signé (mais ça marche)
+|    |   => !!! Les certificats sont valides 90j (Renouvelement partie "Procédure d'installation Debian 12" > "Certificat SSL") !!!
 |    |
 |    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
 |    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
@@ -100,7 +86,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   => Il n'y a besoin du terminal que pour lancer Start.sh
 |    |
 |    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM) :
-|    |   => Apache : https://[@IP VM]/[NomPage]
+|    |   => Nginx : https://[@IP VM]/[NomPage]
 |    |   => Tomcat (administration) : http://[@IP VM]:8443
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE51/[NomServlet]    (IMPORTANT : pour accès servlet > voir exemple login.html)
 |    |   => Javadoc : https://[@IP VM]/Javadoc/index.html
@@ -114,27 +100,34 @@ utiliser VSCode au lieu de NetBEANS
 |    | 
 |    +---------------------------------------------------------
 |
-|    +------------------Modifications A LIRE-------------------
-|    |
-|    |   *une nouvelle VM a été publiée
-|    |   => retrait de programmes et plugin VSCode inutilisé
-|    |   => suppression de fichiers inutilisés
-|    |   => redirection en local et page par défaut
-|    |
-|    +---------------------------------------------------------
-|
 +---------------------------------------------------------
 
 
 
 
-+-----Procédure d'installation Ubuntu 24.04 (sauf VM)-----
++--------Procédure d'installation Debian 12 (sauf VM)--------
+|
+|    +-------------------------Debian------------------------
+|    |
+|    |   *Guest additions
+|    |   => sudo apt install make gcc dkms linux-source linux-headers-$(uname -r)
+|    |   => monter l'iso Virtualbox (vbox > périphériques > iso guest additions)
+|    |   => cd /media/cdrom0
+|    |   => sudo sh VBoxLinuxAdditions.run
+|    |   => reboot
+|    |
+|    |   *Firefox
+|    |   => https://support.mozilla.org/en-US/kb/install-firefox-linux
+|    |
+|    +--------------------------------------------------------
 |
 |    +-------------------------Général------------------------
 |    |
 |    |   sudo apt update
 |    |   sudo apt upgrade
 |    |   sudo apt-get install git
+|    |
+|    |   *Installer les Guest additions
 |    |
 |    |   *Script de demarrage des daemons
 |    |   chmod u+x /home/$USER/Bureau/SAE-51/Serveur/Start.sh
@@ -143,14 +136,57 @@ utiliser VSCode au lieu de NetBEANS
 |    |
 |    +--------------------------------------------------------
 |
-|    +-------------------------VSCode-------------------------  
+|    +--------------------------JDK----------------------------  
 |    |   
-|    |   sudo snap install code --classic
-|    |   *installer le module Github pull requests et modifier le nom ainsi que l'@ mail (instructions d'utilisation dans VM > VSCode)
+|    |   sudo mkdir /usr/java
+|    |   cd /usr/java
+|    |   sudo mkdir ./openjdk-22.0.2
+|    |
+|    |   sudo wget -c https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_linux-x64_bin.tar.gz
+|    |   sudo tar xzvf ./openjdk-22.0.2_linux-x64_bin.tar.gz -C ./openjdk-22.0.2 --strip-components=1
+|    |   sudo rm openjdk-22.0.2_linux-x64_bin.tar.gz
+|    |
+|    |   sudo nano /etc/profile
+|    |   => JAVA_HOME=/usr/java/[version JDK]
+|    |   => PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
+|    |   => export JAVA_HOME
+|    |   => export JRE_HOME
+|    |   => export PATH
+|    |
+|    +---------------------------------------------------------
+|
+|    +-------------------------VSCode (à finir)-------------------------  
+|    |   
+|    |   cd ~/Téléchargements
+|    |   sudo wget -c https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode.deb
+|    |
+|    |   sudo apt install ./vscode.deb
+|    |   sudo rm ./vscode.deb
+|    |
+|    |   *Installer les extensions : Bash Debug, Github Pull Request, Bash Beautify, Bash Debug, Java, Maven for Java, Extension Pack for Java et Community Server Connectors
+|    |
+|    |   *Ajout JDK
+|    |
+|    |
+|    |   *Dans VSCode : Ctrl+ù   (si pas de projet)
+|    |   => cd /home/$USER/Bureau/SAE-51/Tomcat
+|    |   => mvn archetype:generate -DgroupId=com.example -DartifactId=SAE51 -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+|    |
+|    |   *Dans VSCode : Ctrl+Shift+P
+|    |   => ajout Tomcat ?
+|    |   ==>  Server location : "/opt/tomcat/" | username : "admin" | login : "leffe"
+|    |
+|    |
+|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/$USER/Bureau/SAE-51//SAE51
+|    |
+|    |   *Importer driver JDBC PostgreSQL
+|    |   => File > projet properties > libraries > add library > PostgreSQL JDBC library
+|    |
+|    |   
 |    |
 |    +--------------------------------------------------------
 |
-|    +-----------------------PostgreSQL-----------------------  
+|    +-----------------------PostgreSQL------------------------  
 |    |
 |    |   !!! En cas d'utilisation en dehors du cadre de ce projet, remplacez les MDP !!!
 |    |
@@ -158,7 +194,6 @@ utiliser VSCode au lieu de NetBEANS
 |    |   sudo apt install postgresql
 |    |
 |    |   cd /etc/postgresql/[Version PostgreSQL]/main/
-|    |
 |    |   sudo nano postgresql.conf
 |    |
 |    |   *remplacer " #listen_addresses = 'localhost' " par " listen_addresses = 'localhost' "
@@ -173,7 +208,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   sudo nano /etc/postgresql/[Version PostgreSQL]/main/pg_hba.conf
 |    |
 |    |   *En dessous de cette ligne "# TYPE  DATABASE        USER            ADDRESS                 METHOD"
-|    |   *=> ajouter "host all       all        localhost        md5"
+|    |   *=> ajouter "host all all localhost scram-sha-256"
 |    |
 |    |   sudo systemctl restart postgresql.service
 |    |   
@@ -187,63 +222,56 @@ utiliser VSCode au lieu de NetBEANS
 |    |   sudo -u postgres psql template1
 |    |   
 |    |   create role Administrateur WITH LOGIN PASSWORD 'Administrateur';
-|    |   create role Technicien WITH LOGIN PASSWORD 'Technicien';
 |    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |
-|    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/PostgreSQL_config.sql
+|    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/Configuration/PostgreSQL_config.sql
 |    |
 |    +---------------------------------------------------------
 |
-|    +--------------------------JDK----------------------------  
+|    +---------------------Certificat SSL (à finir)---------------------- 
+|    |
+|    |   *Let's encrypt
+|    |   sudo add-apt-repository ppa:certbot/certbot
+|    |   sudo apt-get update
+|    |   sudo apt-get install certbot
+|    |
+|    |   certbot certonly --manual
+|    |
+|    |   mkdir /certs
+|    |   cd /certs
+|    |
+|    |   openssl pkey -in certificat.pem -out ./SAE51.key
+|    |   openssl x509 -in certificat.pem -out ./SAE51.crt
+|    |
+|    |   !!! En cas de certificat expiré !!!
+|    |   *Liste certificats
+|    |   => certbot certificates
+|    |   *Renouvelement
+|    |   certbot certonly --manual -d [nom cert]
+|    |
+|    +---------------------------------------------------------
+|
+|    +-------------------------Nginx (à finir)---------------------------  
 |    |   
-|    |   sudo mkdir /usr/java
-|    |   cd /usr/java
-|    |   sudo mkdir ./openjdk-22.0.2
+|    |   sudo apt install nginx
 |    |
-|    |   sudo wget -c https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_linux-x64_bin.tar.gz
-|    |   sudo tar xzvf ./openjdk-22.0.2_linux-x64_bin.tar.gz -C ./openjdk-22.0.2 --strip-components=1
+|    |   sudo mkdir /var/www/sae-51
+|    |   sudo chown -R $USER:$USER /var/www/sae-51
+|    |   sudo chmod -R 755 /var/www/sae-51
 |    |
-|    |   sudo nano /etc/profile
-|    |   => JAVA_HOME=/usr/java/[version JDK]
-|    |   => PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
-|    |   => export JAVA_HOME
-|    |   => export JRE_HOME
-|    |   => export PATH
+|    |   sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/Nginx.txt /etc/nginx/sites-available/sae-51
 |    |
-|    +---------------------------------------------------------
-|
-|    +-------------------------Apache--------------------------  
-|    |   
-|    |   sudo apt install apache2
-|    |   sudo ufw allow 'Apache'
-|    |   sudo mkdir /var/www/gmao
+|    |   sudo ln -s /etc/nginx/sites-available/sae-51 /etc/nginx/sites-enabled/
 |    |
-|    |   *(Start.sh déplacera automatiquement les fichiers dans le rep)
+|    |   *Retrait default
 |    |
-|    |   cd /etc/apache2/sites-available/
-|    |   sudo cp 000-default.conf gmao.conf
-|    | 
-|    |   sudo nano gmao.conf
-|    |   *Remplacer la ligne commencant par "DocumentRoot" par "DocumentRoot /var/www/gmao"
+|    |   systemctl restart nginx
 |    |
-|    |   sudo nano /etc/apache2/sites-available/gmao.conf
-|    |   *ajouter entre les balises "virtuahost" (retirer les "|")
-|    |   "
-|    |   <IfModule mod_headers.c>
-|    |      Header set Access-Control-Allow-Origin "*"
-|    |      Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
-|    |      Header set Access-Control-Allow-Headers "Content-Type, Authorization"
-|    |   </IfModule>
-|    |   " 
-|    |
-|    |   sudo a2ensite gmao.conf
-|    |   sudo a2enmod headers
-|    |   sudo a2dissite 000-default.conf
-|    |   sudo systemctl restart apache2
+|    |   sudo ufw allow 'Nginx HTTPS'
 |    |
 |    +---------------------------------------------------------
 |
-|    +-------------------------Tomcat--------------------------  
+|    +-------------------------Tomcat (à finir)--------------------------  
 |    |
 |    |   !!! Ne pas utiliser une version de tomcat supérieure à 9 car Spring 5 ne supporte pas Jakarta
 |    |
@@ -287,66 +315,22 @@ utiliser VSCode au lieu de NetBEANS
 |    |   
 |    |   *Il est nécéssaire de passer par "localhost:8080" afin d'accéder à l'interface admin
 |    |
-|    +---------------------------------------------------------
-|
-|    +------------------------NetBEANS------------------------- 
-|    |
-|    |   sudo snap install netbeans --classic
-|    |
-|    |   sudo netbeans --jdkhome /usr/java/[version jdk]
-|    |
-|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/$USER/Bureau/SAE-1/NetBEANS/SAE51
-|    |
-|    |   *Ajout serveur Tomcat
-|    |   Tools > Server > Apache Tomcat or TomEE > Server location : "/opt/tomcat/" | username : "admin | login : "leffe"
-|    |
-|    |   *Importer driver JDBC PostgreSQL
-|    |   => File > projet properties > libraries > add library > PostgreSQL JDBC library
-|    |
-|    |   *Lancer NetBEANS (obligatoire)
-|    |   => "sudo netbeans --jdkhome /usr/java/[version JDK]" ou Start.sh
-|    |   
-|    |   *Importer les librairies manquantes du projet
-|    |   => pour les librairies manquantes aller sur "https://mvnrepository.com/" et chercher la librairie => version dans le projet => files => view all => dl la jar => ajouter dans NetBEANS
-|    |
-|    +---------------------------------------------------------
-|
-|    +---------------------Certificat SSL---------------------- 
-|    |
-|    |   sudo mkdir /certs
-|    |   cd /certs
-|    |
-|    |   *Entrer un MDP (ici leffe) et les informations demandées (peu importe le contenu)
-|    |   sudo openssl req -x509 -nodes -days 10000 -newkey rsa:4096 -keyout /certs/SAE51.key -out /certs/SAE51.crt
-|    |
-|    |   *Apache
-|    |   sudo nano /etc/apache2/sites-available/gmao.conf
-|    |   => 1ère ligne : remplacer le port 80 par 443
-|    |   *Ajouter les lignes suivantes :
-|    |   ==> SSLEngine on
-|    |   ==> SSLCertificateFile /certs/SAE51.crt
-|    |   ==> SSLCertificateKeyFile /certs/SAE51.key
-|    |
-|    |   sudo a2enmod ssl
-|    |   sudo systemctl daemon-reload
-|    |   sudo systemctl restart apache2
-|    |
-|    |   *Tomcat
+|    |   *SSL
 |    |   cd /certs
 |    |   sudo openssl pkcs12 -export -in SAE51.crt -inkey SAE51.key -out SAE51.p12 -name tomcat
 |    |   => MDP : leffe
 |    |   
-|    |   sudo /usr/java/[version JDK] bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE51.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
+|    |   sudo /usr/java/[version JDK]/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE51.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
 |    |   => MDP keytool "administrateur"
 |    |
-|    |   sudo cp /home/$USER/Bureau/SAE-51/Serveur/server.xml /opt/tomcat/conf/server.xml
+|    |   sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/Tomcat.xml /opt/tomcat/conf/server.xml
 |    |
 |    +---------------------------------------------------------
 |
-|    +---------------------Ajout Certificat-------------------- 
+|    +---------------------Ajout Certificat (à retirer ?)-------------------- 
 |    |
 |    |   Il faut se connecter aux sites suivants et "Avancé" > "Accepter le risque et poursuivre" (si ce n'est pas fait, il y aura une erreur CORS !!!) :
-|    |   => Apache : https://[@IP VM]/
+|    |   => Nginx : https://[@IP VM]/
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE51/
 |    |
 |    +---------------------------------------------------------

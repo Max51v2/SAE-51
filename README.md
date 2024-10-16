@@ -8,6 +8,13 @@ Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README
 - page web connexion
 - page web gestion des utilisateurs (tableau contenant les utilisateurs)
 - VM (Maxime)
-- BD (schémas voir script sql (dossier Serveur))
+- BD (schémas voir script sql (dossier Serveur/Configuration))
 
 fait :
+
+
+
+#heures (point michaël) :
+- maxime : 3h
+- erwann :
+- gabin :

@@ -1,6 +1,6 @@
 --Auteur original : Maxime VALLET (SAE 52)
 --Modifications : Maxime VALLET
---Version : 0.1
+--Version : 0.2
 
 -- à modifier
 -- type hash
@@ -25,8 +25,6 @@ CREATE TABLE users (
 --MDP hashés avec Bcrypt (12 passes)
 --Compte admin par défaut (MDP "Admin")
 INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Admin1', 'Originel', 'Admin', 'Admin', '$2a$12$7bJpdP/8n6Yn.2MdqQoSUO/wEAlzkYpySZGr5NShaDUjfLx3uyUAC','');
---Compte admin par défaut (MDP "Technicien")
-INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Technicien1', 'Originel', 'Technicien', 'Technicien', '$2a$12$qBymfjA8iwr45xmhyMdwWO9Ax1Kzl5EAjqwioXJHGKI3AKLxsSkiW','');
 --Compte admin par défaut (MDP "Utilisateur")
 INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Utilisateur1', 'Originel', 'Utilisateur', 'Utilisateur', '$2a$12$eEmBwtSF27lOZVL6KbgI9udTtnsEucsEvOJgzEGNISh.IatJtyWbi','');
 

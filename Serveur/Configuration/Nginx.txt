@@ -1,0 +1,13 @@
+server {
+
+    listen 443;
+
+    root /var/www/sae-51;
+    index index.html;
+
+    add_header Access-Control-Allow-Origin *;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
