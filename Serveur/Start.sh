@@ -1,7 +1,7 @@
 #!/bin/bash
 # Auteur original : Maxime VALLET (SAE 52)
 # Modifications : Maxime VALLET
-# Version : 0.4
+# Version : 0.8
 
 #à modifier :
 #Nginx
@@ -34,7 +34,7 @@ NginxRep="/var/www/sae-51"
 sudo rm -rf $NginxRep"/"*
 
 #Création répertoire Javadoc
-sudo mkdir -p /var/www/gmao/Javadoc
+#sudo mkdir -p /var/www/sae-51/Javadoc
 
 
 #Copie des fichiers
@@ -88,10 +88,10 @@ echo "Status PostgreSQL : "$PostgreSQL
 echo
 
 #Récupération du status du daemon Nginx
-#Nginx=`systemctl status !!! remplacer !!! | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-#echo "Status Nginx : "$Nginx
+Nginx=`systemctl status nginx | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
+echo "Status Nginx : "$Nginx
 
-#echo
+echo
 
 #Statut DB
 if [ "$option" = "o" ] || [ "$option" = "O" ]

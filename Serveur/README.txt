@@ -1,11 +1,8 @@
 Auteur original : Maxime VALLET (SAE 52)
 Modifications : Maxime VALLET
-Version : 0.4
+Version : 0.8
 
 à modifier :
-remplacer apache par Nginx
-utiliser let's encrypt pour les clés SSL
-autre distribution ?
 utiliser VSCode au lieu de NetBEANS
 
 +--------------------------VM-----------------------------
@@ -116,8 +113,8 @@ utiliser VSCode au lieu de NetBEANS
 |    |   => sudo sh VBoxLinuxAdditions.run
 |    |   => reboot
 |    |
-|    |   *Firefox
-|    |   => https://support.mozilla.org/en-US/kb/install-firefox-linux
+|    |   *ufw
+|    |   => sudo apt install ufw
 |    |
 |    +--------------------------------------------------------
 |
@@ -155,7 +152,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |
 |    +---------------------------------------------------------
 |
-|    +-------------------------VSCode (à finir)-------------------------  
+|    +-------------------------VSCode--------------------------  
 |    |   
 |    |   cd ~/Téléchargements
 |    |   sudo wget -c https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode.deb
@@ -163,7 +160,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   sudo apt install ./vscode.deb
 |    |   sudo rm ./vscode.deb 
 |    |
-|    +--------------------------------------------------------
+|    +---------------------------------------------------------
 |
 |    +-----------------------PostgreSQL------------------------  
 |    |
@@ -198,70 +195,61 @@ utiliser VSCode au lieu de NetBEANS
 |    |
 |    |   \q
 |    |
-|    |   sudo -u postgres psql template1
+|    |   psql -U postgres -h localhost -d template1
 |    |   
 |    |   create role Administrateur WITH LOGIN PASSWORD 'Administrateur';
 |    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |
 |    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/Configuration/PostgreSQL_config.sql
 |    |
+|    |   \q
+|    |
 |    +---------------------------------------------------------
 |
-|    +---------------------Certificat SSL (à finir)---------------------- 
+|    +---------------------Certificat SSL---------------------- 
 |    |
-|    |   *Let's encrypt
-|    |   sudo add-apt-repository ppa:certbot/certbot
-|    |   sudo apt-get update
-|    |   sudo apt-get install certbot
-|    |
-|    |   certbot certonly --manual
-|    |
-|    |   mkdir /certs
+|    |   sudo mkdir /certs
 |    |   cd /certs
 |    |
-|    |   openssl pkey -in certificat.pem -out ./SAE51.key
-|    |   openssl x509 -in certificat.pem -out ./SAE51.crt
-|    |
-|    |   !!! En cas de certificat expiré !!!
-|    |   *Liste certificats
-|    |   => certbot certificates
-|    |   *Renouvelement
-|    |   certbot certonly --manual -d [nom cert]
+|    |   *Entrer un MDP (ici leffe) et les informations demandées (peu importe le contenu)
+|    |   sudo openssl req -x509 -nodes -days 10000 -newkey rsa:4096 -keyout /certs/SAE51.key -out /certs/SAE51.crt
 |    |
 |    +---------------------------------------------------------
 |
-|    +-------------------------Nginx (à finir)---------------------------  
+|    +-------------------------Nginx---------------------------  
 |    |   
 |    |   sudo apt install nginx
 |    |
 |    |   sudo mkdir /var/www/sae-51
+|    |
 |    |   sudo chown -R $USER:$USER /var/www/sae-51
 |    |   sudo chmod -R 755 /var/www/sae-51
 |    |
 |    |   sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/Nginx.txt /etc/nginx/sites-available/sae-51
+|    |   sudo rm /etc/nginx/sites-available/default
 |    |
 |    |   sudo ln -s /etc/nginx/sites-available/sae-51 /etc/nginx/sites-enabled/
-|    |
-|    |   *Retrait default
+|    |   sudo rm /etc/nginx/sites-enabled/default
 |    |
 |    |   systemctl restart nginx
 |    |
 |    |   sudo ufw allow 'Nginx HTTPS'
+|    |   sudo ufw allow 'Nginx HTTP'
 |    |
 |    +---------------------------------------------------------
 |
-|    +-------------------------Tomcat (à finir)--------------------------  
+|    +-------------------------Tomcat--------------------------  
 |    |
 |    |   !!! Ne pas utiliser une version de tomcat supérieure à 9 car Spring 5 ne supporte pas Jakarta
 |    |
 |    |   sudo groupadd tomcat
 |    |   sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
 |    |   cd /tmp
-|    |   wget -c https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.94/bin/apache-tomcat-9.0.94.tar.gz
+|    |   wget -c https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.96/bin/apache-tomcat-9.0.96.tar.gz
 |    |
 |    |   sudo mkdir /opt/tomcat
 |    |   cd /opt/tomcat
-|    |   sudo tar xzvf /tmp/apache-tomcat-9.0.94.tar.gz -C /opt/tomcat --strip-components=1
+|    |   sudo tar xzvf /tmp/apache-tomcat-9.0.96.tar.gz -C /opt/tomcat --strip-components=1
 |    |
 |    |   cd /opt
 |    |   sudo chown -R tomcat: tomcat
@@ -269,9 +257,9 @@ utiliser VSCode au lieu de NetBEANS
 |    |   sudo chown -R tomcat webapps/ work/ temp/ logs/ conf/
 |    |   sudo chmod o+x /opt/tomcat/bin/
 |    |
-|    |   sudo cp /home/$USER/Bureau/SAE-51/Serveur/tomcat.service /etc/systemd/system/tomcat.service
+|    |   sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/tomcat.service /etc/systemd/system/tomcat.service
 |    |   sudo nano /etc/systemd/system/tomcat.service
-|    |   *Modifier cette ligne "Environment=JAVA_HOME=/usr/java[VERSION JDK]" en changeant "[VERSION JDK]"
+|    |   *Modifier cette ligne "Environment=JAVA_HOME=/usr/java/[VERSION JDK]" en changeant "Environment=JAVA_HOME=/usr/java/[VERSION JDK]"
 |    |   => vous pouvez trouver la version en tapant les commandes suivantes :
 |    |   ==> cd /usr/java
 |    |   ==> ls                                                               (prendre le nom du dossier)
@@ -308,12 +296,11 @@ utiliser VSCode au lieu de NetBEANS
 |
 |    +-------------------------VSCode2 (à finir)------------------------  
 |    |   
+|    |   sudo apt instal maven
+|    | 
 |    |   *Installer les extensions : Bash Debug, Github Pull Request, Bash Beautify, Bash Debug, Java, Maven for Java, Extension Pack for Java et Community Server Connectors
 |    |
-|    |   *Ajout JDK
-|    |
-|    |
-|    |   *Dans VSCode : Ctrl+ù   (si pas de projet)
+|    |   *Dans VSCode (terminal vscode) : Ctrl+ù   (si pas de projet)
 |    |   => cd /home/$USER/Bureau/SAE-51/Tomcat
 |    |   => mvn archetype:generate -DgroupId=com.example -DartifactId=SAE51 -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
 |    |
@@ -331,7 +318,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |
 |    +--------------------------------------------------------
 |
-|    +---------------------Ajout Certificat (à retirer ?)-------------------- 
+|    +---------------------Ajout Certificat-------------------- 
 |    |
 |    |   Il faut se connecter aux sites suivants et "Avancé" > "Accepter le risque et poursuivre" (si ce n'est pas fait, il y aura une erreur CORS !!!) :
 |    |   => Nginx : https://[@IP VM]/
