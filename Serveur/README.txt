@@ -351,4 +351,30 @@ utiliser VSCode au lieu de NetBEANS
 |    |
 |    +---------------------------------------------------------
 |
+|    +----------------------------VM--------------------------- 
+|    |
+|    |   *Diminuer la taille de la VM
+|    |   => Vider le cache snapd et journaux (VM)
+|    |   ==> sudo rm -rf /var/lib/snapd/cache/*
+|    |   ==> sudo journalctl --vacuum-time=1d       (remettre la date souhaitée par la suite)
+|    |   ==> sudo rm -rf /tmp/*
+|    |   ==> sudo rm -rf /var/tmp/*
+|    |   ==> 
+|    |   ==> *Ces commandes prennent du temps à s'executer
+|    |   ==> dd if=/dev/zero of=/zero bs=1M
+|    |   ==> rm /zero
+|    |   ==> sync
+|    |   ==> 
+|    |   ==> sudo apt-get autoremove
+|    |   ==> sudo apt-get clean
+|    |   ==> sudo apt-get autoclean
+|    |
+|    |   => Vider le cache snapd et journaux (VirtualBox (Windows))
+|    |   ==> ouvrir un cmd
+|    |   ==> cd C:\Program Files\Oracle\VirtualBox
+|    |   ==> VBoxManage modifyvm SAE-52 --nested-hw-virt on
+|    |   ==> VBoxManage modifymedium <chemin-du-fichier.vdi> --compact
+|    |
+|    +---------------------------------------------------------
+|
 +---------------------------------------------------------
