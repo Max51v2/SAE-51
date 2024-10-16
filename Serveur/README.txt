@@ -161,28 +161,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   sudo wget -c https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode.deb
 |    |
 |    |   sudo apt install ./vscode.deb
-|    |   sudo rm ./vscode.deb
-|    |
-|    |   *Installer les extensions : Bash Debug, Github Pull Request, Bash Beautify, Bash Debug, Java, Maven for Java, Extension Pack for Java et Community Server Connectors
-|    |
-|    |   *Ajout JDK
-|    |
-|    |
-|    |   *Dans VSCode : Ctrl+ù   (si pas de projet)
-|    |   => cd /home/$USER/Bureau/SAE-51/Tomcat
-|    |   => mvn archetype:generate -DgroupId=com.example -DartifactId=SAE51 -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
-|    |
-|    |   *Dans VSCode : Ctrl+Shift+P
-|    |   => ajout Tomcat ?
-|    |   ==>  Server location : "/opt/tomcat/" | username : "admin" | login : "leffe"
-|    |
-|    |
-|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/$USER/Bureau/SAE-51//SAE51
-|    |
-|    |   *Importer driver JDBC PostgreSQL
-|    |   => File > projet properties > libraries > add library > PostgreSQL JDBC library
-|    |
-|    |   
+|    |   sudo rm ./vscode.deb 
 |    |
 |    +--------------------------------------------------------
 |
@@ -326,6 +305,31 @@ utiliser VSCode au lieu de NetBEANS
 |    |   sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/Tomcat.xml /opt/tomcat/conf/server.xml
 |    |
 |    +---------------------------------------------------------
+|
+|    +-------------------------VSCode2 (à finir)------------------------  
+|    |   
+|    |   *Installer les extensions : Bash Debug, Github Pull Request, Bash Beautify, Bash Debug, Java, Maven for Java, Extension Pack for Java et Community Server Connectors
+|    |
+|    |   *Ajout JDK
+|    |
+|    |
+|    |   *Dans VSCode : Ctrl+ù   (si pas de projet)
+|    |   => cd /home/$USER/Bureau/SAE-51/Tomcat
+|    |   => mvn archetype:generate -DgroupId=com.example -DartifactId=SAE51 -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+|    |
+|    |   *Dans VSCode : Ctrl+Shift+P
+|    |   => ajout Tomcat ?
+|    |   ==>  Server location : "/opt/tomcat/" | username : "admin" | login : "leffe"
+|    |
+|    |
+|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/$USER/Bureau/SAE-51//SAE51
+|    |
+|    |   *Importer driver JDBC PostgreSQL
+|    |   => File > projet properties > libraries > add library > PostgreSQL JDBC library
+|    |
+|    |   
+|    |
+|    +--------------------------------------------------------
 |
 |    +---------------------Ajout Certificat (à retirer ?)-------------------- 
 |    |
