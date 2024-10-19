@@ -2,7 +2,7 @@
 package Autre;
 
 /**
- *
+ * Permet de récupérer les informations envoyées par une requête POST (exemple utilisation : voir servlet)
  * @author Maxime VALLET
  */
 public class GetJSONInfo{

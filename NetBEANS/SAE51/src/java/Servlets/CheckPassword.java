@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
 import DAO.DAOusers;
@@ -20,7 +16,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
- * @author root
+ * @author Maxime VALLET
  */
 @WebServlet(name = "CheckPassword", urlPatterns = {"/CheckPassword"})
 public class CheckPassword extends HttpServlet {
@@ -31,7 +27,14 @@ public class CheckPassword extends HttpServlet {
      * Variables à envoyer au servlet (POST)<br>
      * String login       &emsp;&emsp;        login de l'utilisateur <br>
      * String password       &emsp;&emsp;        MDP de l'utilisateur (clair) <br>
-     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
+     * 
+     * <br>
+     * Variables renvoyées par le servlet (JSON)<br>
+     * String erreur       &emsp;&emsp;        types d'erreur : login ou MDP vide | pas de hash | mauvais MDP | none <br>
+     * String login       &emsp;&emsp;        login de l'utilisateur <br>
+     * String droits       &emsp;&emsp;        droits de l'utilisateur <br>
+     * String token       &emsp;&emsp;        token de l'utilisateur (clair) <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -100,7 +103,7 @@ public class CheckPassword extends HttpServlet {
                     DAO.setToken(hashedToken, login, TestBoolean);
                     
                     //JSON renvoyé
-                    jsonString = "{\"droits\":\""+rights+"\", \"token\":\""+token+"\", \"login\":\""+login+"\"}";
+                    jsonString = "{\"droits\":\""+rights+"\", \"token\":\""+token+"\", \"login\":\""+login+"\", \"erreur\":\"none\"}";
                 }
                 else{
                     //JSON renvoyé
@@ -118,7 +121,6 @@ public class CheckPassword extends HttpServlet {
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {
-            System.out.println(jsonString);
             out.print(jsonString);
             out.flush();
         }

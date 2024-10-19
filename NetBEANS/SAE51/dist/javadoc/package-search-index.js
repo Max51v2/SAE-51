@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"Autre"},{"l":"DAO"},{"l":"Servlets"}];updateSearchResults();

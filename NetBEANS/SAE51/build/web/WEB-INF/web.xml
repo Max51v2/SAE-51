@@ -31,4 +31,8 @@
     <url-pattern>/*</url-pattern> <!-- Applique à toutes les URLs -->
 </filter-mapping>
 
+<listener>
+    <listener-class>Autre.OnStart</listener-class>
+</listener>
+
 </web-app>

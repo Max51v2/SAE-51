@@ -8,7 +8,7 @@ Version : 1.0
 |
 |    +-------------------------Général-------------------------  
 |    |
-|    |   Lien VM : TBD
+|    |   Lien VM : https://drive.google.com/drive/folders/1Q-eVKhEwMFV0cG51km6JPJSZJaPCn71p?usp=sharing
 |    |   login : sae-51
 |    |   MDP : leffe
 |    |
@@ -81,7 +81,7 @@ Version : 1.0
 |    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à Github
 |    |
 |    |   Cloner un répertoire Github sur le BUREAU (obligatoire avant de commencer) :
-|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-51" > Bureau NetBEANS)
+|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-51" > Bureau NetBEANS
 |    |
 |    |   Remplacer le répertoire Github local par celui en ligne (si tu veux reset les modifs du projet)
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Source control graph" > cliquer sur l'icon pull
