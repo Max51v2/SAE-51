@@ -1,5 +1,5 @@
 Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README.txt" dans le dossier "Serveur"
-=> !!! Le projet doit être cloné sur le Bureau de la VM !!!
+=> les instructions d'installation sont disponibles dans le "README" dossier "Serveur" si vous ne souhaitez pas utiliser de VM
 
 
 
@@ -39,6 +39,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 16h
+- maxime : 17h
 - erwann :
 - gabin :
