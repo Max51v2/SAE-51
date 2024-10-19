@@ -394,7 +394,7 @@ public class DAOusers {
         
         //Connection BD en tant que postgres
         try (Connection connection =
-                DAOusers.getConnectionPostgres();
+            DAOusers.getConnectionPostgres();
                 
             //Requête SQL
             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
@@ -444,26 +444,35 @@ public class DAOusers {
             // Exécution de la requête
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    login = resultSet.getString("login");
-                    droits = resultSet.getString("droits");
-                    hashedToken = resultSet.getString("token");
-
-                    if(hashedToken.equals("")){
-                        //Rien
+                    //Si on a déjà trouvé le token dans la BD, on arrête de chercher
+                    if(isTokenOK == true){
+                        
                     }
                     else{
-                        isTokenOK = BCrypt.checkpw(token, hashedToken);
-                    
-                        if(isTokenOK == true){
-                            //JSON contenant les données souhaitées
-                            JSONString = "{\"login\":\"" + login + "\", \"droits\":\"" + droits + "\", \"erreur\":\"none\"}";
+                        //Données BD
+                        login = resultSet.getString("login");
+                        droits = resultSet.getString("droits");
+                        hashedToken = resultSet.getString("token");
 
-                            //Reset du cycle de vie du token
-                            setLifeCycle(login, 24, Test);
-
-                            //Compteur
-                            match += 1;
+                        //Si il n'a pas de token dans la DB, on ne fait rien
+                        if(hashedToken.equals("")){
+                            //Rien
                         }
+                        else{
+                            //Comparaison token utilisateur et le token de la BD
+                            isTokenOK = BCrypt.checkpw(token, hashedToken);
+
+                            if(isTokenOK == true){
+                                //JSON contenant les données souhaitées
+                                JSONString = "{\"login\":\"" + login + "\", \"droits\":\"" + droits + "\", \"erreur\":\"none\"}";
+
+                                //Reset du cycle de vie du token
+                                setLifeCycle(login, 24, Test);
+
+                                //Compteur
+                                match += 1;
+                            }
+                        } 
                     }
                 }
             }

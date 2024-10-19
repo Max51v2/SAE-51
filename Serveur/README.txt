@@ -131,6 +131,8 @@ Version : 1.0
 |    |
 |    |   *ufw
 |    |   => sudo apt install ufw
+|    |   => sudo systemctl enable ufw
+|    |   => sudo ufw enable
 |    |
 |    +--------------------------------------------------------
 |

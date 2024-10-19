@@ -6,7 +6,7 @@
 
 
 #Récupperation de la version de Java (lancement NetBEANS)
-clear
+sudo clear
 cd /usr/java
 Java_version=`ls | head -n 1`
 
@@ -23,7 +23,7 @@ if [ "$PostgreSQL" = "inactive" ]
 then
     #demarrage
     echo "demarrage de PostgreSQL"
-    systemctl start postgresql
+    sudo systemctl start postgresql
 
     echo
 fi
