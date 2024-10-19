@@ -348,9 +348,9 @@ Version : 1.0
 |    |   ==> sudo rm -rf /var/tmp/*
 |    |   ==> 
 |    |   ==> *Ces commandes prennent du temps à s'executer
-|    |   ==> dd if=/dev/zero of=/zero bs=1M
-|    |   ==> rm /zero
-|    |   ==> sync
+|    |   ==> sudo dd if=/dev/zero of=/zero bs=1M
+|    |   ==> sudo rm /zero
+|    |   ==> sudo sync
 |    |   ==> 
 |    |   ==> sudo apt-get autoremove
 |    |   ==> sudo apt-get clean
