@@ -92,12 +92,10 @@ public class CheckPassword extends HttpServlet {
                     rights = DAO.getUserRightsFromLogin(login, TestBoolean);
                     
                     //Génération d'une chaine de 32 caractères (token)
-                    byte[] array = new byte[32];
-                    new Random().nextBytes(array);
                     token = RandomStringUtils.randomAlphanumeric(32);
                     
                     //génération du hash du token
-                    String hashedToken = BCrypt.hashpw(token, BCrypt.gensalt(10));
+                    String hashedToken = BCrypt.hashpw(token, BCrypt.gensalt(8));
                     
                     //Enregistrement du token dans la DB
                     DAO.setToken(hashedToken, login, 24, TestBoolean);

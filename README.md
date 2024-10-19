@@ -2,6 +2,10 @@ Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README
 => les instructions d'installation sont disponibles dans le "README" dossier "Serveur" si vous ne souhaitez pas utiliser de VM
 
 
+infos;
+- hashage Bcrypt :
+    => MDP : 12 passes
+    => token : 8 passes
 
 #Projet
 à faire :

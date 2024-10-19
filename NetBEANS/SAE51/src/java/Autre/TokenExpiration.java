@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class TokenExpiration implements Runnable {
     private Thread thread;
     private volatile boolean running = true;
-    private Integer cycleDuration = 5000;
+    private Integer cycleDuration = 10000;
     private Integer userCycleDuration = 0;
     
     //Démarre la vérification des tokens expirés
@@ -39,7 +39,7 @@ public class TokenExpiration implements Runnable {
         }
     }
     
-    //Fonction exécutée par le thread, vérifie les tokens toutes les 5 secondes
+    //Fonction exécutée par le thread, vérifie les tokens toutes les 10 secondes
     @Override
     public void run() {
         while (running) {
@@ -66,7 +66,6 @@ public class TokenExpiration implements Runnable {
         List<Autre.GetJSONInfo> users = gsonRequest.fromJson(JSON, userListType);
         
         String login;
-        String tokenHash;
         Integer lifeCycle;
                 
         // Récupération de tous les logins
@@ -81,21 +80,16 @@ public class TokenExpiration implements Runnable {
             }
             //si dernier cycle, suppression token
             else if(lifeCycle == 1){
-                //Données utilisateur
-                tokenHash = DAO.getToken(login, false);
             
                 DAO.deleteToken(login, false);
-                System.out.println("Suppression token => login : "+login+" | lifeCycle : "+lifeCycle+" | tokenHash : "+tokenHash);
+                System.out.println("Suppression token => login : "+login+" | lifeCycle : "+lifeCycle);
                 
                 //Retrait d'un cycle
                 lifeCycle = lifeCycle - 1;
                 DAO.setLifeCycle(login, lifeCycle, false);
             }
             else{
-                //Données utilisateur
-                tokenHash = DAO.getToken(login, false);
-            
-                System.out.println("login : "+login+" | lifeCycle : "+lifeCycle+" | tokenHash : "+tokenHash);
+                System.out.println("login : "+login+" | lifeCycle : "+lifeCycle);
                 
                 //Retrait d'un cycle
                 lifeCycle = lifeCycle - 1;
