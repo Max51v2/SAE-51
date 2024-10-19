@@ -100,7 +100,7 @@ public class CheckPassword extends HttpServlet {
                     String hashedToken = BCrypt.hashpw(token, BCrypt.gensalt(10));
                     
                     //Enregistrement du token dans la DB
-                    DAO.setToken(hashedToken, login, TestBoolean);
+                    DAO.setToken(hashedToken, login, 24, TestBoolean);
                     
                     //JSON renvoyé
                     jsonString = "{\"droits\":\""+rights+"\", \"token\":\""+token+"\", \"login\":\""+login+"\", \"erreur\":\"none\"}";

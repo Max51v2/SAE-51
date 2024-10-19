@@ -7,8 +7,6 @@ Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README
 à faire :
 - page web connexion
 - page web gestion des utilisateurs (tableau contenant les utilisateurs)
-- système d'authentification : JS + Servlets (maxime)
-- VM (Maxime)
 - BD (schémas voir script sql (dossier Serveur/Configuration))
 
 
@@ -18,6 +16,9 @@ fait :
     => retrait de snapcraft de la VM
     => remplacement d'Apache par Nginx
     => utilisation de Debian au lieu d'Ubuntu
+- système d'authentification : JS + Servlets (maxime)
+    => identification login + MDP / token
+    => expiration des tokens après une periode d'inactivité
 
 
 

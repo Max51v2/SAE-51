@@ -14,6 +14,8 @@ public class OnStart implements ServletContextListener {
         //lancement de la vérification
         run.start();
         System.out.println("Vérification des tokens expirés lancée");
+        
+        System.out.println("##########################################");
   }
 
   @Override

@@ -18,15 +18,16 @@ CREATE TABLE users (
     prenom text,
     droits text,
     hash text,
-    token text
+    token text,
+    tokenLifeCycle integer
 );
 
 
 --MDP hashés avec Bcrypt (12 passes)
 --Compte admin par défaut (MDP "Admin")
-INSERT INTO users (login, nom, prenom, droits, hash, token) VALUES ('Admin1', 'Originel', 'Admin', 'Admin', '$2a$12$7bJpdP/8n6Yn.2MdqQoSUO/wEAlzkYpySZGr5NShaDUjfLx3uyUAC','');
+INSERT INTO users (login, nom, prenom, droits, hash, token, tokenLifeCycle) VALUES ('Admin1', 'Originel', 'Admin', 'Admin', '$2a$12$7bJpdP/8n6Yn.2MdqQoSUO/wEAlzkYpySZGr5NShaDUjfLx3uyUAC','', 0);
 --Compte admin par défaut (MDP "Utilisateur")
-INSERT INTO users (login, nom, prenom, droits, hash, token) VALUES ('Utilisateur1', 'Originel', 'Utilisateur', 'Utilisateur', '$2a$12$eEmBwtSF27lOZVL6KbgI9udTtnsEucsEvOJgzEGNISh.IatJtyWbi','');
+INSERT INTO users (login, nom, prenom, droits, hash, token, tokenLifeCycle) VALUES ('Utilisateur1', 'Originel', 'Utilisateur', 'Utilisateur', '$2a$12$eEmBwtSF27lOZVL6KbgI9udTtnsEucsEvOJgzEGNISh.IatJtyWbi','', 0);
 
 
 
