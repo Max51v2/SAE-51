@@ -1,11 +1,14 @@
 #!/bin/bash
 # Auteur original : Maxime VALLET (SAE 52)
 # Modifications : Maxime VALLET
-# Version : 0.8
+# Version : 1.0
 
-#à modifier :
-#Nginx
-#NetBeans
+
+
+#Récupperation de la version de Java (lancement NetBEANS)
+clear
+cd /usr/java
+Java_version=`ls | head -n 1`
 
 
 clear
@@ -26,19 +29,26 @@ then
 fi
 
 
-#Copie des fichiers dans le répertoire de Nginx (NE PAS TOUCHER)
+#Répertoires
 GitRep="/home/"$USER"/Bureau/SAE-51/Web/"
-NginxRep="/var/www/sae-51"
+NginxRep="/var/www/sae-51/"
+LibRep="/home/"$USER"/Bureau/SAE-51/NetBEANS/lib/"
 
 #Vidage du Répertoire Nginx
-sudo rm -rf $NginxRep"/"*
+sudo rm -rf $NginxRep*
 
 #Création répertoire Javadoc
-#sudo mkdir -p /var/www/sae-51/Javadoc
+sudo mkdir -p /var/www/sae-51/Javadoc
+
+#Création répertoire Netbeans (librairies)
+sudo mkdir -p /Netbeans
 
 
 #Copie des fichiers
-sudo cp -r $GitRep* $NginxRep"/"
+sudo cp -r $GitRep* $NginxRep
+sudo cp -r "/home/"$USER"/Bureau/SAE-51/NetBEANS/SAE51/dist/javadoc/"* $NginxRep"/Javadoc"
+sudo cp -n $LibRep* /Netbeans
+
 
 
 #Récupération du status du daemon Nginx
@@ -54,6 +64,7 @@ then
     echo
 fi
 
+
 #On recharge Nginx car le contenu du rep a changé
 sudo systemctl reload nginx
 
@@ -68,12 +79,44 @@ read  -n 1 -p "Option :" option
 
 clear
 
+
 #Reconstruction BD
 if [ "$option" = "o" ] || [ "$option" = "O" ]
 then
     #Connexion à la base
     psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_51;" -f "/home/"$USER"/Bureau/SAE-51/Serveur/Configuration/PostgreSQL_config.sql"
 fi
+
+
+#Demande de lancement NetBEANS s'il n'est pas en train de tourner
+ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/openjdk-22.0.2" | head -n 1`
+
+#Démarrage NetBEANS
+if [ "$ProcNetBEANS" = "" ]
+then
+    #Recupération option utilisateur
+    clear
+    echo "Souhaitez-vous lancer NetBeans ? [O/N]"
+
+    echo
+
+    read  -n 1 -p "Option :" optionNetbeans
+
+    #Lancement NetBEANS
+    if [ "$optionNetbeans" = "o" ] || [ "$optionNetbeans" = "O" ]
+    then
+        clear
+
+        #Lancement de NetBEANS dans un nouvel onglet
+        gnome-terminal --tab -- /bin/sh -c 'echo "!!! Ne pas fermer cette fenêtre !!!"; echo; sudo netbeans --jdkhome /usr/java/'$Java_version
+
+        sleep 1
+    fi
+
+    echo
+fi
+
+
 
 
 
@@ -101,6 +144,17 @@ then
 fi
 
 
-#echo "Javadoc disponible ici : https://[@IP VM]/Javadoc/index.html"
+#Affichage status NetBEANS
+ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/openjdk-22.0.2" | head -n 1`
+if [ "$ProcNetBEANS" = "" ]
+then
+    echo "Status NetBEANS : inactive"
+else
+    echo "Status NetBEANS : active"
+fi
 
-#echo
+echo
+
+echo "Javadoc disponible ici : https://[@IP VM]/Javadoc/index.html"
+
+echo

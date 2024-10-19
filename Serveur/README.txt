@@ -1,9 +1,8 @@
 Auteur original : Maxime VALLET (SAE 52)
 Modifications : Maxime VALLET
-Version : 0.8
+Version : 1.0
 
-à modifier :
-utiliser VSCode au lieu de NetBEANS
+
 
 +--------------------------VM-----------------------------
 |
@@ -26,9 +25,26 @@ utiliser VSCode au lieu de NetBEANS
 |    |   git config --global user.name "[Prenom Nom]"
 |    |   git config --global user.email "[@ Mail]"
 |    |
+|    +---------------------------------------------------------
+|
+|    +------------------------NetBEANS------------------------- 
+|    |
+|    |   *NetBEANS est lancé par Start.sh sur demande
+|    |
+|    |   *commande
+|    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
+|    |   
+|    |   *Au lancement du projet, si la fenêtre requesting keyreing apparait mais que NetBEANS ne demande pas de MDP, il faut redémarrer NetBEANS
+|    |
+|    |   *MDP projet : "leffe"
+|    |
+|    |   *Interface administration (accessible depuis localhost uniquement)
+|    |   login : "admin"
+|    |   MDP : "leffe"
+|    |
 |    |   *Importer des librairies au projet
-|    |   => aller sur "https://mvnrepository.com/" et chercher la librairie => version dans le projet => files => view all => dl la jar
-|    |   => https://stackoverflow.com/questions/4955635/how-to-add-local-jar-files-to-a-maven-project > réponse "Thorbjørn Ravn Andersen"
+|    |   => aller sur "https://mvnrepository.com/" et chercher la librairie => version dans le projet => files => view all => dl la jar => la mettre dans /NetBEANS/lib
+|    |   ==> File > projet properties > libraries > add library
 |    |
 |    +---------------------------------------------------------
 |
@@ -75,7 +91,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   => menu détaillé bouton commit > commit and push > Ajouter un commentaire (non commenté) > valider (en haut à droite)
 |    |
 |    |   *Certificat de l'authorité de certification
-|    |   => !!! Les certificats sont valides 90j (Renouvelement partie "Procédure d'installation Debian 12" > "Certificat SSL") !!!
+|    |   => *Même après ajout, le navigateur affiche toujours que la connexion n'est pas sécurisé car le certificat est auto-signé
 |    |
 |    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
 |    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
@@ -87,7 +103,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   => Tomcat (administration) : http://[@IP VM]:8443
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE51/[NomServlet]    (IMPORTANT : pour accès servlet > voir exemple login.html)
 |    |   => Javadoc : https://[@IP VM]/Javadoc/index.html
-|    |   ==> déjà enregistré dans les marques page sur la VM
+|    |   ==> déjà enregistré dans les marques page sur la VM !!!!!!!!!!!!!!!!!!! à faire !!!!!!!!!!!!!!!!!!!!
 |    |
 |    |   *Cartes réseau :
 |    |   => il y'a deux cartes réseaux : une en mode bridge et une en mode NAT
@@ -111,7 +127,7 @@ utiliser VSCode au lieu de NetBEANS
 |    |   => monter l'iso Virtualbox (vbox > périphériques > iso guest additions)
 |    |   => cd /media/cdrom0
 |    |   => sudo sh VBoxLinuxAdditions.run
-|    |   => reboot
+|    |   => *redémarrer
 |    |
 |    |   *ufw
 |    |   => sudo apt install ufw
@@ -130,6 +146,8 @@ utiliser VSCode au lieu de NetBEANS
 |    |   chmod u+x /home/$USER/Bureau/SAE-51/Serveur/Start.sh
 |    |   
 |    |   *Demarrage deamons (une fois installation terminée): voir section VM > Général
+|    |
+|    |   !!! Merci de vérifier que les liens de téléchargement des paquets .deb sont toujours d'actualité !!!
 |    |
 |    +--------------------------------------------------------
 |
@@ -234,7 +252,6 @@ utiliser VSCode au lieu de NetBEANS
 |    |   systemctl restart nginx
 |    |
 |    |   sudo ufw allow 'Nginx HTTPS'
-|    |   sudo ufw allow 'Nginx HTTP'
 |    |
 |    +---------------------------------------------------------
 |
@@ -294,29 +311,24 @@ utiliser VSCode au lieu de NetBEANS
 |    |
 |    +---------------------------------------------------------
 |
-|    +-------------------------VSCode2 (à finir)------------------------  
+|    +------------------------NetBEANS------------------------- 
+|    |
+|    |   cd ~/Téléchargements
+|    |   sudo wget -c https://archive.apache.org/dist/netbeans/netbeans-installers/22/apache-netbeans_22-1_all.deb -O netbeans.deb
+|    |   sudo chmod 777 ./netbeans.deb
+|    |
+|    |   sudo apt install ./netbeans.deb
+|    |   sudo rm ./netbeans.deb
+|    |
+|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/$USER/Bureau/SAE-52/NetBEANS/SAE51  
+|    |
+|    |   *Ajout serveur Tomcat
+|    |   Tools > Server > Apache Tomcat or TomEE > Server location : "/opt/tomcat/" | username : "admin | login : "leffe"
+|    |
+|    |   *Lancer NetBEANS (obligatoire)
+|    |   => "sudo netbeans --jdkhome /usr/java/[version JDK]" ou Start.sh
 |    |   
-|    |   sudo apt instal maven
-|    | 
-|    |   *Installer les extensions : Bash Debug, Github Pull Request, Bash Beautify, Bash Debug, Java, Maven for Java, Extension Pack for Java et Community Server Connectors
-|    |
-|    |   *Dans VSCode (terminal vscode) : Ctrl+ù   (si pas de projet)
-|    |   => cd /home/$USER/Bureau/SAE-51/Tomcat
-|    |   => mvn archetype:generate -DgroupId=com.example -DartifactId=SAE51 -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
-|    |
-|    |   *Dans VSCode : Ctrl+Shift+P
-|    |   => ajout Tomcat ?
-|    |   ==>  Server location : "/opt/tomcat/" | username : "admin" | login : "leffe"
-|    |
-|    |
-|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/$USER/Bureau/SAE-51//SAE51
-|    |
-|    |   *Importer driver JDBC PostgreSQL
-|    |   => File > projet properties > libraries > add library > PostgreSQL JDBC library
-|    |
-|    |   
-|    |
-|    +--------------------------------------------------------
+|    +---------------------------------------------------------
 |
 |    +---------------------Ajout Certificat-------------------- 
 |    |

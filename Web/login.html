@@ -7,5 +7,29 @@
 <body>
     <h1>Test</h1>
     <p>Ceci est une page de login</p>
+    <input id="testCheckPassword" type="button" value="clickme" onclick="doFunction();" />
 </body>
 </html>
+
+<script>
+    //Auteurs JS : Maxime VALLET, Ishac HAMDANI
+    //Version : 0.3
+
+
+    //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
+    window.onunload = function(){reload()};
+
+    // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Apache)
+    // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const ServerIP = url.hostname;
+
+    document.getElementById("testCheckPassword").onclick = function () { 
+        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Admin1", password: "Admi", Test: false})}).then(r => r.json()).then(PasswordVerification)
+    };
+
+    function PasswordVerification(r){
+        console.log(r);
+    }
+</script>
