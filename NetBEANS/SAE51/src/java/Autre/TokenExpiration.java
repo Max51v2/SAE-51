@@ -52,7 +52,7 @@ public class TokenExpiration implements Runnable {
     
     
     public void tokenCheck() {
-        System.out.println("Vérification des tokens en cours...");
-        // Ajoute ici la logique pour vérifier si un token est expiré ou non
+        
+        
     }
 }

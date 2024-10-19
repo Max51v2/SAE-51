@@ -18,7 +18,8 @@ public class OnStart implements ServletContextListener {
 
   @Override
   public void contextDestroyed(ServletContextEvent sce) {
-      run.stop();
-      System.out.println("Vérification des tokens expirés arrêtée");
+        //lancement de la vérification
+        run.stop();
+        System.out.println("Vérification des tokens expirés arrêtée");
   }
 }
