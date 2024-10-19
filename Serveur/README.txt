@@ -356,11 +356,11 @@ Version : 1.0
 |    |   ==> sudo apt-get clean
 |    |   ==> sudo apt-get autoclean
 |    |
-|    |   => Vider le cache snapd et journaux (VirtualBox (Windows))
+|    |   => VirtualBox (Windows)
 |    |   ==> ouvrir un cmd
 |    |   ==> cd C:\Program Files\Oracle\VirtualBox
 |    |   ==> VBoxManage modifyvm SAE-51 --nested-hw-virt on
-|    |   ==> VBoxManage modifymedium <chemin-du-fichier.vdi> --compact
+|    |   ==> VBoxManage modifymedium "chemin-du-fichier.vdi" --compact
 |    |
 |    +---------------------------------------------------------
 |
