@@ -1,40 +1,35 @@
-package Servlets;
+package ServletsUser;
 
 import DAO.DAOusers;
+import com.google.gson.Gson;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.util.Random;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author Maxime VALLET
  */
-@WebServlet(name = "CheckPassword", urlPatterns = {"/CheckPassword"})
-public class CheckPassword extends HttpServlet {
+@WebServlet(name = "CheckToken", urlPatterns = {"/CheckToken"})
+public class CheckToken extends HttpServlet {
 
     /**
-     * Vérifie si le MDP+login donnés sont OK<br><br>
+     * Vérifie si le token donné est dans la BD<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
-     * String login       &emsp;&emsp;        login de l'utilisateur <br>
-     * String password       &emsp;&emsp;        MDP de l'utilisateur (clair) <br>
+     * String token       &emsp;&emsp;        login de l'utilisateur <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : login ou MDP vide | pas de hash | mauvais MDP | none <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : pas de token (req) | pas de token (DB) | none <br>
      * String login       &emsp;&emsp;        login de l'utilisateur <br>
      * String droits       &emsp;&emsp;        droits de l'utilisateur <br>
-     * String token       &emsp;&emsp;        token de l'utilisateur (clair) <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -43,7 +38,6 @@ public class CheckPassword extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
@@ -57,61 +51,21 @@ public class CheckPassword extends HttpServlet {
         Autre.GetJSONInfo user = gsonRequest.fromJson(reader, Autre.GetJSONInfo.class);
         
         //Données
-        String login = user.getLogin();
-        String password = user.getPassword();
+        String token = user.getToken();
         Boolean TestBoolean = Boolean.valueOf(user.getTest());
-        String rights = "Aucun";
-        String token = "";
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
         
-        
-        //Si login ou MDP vide alors on ne fait rien
-        if(password.equals("") | login.equals("")){
+        //Si login vide alors on ne fait rien
+        if(token.equals("")){
                 //JSON renvoyé
-                    jsonString = "{\"erreur\":\"login ou MDP vide\"}";
+                    jsonString = "{\"erreur\":\"pas de token (req)\"}";
         }
         else{
             try { 
-            //Récuperation du hash stocké dans la BD
-            String hashDB = DAO.getUserPasswordHash(login, TestBoolean);
-            
-            //si il n'y a pas de hash, utilisateur inexistant
-            if(hashDB.equals("")){
-                //JSON renvoyé
-                jsonString = "{\"erreur\":\"pas de hash\"}";
-            }
-            
-            //l'utilisateur existe mais il faut vérifier le MDP
-            else{
-                //si le hash de la DB est identique au hash envoyé 
-                Boolean isPasswordOK = BCrypt.checkpw(password, hashDB);
-                if(isPasswordOK == true){
-                    //Récupération des droits utilisateur
-                    rights = DAO.getUserRightsFromLogin(login, TestBoolean);
-                    
-                    //Génération d'une chaine de 32 caractères (token)
-                    token = RandomStringUtils.randomAlphanumeric(32);
-                    
-                    //génération du hash du token
-                    String hashedToken = BCrypt.hashpw(token, BCrypt.gensalt(8));
-                    
-                    //Enregistrement du token dans la DB
-                    DAO.setToken(hashedToken, login, 24, TestBoolean);
-                    
-                    //JSON renvoyé
-                    jsonString = "{\"droits\":\""+rights+"\", \"token\":\""+token+"\", \"login\":\""+login+"\", \"erreur\":\"none\"}";
-                }
-                else{
-                    //JSON renvoyé
-                    jsonString = "{\"erreur\":\"mauvais MDP\"}";
-                }
-            }
-            
-            
-            
-            
+                //Vérification du token
+                jsonString = DAO.checkToken(token, TestBoolean);
             } catch (Exception e) {
                 e.printStackTrace();
             }

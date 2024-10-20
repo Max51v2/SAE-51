@@ -5,13 +5,11 @@
     <title>Login</title>
 </head>
 <body>
-    <h1>Test</h1>
-    <p>Ceci est une page de login</p>
-    <input id="testCheckPassword" type="button" value="CheckPassword" onclick="doFunction();" />
-    <input id="testCheckToken" type="button" value="CheckToken" onclick="doFunction();" />
+    <h1>Ceci est une page de login</h1>
+    <br><br>
+    <input id="tests" type="button" value="Tests backend" onclick="doFunction();" />
 </body>
 </html>
-
 <script>
     //Auteurs JS : Maxime VALLET
     //Version : 0.1
@@ -20,38 +18,15 @@
     //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
     window.onunload = function(){reload()};
 
-    // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Apache)
+    // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Nginx)
     // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
     const ServerIP = url.hostname;
 
-    token1 = "";
-    token2 = "";
 
-    //tests à partir d'ici
-    document.getElementById("testCheckPassword").onclick = function () { 
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Admin1", password: "Admin", Test: false})}).then(r1 => r1.json()).then(PasswordVerification1)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", Test: false})}).then(r2 => r2.json()).then(PasswordVerification2)
+    document.getElementById("tests").onclick = function () { 
+        window.location.href = 'TestsBackend.html';
     };
-
-    document.getElementById("testCheckToken").onclick = function () { 
-        fetch("https://"+ServerIP+":8443/SAE51/CheckToken", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Admin1", password: "Admin", token: token1, Test: false})}).then(r3 => r3.json()).then(TokenVerification3)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckToken", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", token: token2, Test: false})}).then(r4 => r4.json()).then(TokenVerification4)
-    };
-
-    function PasswordVerification1(r1){
-        console.log(r1);
-        token1 = r1.token;
-    }
-    function PasswordVerification2(r2){
-        console.log(r2);
-        token2 = r2.token;
-    }
-    function TokenVerification3(r3){
-        console.log(r3);
-    }
-    function TokenVerification4(r4){
-        console.log(r4);
-    }
+    
 </script>

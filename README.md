@@ -20,9 +20,11 @@ fait :
     => retrait de snapcraft de la VM
     => remplacement d'Apache par Nginx
     => utilisation de Debian au lieu d'Ubuntu
-- système d'authentification : JS + Servlets (maxime)
+- système d'authentification : JS + Servlets
     => identification login + MDP / token
     => expiration des tokens après une periode d'inactivité
+    => Ajout + retrait + liste utilisateur(s)
+    => suppression token
 
 
 

@@ -7,8 +7,8 @@ package Autre;
 import java.util.List;
 
 /**
- *
- * @author root
+ * Liste d'objets GetJSONInfo (utilisé pour récupérer la liste des utilisateurs à partir d'un JSON fournis par getUsers) cf. TokenExpiration
+ * @author Maxime VALLET
  */
 public class UsersArray {
     private List<GetJSONInfo> users;

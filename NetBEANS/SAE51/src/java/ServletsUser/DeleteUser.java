@@ -1,4 +1,8 @@
-package Servlets;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
+package ServletsUser;
 
 import DAO.DAOusers;
 import com.google.gson.Gson;
@@ -12,24 +16,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * 
  * @author Maxime VALLET
  */
-@WebServlet(name = "CheckToken", urlPatterns = {"/CheckToken"})
-public class CheckToken extends HttpServlet {
+@WebServlet(name = "DeleteUser", urlPatterns = {"/DeleteUser"})
+public class DeleteUser extends HttpServlet {
 
     /**
-     * Vérifie si le token donné est dans la BD<br><br>
+     * Supprime un utilisateur de la BD<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
-     * String token       &emsp;&emsp;        login de l'utilisateur <br>
+     * String login       &emsp;&emsp;        login de l'utilisateur à supprimer <br>
+     * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : pas de token (req) | pas de token (DB) | none <br>
-     * String login       &emsp;&emsp;        login de l'utilisateur <br>
-     * String droits       &emsp;&emsp;        droits de l'utilisateur <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : pas de login ou token (req) | login inexistant (DB) | accès refusé | none <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -51,25 +54,42 @@ public class CheckToken extends HttpServlet {
         Autre.GetJSONInfo user = gsonRequest.fromJson(reader, Autre.GetJSONInfo.class);
         
         //Données
+        String login = user.getLogin();
         String token = user.getToken();
         Boolean TestBoolean = Boolean.valueOf(user.getTest());
-        
-        //Création du JSON à renvoyer (vide)
+        String rights = "Aucun";
+        Boolean doLoginExist;
         String jsonString = "";
         
-        //Si login ou MDP vide alors on ne fait rien
-        if(token.equals("")){
-                //JSON renvoyé
-                    jsonString = "{\"erreur\":\"pas de token (req)\"}";
+        //Vérification du contenu envoyé
+        if(token.equals("") | login.equals("")){
+            jsonString = "{\"erreur\":\"pas de login ou token (req)\"}";
         }
         else{
-            try { 
-                //Vérification du token
-                jsonString = DAO.checkToken(token, TestBoolean);
-            } catch (Exception e) {
-                e.printStackTrace();
+            //Récuppération des droits de l'utilisateur
+            rights = DAO.getUserRightsFromToken(token, TestBoolean);
+            
+            if(rights.equals("Admin")){
+                //Vérification de l'existance du login
+                doLoginExist = DAO.doLoginExist(login, TestBoolean);
+                
+                if(doLoginExist == true){
+                    //Suppression utilisateur
+                    DAO.deleteUser(login, TestBoolean);
+
+                    //JSON renvoyé
+                    jsonString = "{\"erreur\":\"none\"}";
+                }
+                else{
+                    jsonString = "{\"erreur\":\"login inexistant (DB)\"}";
+                }
+            }
+            else{
+                //JSON renvoyé
+                jsonString = "{\"erreur\":\"accès refusé\"}";
             }
         }
+        
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

@@ -8,13 +8,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Gère la vérification et la suppression des tokens expirés
+ * Gère la vérification et la suppression des tokens expirés (démarré par OnStart)
+ * @author Maxime VALLET
  */
 public class TokenExpiration implements Runnable {
     private Thread thread;
     private volatile boolean running = true;
-    private Integer cycleDuration = 10000;
-    private Integer userCycleDuration = 0;
+    private final Integer cycleDuration = 10000;
+    private Integer userCycleDuration;
+    private Integer ListSize;
     
     //Démarre la vérification des tokens expirés
     public void start() {
@@ -51,12 +53,10 @@ public class TokenExpiration implements Runnable {
     
     
     public void tokenCheck() {
-        System.out.println("Tokens actifs :");
-        
         DAOusers DAO = new DAOusers();
         
         //Récuperation du JSON envoyé
-        String JSON = DAO.getUsers(false);
+        String JSON = DAO.getActiveUsers(false);
         Gson gsonRequest = new Gson();
         
         //Définir le type pour la conversion de JSON en liste d'utilisateurs
@@ -65,21 +65,27 @@ public class TokenExpiration implements Runnable {
         //Conversion des données du JSON dans une liste d'objets Java
         List<Autre.GetJSONInfo> users = gsonRequest.fromJson(JSON, userListType);
         
+        //Taille de la liste
+        if(users.isEmpty()){
+            ListSize = 0;
+        }
+        else{
+            ListSize = users.size();
+        }
+        
+        System.out.println("Tokens actifs ("+ListSize+") :");
+        
         String login;
         Integer lifeCycle;
-                
+        
         // Récupération de tous les logins
         for (Autre.GetJSONInfo user : users) {
             //Récuppération du nombre d'itérations avant suppresion du token
             login = user.getLogin();
             lifeCycle = DAO.getTokenLifeCycle(login, false);
             
-            //Token déjà expiré
-            if(lifeCycle == 0){
-                //Rien
-            }
             //si dernier cycle, suppression token
-            else if(lifeCycle == 1){
+            if(lifeCycle == 1){
             
                 DAO.deleteToken(login, false);
                 System.out.println("Suppression token => login : "+login+" | lifeCycle : "+lifeCycle);
@@ -96,13 +102,30 @@ public class TokenExpiration implements Runnable {
                 DAO.setLifeCycle(login, lifeCycle, false);
             }
             
+            //Durée de pause entre chaque 
+            userCycleDuration = cycleDuration/ListSize;
+            
             //Pause à chaque utilisateur (étalement des requêtes sur la période d'actualisation
-            userCycleDuration = cycleDuration/users.size();
             try {
                 thread.sleep(userCycleDuration);
             } catch (InterruptedException ex) {
                 Logger.getLogger(TokenExpiration.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        
+        //Si aucun utilisateur n'a de token actif
+        if(ListSize == 0){
+            userCycleDuration = cycleDuration;
+                
+            //Pause
+            try {
+                thread.sleep(userCycleDuration);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(TokenExpiration.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            //Rien
         }
         
         System.out.println("##########################################");
