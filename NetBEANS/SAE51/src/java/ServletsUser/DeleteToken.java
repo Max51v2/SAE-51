@@ -72,6 +72,9 @@ public class DeleteToken extends HttpServlet {
                 if(doLoginExist == true){
                     //Suppression du token
                     DAO.deleteToken(login, TestBoolean);
+                    
+                    //Remise à 0 du lifecycle du token
+                    DAO.setLifeCycle(login, 0, TestBoolean);
 
                     //JSON renvoyé
                     jsonString = "{\"erreur\":\"none\"}";
