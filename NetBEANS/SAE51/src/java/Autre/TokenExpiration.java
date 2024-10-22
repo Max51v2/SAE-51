@@ -36,7 +36,7 @@ public class TokenExpiration implements Runnable {
                 thread.join();
             } catch (InterruptedException ex) {
                 Logger.getLogger(TokenExpiration.class.getName()).log(Level.SEVERE, null, ex);
-                Thread.currentThread().interrupt();  // Restaure l'état d'interruption
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -51,18 +51,16 @@ public class TokenExpiration implements Runnable {
         }
     }
     
-    
+    //Vérification des tokens de la BD
     public void tokenCheck() {
         DAOusers DAO = new DAOusers();
         
-        //Récuperation du JSON envoyé
+        //Récuperation du JSON contenant tous les utilisateurs possédant un token
         String JSON = DAO.getActiveUsers(false);
         Gson gsonRequest = new Gson();
         
-        //Définir le type pour la conversion de JSON en liste d'utilisateurs
-        java.lang.reflect.Type userListType = new TypeToken<List<Autre.GetJSONInfo>>() {}.getType();
-
         //Conversion des données du JSON dans une liste d'objets Java
+        java.lang.reflect.Type userListType = new TypeToken<List<Autre.GetJSONInfo>>() {}.getType();
         List<Autre.GetJSONInfo> users = gsonRequest.fromJson(JSON, userListType);
         
         //Taille de la liste
@@ -78,7 +76,7 @@ public class TokenExpiration implements Runnable {
         String login;
         Integer lifeCycle;
         
-        // Récupération de tous les logins
+        //Pour tous les utilisateurs de la liste
         for (Autre.GetJSONInfo user : users) {
             //Récuppération du nombre d'itérations avant suppresion du token
             login = user.getLogin();
@@ -86,7 +84,7 @@ public class TokenExpiration implements Runnable {
             
             //si dernier cycle, suppression token
             if(lifeCycle == 1){
-            
+                //Suppression du token
                 DAO.deleteToken(login, false);
                 System.out.println("Suppression token => login : "+login+" | lifeCycle : "+lifeCycle);
                 
@@ -115,6 +113,7 @@ public class TokenExpiration implements Runnable {
         
         //Si aucun utilisateur n'a de token actif
         if(ListSize == 0){
+            //Durée cycle
             userCycleDuration = cycleDuration;
                 
             //Pause
