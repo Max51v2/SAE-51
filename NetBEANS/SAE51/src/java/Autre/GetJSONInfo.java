@@ -12,15 +12,17 @@ public class GetJSONInfo{
         private String droits;
         private String token;
         private String password;
+        private String currentPage;
         private String Test;
         
-        public GetJSONInfo(String login, String nom, String prenom, String droits, String token, String password, String Test){
+        public GetJSONInfo(String login, String nom, String prenom, String droits, String token, String password, String currentPage, String Test){
             this.login=login;
             this.nom=nom;
             this.prenom=prenom;
             this.droits=droits;
             this.token=token;
             this.password=password;
+            this.currentPage=currentPage;
             this.Test = Test;
         }
 
@@ -70,6 +72,14 @@ public class GetJSONInfo{
 
         public void setPassword(String password) {
             this.password = password;
+        }
+        
+        public String getCurrentPage() {
+            return currentPage;
+        }
+
+        public void setCurrentPage(String currentPage) {
+            this.currentPage = currentPage;
         }
 
         public String getTest() {

@@ -1,6 +1,6 @@
 Auteur original : Maxime VALLET (SAE 52)
 Modifications : Maxime VALLET
-Version : 1.0
+Version : 1.2
 
 
 
@@ -103,7 +103,7 @@ Version : 1.0
 |    |   => Tomcat (administration) : http://[@IP VM]:8443
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE51/[NomServlet]    (IMPORTANT : pour accès servlet > voir exemple login.html)
 |    |   => Javadoc : https://[@IP VM]/Javadoc/index.html
-|    |   ==> déjà enregistré dans les marques page sur la VM !!!!!!!!!!!!!!!!!!! à faire !!!!!!!!!!!!!!!!!!!!
+|    |   ==> déjà enregistré dans les marques page sur la VM
 |    |
 |    |   *Cartes réseau :
 |    |   => il y'a deux cartes réseaux : une en mode bridge et une en mode NAT

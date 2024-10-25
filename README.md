@@ -10,14 +10,14 @@ infos;
 #Projet
 à faire (liste non exhaustive) :
 Frontend :
-  => page web connexion
   => page web gestion des utilisateurs (tableau contenant les utilisateurs)
   => page web qui référence les machines enregistrées + onglet pour séléctionner le réseau à scanner afin d'ajouter des machines
   => page web qui donne des info sur la machine (CDC info statiques) + définition des seuils d'alerte des différentes métriques surveillées (CDC partie dynamique)
   => page web notifications
-  => JS pages Web (login : maxime)
+  => JS pages Web
   
 - Backend
+  => tests Servlets + DAO users
   => ajout / suppression de pc
   => gestion des droits utilisateur par ordinateur
   => récuppération info de suivi machines (récupération en deux parties : statique (1 fois) et dynamique (en continu + mise en buffer))
@@ -39,11 +39,15 @@ fait :
     => retrait de snapcraft de la VM
     => remplacement d'Apache par Nginx
     => utilisation de Debian au lieu d'Ubuntu
-- Système d'authentification : Servlets
+- Backend
     => identification login + MDP / token
     => expiration des tokens après une periode d'inactivité
     => Ajout + retrait + liste utilisateur(s)
     => suppression token
+    => Gestion des permissions par page (+redirection)
+- Frontend :
+    => page de login
+    => template de page Web
 
 
 
@@ -64,6 +68,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 23h
+- maxime : 30h
 - erwann :
 - gabin :

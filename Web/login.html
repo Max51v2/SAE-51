@@ -1,32 +1,208 @@
+<!--
+    Auteur HTML + CSS : Maxime VALLET
+    Version 1.0
+-->
+
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>Login</title>
+    <link rel="icon" type="images" href="/images/Logo.png">
+    <style>
+        body{
+            margin: 0;
+        }
+        #rootDiv{
+            height: 100vh;
+            width: 100vw;
+
+            display: flex;
+            flex-direction: column;
+        }
+        #loginDiv{
+            flex: 1;
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+        }
+        #loginBox {
+            height: 785px;
+            width: 450px;
+            background-color: #f0f5f5;
+            border-radius: 25px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+        }
+        #logoDiv{
+            height: 310px;
+            width: 450px;
+            margin-top: 90px;
+            
+            display: flex;
+            justify-content: center;
+        }
+        #logo{
+            height: 250px;
+            width: 250px;
+            
+            border-radius: 15px;
+            object-fit: cover;
+        }
+        #loginFormDiv{
+            width: 350px;
+            padding-top: 10px;
+            text-align: left;
+
+            font-size: 18px;
+        }
+        #login{
+            width: 350px;
+            height: 30px;
+        }
+        #password{
+            width: 350px;
+            height: 30px;
+        }
+        #submit{
+            align-items: center;
+            width: 100px;
+            height: 40px;
+        }
+        #test{
+
+        }
+        #style{
+            height: fit-content;
+            width: fit-content;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Ceci est une page de login</h1>
-    <br><br>
-    <input id="tests" type="button" value="Tests backend" onclick="doFunction();" />
-</body>
-</html>
-<script>
-    //Auteurs JS : Maxime VALLET
-    //Version : 0.1
-
-
-    //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
-    window.onunload = function(){reload()};
-
-    // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Nginx)
-    // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
-    const currentUrl = window.location.href;
-    const url = new URL(currentUrl);
-    const ServerIP = url.hostname;
-
-
-    document.getElementById("tests").onclick = function () { 
-        window.location.href = 'TestsBackend.html';
-    };
+    <div id="rootDiv">
+        <div id="loginDiv">
+            <div id="loginBox">
+                <div id="logoDiv">
+                    <img id="logo" src="/images/Logo.png" alt="Logo">
+                </div>
+                <div id="loginFormDiv">
+                    <h1>Indentification</h1>
+                    <form id="loginForm">
+                        <label for="login">Nom d'utilisateur :</label>
+                        <br>
+                        <input type="text" id="login" name="login" required>
+                        <br><br>
+                        <label for="password">Mot de passe :</label>
+                        <br>
+                        <input type="password" id="password" name="password" required>
+                        <br><br><br>
+                        <button type="button" id="submit">Valider</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     
+        <div id="test">
+            <input type="button" id="tests" value="Tests backend" onclick="doFunction();" />
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+<!-- ne pas toucher aux 2 scripts ci-dessous SAUF en cas de BUG -->
+<script src="/JS/URL.js" defer></script>
+<!-- Mettre le script ci-dessous en com si vous souhaitez développer le HTML en ouvrant le document sur le navigateur (au lieu de Nginx)-->
+<script src="/JS/TokenCheck.js" defer></script>
+
+<script>
+    //Auteur JS : Maxime VALLET
+    //Version : 1.0
+
+    //Code ici
+    document.addEventListener("DOMContentLoaded", (event) => {
+
+        //Page de tests
+        document.getElementById("tests").onclick = function () { 
+            window.location.href = 'TestsBackend.html';
+        };
+
+
+        //Vérification du MDP
+        document.getElementById("submit").onclick = function () { 
+
+            //Données fournies par l'utilisateur
+            var login = document.getElementById("login").value;
+            var password = document.getElementById("password").value;
+
+            //Reset form
+            document.getElementById("loginForm").reset();
+
+            //Vérification auprès du Servlet
+            fetch(`https://${window.ServerIP}:8443/SAE51/CheckPassword`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ login: login, password: password, Test: false })
+            }).then(response => response.json())
+            .then(CheckPasswordResult);
+        };
+        
+
+        //Vérification de la réponse du Servlet CheckPassword
+        function CheckPasswordResult(response){
+            if(response.erreur === "none"){
+                //Stockage du token, login et des droits (uniquement à titre indicatif car les servlets revérifient !)
+                sessionStorage.setItem("login", response.login);
+                sessionStorage.setItem("droits", response.droits);
+                sessionStorage.setItem("token", response.token);
+
+                //Console
+                console.log("login => login : "+sessionStorage.getItem("login"));
+                console.log("login => droits : "+sessionStorage.getItem("droits"));
+                console.log("login => token : "+sessionStorage.getItem("token")); //le token ici est en clair contrairement à la BD (hash Bcrypt)
+
+                //Redirection page
+                currentToken = sessionStorage.getItem("token");
+                fetch(`https://${window.ServerIP}:8443/SAE51/GetRedirection`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: currentToken, currentPage: window.currentPage, Test: false })
+                }).then(response => response.json())
+                .then(GetRedirectionResult);
+            }
+            else{
+                //On affiche l'erreur
+                console.log("login => CheckPasswordResult => erreur : "+response.erreur);
+            }
+        }
+
+
+        //Vérification du résultat du Sevlet GetRedirection
+        function GetRedirectionResult(response){
+            if(response.erreur === "none"){
+                if(response.redirect === "none"){
+                    //Rien
+                }
+                else{
+                    window.location.href = response.redirect;
+                }
+            }
+            else{
+                //On affiche l'erreur
+                console.log("login => GetRedirectionResult => erreur : "+response.erreur);
+
+                //Redirection vers le login s'il n'y pas de règle de redirection dans la BD
+                if(response.erreur === "Pas de redirection (BD)"){
+                    //Redireciton vers login.html qui en théorie en a bien une
+                    window.location.href = 'login.html';
+                }
+            }
+        }
+    });
 </script>

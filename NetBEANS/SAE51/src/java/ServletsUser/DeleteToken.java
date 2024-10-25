@@ -65,7 +65,7 @@ public class DeleteToken extends HttpServlet {
             //Récuppération des droits de l'utilisateur
             rights = DAO.getUserRightsFromToken(token, TestBoolean);
             
-            if(rights.equals("Admin")){
+            if(!rights.equals("Aucun")){
                 //Vérification de l'existance du login
                 doLoginExist = DAO.doLoginExist(login, TestBoolean);
                 

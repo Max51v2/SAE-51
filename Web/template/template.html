@@ -1,0 +1,168 @@
+<!--
+    Auteur HTML + CSS : Maxime VALLET
+    Version : 1.0
+-->
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="icon" type="images" href="/images/Logo.png">
+    <style>
+        body{
+            margin: 0;
+        }
+        #rootDiv{
+            height: 100vh;
+            width: 100vw;
+
+            display: flex;
+            flex-direction: column;
+        }
+        #bannerDiv{
+            width: 100%;
+            height: 50px;
+            display: flex;
+            flex-direction: row; 
+            justify-content: space-between;
+            background-color: #333333;
+            color: #BDBDBD;
+        }
+        #user{
+            height: 50px;
+            padding-left: 15px;
+            display: flex;
+            flex-direction: row;
+            align-items: center
+        }
+        #logoUser{
+            width: 30px;
+            height: 30px;
+            padding-right: 10px;
+        }
+        #logoRights{
+            width: 30px;
+            height: 30px;
+            padding-left: 20px;
+            padding-right: 10px;
+        }
+        #pageName{
+            height: 50px;
+            display: flex;
+            align-items: center
+        }
+        #disconnect{
+            height: 50px;
+            display: flex;
+            flex-direction: row;
+            align-items: center
+        }
+        #submitDisconnect{
+            width: 160px;
+            height: 50px;
+            background-color: #333333;
+            color: #BDBDBD;
+            border: 0px;
+        }
+        #submitDisconnect p{
+            display: flex;
+            align-items: center;
+            margin: 0;
+            cursor: pointer;
+        }
+        #logoDisconnect{
+            width: 30px;
+            height: 30px;
+            padding-right: 10px;
+            align-items: center;
+        }
+        #style{
+            height: fit-content;
+            width: fit-content;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="rootdiv">
+        <div id="bannerDiv">
+            <div id="user">
+                <img id="logoUser" src="/images/utilisateur.png" alt="Logo">
+                <p id="id"></p>
+                <img id="logoRights" src="/images/droits.png" alt="Logo">
+                <p id="Rights"></p>
+            </div>
+            <div id="pageName">
+                <h2>Nom de la page</h2>
+            </div>
+            <div id="disconnect">
+                <button id="submitDisconnect" type="button">
+                    <p><img id="logoDisconnect" src="/images/deconnexion.png" alt="Logo"> Se déconnecter</p>
+                </button> 
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+<!-- ne pas toucher aux 2 scripts ci-dessous SAUF en cas de BUG -->
+<script src="/JS/URL.js" defer></script>
+<!-- Mettre le script ci-dessous en com si vous souhaitez développer le HTML en ouvrant le document sur le navigateur (au lieu de Nginx)-->
+<script src="/JS/TokenCheck.js" defer></script>
+
+<script>
+    //Auteur(s) JS : Maxime VALLET
+    //Version : 1.0
+
+    
+    document.addEventListener("DOMContentLoaded", (event) => {
+
+        //Ne pas toucher hors bug ou modif esthétique
+
+        //Définition du contenu de la banière
+        document.getElementById("id").innerHTML = sessionStorage.getItem("login");
+        document.getElementById("Rights").innerHTML = sessionStorage.getItem("droits");
+
+
+        //Déconnexion de l'utilisateur
+        document.getElementById("submitDisconnect").onclick = function () {
+            login = sessionStorage.getItem("login");
+            token = sessionStorage.getItem("token");
+
+            //Vérification auprès du Servlet
+            fetch(`https://${window.ServerIP}:8443/SAE51/DeleteToken`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ login: login, token: token, Test: false })
+            }).then(response => response.json())
+            .then(DeleteTokenResult);
+        };
+
+
+        //Vérification de la réponse du servlet DeleteToken
+        function DeleteTokenResult(response){
+            if(response.erreur === "none"){
+                //Suppression des données dans sessionStorage
+                sessionStorage.setItem("login", "");
+                sessionStorage.setItem("rights", "");
+                sessionStorage.setItem("token", "");
+
+                //Redirection vers login.html
+                window.location.href = 'login.html';
+            }
+            else{
+                console.log("accueil => DeleteTokenResult => erreur : "+response.erreur);
+            }
+        }
+
+        //Fin Ne pas toucher hors bug ou modif esthétique
+
+
+        // CODE ICI
+
+        // FIN CODE ICI
+    });
+</script>

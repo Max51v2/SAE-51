@@ -695,4 +695,52 @@ public class DAOusers {
             e.printStackTrace();
         }
     }
+    
+    
+    
+    
+    /**
+     * Renvoi sur quelle page l'utilisateur doit être redirigé
+     * 
+     * @param droits     Droits de l'utilisateur connecté
+     * @param currentPage     Page sur laquelle se situe l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
+     */
+    public String getRedirection(String droits, String currentPage, Boolean Test){
+        String RequeteSQL="SELECT redirect FROM web_pages_access WHERE name = ? AND droits = ?";
+        String redirect="";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOusers.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, currentPage);
+            preparedStatement.setString(2, droits);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    redirect = resultSet.getString("redirect");
+                }
+                else{
+                    redirect = "No redirect";
+                }
+            }
+            
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return redirect;
+    }
 }

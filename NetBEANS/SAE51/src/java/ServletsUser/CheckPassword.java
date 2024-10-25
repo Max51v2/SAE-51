@@ -31,7 +31,7 @@ public class CheckPassword extends HttpServlet {
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : login ou MDP vide | pas de hash | mauvais MDP | none <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : login ou MDP vide (req) | pas de hash (DB) | mauvais MDP (req) | none <br>
      * String login       &emsp;&emsp;        login de l'utilisateur <br>
      * String droits       &emsp;&emsp;        droits de l'utilisateur <br>
      * String token       &emsp;&emsp;        token de l'utilisateur (clair) <br>
@@ -70,7 +70,7 @@ public class CheckPassword extends HttpServlet {
         //Si login ou MDP vide alors on ne fait rien
         if(password.equals("") | login.equals("")){
                 //JSON renvoyé
-                    jsonString = "{\"erreur\":\"login ou MDP vide\"}";
+                    jsonString = "{\"erreur\":\"login ou MDP vide (req)\"}";
         }
         else{
             try { 
@@ -80,7 +80,7 @@ public class CheckPassword extends HttpServlet {
             //si il n'y a pas de hash, utilisateur inexistant
             if(hashDB.equals("")){
                 //JSON renvoyé
-                jsonString = "{\"erreur\":\"pas de hash\"}";
+                jsonString = "{\"erreur\":\"pas de hash (DB)\"}";
             }
             
             //l'utilisateur existe mais il faut vérifier le MDP
@@ -105,7 +105,7 @@ public class CheckPassword extends HttpServlet {
                 }
                 else{
                     //JSON renvoyé
-                    jsonString = "{\"erreur\":\"mauvais MDP\"}";
+                    jsonString = "{\"erreur\":\"mauvais MDP (req)\"}";
                 }
             }
             
