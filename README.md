@@ -2,10 +2,11 @@ Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README
 => les instructions d'installation sont disponibles dans le "README" dossier "Serveur" si vous ne souhaitez pas utiliser de VM
 
 
-infos;
-- hashage Bcrypt :
-    => MDP : 12 passes
-    => token : 8 passes
+Infos :
+- Si vous créez une nouvelle page Web, merci d'ajouter votre page dans la table "web_pages_access" située dans la BD sae_51 en première partie du doc (Serveur/Configuration/PostgreSQL.sql)
+    => Sinon TokenCheck va automatiquement vous renvoyer vers "login.html"
+
+
 
 #Projet
 à faire (liste non exhaustive) :
@@ -60,11 +61,20 @@ abandon :
 
 
 Organisation du projet :
-- Documentation : schémas / CDC / présentations
-- Serveur : informations + configurations de la VM
-    => README utilisation (et configuration du backend si pas de VM)
-- NetBEANS : backend du projet en Java (servlets, serveurs TCP, ...) + librairies (/NetBEANS/lib)
-- Web : HTML + CSS + JS du projet
+- Documentation : 
+    => Documentation : schémas / CDC / présentations
+- Serveur :
+    => Serveur/README : document utilisation (et configuration du backend si pas de VM)
+    => Serveur/Configuration : fichiers de config des serveurs + script de la BD PostgreSQL
+- NetBEANS : 
+    => NetBEANS/SAE51 : backend du projet en Java (servlets, serveurs TCP, ...)
+    => NetBEANS/lib : librairies du projet Java (non inclus dans NetBeans par défaut)
+- Web :
+    => Web : HTML
+    => Web/JS : scripts JS (scripts présents sur plusieurs pages)
+    => Web /images : logos, icones...
+    => Web /template : page Web par défault (celle à utiliser (copier-coller) quand tu crée une nouvelle page web)
+
 
 
 #heures (point michaël) :
