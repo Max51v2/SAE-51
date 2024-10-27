@@ -17,6 +17,8 @@ document.addEventListener("TomcatTestFinished", function() {
         TokenCheck();
     } 
     else {
+        console.log("TokenCheck => Info : l'authentification et la redirection sont désactivés")
+        
         //Si Tomcat est down et que l'on édit pas en local on renvoi l'utilisateur vers la page de login
         if(window.localEditing === false){
             //Redirection vers la page de login
