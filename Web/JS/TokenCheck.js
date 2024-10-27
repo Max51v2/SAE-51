@@ -5,33 +5,74 @@
 //Warning : URL.js doit être démarré avant TokenCheck.js (fait dans le template)
 
 
-//Vérification du token
+//Variables
 let token = sessionStorage.getItem('token');
+let TomcatTestedOnce = sessionStorage.getItem("TomcatTestedOnce");
+let TomcatOK = sessionStorage.getItem("TomcatOK");
+
+
+//Vérification du fonctionnement de tomcat
+TomcatTest();
+
+async function TomcatTest(){
+    //Si l'accès à tomcat a déjà été testé
+    if(TomcatTestedOnce){
+        //Si le test de tomcat a réussi on vérifie le token
+        if(TomcatOK === "true"){
+            TokenCheck();
+        }
+        else{
+            console.log("TokenCheck => Info : l'authentification et la redirection sont désactivés")
+
+            //Si Tomcat est down et que l'on édit pas en local on renvoi l'utilisateur vers la page de login
+            if(window.localEditing === false){
+                //Redirection vers la page de login
+                goToLogin();
+            }
+        }
+    }
+    else{
+        //Pause d'une seconde afin de laisser le temps à URL.js de timeout la requête
+        await pause(1000);
+
+        //Raffraîchissement de la page
+        location.reload();
+    }
+}
+
+
+//Pause
+function pause(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 //Vérification de l'existance du token dans sessionStorage
-if (token) {
-    if(token === ""){
+function TokenCheck(){
+    if (token) {
+        if(token === ""){
+            //Redireciton vers login.html afin de se reconnecter
+            goToLogin();
+        }
+        else{
+            console.log("TokenCheck => token : "+token);
+    
+            //Vérification du token auprès du Servlet
+            fetch(`https://${ServerIP}:8443/SAE51/CheckToken`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: token, Test: false })
+            })
+            .then(response => response.json())
+            .then(CheckTokenResult);
+        }
+    } 
+    else {
+        console.log("TokenCheck => erreur : token inexistant");
+    
         //Redireciton vers login.html afin de se reconnecter
         goToLogin();
     }
-    else{
-        console.log("TokenCheck => token : "+token);
-
-        //Vérification du token auprès du Servlet
-        fetch(`https://${ServerIP}:8443/SAE51/CheckToken`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token: token, Test: false })
-        })
-        .then(response => response.json())
-        .then(CheckTokenResult);
-    }
-} 
-else {
-    console.log("TokenCheck => erreur : token inexistant");
-
-    //Redireciton vers login.html afin de se reconnecter
-    goToLogin();
 }
 
 
