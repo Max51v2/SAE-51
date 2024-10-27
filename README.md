@@ -19,10 +19,10 @@ Frontend :
   
 - Backend
   => tests Servlets + DAO users
-  => ajout / suppression de pc
+  => ajout + suppression de pc + liste des pc
   => gestion des droits utilisateur par ordinateur
-  => récuppération info de suivi machines (récupération en deux parties : statique (1 fois) et dynamique (en continu + mise en buffer))
-      => le servlet viendra recup les infos plus le temps depuis la dernière act
+  => récuppération info de suivi machines en continu > lancé avec OnStart (récupération en deux parties : statique (1 fois) et dynamique (en continu + mise en buffer))
+  => le servlet viendra recup les infos  de la classe précédente et donnera le temps depuis la dernière act
   => suivi des métriques renvoyées + log et notif mail si pb détecté
   
 - Client :
