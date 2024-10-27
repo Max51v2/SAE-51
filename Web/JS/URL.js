@@ -38,17 +38,20 @@ async function TomcatTest() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({})
         })
+        .then(response => response.json())
         .then(TestTomcatResult)
         .catch(error => {
-            console.log("URL => erreur => Le serveur Tomcat ne répond pas");
-
+            console.log("URL => Erreur => Le serveur Tomcat ne répond pas");
             sessionStorage.setItem("TomcatOK", "false");
-            sessionStorage.setItem("TomcatTestedOnce", "true");
         });
     } catch (error) {
         //Rien
+    } finally {
+        //Déclenche un événement personnalisé pour notifier que le test est terminé
+        document.dispatchEvent(new Event("TomcatTestFinished"));
     }
 }
+
 
 
 
@@ -56,8 +59,7 @@ async function TomcatTest() {
 //Vérification du résultat fourni par le servlet
 function TestTomcatResult(response){
     if(response.erreur === "none"){
-        console.log("URL => info => Tomcat OK")
+        console.log("URL => Info => Tomcat OK")
         sessionStorage.setItem("TomcatOK", "true");
-        sessionStorage.setItem("TomcatTestedOnce", "true");
     }
 }

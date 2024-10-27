@@ -89,7 +89,7 @@ fi
 
 
 #Demande de lancement NetBEANS s'il n'est pas en train de tourner
-ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/openjdk-22.0.2" | head -n 1`
+ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/"$Java_version | head -n 1`
 
 #Démarrage NetBEANS
 if [ "$ProcNetBEANS" = "" ]

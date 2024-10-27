@@ -5,18 +5,32 @@
 //Warning : URL.js doit être démarré avant TokenCheck.js (fait dans le template)
 
 
-//Variables
+//Token
 let token = sessionStorage.getItem('token');
-let TomcatTestedOnce = sessionStorage.getItem("TomcatTestedOnce");
-let TomcatOK = sessionStorage.getItem("TomcatOK");
 
+// Attend que le test de Tomcat soit terminé
+document.addEventListener("TomcatTestFinished", function() {
+    let TomcatOK = sessionStorage.getItem("TomcatOK");
 
-//Vérification du fonctionnement de tomcat
-TomcatTest();
+    //Si le serveur Tomcat est actif alors on vérifie le token
+    if (TomcatOK === "true") {
+        TokenCheck();
+    } 
+    else {
+        //Si Tomcat est down et que l'on édit pas en local on renvoi l'utilisateur vers la page de login
+        if(window.localEditing === false){
+            //Redirection vers la page de login
+            goToLogin();
+        }
+        else{
+            //Rien
+        }
+    }
+});
 
 async function TomcatTest(){
     //Si l'accès à tomcat a déjà été testé
-    if(TomcatTestedOnce){
+    if(TomcatTestedOnce != null){
         //Si le test de tomcat a réussi on vérifie le token
         if(TomcatOK === "true"){
             TokenCheck();
@@ -34,6 +48,8 @@ async function TomcatTest(){
     else{
         //Pause d'une seconde afin de laisser le temps à URL.js de timeout la requête
         await pause(1000);
+
+        console.log("TokenCheck => Info : reload()")
 
         //Raffraîchissement de la page
         location.reload();
@@ -78,9 +94,6 @@ function TokenCheck(){
 
 //Vérification du résultat fourni par le servlet CheckToken
 function CheckTokenResult(response) {
-    console.log("TokenCheck => CheckTokenResult => resultat req :");
-    console.log(response);
-
     //Vérification d'erreur
     if(response.erreur === "none"){
         //Stockage du login et des droits (uniquement à titre indicatif car les servlets revérifient !)
@@ -108,9 +121,6 @@ function CheckTokenResult(response) {
 
 //Vérification du résultat du Sevlet GetRedirection
 function GetRedirectionResult(response){
-    console.log("TokenCheck => GetRedirectionResult => resultat req :");
-    console.log(response);
-
     //Vérification d'erreur
     if(response.erreur === "none"){
         console.log("tokenCheck => GetRedirectionResult => redirection : "+response.redirect);

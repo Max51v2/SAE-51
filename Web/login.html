@@ -177,7 +177,7 @@
             }
             else{
                 //On affiche l'erreur
-                console.log("login => CheckPasswordResult => erreur : "+response.erreur);
+                console.log("login => CheckPasswordResult => Erreur : "+response.erreur);
             }
         }
 
@@ -194,7 +194,7 @@
             }
             else{
                 //On affiche l'erreur
-                console.log("login => GetRedirectionResult => erreur : "+response.erreur);
+                console.log("login => GetRedirectionResult => Erreur : "+response.erreur);
 
                 //Redirection vers le login s'il n'y pas de règle de redirection dans la BD
                 if(response.erreur === "Pas de redirection (BD)"){
