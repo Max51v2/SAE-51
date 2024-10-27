@@ -12,6 +12,6 @@ Une template qui contient les fonctionnalités de base est dispo ici : Web/templ
 
 
 !!! Développement Web !!!
-Affin d'éviter de devoir lancer Start.sh à chaque modif, ouvrez la page HTML depuis le projet (double clique sur la page > afficher)
+Afin d'éviter de devoir lancer Start.sh à chaque modif, ouvrez la page HTML depuis le projet (double clique sur la page > afficher)
 => j'ai modifié les scripts URL.js et TokenCheck.js afin de permettre la modif en local avec ou sans serveur tomcat
 ==> Si vous développez sur la machine qui contient le serveur Tomcat (VM ou installation manuelle), tout devrait marcher sans soucis sinon vous n'aurez pas accès aux servlets

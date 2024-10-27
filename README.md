@@ -78,6 +78,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 30h
+- maxime : 31h
 - erwann :
 - gabin :

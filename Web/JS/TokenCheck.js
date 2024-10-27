@@ -28,39 +28,6 @@ document.addEventListener("TomcatTestFinished", function() {
     }
 });
 
-async function TomcatTest(){
-    //Si l'accès à tomcat a déjà été testé
-    if(TomcatTestedOnce != null){
-        //Si le test de tomcat a réussi on vérifie le token
-        if(TomcatOK === "true"){
-            TokenCheck();
-        }
-        else{
-            console.log("TokenCheck => Info : l'authentification et la redirection sont désactivés")
-
-            //Si Tomcat est down et que l'on édit pas en local on renvoi l'utilisateur vers la page de login
-            if(window.localEditing === false){
-                //Redirection vers la page de login
-                goToLogin();
-            }
-        }
-    }
-    else{
-        //Pause d'une seconde afin de laisser le temps à URL.js de timeout la requête
-        await pause(1000);
-
-        console.log("TokenCheck => Info : reload()")
-
-        //Raffraîchissement de la page
-        location.reload();
-    }
-}
-
-
-//Pause
-function pause(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 
 //Vérification de l'existance du token dans sessionStorage
