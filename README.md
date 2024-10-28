@@ -1,5 +1,4 @@
-Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README.txt" dans le dossier "Serveur"
-=> les instructions d'installation sont disponibles dans le "README" dossier "Serveur" si vous ne souhaitez pas utiliser de VM
+Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README.txt" dans le dossier "Serveur"=> les instructions d'installation sont disponibles dans le "README" dossier "Serveur" si vous ne souhaitez pas utiliser de VM
 
 
 Infos :
@@ -87,6 +86,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 31h
+- maxime : 37h
 - erwann :
 - gabin :
