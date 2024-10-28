@@ -91,6 +91,10 @@ Organisation du projet :
 
 
 #heures (point michaël) :
+<<<<<<< HEAD
 - maxime : 37h
+=======
+- maxime : 38h
+>>>>>>> 78940e8 (.)
 - erwann :
 - gabin :
