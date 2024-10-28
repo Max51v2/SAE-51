@@ -24,12 +24,13 @@ Frontend :
   => récuppération info de suivi machines en continu > lancé avec OnStart (récupération en deux parties : statique (1 fois) et dynamique (en continu + mise en buffer))
   => le servlet viendra recup les infos  de la classe précédente et donnera le temps depuis la dernière act
   => suivi des métriques renvoyées + log et notif mail si pb détecté
+  => client TCP chiffré
   
 - Client :
   => script Pshell lancé au démarrage
   => recupération des infos (voir CDC) en Java ou Pshell (ref ici si Pshell https://github.com/Max51v2/InfSys/tree/main/InfSys_CLI)
   => gestion de l'extinction/redémarrage de la machine par le biais de l'int Web (Web => servlet => client TCP côté serveur => Serveur TCP côté client)
-  => client/serveur TCP chiffré
+  => serveur TCP chiffré
   
 - BD (schémas voir script sql (dossier Serveur/Configuration))
 
@@ -46,9 +47,14 @@ fait :
     => Ajout + retrait + liste utilisateur(s)
     => suppression token
     => Gestion des permissions par page (+redirection)
+    => Serveur TCP non chiffré
+    => Enregistrement PC
 - Frontend :
     => page de login
     => template de page Web
+-Client
+    => Client TCP non chiffré
+    => recup ID+IP et envoi au serv
 
 
 
@@ -63,6 +69,9 @@ abandon :
 Organisation du projet :
 - Documentation : 
     => Documentation : schémas / CDC / présentations
+- Client ;
+    => Client.ps1 : script qui lance le projet java
+    => SAE51_Client : projet Java qui récuppère les données sur la machine / Serveurs TCP : découverte et envoi des informations
 - Serveur :
     => Serveur/README : document utilisation (et configuration du backend si pas de VM)
     => Serveur/Configuration : fichiers de config des serveurs + script de la BD PostgreSQL

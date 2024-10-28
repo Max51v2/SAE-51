@@ -1,2 +1,0 @@
-Autre.TokenExpiration=org.springframework.stereotype.Component
-Servlets.CheckPassword=javax.servlet.annotation.WebServlet

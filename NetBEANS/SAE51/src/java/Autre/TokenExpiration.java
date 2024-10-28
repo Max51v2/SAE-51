@@ -60,8 +60,8 @@ public class TokenExpiration implements Runnable {
         Gson gsonRequest = new Gson();
         
         //Conversion des données du JSON dans une liste d'objets Java
-        java.lang.reflect.Type userListType = new TypeToken<List<Autre.GetJSONInfo>>() {}.getType();
-        List<Autre.GetJSONInfo> users = gsonRequest.fromJson(JSON, userListType);
+        java.lang.reflect.Type userListType = new TypeToken<List<JSON.GetJSONInfoUsers>>() {}.getType();
+        List<JSON.GetJSONInfoUsers> users = gsonRequest.fromJson(JSON, userListType);
         
         //Taille de la liste
         if(users.isEmpty()){
@@ -77,7 +77,7 @@ public class TokenExpiration implements Runnable {
         Integer lifeCycle;
         
         //Pour tous les utilisateurs de la liste
-        for (Autre.GetJSONInfo user : users) {
+        for (JSON.GetJSONInfoUsers user : users) {
             //Récuppération du nombre d'itérations avant suppresion du token
             login = user.getLogin();
             lifeCycle = DAO.getTokenLifeCycle(login, false);

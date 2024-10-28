@@ -48,7 +48,7 @@ public class GetRedirection extends HttpServlet {
         Gson gsonRequest = new Gson();
         
         // Convertion des données du JSON dans un objet Java
-        Autre.GetJSONInfo user = gsonRequest.fromJson(reader, Autre.GetJSONInfo.class);
+        JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfoUsers.class);
         
         //Données
         String token = user.getToken();

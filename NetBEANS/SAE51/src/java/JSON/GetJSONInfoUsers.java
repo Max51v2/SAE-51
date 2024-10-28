@@ -1,11 +1,10 @@
-
-package Autre;
+package JSON;
 
 /**
  * Permet de récupérer les informations contenues dans un JSON (exemple utilisation : voir req POST servlet / TokenExpiration)
  * @author Maxime VALLET
  */
-public class GetJSONInfo{
+public class GetJSONInfoUsers{
         private String login;
         private String nom;
         private String prenom;
@@ -14,8 +13,10 @@ public class GetJSONInfo{
         private String password;
         private String currentPage;
         private String Test;
+        private String id;
+        private String IP;
         
-        public GetJSONInfo(String login, String nom, String prenom, String droits, String token, String password, String currentPage, String Test){
+        public GetJSONInfoUsers(String login, String nom, String prenom, String droits, String token, String password, String currentPage, String Test, String IP, String id){
             this.login=login;
             this.nom=nom;
             this.prenom=prenom;
@@ -24,6 +25,8 @@ public class GetJSONInfo{
             this.password=password;
             this.currentPage=currentPage;
             this.Test = Test;
+            this.IP = IP;
+            this.id = id;
         }
 
         public String getLogin() {
@@ -90,5 +93,19 @@ public class GetJSONInfo{
             this.Test = Test;
         }
         
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
         
+        public String getIP() {
+            return IP;
+        }
+
+        public void setIP(String IP) {
+            this.IP = IP;
+        }
     }

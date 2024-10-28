@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Autre;
+package JSON;
 
+import JSON.GetJSONInfoUsers;
 import java.util.List;
 
 /**
@@ -11,13 +12,13 @@ import java.util.List;
  * @author Maxime VALLET
  */
 public class UsersArray {
-    private List<GetJSONInfo> users;
+    private List<GetJSONInfoUsers> users;
 
-    public List<GetJSONInfo> UsersArray() {
+    public List<GetJSONInfoUsers> UsersArray() {
         return users;
     }
 
-    public void setUsers(List<GetJSONInfo> users) {
+    public void setUsers(List<GetJSONInfoUsers> users) {
         this.users = users;
     }
 }

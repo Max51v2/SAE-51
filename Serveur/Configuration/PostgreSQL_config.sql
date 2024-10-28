@@ -77,6 +77,14 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('accueil.html', 'U
 
 
 
+--Table contenant les pc à monitorer
+CREATE TABLE pc (
+    id text PRIMARY KEY,
+    ip text
+);
+
+
+
 --######################## BD test ########################
 DROP DATABASE test;
 

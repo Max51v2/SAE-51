@@ -39,6 +39,7 @@ sudo rm -rf $NginxRep*
 
 #Création répertoire Javadoc
 sudo mkdir -p /var/www/sae-51/Javadoc
+sudo mkdir -p /var/www/sae-51/JavadocClient
 
 #Création répertoire Netbeans (librairies)
 sudo mkdir -p /Netbeans
