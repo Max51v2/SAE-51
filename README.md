@@ -1,13 +1,9 @@
-<<<<<<< HEAD
-Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README.txt" dans le dossier "Serveur"=> les instructions d'installation sont disponibles dans le "README" dossier "Serveur" si vous ne souhaitez pas utiliser de VM
-=======
 Auteur : Maxime VALLET
 Version : 2.0
 
 
 Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README.txt" dans le dossier "Serveur"
 => les instructions d'installation sont disponibles dans le "README" dossier "Serveur" si vous ne souhaitez pas utiliser de VM
->>>>>>> c7eeecb (Documentation + templates)
 
 
 
@@ -91,10 +87,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-<<<<<<< HEAD
-- maxime : 37h
-=======
 - maxime : 38h
->>>>>>> 78940e8 (.)
 - erwann :
 - gabin :
