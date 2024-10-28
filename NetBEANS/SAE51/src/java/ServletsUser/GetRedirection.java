@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
+ * @version 1.0
  */
 @WebServlet(name = "GetRedirection", urlPatterns = {"/GetRedirection"})
 public class GetRedirection extends HttpServlet {

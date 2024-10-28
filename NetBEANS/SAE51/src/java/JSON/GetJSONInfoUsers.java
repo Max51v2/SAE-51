@@ -2,7 +2,9 @@ package JSON;
 
 /**
  * Permet de récupérer les informations contenues dans un JSON (exemple utilisation : voir req POST servlet / TokenExpiration)
+ * 
  * @author Maxime VALLET
+ * @version 1.0
  */
 public class GetJSONInfoUsers{
         private String login;

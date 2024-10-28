@@ -7,8 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *
+ * Classe contenant toutes les intéractions avec la BD partie PC
+ * 
  * @author Maxime VALLET
+ * @version 0.2
  */
 public class DAOPC {
     private static final String UserPostgres="postgres";

@@ -1,5 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 1.0
+//Version : 1.5
 
 
 //Warning : URL.js doit être démarré avant TokenCheck.js (fait dans le template)

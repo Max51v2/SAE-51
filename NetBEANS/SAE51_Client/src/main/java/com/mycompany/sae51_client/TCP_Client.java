@@ -9,6 +9,7 @@ import java.net.Socket;
 /**
  *
  * @author Maxime VALLET
+ * @version 1.0
  */
 public class TCP_Client {
     private String IP;

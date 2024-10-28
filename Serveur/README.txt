@@ -1,5 +1,8 @@
 Auteur original : Maxime VALLET (SAE 52)
 Modifications : Maxime VALLET
+    => Remplacement Ubuntu par Debian
+    => Installation des programmes sans snapd
+    => Remplacement Apache par Nginx
 Version : 1.2
 
 
@@ -12,10 +15,12 @@ Version : 1.2
 |    |   login : sae-51
 |    |   MDP : leffe
 |    |
-|    |   *Demarrer les daemons + actualiser BD + Web
+|    |   Une fois connecté sur la VM, merci de suivre le README sur le Burea
+|    |
+|    |   *Démarrer les daemons + actualiser BD + Web
 |    |   /home/$USER/Bureau/SAE-51/Serveur/Start.sh
 |    |
-|    |   *Le copier-coller est suporté entre la VM et l'hôte et vise-versa
+|    |   *Le copier-coller est supporté entre la VM et l'hôte et vise-versa
 |    |
 |    +---------------------------------------------------------
 |
@@ -31,10 +36,8 @@ Version : 1.2
 |    |
 |    |   *NetBEANS est lancé par Start.sh sur demande
 |    |
-|    |   *commande
+|    |   *Commande
 |    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
-|    |   
-|    |   *Au lancement du projet, si la fenêtre requesting keyreing apparait mais que NetBEANS ne demande pas de MDP, il faut redémarrer NetBEANS
 |    |
 |    |   *MDP projet : "leffe"
 |    |
@@ -42,7 +45,7 @@ Version : 1.2
 |    |   login : "admin"
 |    |   MDP : "leffe"
 |    |
-|    |   *Importer des librairies au projet
+|    |   *Importer des librairies au projet (marche uniquement pour un projet Web Ant et pas le projet du client)
 |    |   => aller sur "https://mvnrepository.com/" et chercher la librairie => version dans le projet => files => view all => dl la jar => la mettre dans /NetBEANS/lib
 |    |   ==> File > projet properties > libraries > add library
 |    |
@@ -55,6 +58,9 @@ Version : 1.2
 |    |
 |    |   *Aide commandes 
 |    |   \?
+|    |
+|    |   *Tutos JDBC
+|    |   https://www.javaguides.net/p/jdbc-tutorial.html
 |    |
 |    |   *Script reconstruction BD
 |    |   ./Start.sh a une option pour reconstruire la base à partir du script "PostgreSQL_config.sql"
@@ -74,7 +80,7 @@ Version : 1.2
 |
 |    +-------------------CONCLUSION A LIRE--------------------- 
 |    |
-|    |   Pour lancer les daemons, actualiser les fichiers Web et reconstruire la DB, lancez Start.sh (cf. section VM > Général)
+|    |   Pour lancer les daemons, actualiser les fichiers Web, reconstruire la DB et démarrer NetBeans lancez Start.sh (cf. section VM > Général)
 |    |   => les identifiants et MDP pour NetBEANS sont dispo dans VM > NetNEANS
 |    |
 |    |   Se connecter à GitHub dans VSCode :
@@ -95,7 +101,7 @@ Version : 1.2
 |    |
 |    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
 |    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
-|    |   => Web et Serveur > VSCode | Servlets (dossier NetBEANS) > NetBEANS
+|    |   => Web et Serveur => VSCode | Servlets et Client => NetBEANS
 |    |   => Il n'y a besoin du terminal que pour lancer Start.sh
 |    |
 |    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM) :

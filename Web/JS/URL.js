@@ -1,5 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 1.0
+//Version : 1.5
 
 
 //Refresh la page quand on reviens en arrière sinon le script ne tourne pas

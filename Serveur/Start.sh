@@ -1,6 +1,8 @@
 #!/bin/bash
 # Auteur original : Maxime VALLET (SAE 52)
 # Modifications : Maxime VALLET
+#    => Remplacement Apache par Nginx
+#    => Dossier lib qui contient les librairies (afin d'avoir un chemin commun dans ou en dehors de la VM)
 # Version : 1.0
 
 

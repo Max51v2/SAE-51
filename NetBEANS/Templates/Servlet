@@ -1,39 +1,35 @@
-package ServletsUser;
+Auteur : Maxime VALLET
+Version : 1.0
 
-import DAO.DAOusers;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+Ce qui est entre crochets est à modifier ou retirer selon la situation
+
+
+package [?];
+
+[imports]
 
 /**
  *
- * @author Maxime VALLET
- * @version 1.0
+ * @author [?]
+ * @version [?]
  */
-@WebServlet(name = "ListUsers", urlPatterns = {"/ListUsers"})
-public class ListUsers extends HttpServlet {
+@WebServlet(name = "[nomServlet]", urlPatterns = {"/[nomServlet]"}) // ATTENTION, RENOMMER LE SERVLET (refactor > rename) NE CHANGE PAS LE CONTENU DE CETTE LIGNE (donc il sera non joignable)
+public class [nomServlet] extends HttpServlet {
 
     /**
-     * Liste les utilisateurs dans la BD<br><br>
+     * [description]<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
-     * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
+     * String [?]       &emsp;&emsp;        [description] <br>
+     *                              ...
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : pas de token (req) | accès refusé <br>
-     * OU <br>
-     * String login       &emsp;&emsp;        login de l'utilisateur <br>
-     * String prenom       &emsp;&emsp;        prenom de l'utilisateur <br>
-     * String nom       &emsp;&emsp;        nom de l'utilisateur <br>
-     * String droits       &emsp;&emsp;        droits de l'utilisateur <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : [err1] | ... | accès refusé | champ(s) manquant (req) | none <br>
+                                ...
+     * String [?]       &emsp;&emsp;        [description] <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -45,32 +41,38 @@ public class ListUsers extends HttpServlet {
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
-        DAOusers DAO = new DAOusers();
+        DAO[?] DAO = new DAO[?]();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
         Gson gsonRequest = new Gson();
         
         // Convertion des données du JSON dans un objet Java
-        JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfoUsers.class);
+        JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfo[?].class);
         
-        //Données
-        String token = user.getToken();
+        //Données envoyées par la requête
+        String [?] = user.get[?]();
+                    ...
+        String [?] = user.get[?]();
         Boolean TestBoolean = Boolean.valueOf(user.getTest());
+
+        //Données
         String rights = "Aucun";
         String jsonString = "";
         
         //Vérification du contenu envoyé
-        if(token.equals("")){
-            jsonString = "{\"erreur\":\"pas de token (req)\"}";
+        if([?].equals("") | ... | [?].equals("")){
+            jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
             //Récuppération des droits de l'utilisateur
             rights = DAO.getUserRightsFromToken(token, TestBoolean);
             
-            if(rights.equals("Admin")){
-                //Récuppération des utilisateurs
-                jsonString = DAO.getUsers(TestBoolean);
+            //Vérification des droits de l'utilisateur
+            if(rights.equals("?") | ... | rights.equals("?")){
+
+                //Code ici
+
             }
             else{
                 jsonString = "{\"erreur\":\"accès refusé\"}";
@@ -83,6 +85,8 @@ public class ListUsers extends HttpServlet {
             out.flush();
         }
     }
+
+    //Ignorer ce qu'il y'a en dessous (rajouté par l'IDE)
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

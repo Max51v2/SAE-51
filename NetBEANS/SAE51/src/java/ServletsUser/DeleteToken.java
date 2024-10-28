@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author root
+ * @version 1.0
  */
 @WebServlet(name = "DeleteToken", urlPatterns = {"/DeleteToken"})
 public class DeleteToken extends HttpServlet {

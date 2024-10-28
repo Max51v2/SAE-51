@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 
 /**
  * Gère la vérification et la suppression des tokens expirés (démarré par OnStart)
+ * 
  * @author Maxime VALLET
+ * @version 1.0
  */
 public class TokenExpiration implements Runnable {
     private Thread thread;

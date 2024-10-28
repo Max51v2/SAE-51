@@ -17,6 +17,7 @@ import org.apache.commons.lang3.RandomStringUtils;
  * Info : le fichier contenant l'id est dans le gitingore (donc unique à la machine)
  * 
  * @author Maxime VALLET
+ * @version 1.0
  */
 public class PCInfo {
     String pathSizeFromProject = "NetBEANS/SAE51_Client";

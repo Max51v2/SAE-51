@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
+ * @version 1.0
  */
 @WebServlet(name = "CheckToken", urlPatterns = {"/CheckToken"})
 public class CheckToken extends HttpServlet {

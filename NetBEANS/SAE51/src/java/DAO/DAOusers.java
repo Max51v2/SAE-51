@@ -8,8 +8,12 @@ import java.sql.PreparedStatement;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
- *
+ * Classe contenant toutes les intéractions avec la BD partie utilisateur
+ * 
+ * Originaires de la SAE-52 (dev par Maxime VALLET) : getUserRightsFromLogin / getUsers
+ * 
  * @author Maxime VALLET
+ * @version 0.9
  */
 public class DAOusers {
     private static final String UserPostgres="postgres";

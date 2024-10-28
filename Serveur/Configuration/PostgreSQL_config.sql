@@ -1,9 +1,9 @@
 --Auteur original : Maxime VALLET (SAE 52)
 --Modifications : Maxime VALLET
---Version : 0.3
+--  => modification table users : expiration des tokens
+--  => Ajout tables : web_pages_access / pc / notifications
+--Version : 0.6
 
--- à modifier
--- type hash
 
 --####################### BD sae_51 #######################
 
@@ -84,6 +84,15 @@ CREATE TABLE pc (
 );
 
 
+--Table contenant les notifications de problèmes
+-- id : identifiant du pc (table pc)
+CREATE TABLE notifications (
+    id text PRIMARY KEY,
+    problem text,
+    date DATE DEFAULT CURRENT_DATE
+);
+
+
 
 --######################## BD test ########################
 DROP DATABASE test;
@@ -106,6 +115,23 @@ CREATE TABLE users (
     token text,
     tokenlifecycle integer
 );
+
+
+--Table contenant les pc à monitorer
+CREATE TABLE pc (
+    id text PRIMARY KEY,
+    ip text
+);
+
+
+--Table contenant les notifications de problèmes
+-- id : identifiant du pc (table pc)
+CREATE TABLE notifications (
+    id text PRIMARY KEY,
+    problem text,
+    date DATE DEFAULT CURRENT_DATE
+);
+
 
 -- fin contenu de la BD sae_51
 

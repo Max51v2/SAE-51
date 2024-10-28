@@ -6,6 +6,7 @@ import javax.servlet.ServletContextListener;
 /**
  * Démarre la classe qui vérifie l'expiration des tokens
  * @author Maxime VALLET
+ * @version 0.6
  */
 public class OnStart implements ServletContextListener {
   TokenExpiration run = new TokenExpiration();

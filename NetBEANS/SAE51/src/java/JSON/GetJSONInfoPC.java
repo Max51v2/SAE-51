@@ -2,7 +2,9 @@ package JSON;
 
 /**
  * Permet de récupérer les informations contenues dans un JSON contenant les infos d'un pc (exemple utilisation : voir req POST servlet / TokenExpiration)
+ * 
  * @author Maxime VALLET
+ * @version 0.1
  */
 public class GetJSONInfoPC{
         private String Test;

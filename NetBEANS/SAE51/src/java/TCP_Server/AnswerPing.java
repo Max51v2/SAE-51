@@ -13,6 +13,10 @@ import java.util.logging.Logger;
 
 /**
  * Classe AnswerPing qui lance un serveur TCP permettant la vérification des connexions client
+ * Enregistre les pc qui la contactent
+ * 
+ * @author Maxime VALLET
+ * @version 1.0
  */
 public class AnswerPing implements Runnable {
     private Thread thread;

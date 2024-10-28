@@ -4,7 +4,8 @@ import java.io.IOException;
 
 /**
  *
- * @author Maxime VALLET
+ * @author Maxime VALLET, Erwann MADEC
+ * @version 0.2
  */
 public class Main {
 

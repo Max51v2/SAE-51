@@ -17,6 +17,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  *
  * @author Maxime VALLET
+ * @version 1.0
  */
 @WebServlet(name = "CheckPassword", urlPatterns = {"/CheckPassword"})
 public class CheckPassword extends HttpServlet {
