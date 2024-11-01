@@ -16,12 +16,16 @@ import java.util.logging.Logger;
 public class TokenExpiration implements Runnable {
     private Thread thread;
     private volatile boolean running = true;
-    private final Integer cycleDuration = 10000;
+    private Integer cycleDuration = 10000; //par défaut
     private Integer userCycleDuration;
     private Integer ListSize;
     
+    
     //Démarre la vérification des tokens expirés
-    public void start() {
+    public void start(Integer CheckIntervall) {
+        //Changement de la valeur de temps entre chaque verif des tokens
+        this.cycleDuration = CheckIntervall;
+        
         // Crée un nouveau thread seulement si aucun thread n'est déjà actif
         thread = new Thread(this);
         thread.setDaemon(true);

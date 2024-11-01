@@ -69,6 +69,7 @@ public class AnswerPing implements Runnable {
             serverSocket = new ServerSocket(port);
             String id;
             String IP;
+            String Test;
             Boolean TestBoolean;
 
             // Tant que le serveur est en cours d'exécution
@@ -93,7 +94,7 @@ public class AnswerPing implements Runnable {
                     TestBoolean = Boolean.valueOf(ping.getTest());
                     
                     //Vérirication de la présence du pc dans la BD
-                    Boolean idExist = DAO.doIDExist(message, TestBoolean);
+                    Boolean idExist = DAO.doIDExist(id, TestBoolean);
                     
                     //Enregistrement du pc s'il n'existe pas dans la BD
                     if(idExist == true){

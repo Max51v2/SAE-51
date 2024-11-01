@@ -5,19 +5,24 @@ import javax.servlet.ServletContextListener;
 
 /**
  * Démarre la classe qui vérifie l'expiration des tokens
+ * 
  * @author Maxime VALLET
- * @version 0.6
+ * @version 0.7
  */
 public class OnStart implements ServletContextListener {
   TokenExpiration run = new TokenExpiration();
   AnswerPing run2 = new AnswerPing();
+  ProjectConfig conf = new ProjectConfig();
   
   @Override
   public void contextInitialized(ServletContextEvent sce) {
+        //Récupération des données dans le fichier de conf
+        Integer CheckIntervall = conf.getIntValue("CheckIntervall");
+        
         System.out.println("##########################################");
         
         //lancement de la vérification des tokens
-        run.start();
+        run.start(CheckIntervall);
         System.out.println("Vérification des tokens expirés lancée");
         
         //lancement du serveur de réponse au ping du client

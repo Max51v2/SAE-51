@@ -30,11 +30,11 @@ public class PCInfo {
         //Taille de la chaîne contenant le chemain
         Integer pathSize = projectPath.length();
         
-        //Taille de la chaîne contenant le chemin en partant de la racine du peojet
+        //Taille de la chaîne contenant le chemin en partant de la racine du projet
         Integer pathSizeFromProject = this.pathSizeFromProject.length();
         
         //Chemin du fichier contenant l'id
-        String IDPathString = projectPath.substring(0, pathSize - pathSizeFromProject) + "Client/u.id";
+        String IDPathString = projectPath.substring(0, pathSize - pathSizeFromProject) + "Client//u.id";
         Path IDPath = Paths.get(IDPathString);
         
         // Vérifie si le fichier existe

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author root
+ * @author Maxime VALLET
  * @version 1.0
  */
 @WebServlet(name = "DeleteToken", urlPatterns = {"/DeleteToken"})
@@ -59,36 +59,43 @@ public class DeleteToken extends HttpServlet {
         String jsonString = "";
         
         //Vérification du contenu envoyé
-        if(login.equals("") | token.equals("")){
-            jsonString = "{\"erreur\":\"pas de login (req)\"}";
+        if(login == null | token == null){
+            jsonString = "{\"erreur\":\"pas de login ou token (req)\"}";
         }
         else{
-            //Récuppération des droits de l'utilisateur
-            rights = DAO.getUserRightsFromToken(token, TestBoolean);
-            
-            if(!rights.equals("Aucun")){
-                //Vérification de l'existance du login
-                doLoginExist = DAO.doLoginExist(login, TestBoolean);
-                
-                if(doLoginExist == true){
-                    //Suppression du token
-                    DAO.deleteToken(login, TestBoolean);
-                    
-                    //Remise à 0 du lifecycle du token
-                    DAO.setLifeCycle(login, 0, TestBoolean);
-
-                    //JSON renvoyé
-                    jsonString = "{\"erreur\":\"none\"}";
-                }
-                else{
-                    jsonString = "{\"erreur\":\"login inexistant (DB)\"}";
-                }
+            //Vérification du contenu envoyé
+            if(login.equals("") | token.equals("")){
+                jsonString = "{\"erreur\":\"pas de login (req)\"}";
             }
             else{
-                //JSON renvoyé
-                jsonString = "{\"erreur\":\"accès refusé\"}";
+                //Récuppération des droits de l'utilisateur
+                rights = DAO.getUserRightsFromToken(token, TestBoolean);
+
+                if(!rights.equals("Aucun")){
+                    //Vérification de l'existance du login
+                    doLoginExist = DAO.doLoginExist(login, TestBoolean);
+
+                    if(doLoginExist == true){
+                        //Suppression du token
+                        DAO.deleteToken(login, TestBoolean);
+
+                        //Remise à 0 du lifecycle du token
+                        DAO.setLifeCycle(login, 0, TestBoolean);
+
+                        //JSON renvoyé
+                        jsonString = "{\"erreur\":\"none\"}";
+                    }
+                    else{
+                        jsonString = "{\"erreur\":\"login inexistant (DB)\"}";
+                    }
+                }
+                else{
+                    //JSON renvoyé
+                    jsonString = "{\"erreur\":\"accès refusé\"}";
+                }
             }
         }
+        
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

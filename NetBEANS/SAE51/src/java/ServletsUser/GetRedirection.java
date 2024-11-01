@@ -29,7 +29,7 @@ public class GetRedirection extends HttpServlet {
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : pas de token (req) | Pas de redirection (BD) | accès refusé <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : pas de token ou page (req) | Pas de redirection (BD) | accès refusé | none <br>
      * String redirect       &emsp;&emsp;        la page sur laquelle l'utilisateur doit être redirigé ('none' si pas de redirection !!!) <br>
      * 
      * @param request       servlet request
@@ -58,31 +58,38 @@ public class GetRedirection extends HttpServlet {
         String rights = "Aucun";
         String redirect = "";
         String jsonString = "";
-        
+       
         //Vérification du contenu envoyé
-        if(token.equals("")){
-            jsonString = "{\"erreur\":\"pas de token (req)\"}";
+        if(token == null | currentPage == null){
+            jsonString = "{\"erreur\":\"pas de token ou page (req)\"}";
         }
         else{
-            //Récuppération des droits de l'utilisateur
-            rights = DAO.getUserRightsFromToken(token, TestBoolean);
-            
-            if(!rights.equals("Aucun")){
-                //Récuppération de la redirection de l'utilisateur
-                redirect = DAO.getRedirection(rights, currentPage, TestBoolean);
-                
-                //Vérification de la présence d'une entrée de redirection (BD)
-                if(redirect.equals("No redirect")){
-                    jsonString = "{\"erreur\":\"Pas de redirection (BD)\"}";
-                }
-                else{
-                    jsonString = "{\"redirect\":\""+redirect+"\", \"erreur\":\"none\"}";
-                }
+            //Vérification du contenu envoyé
+            if(token.equals("") | currentPage.equals("")){
+                jsonString = "{\"erreur\":\"pas de token (req)\"}";
             }
             else{
-                jsonString = "{\"erreur\":\"accès refusé\"}";
+                //Récuppération des droits de l'utilisateur
+                rights = DAO.getUserRightsFromToken(token, TestBoolean);
+
+                if(!rights.equals("Aucun")){
+                    //Récuppération de la redirection de l'utilisateur
+                    redirect = DAO.getRedirection(rights, currentPage, TestBoolean);
+
+                    //Vérification de la présence d'une entrée de redirection (BD)
+                    if(redirect.equals("No redirect")){
+                        jsonString = "{\"erreur\":\"Pas de redirection (BD)\"}";
+                    }
+                    else{
+                        jsonString = "{\"redirect\":\""+redirect+"\", \"erreur\":\"none\"}";
+                    }
+                }
+                else{
+                    jsonString = "{\"erreur\":\"accès refusé\"}";
+                }
             }
         }
+        
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

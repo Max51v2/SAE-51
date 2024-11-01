@@ -35,6 +35,7 @@ fi
 GitRep="/home/"$USER"/Bureau/SAE-51/Web/"
 NginxRep="/var/www/sae-51/"
 LibRep="/home/"$USER"/Bureau/SAE-51/NetBEANS/lib/"
+ConfFile="/home/"$USER"/Bureau/SAE-51/Serveur/Configuration/sae_51.conf"
 
 #Vidage du Répertoire Nginx
 sudo rm -rf $NginxRep*
@@ -45,12 +46,14 @@ sudo mkdir -p /var/www/sae-51/JavadocClient
 
 #Création répertoire Netbeans (librairies)
 sudo mkdir -p /Netbeans
+sudo mkdir -p /Netbeans/conf
 
 
 #Copie des fichiers
 sudo cp -r $GitRep* $NginxRep
 sudo cp -r "/home/"$USER"/Bureau/SAE-51/NetBEANS/SAE51/dist/javadoc/"* $NginxRep"/Javadoc"
 sudo cp -n $LibRep* /Netbeans
+sudo cp -r $ConfFile /Netbeans/conf
 
 
 

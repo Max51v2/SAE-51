@@ -67,56 +67,67 @@ public class CheckPassword extends HttpServlet {
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
         
-        
-        //Si login ou MDP vide alors on ne fait rien
-        if(password.equals("") | login.equals("")){
-                //JSON renvoyé
-                    jsonString = "{\"erreur\":\"login ou MDP vide (req)\"}";
+        //Si login ou MDP null alors on ne fait rien
+        if(password == null | login == null){
+            //JSON renvoyé
+            jsonString = "{\"erreur\":\"login ou MDP vide (req)\"}";
+            
         }
         else{
-            try { 
-            //Récuperation du hash stocké dans la BD
-            String hashDB = DAO.getUserPasswordHash(login, TestBoolean);
-            
-            //si il n'y a pas de hash, utilisateur inexistant
-            if(hashDB.equals("")){
+            //Si login ou MDP vide alors on ne fait rien
+            if(password.equals("") | login.equals("")){
                 //JSON renvoyé
-                jsonString = "{\"erreur\":\"pas de hash (DB)\"}";
+                jsonString = "{\"erreur\":\"login ou MDP vide (req)\"}";
             }
-            
-            //l'utilisateur existe mais il faut vérifier le MDP
             else{
-                //si le hash de la DB est identique au hash envoyé 
-                Boolean isPasswordOK = BCrypt.checkpw(password, hashDB);
-                if(isPasswordOK == true){
-                    //Récupération des droits utilisateur
-                    rights = DAO.getUserRightsFromLogin(login, TestBoolean);
-                    
-                    //Génération d'une chaine de 32 caractères (token)
-                    token = RandomStringUtils.randomAlphanumeric(32);
-                    
-                    //génération du hash du token
-                    String hashedToken = BCrypt.hashpw(token, BCrypt.gensalt(8));
-                    
-                    //Enregistrement du token dans la DB
-                    DAO.setToken(hashedToken, login, 24, TestBoolean);
-                    
-                    //JSON renvoyé
-                    jsonString = "{\"droits\":\""+rights+"\", \"token\":\""+token+"\", \"login\":\""+login+"\", \"erreur\":\"none\"}";
+                try { 
+                    //Récuperation du hash stocké dans la BD
+                    String hashDB = DAO.getUserPasswordHash(login, TestBoolean);
+
+                    //si il n'y a pas de hash, utilisateur inexistant
+                    if(hashDB.equals("")){
+                        //JSON renvoyé
+                        jsonString = "{\"erreur\":\"pas de hash (DB)\"}";
+                    }
+
+                    //l'utilisateur existe mais il faut vérifier le MDP
+                    else{
+                        //si le hash de la DB est identique au hash envoyé 
+                        Boolean isPasswordOK = BCrypt.checkpw(password, hashDB);
+                        if(isPasswordOK == true){
+                            //Récupération des droits utilisateur
+                            rights = DAO.getUserRightsFromLogin(login, TestBoolean);
+
+                            //Génération d'une chaine de 32 caractères (token)
+                            if(TestBoolean == true){
+                                token = "10101010101010101010101010101010";
+                            }
+                            else{
+                                token = RandomStringUtils.randomAlphanumeric(32);
+                            }
+
+                            //génération du hash du token
+                            String hashedToken = BCrypt.hashpw(token, BCrypt.gensalt(8));
+
+                            //Enregistrement du token dans la DB
+                            DAO.setToken(hashedToken, login, 24, TestBoolean);
+
+                            //JSON renvoyé
+                            jsonString = "{\"droits\":\""+rights+"\", \"token\":\""+token+"\", \"login\":\""+login+"\", \"erreur\":\"none\"}";
+                        }
+                        else{
+                            //JSON renvoyé
+                            jsonString = "{\"erreur\":\"mauvais MDP (req)\"}";
+                        }
+                    }
+                } 
+                catch (Exception e) {
+                    e.printStackTrace();
                 }
-                else{
-                    //JSON renvoyé
-                    jsonString = "{\"erreur\":\"mauvais MDP (req)\"}";
-                }
-            }
-            
-            
-            
-            
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
+        
+        
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

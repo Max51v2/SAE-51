@@ -2,7 +2,7 @@
 --Modifications : Maxime VALLET
 --  => modification table users : expiration des tokens
 --  => Ajout tables : web_pages_access / pc / notifications
---Version : 0.6
+--Version : 0.7
 
 
 --####################### BD sae_51 #######################
@@ -115,6 +115,16 @@ CREATE TABLE users (
     token text,
     tokenlifecycle integer
 );
+
+
+--Table contenant les informations sur les droits d'accès aux pages
+CREATE TABLE web_pages_access (
+    name text,
+    droits text,
+    redirect text
+);
+
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Admin', 'accueil.html');
 
 
 --Table contenant les pc à monitorer

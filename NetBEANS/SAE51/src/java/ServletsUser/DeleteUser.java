@@ -59,31 +59,37 @@ public class DeleteUser extends HttpServlet {
         String jsonString = "";
         
         //Vérification du contenu envoyé
-        if(token.equals("") | login.equals("")){
+        if(token == null | login == null){
             jsonString = "{\"erreur\":\"pas de login ou token (req)\"}";
         }
         else{
-            //Récuppération des droits de l'utilisateur
-            rights = DAO.getUserRightsFromToken(token, TestBoolean);
-            
-            if(rights.equals("Admin")){
-                //Vérification de l'existance du login
-                doLoginExist = DAO.doLoginExist(login, TestBoolean);
-                
-                if(doLoginExist == true){
-                    //Suppression utilisateur
-                    DAO.deleteUser(login, TestBoolean);
-
-                    //JSON renvoyé
-                    jsonString = "{\"erreur\":\"none\"}";
-                }
-                else{
-                    jsonString = "{\"erreur\":\"login inexistant (DB)\"}";
-                }
+            //Vérification du contenu envoyé
+            if(token.equals("") | login.equals("")){
+                jsonString = "{\"erreur\":\"pas de login ou token (req)\"}";
             }
             else{
-                //JSON renvoyé
-                jsonString = "{\"erreur\":\"accès refusé\"}";
+                //Récuppération des droits de l'utilisateur
+                rights = DAO.getUserRightsFromToken(token, TestBoolean);
+
+                if(rights.equals("Admin")){
+                    //Vérification de l'existance du login
+                    doLoginExist = DAO.doLoginExist(login, TestBoolean);
+
+                    if(doLoginExist == true){
+                        //Suppression utilisateur
+                        DAO.deleteUser(login, TestBoolean);
+
+                        //JSON renvoyé
+                        jsonString = "{\"erreur\":\"none\"}";
+                    }
+                    else{
+                        jsonString = "{\"erreur\":\"login inexistant (DB)\"}";
+                    }
+                }
+                else{
+                    //JSON renvoyé
+                    jsonString = "{\"erreur\":\"accès refusé\"}";
+                }
             }
         }
         

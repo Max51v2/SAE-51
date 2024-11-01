@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 2.0
+Version : 2.2
 
 
 Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README.txt" dans le dossier "Serveur"
@@ -41,17 +41,20 @@ fait :
 - Backend
     => identification login + MDP / token
     => expiration des tokens après une periode d'inactivité
-    => Ajout + retrait + liste utilisateur(s)
+    => servlets et DAO utilisateurs
     => suppression token
     => Gestion des permissions par page (+redirection)
     => Serveur TCP non chiffré
     => Ajout PC
+    => Recup informations via fichier de config
+    => Tests servlets utilisateurs
 - Frontend :
     => page de login
     => template de page Web
 -Client
     => Client TCP non chiffré
     => recup ID+IP et envoi au serv
+    => Recup informations via fichier de config
 
 
 
@@ -87,6 +90,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 38h
+- maxime : 45h
 - erwann :
 - gabin :

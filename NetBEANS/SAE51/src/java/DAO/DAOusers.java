@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
- * Classe contenant toutes les intéractions avec la BD partie utilisateur
+ * Classe contenant toutes les intéractions avec la BD partie utilisateur<br>
  * 
  * Originaires de la SAE-52 (dev par Maxime VALLET) : getUserRightsFromLogin / getUsers
  * 

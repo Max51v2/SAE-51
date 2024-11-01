@@ -61,21 +61,28 @@ public class ListUsers extends HttpServlet {
         String jsonString = "";
         
         //Vérification du contenu envoyé
-        if(token.equals("")){
+        if(token == null){
             jsonString = "{\"erreur\":\"pas de token (req)\"}";
         }
         else{
-            //Récuppération des droits de l'utilisateur
-            rights = DAO.getUserRightsFromToken(token, TestBoolean);
-            
-            if(rights.equals("Admin")){
-                //Récuppération des utilisateurs
-                jsonString = DAO.getUsers(TestBoolean);
+            //Vérification du contenu envoyé
+            if(token.equals("")){
+                jsonString = "{\"erreur\":\"pas de token (req)\"}";
             }
             else{
-                jsonString = "{\"erreur\":\"accès refusé\"}";
+                //Récuppération des droits de l'utilisateur
+                rights = DAO.getUserRightsFromToken(token, TestBoolean);
+
+                if(rights.equals("Admin")){
+                    //Récuppération des utilisateurs
+                    jsonString = DAO.getUsers(TestBoolean);
+                }
+                else{
+                    jsonString = "{\"erreur\":\"accès refusé\"}";
+                }
             }
         }
+        
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

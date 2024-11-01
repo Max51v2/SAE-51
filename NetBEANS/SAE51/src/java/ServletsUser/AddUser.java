@@ -26,6 +26,7 @@ public class AddUser extends HttpServlet {
      * Variables à envoyer au servlet (POST)<br>
      * String nom       &emsp;&emsp;        nom de l'utilisateur <br>
      * String prenom       &emsp;&emsp;        prenom de l'utilisateur <br>
+     * String role       &emsp;&emsp;        prenom de l'utilisateur <br>
      * String login       &emsp;&emsp;        login de l'utilisateur <br>
      * String password       &emsp;&emsp;        MDP de l'utilisateur <br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
@@ -63,6 +64,7 @@ public class AddUser extends HttpServlet {
         String token = user.getToken();
         String nom = user.getNom();
         String prenom = user.getPrenom();
+        String role = user.getDroits();
         String login = user.getLogin();
         String password = user.getPassword();
         Boolean TestBoolean = Boolean.valueOf(user.getTest());
@@ -70,37 +72,45 @@ public class AddUser extends HttpServlet {
         Boolean doLoginExist;
         String jsonString = "";
         
+        
         //Vérification du contenu envoyé
-        if(token.equals("") | nom.equals("") | prenom.equals("") | login.equals("") | password.equals("")){
+        if(token == null | nom == null | prenom == null | login == null | password == null | role == null ){
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
-            //Récuppération des droits de l'utilisateur
-            rights = DAO.getUserRightsFromToken(token, TestBoolean);
-            
-            if(rights.equals("Admin")){
-                //On vérifie si l'utilisateur n'existe pas
-                doLoginExist = DAO.doLoginExist(login, TestBoolean);
-                
-                if(doLoginExist == false){
-                    //génération du hash du MDP
-                String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
-                
-                //Ajout de l'utilisateur
-                DAO.addUser(login, nom, prenom, nom, hashedPassword, TestBoolean);
-                
-                //Récuppération des utilisateurs
-                jsonString = "{\"erreur\":\"none\"}";
-                
-                }
-                else{
-                    jsonString = "{\"erreur\":\"login existe (DB)\"}";
-                }
+            //Vérification du contenu envoyé
+            if(token.equals("") | nom.equals("") | prenom.equals("") | login.equals("") | password.equals("") | role.equals("")){
+                jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
-                jsonString = "{\"erreur\":\"accès refusé\"}";
+                //Récuppération des droits de l'utilisateur
+                rights = DAO.getUserRightsFromToken(token, TestBoolean);
+
+                if(rights.equals("Admin")){
+                    //On vérifie si l'utilisateur n'existe pas
+                    doLoginExist = DAO.doLoginExist(login, TestBoolean);
+
+                    if(doLoginExist == false){
+                        //génération du hash du MDP
+                    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+
+                    //Ajout de l'utilisateur
+                    DAO.addUser(login, nom, prenom, role, hashedPassword, TestBoolean);
+
+                    //Récuppération des utilisateurs
+                    jsonString = "{\"erreur\":\"none\"}";
+
+                    }
+                    else{
+                        jsonString = "{\"erreur\":\"login existe (DB)\"}";
+                    }
+                }
+                else{
+                    jsonString = "{\"erreur\":\"accès refusé\"}";
+                }
             }
         }
+        
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

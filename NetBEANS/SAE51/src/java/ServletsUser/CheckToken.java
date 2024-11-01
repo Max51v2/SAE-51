@@ -29,7 +29,6 @@ public class CheckToken extends HttpServlet {
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
      * String erreur       &emsp;&emsp;        types d'erreur : pas de token (req) | pas de token (DB) | none <br>
-     * String login       &emsp;&emsp;        login de l'utilisateur <br>
      * String droits       &emsp;&emsp;        droits de l'utilisateur <br>
      * 
      * @param request       servlet request
@@ -58,17 +57,25 @@ public class CheckToken extends HttpServlet {
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
         
-        //Si login vide alors on ne fait rien
-        if(token.equals("")){
+        
+        //Si login null alors on ne fait rien
+        if(token == null){
                 //JSON renvoyé
-                    jsonString = "{\"erreur\":\"pas de token (req)\"}";
+                jsonString = "{\"erreur\":\"pas de token (req)\"}";
         }
         else{
-            try { 
-                //Vérification du token
-                jsonString = DAO.checkToken(token, TestBoolean);
-            } catch (Exception e) {
-                e.printStackTrace();
+            //Si login vide alors on ne fait rien
+            if(token.equals("")){
+                    //JSON renvoyé
+                    jsonString = "{\"erreur\":\"pas de token (req)\"}";
+            }
+            else{
+                try { 
+                    //Vérification du token
+                    jsonString = DAO.checkToken(token, TestBoolean);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         
