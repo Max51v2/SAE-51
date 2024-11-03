@@ -42,7 +42,7 @@ async function TomcatTest() {
         .then(TestTomcatResult)
         .catch(error => {
             console.log("URL => Erreur => Le serveur Tomcat ne répond pas");
-            sessionStorage.setItem("TomcatOK", "false");
+            window.TomcatOK = false;
         });
     } catch (error) {
         //Rien
@@ -60,6 +60,6 @@ async function TomcatTest() {
 function TestTomcatResult(response){
     if(response.erreur === "none"){
         console.log("URL => Info => Tomcat OK")
-        sessionStorage.setItem("TomcatOK", "true");
+        window.TomcatOK = true;
     }
 }

@@ -7,10 +7,9 @@ let token = sessionStorage.getItem('token');
 
 // Attend que le test de Tomcat soit terminé
 document.addEventListener("TomcatTestFinished", function() {
-    let TomcatOK = sessionStorage.getItem("TomcatOK");
 
     //Si le serveur Tomcat est actif alors on vérifie le token
-    if (TomcatOK === "true") {
+    if (window.TomcatOK === true) {
         TokenCheck();
     } 
     else {
