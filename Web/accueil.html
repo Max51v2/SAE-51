@@ -9,6 +9,11 @@
     <meta charset="utf-8">
     <title>Login</title>
     <link rel="icon" type="images" href="./images/Logo.png">
+
+    <!-- CSS pour la bannière -->
+    <link rel="stylesheet" href="./CSS/BannerDiv.css">
+
+    <!-- CSS Page -->
     <style>
         body{
             margin: 0;
@@ -20,69 +25,13 @@
             display: flex;
             flex-direction: column;
         }
-        #bannerDiv{
-            width: 100%;
-            height: 50px;
-            display: flex;
-            flex-direction: row; 
-            justify-content: space-between;
-            background-color: #333333;
-            color: #BDBDBD;
-        }
-        #user{
-            height: 50px;
-            padding-left: 15px;
-            display: flex;
-            flex-direction: row;
-            align-items: center
-        }
-        #logoUser{
-            width: 30px;
-            height: 30px;
-            padding-right: 10px;
-        }
-        #logoRights{
-            width: 30px;
-            height: 30px;
-            padding-left: 20px;
-            padding-right: 10px;
-        }
-        #pageName{
-            height: 50px;
-            display: flex;
-            align-items: center
-        }
-        #disconnect{
-            height: 50px;
-            display: flex;
-            flex-direction: row;
-            align-items: center
-        }
-        #submitDisconnect{
-            width: 160px;
-            height: 50px;
-            background-color: #333333;
-            color: #BDBDBD;
-            border: 0px;
-        }
-        #submitDisconnect p{
-            display: flex;
-            align-items: center;
-            margin: 0;
-            cursor: pointer;
-        }
-        #logoDisconnect{
-            width: 30px;
-            height: 30px;
-            padding-right: 10px;
-            align-items: center;
-        }
         #style{
             height: fit-content;
             width: fit-content;
         }
     </style>
 </head>
+
 
 <body>
     <div id="rootdiv">
@@ -92,6 +41,9 @@
                 <p id="id"></p>
                 <img id="logoRights" src="./images/droits.png" alt="Logo">
                 <p id="Rights"></p>
+                <button id="submitHelp" type="button">
+                    <p><img id="logoHelp" src="./images/help.png" alt="Logo"> Aide</p>
+                </button>
             </div>
             <div id="pageName">
                 <h2>Page d'accueil</h2>
@@ -102,9 +54,11 @@
                 </button> 
             </div>
         </div>
+        <div id="pageContentDiv">
+            <!-- contenu de la page -->
+        </div>
     </div>
 </body>
-
 </html>
 
 
@@ -112,6 +66,10 @@
 <script src="./JS/URL.js" defer></script>
 <script src="./JS/TokenCheck.js" defer></script>
 
+<!-- Script qui remplit la bannière (login + droits) et qui contient les eventListener pour les boutons help et disconnect -->
+<script src="./JS/Banner.js" defer></script>
+
+<!-- Script de la page -->
 <script>
     //Auteur(s) JS : Maxime VALLET
     //Version : 0.1
@@ -119,49 +77,7 @@
     
     document.addEventListener("DOMContentLoaded", (event) => {
 
-        //Ne pas toucher hors bug ou modif esthétique
-
-        //Définition du contenu de la banière
-        document.getElementById("id").innerHTML = sessionStorage.getItem("login");
-        document.getElementById("Rights").innerHTML = sessionStorage.getItem("droits");
-
-
-        //Déconnexion de l'utilisateur
-        document.getElementById("submitDisconnect").onclick = function () {
-            login = sessionStorage.getItem("login");
-            token = sessionStorage.getItem("token");
-
-            //Vérification auprès du Servlet
-            fetch(`https://${window.ServerIP}:8443/SAE51/DeleteToken`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ login: login, token: token, Test: false })
-            }).then(response => response.json())
-            .then(DeleteTokenResult);
-        };
-
-
-        //Vérification de la réponse du servlet DeleteToken
-        function DeleteTokenResult(response){
-            if(response.erreur === "none"){
-                //Suppression des données dans sessionStorage
-                sessionStorage.setItem("login", "");
-                sessionStorage.setItem("rights", "");
-                sessionStorage.setItem("token", "");
-
-                //Redirection vers login.html
-                window.location.href = 'login.html';
-            }
-            else{
-                console.log("accueil => DeleteTokenResult => Erreur : "+response.erreur);
-            }
-        }
-
-        //Fin Ne pas toucher hors bug ou modif esthétique
-
-
         // CODE ICI
 
-        // FIN CODE ICI
     });
 </script>

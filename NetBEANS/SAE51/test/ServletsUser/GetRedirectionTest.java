@@ -19,7 +19,6 @@ public class GetRedirectionTest {
      * 
      * Conditions de test :
      *  - champs envoyés : ok
-     *  - droits d'accès : ok
      *  - redirection DB : existe
      */
     @Test
@@ -63,8 +62,7 @@ public class GetRedirectionTest {
      * Test redirection d'utilisateur
      * 
      * Conditions de test :
-     *  - champs envoyés : token inexistant
-     *  - droits d'accès : ok
+     *  - champs envoyés : page inexistante
      *  - redirection DB : existe
      */
     @Test
@@ -84,7 +82,7 @@ public class GetRedirectionTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"currentPage\":\"login.html\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetRedirection", jsonPayload);
@@ -93,7 +91,7 @@ public class GetRedirectionTest {
         DAO2.deleteUser(login, true);
         
         //Résultat attendu
-        String ExpResult = "{\"erreur\":\"pas de token ou page (req)\"}";
+        String ExpResult = "{\"erreur\":\"pas de page ou token null (req)\"}";
         
         //Résultat
         System.out.println("resultat testGetRedirection2 : "+result+" | exp : "+ExpResult);
@@ -109,7 +107,6 @@ public class GetRedirectionTest {
      * 
      * Conditions de test :
      *  - champs envoyés : ok
-     *  - droits d'accès : aucun
      *  - redirection DB : inexistant
      */
     @Test

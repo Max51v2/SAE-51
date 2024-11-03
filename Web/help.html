@@ -1,0 +1,171 @@
+<!--
+    Auteur HTML + CSS : Maxime VALLET
+    Version : 0.3
+-->
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="icon" type="images" href="./images/Logo.png">
+
+    <!-- CSS Page -->
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #rootDiv{
+            height: 100vh;
+            width: 100vw;
+
+            display: flex;
+            flex-direction: column;
+        }
+        #bannerDiv{
+            width: 100%;
+            height: 50px;
+            display: flex;
+            flex-direction: row; 
+            justify-content: space-between;
+            background-color: #333333;
+            color: #BDBDBD;
+        }
+        #Login{
+            height: 50px;
+            padding-left: 15px;
+            display: flex;
+            flex-direction: row;
+            align-items: center
+        }
+        #submitLogin{
+            width: 120px;
+            height: 50px;
+            background-color: #333333;
+            color: #BDBDBD;
+            border: 0px;
+            font-family: "Times New Roman";
+            font-size: large;
+        }
+        #submitLogin p{
+            display: flex;
+            align-items: center;
+            margin: 0;
+            cursor: pointer;
+        }
+        #logoLogin{
+            width: 30px;
+            height: 30px;
+            padding-right: 10px;
+            align-items: center;
+        }
+        #pageName{
+            height: 50px;
+            display: flex;
+            align-items: center
+        }
+        #placeholder{
+            height: 50px;
+            width: 140px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        #pageContentDiv {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .logoContact{
+            width: 18px;
+            height: 18px;
+            padding-left: 10px;
+        }
+        #contact{
+            padding-top: 300px;
+        }
+        li {
+            font-size: larger;
+            list-style-type: none;
+        }
+        #style{
+            height: fit-content;
+            width: fit-content;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div id="rootDiv">
+        <div id="bannerDiv">
+            <div id="Login">
+                <button id="submitLogin" type="button">
+                    <p><img id="logoLogin" src="./images/deconnexion.png" alt="Logo"> Retour</p>
+                </button>
+            </div>
+            <div id="pageName">
+                <h2>Page d'aide</h2>
+            </div>
+            <div id="placeholder"></div>
+        </div>
+
+        <div id="pageContentDiv">
+            <!-- contenu de la page -->
+
+            <div id="contact">
+                <h2>Pour toute question ou problème, merci de contacter :</h1>
+                <ul>
+                    <li>Maxime VALLET&emsp;
+                        <a href="mailto:max.vallet@outlook.fr" target=”_blank”><img class="logoContact" src="./images/mail.png" alt="Logo"></a>
+                        <a href="https://github.com/Max51v2/" target=”_blank”><img class="logoContact" src="./images/github.png" alt="Logo"></a>
+                        <a href="https://www.linkedin.com/in/maxime-vallet-533240254/" target=”_blank”><img class="logoContact" src="./images/linkedin" alt="Logo"></a>
+                    </li>
+                    <li>Erwann MADEC</li>
+                    <li>Gabin PETITCOLAS</li>
+                </ul> 
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<!-- ne pas toucher aux 2 scripts ci-dessous SAUF en cas de BUG -->
+<script src="./JS/URL.js" defer></script>
+<script src="./JS/TokenCheck.js" defer></script>
+
+<!-- Script de la page -->
+<script>
+    //Auteur(s) JS : Maxime VALLET
+    //Version : 0.2
+
+    
+    document.addEventListener("DOMContentLoaded", (event) => {
+
+        //Redirection vers la page de login
+        document.getElementById("submitLogin").onclick = function () {
+            //Récuppération de la page précédente
+            PreviousPage = sessionStorage.getItem("PreviousPage");
+
+            //Vérification du contenu de la variable (si null => login.html)
+            if(PreviousPage){
+                window.location.href = PreviousPage;
+            }
+            else{
+                window.location.href = "login.html";
+            }
+        };
+
+
+        // CODE ICI
+
+    });
+</script>

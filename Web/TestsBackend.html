@@ -18,19 +18,14 @@
 </body>
 </html>
 
+
+<!-- ne pas toucher aux 2 scripts ci-dessous SAUF en cas de BUG -->
+<script src="./JS/URL.js" defer></script>
+<script src="./JS/TokenCheck.js" defer></script>
+
 <script>
     //Auteurs JS : Maxime VALLET
-    //Version : 0.3
-
-
-    //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
-    window.onunload = function(){reload()};
-
-    // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Nginx)
-    // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
-    const currentUrl = window.location.href;
-    const url = new URL(currentUrl);
-    const ServerIP = url.hostname;
+    //Version : 0.4
 
 
     //tests à partir d'ici
@@ -38,8 +33,8 @@
     token2 = "";
 
     document.getElementById("testCheckPassword").onclick = function () { 
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Admin1", password: "Admin", Test: false})}).then(r1 => r1.json()).then(PasswordVerification1)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", Test: false})}).then(r2 => r2.json()).then(PasswordVerification2)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Admin1", password: "Admin", Test: false})}).then(r1 => r1.json()).then(PasswordVerification1)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", Test: false})}).then(r2 => r2.json()).then(PasswordVerification2)
     };
 
     function PasswordVerification1(r1){
@@ -52,8 +47,8 @@
     }
 
     document.getElementById("testCheckToken").onclick = function () { 
-        fetch("https://"+ServerIP+":8443/SAE51/CheckToken", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: token1, Test: false})}).then(r3 => r3.json()).then(TokenVerification1)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckToken", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: token2, Test: false})}).then(r4 => r4.json()).then(TokenVerification2)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckToken", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: token1, Test: false})}).then(r3 => r3.json()).then(TokenVerification1)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckToken", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: token2, Test: false})}).then(r4 => r4.json()).then(TokenVerification2)
     };
 
     function TokenVerification1(r3){
@@ -64,7 +59,7 @@
     }
 
     document.getElementById("testDeleteUser").onclick = function () { 
-        fetch("https://"+ServerIP+":8443/SAE51/DeleteUser", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", token: token1, Test: false})}).then(r5 => r5.json()).then(DeleteUserVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/DeleteUser", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", token: token1, Test: false})}).then(r5 => r5.json()).then(DeleteUserVerification)
     };
 
     function DeleteUserVerification(r5){
@@ -72,7 +67,7 @@
     }
 
     document.getElementById("testListUsers").onclick = function () { 
-        fetch("https://"+ServerIP+":8443/SAE51/ListUsers", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: token1, Test: false})}).then(r6 => r6.json()).then(ListUsersVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/ListUsers", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: token1, Test: false})}).then(r6 => r6.json()).then(ListUsersVerification)
     };
 
     function ListUsersVerification(r6){
@@ -80,26 +75,26 @@
     }
 
     document.getElementById("test20Connexions").onclick = function () { 
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Admin1", password: "Admin", Test: false})}).then(r1 => r1.json()).then(PasswordVerification1)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", Test: false})}).then(r2 => r2.json()).then(PasswordVerification2)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur2", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur3", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur4", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur5", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur6", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur7", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur8", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur9", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur10", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur11", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur12", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur13", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur14", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur15", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur16", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur17", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur18", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
-        fetch("https://"+ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur19", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Admin1", password: "Admin", Test: false})}).then(r1 => r1.json()).then(PasswordVerification1)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", Test: false})}).then(r2 => r2.json()).then(PasswordVerification2)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur2", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur3", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur4", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur5", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur6", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur7", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur8", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur9", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur10", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur11", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur12", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur13", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur14", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur15", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur16", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur17", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur18", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur19", password: "Utilisateur", Test: false})}).then(r7 => r7.json()).then(ConnexionsVerification)
     };
 
     function ConnexionsVerification(r7){
@@ -107,7 +102,7 @@
     }
 
     document.getElementById("testAddUser").onclick = function () { 
-        fetch("https://"+ServerIP+":8443/SAE51/AddUser", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", nom: "Originel", prenom: "Utilisateur", token: token1, Test: false})}).then(r8 => r8.json()).then(AddUserVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/AddUser", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", nom: "Originel", prenom: "Utilisateur", token: token1, Test: false})}).then(r8 => r8.json()).then(AddUserVerification)
     };
     
     function AddUserVerification(r8){
@@ -115,7 +110,7 @@
     }
 
     document.getElementById("testDeleteToken").onclick = function () { 
-        fetch("https://"+ServerIP+":8443/SAE51/DeleteToken", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", token: token1, Test: false})}).then(r9 => r9.json()).then(DeleteTokenVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/DeleteToken", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", token: token1, Test: false})}).then(r9 => r9.json()).then(DeleteTokenVerification)
     };
     
     function DeleteTokenVerification(r9){

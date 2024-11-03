@@ -23,13 +23,13 @@ public class GetRedirection extends HttpServlet {
      * Renvoi la page de redirection de l'utilisateur selon sa position et ses droits<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
-     * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
      * String currentPage       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
+     * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande ("" ou token) <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : pas de token ou page (req) | Pas de redirection (BD) | accès refusé | none <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : pas de page (req) | Pas de redirection (BD) | pas de page ou token null (req) | none <br>
      * String redirect       &emsp;&emsp;        la page sur laquelle l'utilisateur doit être redirigé ('none' si pas de redirection !!!) <br>
      * 
      * @param request       servlet request
@@ -52,40 +52,35 @@ public class GetRedirection extends HttpServlet {
         JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfoUsers.class);
         
         //Données
-        String token = user.getToken();
         String currentPage = user.getCurrentPage();
         Boolean TestBoolean = Boolean.valueOf(user.getTest());
         String rights = "Aucun";
+        String token = user.getToken();
         String redirect = "";
         String jsonString = "";
        
         //Vérification du contenu envoyé
-        if(token == null | currentPage == null){
-            jsonString = "{\"erreur\":\"pas de token ou page (req)\"}";
+        if(currentPage == null | currentPage == null){
+            jsonString = "{\"erreur\":\"pas de page ou token null (req)\"}";
         }
         else{
             //Vérification du contenu envoyé
-            if(token.equals("") | currentPage.equals("")){
+            if(currentPage.equals("")){
                 jsonString = "{\"erreur\":\"pas de token (req)\"}";
             }
             else{
                 //Récuppération des droits de l'utilisateur
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
+                
+                //Récuppération de la redirection de l'utilisateur
+                redirect = DAO.getRedirection(rights, currentPage, TestBoolean);
 
-                if(!rights.equals("Aucun")){
-                    //Récuppération de la redirection de l'utilisateur
-                    redirect = DAO.getRedirection(rights, currentPage, TestBoolean);
-
-                    //Vérification de la présence d'une entrée de redirection (BD)
-                    if(redirect.equals("No redirect")){
-                        jsonString = "{\"erreur\":\"Pas de redirection (BD)\"}";
-                    }
-                    else{
-                        jsonString = "{\"redirect\":\""+redirect+"\", \"erreur\":\"none\"}";
-                    }
+                //Vérification de la présence d'une entrée de redirection (BD)
+                if(redirect.equals("No redirect")){
+                    jsonString = "{\"erreur\":\"Pas de redirection (BD)\"}";
                 }
                 else{
-                    jsonString = "{\"erreur\":\"accès refusé\"}";
+                   jsonString = "{\"redirect\":\""+redirect+"\", \"erreur\":\"none\"}";
                 }
             }
         }

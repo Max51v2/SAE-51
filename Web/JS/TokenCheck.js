@@ -1,8 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 1.5
-
-
-//Warning : URL.js doit être démarré avant TokenCheck.js (fait dans le template)
+//Version : 2.0
 
 
 //Token
@@ -36,8 +33,9 @@ document.addEventListener("TomcatTestFinished", function() {
 function TokenCheck(){
     if (token) {
         if(token === ""){
-            //Redireciton vers login.html afin de se reconnecter
-            goToLogin();
+            
+
+            console.log("redirection")
         }
         else{
             console.log("TokenCheck => token : "+token);
@@ -55,8 +53,10 @@ function TokenCheck(){
     else {
         console.log("TokenCheck => erreur : token inexistant");
     
-        //Redireciton vers login.html afin de se reconnecter
-        goToLogin();
+        token = "";
+
+        //Redirection
+        GetRedirection();
     }
 }
 
@@ -70,12 +70,7 @@ function CheckTokenResult(response) {
         sessionStorage.setItem("droits", response.droits);
 
         //Redirection page
-        fetch(`https://${ServerIP}:8443/SAE51/GetRedirection`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: token, currentPage: window.currentPage, Test: false })
-        }).then(response => response.json())
-        .then(GetRedirectionResult);
+        GetRedirection();
     }
     else{
         //Suppression du token stocké s'il est érroné
@@ -85,6 +80,17 @@ function CheckTokenResult(response) {
         //Redireciton vers login.html afin de se reconnecter
         goToLogin();
     }
+}
+
+
+//Redirection page
+function GetRedirection(){
+    fetch(`https://${window.ServerIP}:8443/SAE51/GetRedirection`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: token, currentPage: window.currentPage, Test: false })
+        }).then(response => response.json())
+        .then(GetRedirectionResult);
 }
 
 
