@@ -4,7 +4,7 @@ package JSON;
  * Permet de récupérer les informations contenues dans un JSON (exemple utilisation : voir req POST servlet / TokenExpiration)
  * 
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.2
  */
 public class GetJSONInfoUsers{
         private String login;
@@ -15,10 +15,9 @@ public class GetJSONInfoUsers{
         private String password;
         private String currentPage;
         private String Test;
-        private String id;
-        private String IP;
+        private String target;
         
-        public GetJSONInfoUsers(String login, String nom, String prenom, String droits, String token, String password, String currentPage, String Test, String IP, String id){
+        public GetJSONInfoUsers(String login, String nom, String prenom, String droits, String token, String password, String currentPage, String Test, String target){
             this.login=login;
             this.nom=nom;
             this.prenom=prenom;
@@ -27,8 +26,7 @@ public class GetJSONInfoUsers{
             this.password=password;
             this.currentPage=currentPage;
             this.Test = Test;
-            this.IP = IP;
-            this.id = id;
+            this.target = target;
         }
 
         public String getLogin() {
@@ -95,19 +93,11 @@ public class GetJSONInfoUsers{
             this.Test = Test;
         }
         
-        public String getId() {
-            return id;
+        public String getTarget() {
+            return target;
         }
 
-        public void setId(String id) {
-            this.id = id;
-        }
-        
-        public String getIP() {
-            return IP;
-        }
-
-        public void setIP(String IP) {
-            this.IP = IP;
+        public void setTarget(String target) {
+            this.target = target;
         }
     }

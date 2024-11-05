@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * Enregistre les pc qui la contactent
  * 
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.1
  */
 public class AnswerPing implements Runnable {
     private Thread thread;
@@ -86,7 +86,7 @@ public class AnswerPing implements Runnable {
                     //Récuperation du JSON envoyé
                     Gson gsonRequest = new Gson();
                     // Convertion des données du JSON dans un objet Java
-                    JSON.GetJSONInfoUsers ping = gsonRequest.fromJson(message, JSON.GetJSONInfoUsers.class);
+                    JSON.GetJSONInfoPC ping = gsonRequest.fromJson(message, JSON.GetJSONInfoPC.class);
         
                     //Données envoyées
                     id = ping.getId();

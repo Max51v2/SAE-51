@@ -747,4 +747,98 @@ public class DAOusers {
         
         return redirect;
     }
+    
+    
+    
+    
+    /**
+     * Modifie le MDP d'un utilisateur
+     * 
+     * @param hashedPassword      MDP hashé de l'utilisateur
+     * @param login     login de l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void setPassword(String login, String hashedPassword, Boolean Test){
+        String RequeteSQL="UPDATE users SET hash = ? WHERE login = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOusers.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, hashedPassword);
+            preparedStatement.setString(2, login);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
+    /**
+     * Renvoi le login de l'utilisateur correspondant au token
+     * 
+     * @param token     token de l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * 
+     * @return JSONString       contenu de la table au format JSON (login/droits)
+     */
+    public String getUserLoginFromToken(String token, Boolean Test){
+        String RequeteSQL="SELECT login FROM users WHERE token != '' ORDER BY tokenlifecycle DESC";
+        String login="";
+        String hashedToken="";
+        String JSONString="";
+        Boolean isTokenOK = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOusers.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    //Si on a déjà trouvé le token dans la BD, on arrête de chercher
+                    if(isTokenOK == true){
+                        
+                    }
+                    else{
+                        //Données BD
+                        hashedToken = resultSet.getString("token");
+
+                        //Comparaison token utilisateur et le token de la BD
+                        isTokenOK = BCrypt.checkpw(token, hashedToken);
+
+                        if(isTokenOK == true){
+                            //Données BD
+                            login = resultSet.getString("login");
+                        }
+ 
+                    }
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return login;
+    }
 }

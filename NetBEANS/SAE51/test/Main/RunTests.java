@@ -18,6 +18,7 @@ import ServletsUser.DeleteTokenTest;
 import ServletsUser.DeleteUserTest;
 import ServletsUser.GetRedirectionTest;
 import ServletsUser.ListUsersTest;
+import ServletsUser.SetPasswordTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -28,6 +29,7 @@ import ServletsUser.ListUsersTest;
     DeleteUserTest.class,
     GetRedirectionTest.class,
     ListUsersTest.class,
-    DAOusersTest.class
+    DAOusersTest.class,
+    SetPasswordTest.class
 })
 public class RunTests {}

@@ -17,29 +17,21 @@ import org.mindrot.jbcrypt.BCrypt;
  * @author Maxime VALLET
  * @version 1.0
  */
-@WebServlet(name = "AddUser", urlPatterns = {"/AddUser"})
-public class AddUser extends HttpServlet {
+@WebServlet(name = "SetPassword", urlPatterns = {"/SetPassword"})
+public class SetPassword extends HttpServlet {
 
     /**
-     * Ajoute un utilisateur dans la BD<br><br>
+     * Modifie le MDP d'un utilisateur<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
-     * String nom       &emsp;&emsp;        nom de l'utilisateur <br>
-     * String prenom       &emsp;&emsp;        prenom de l'utilisateur <br>
-     * String role       &emsp;&emsp;        prenom de l'utilisateur <br>
-     * String login       &emsp;&emsp;        login de l'utilisateur <br>
-     * String password       &emsp;&emsp;        MDP de l'utilisateur <br>
+     * String target       &emsp;&emsp;        utilisateur qui subi le changement de MDP <br>
+     * String password       &emsp;&emsp;        nouveau MDP de l'utilisateur <br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | login existe (DB) | none <br>
-     * OU <br>
-     * String login       &emsp;&emsp;        login de l'utilisateur <br>
-     * String prenom       &emsp;&emsp;        prenom de l'utilisateur <br>
-     * String nom       &emsp;&emsp;        nom de l'utilisateur <br>
-     * String droits       &emsp;&emsp;        droits de l'utilisateur <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | permission refusée | accès refusé | done <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -62,24 +54,21 @@ public class AddUser extends HttpServlet {
         
         //Données
         String token = user.getToken();
-        String nom = user.getNom();
-        String prenom = user.getPrenom();
-        String role = user.getDroits();
-        String login = user.getLogin();
         String password = user.getPassword();
+        String target = user.getTarget();
         Boolean TestBoolean = Boolean.valueOf(user.getTest());
         String rights = "Aucun";
-        Boolean doLoginExist;
+        String hashedPassword = "";
+        String login = "";
         String jsonString = "";
         
-        
         //Vérification du contenu envoyé
-        if(token == null | nom == null | prenom == null | login == null | password == null | role == null ){
+        if(token == null | password == null | target == null){
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
             //Vérification du contenu envoyé
-            if(token.equals("") | nom.equals("") | prenom.equals("") | login.equals("") | password.equals("") | role.equals("")){
+            if(token.equals("") | target.equals("") | password.equals("")){
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
@@ -87,22 +76,28 @@ public class AddUser extends HttpServlet {
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
 
                 if(rights.equals("Admin")){
-                    //On vérifie si l'utilisateur n'existe pas
-                    doLoginExist = DAO.doLoginExist(login, TestBoolean);
-
-                    if(doLoginExist == false){
+                    //génération du hash du MDP
+                    hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+                        
+                    //Modification du MDP
+                    DAO.setPassword(target, hashedPassword, TestBoolean);
+                    
+                    jsonString = "{\"erreur\":\"none\"}";
+                }
+                else if(rights.equals("Utilisateur")){
+                    //Récupération du login de l'utilisateur qui a envoyé la demande
+                    login = DAO.getUserLoginFromToken(token, TestBoolean);
+                    
+                    //Si l'utilisateur qui a fait la demande veut modifier SON MDP
+                    if(login.equals(target)){
                         //génération du hash du MDP
-                        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+                        hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
 
-                        //Ajout de l'utilisateur
-                        DAO.addUser(login, nom, prenom, role, hashedPassword, TestBoolean);
-
-                        //Récuppération des utilisateurs
-                        jsonString = "{\"erreur\":\"none\"}";
-
+                        //Modification du MDP
+                        DAO.setPassword(target, hashedPassword, TestBoolean);
                     }
                     else{
-                        jsonString = "{\"erreur\":\"login existe (DB)\"}";
+                        jsonString = "{\"erreur\":\"permission refusée\"}";
                     }
                 }
                 else{

@@ -37,11 +37,9 @@ public class TestTomcat extends HttpServlet {
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
-        String jsonString = "{\"erreur\":\"none\"}";
-        
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {
-            out.print(jsonString);
+            out.print("{\"erreur\":\"none\"}");
             out.flush();
         }
     }

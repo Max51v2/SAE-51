@@ -15,6 +15,7 @@
     <input id="test20Connexions" type="button" value="20 Connexions" onclick="doFunction();" />
     <input id="testAddUser" type="button" value="AddUser (Utilisateur1)" onclick="doFunction();" />
     <input id="testDeleteToken" type="button" value="DeleteToken (Utilisateur1)" onclick="doFunction();" />
+    <input id="testSetPassword" type="button" value="SetPassword (Utilisateur1)" onclick="doFunction();" />
 </body>
 </html>
 
@@ -117,4 +118,11 @@
         console.log(r9);
     }
 
+    document.getElementById("testSetPassword").onclick = function () { 
+        fetch("https://"+window.ServerIP+":8443/SAE51/SetPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ target: "Utilisateur1", token: token1, password: "heineken", Test: false})}).then(r10 => r10.json()).then(SetPasswordVerification)
+    };
+    
+    function SetPasswordVerification(r10){
+        console.log(r10);
+    }
 </script>

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
-import java.util.Random;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
