@@ -18,15 +18,16 @@ public class OnStart implements ServletContextListener {
   public void contextInitialized(ServletContextEvent sce) {
         //Récupération des données dans le fichier de conf
         Integer CheckIntervall = conf.getIntValue("CheckIntervall");
+        Integer AnswerPingPort = conf.getIntValue("AnswerPingPort");
         
         System.out.println("##########################################");
         
         //lancement de la vérification des tokens
-        run.start(CheckIntervall);
+        run.start(CheckIntervall, false);
         System.out.println("Vérification des tokens expirés lancée");
         
         //lancement du serveur de réponse au ping du client
-        run2.start();
+        run2.start(AnswerPingPort);
         System.out.println("Serveur TCP de réponse au ping du client lancé sur le port 4444");
         
         System.out.println("##########################################");

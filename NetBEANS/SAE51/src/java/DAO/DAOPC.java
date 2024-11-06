@@ -124,4 +124,98 @@ public class DAOPC {
             e.printStackTrace();
         }
     }
+    
+    
+    
+    
+    /**
+     * Suppression d'un ordinateur dans la BD
+     * 
+     * @param id     id de la machine
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deletePC(String id, Boolean Test){
+        String RequeteSQL="DELETE FROM pc WHERE id = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, id);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
+     /**
+     * Renvoi les pc contenu dans la BD
+     * 
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
+     */
+    public String getPC(Boolean Test){
+        String RequeteSQL="SELECT ip, id FROM pc ORDER BY id ASC";
+        String IP="";
+        String id="";
+        String JSONString="";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Integer c = 1;
+                
+                // Ouvrir le tableau JSON
+                JSONString += "[";
+
+                while (resultSet.next()) {
+                    IP = resultSet.getString("ip");
+                    id = resultSet.getString("id");
+
+                    // Ajouter une virgule avant chaque entrée sauf la première
+                    if (c > 1) {
+                        JSONString += ",";
+                    }
+
+                    // Ajouter l'objet JSON
+                    JSONString += "{\"IP\":\"" + IP + "\", \"id\":\"" + id + "\"}";
+
+                    c += 1;
+                }
+
+                // Fermer le tableau JSON
+                JSONString += "]";
+
+            }
+            
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return JSONString;
+    }
 }

@@ -101,7 +101,8 @@ function GetRedirectionResult(response){
 
         //Redirection
         if(response.redirect === "none"){
-            //Rien
+            //On crée un événement afin de lancer le script qui remplit la bannière
+            document.dispatchEvent(new Event("TokenCheckDone"));
         }
         else{
             window.location.href = response.redirect;

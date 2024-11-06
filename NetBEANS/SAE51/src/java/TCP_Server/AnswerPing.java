@@ -11,33 +11,35 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 /**
  * Classe AnswerPing qui lance un serveur TCP permettant la vérification des connexions client
  * Enregistre les pc qui la contactent
  * 
  * @author Maxime VALLET
- * @version 1.1
+ * @version 2.0
  */
-public class AnswerPing implements Runnable {
-    private Thread thread;
-    private volatile boolean running = false; // Indicateur d'exécution du serveur
-    private ServerSocket serverSocket; // Socket du serveur
-    DAOPC DAO = new DAOPC(); // Instance de DAO
+public class AnswerPing {
+    
+    private volatile boolean running = false;
+    private ServerSocket serverSocket;
+    private Integer port;
 
-    //Démarre la vérification des tokens expirés
-    public synchronized void start() {
-        //Crée un nouveau thread seulement si aucun thread n'est déjà actif
-        if (thread == null || !running) {
-            thread = new Thread(this);
-            thread.setDaemon(true);
-            running = true;
-            thread.start();
-        }
+    
+    //Démarre le serveur TCP
+    public synchronized void start(Integer port) {
+        this.port = port;
+        running = true;
+        
+        //Lancement du serveur
+        new Thread(this::run).start();
     }
 
-    //Arrête proprement le serveur TCP
+    
+    //Arrête le serveur TCP
     public synchronized void stop() {
-        running = false; // Interrompt la boucle d'exécution
+        //Interrompt la boucle d'exécution
+        running = false; 
 
         //Ferme le ServerSocket si nécessaire
         try {
@@ -47,89 +49,103 @@ public class AnswerPing implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(AnswerPing.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        //Attend la fin du thread
-        if (thread != null) {
-            try {
-                thread.join();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(AnswerPing.class.getName()).log(Level.SEVERE, null, ex);
-                Thread.currentThread().interrupt();
-            }
-            thread = null;
-        }
     }
 
-    //Fonction exécutée par le thread, lance le serveur TCP
-    @Override
-    public void run() {
-        int port = 4444;
-
+    
+    //Serveur TCP
+    private void run() {
         try {
             serverSocket = new ServerSocket(port);
-            String id;
-            String IP;
-            String Test;
-            Boolean TestBoolean;
+            serverSocket.setReuseAddress(true);
 
-            // Tant que le serveur est en cours d'exécution
             while (running) {
                 try {
-                    // Accepter une connexion client
                     Socket clientSocket = serverSocket.accept();
-                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-                    //Message reçu du client
-                    String message = in.readLine();
-
-                    //Récuperation du JSON envoyé
-                    Gson gsonRequest = new Gson();
-                    // Convertion des données du JSON dans un objet Java
-                    JSON.GetJSONInfoPC ping = gsonRequest.fromJson(message, JSON.GetJSONInfoPC.class);
-        
-                    //Données envoyées
-                    id = ping.getId();
-                    IP = ping.getIP();
-                    TestBoolean = Boolean.valueOf(ping.getTest());
                     
-                    //Vérirication de la présence du pc dans la BD
-                    Boolean idExist = DAO.doIDExist(id, TestBoolean);
-                    
-                    //Enregistrement du pc s'il n'existe pas dans la BD
-                    if(idExist == true){
-                        //Rien
-                    }
-                    else{
-                        DAO.addPC(id, IP, TestBoolean);
-                    }
-                    
-                    //Envoi de la réponse au client
-                    out.println("OK");
-
-                    //Fermeture de la connexion client
-                    clientSocket.close();
-                    
-                } catch (IOException e) {
+                    new Thread(new ClientHandler(clientSocket)).start();
+                } 
+                catch (IOException e) {
                     if (running) {
                         e.printStackTrace();
                     }
                 }
             }
         } catch (IOException e) {
-            if (running) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         } finally {
-            // Réinitialise `running` et ferme le ServerSocket au cas où
-            running = false;
-            if (serverSocket != null && !serverSocket.isClosed()) {
-                try {
-                    serverSocket.close();
-                } catch (IOException e) {
-                    Logger.getLogger(AnswerPing.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
+            stop();
         }
     }
+    
+    
+    //Thread qui prend en charge le client
+    private static class ClientHandler implements Runnable { 
+        private final Socket clientSocket; 
+        DAOPC DAO = new DAOPC();
+  
+        public ClientHandler(Socket socket){
+            this.clientSocket = socket; 
+        } 
+  
+        @Override
+        public void run(){ 
+            String id;
+            String IP;
+            Boolean TestBoolean;
+            String result = "";
+            
+            try {
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                
+                //Message reçu du client
+                String message = in.readLine();
+                
+                //Récuperation du JSON envoyé
+                Gson gsonRequest = new Gson();
+                // Convertion des données du JSON dans un objet Java
+                JSON.GetJSONInfoPC ping = gsonRequest.fromJson(message, JSON.GetJSONInfoPC.class);
+
+                //Données envoyées
+                id = ping.getId();
+                IP = ping.getIP();
+                TestBoolean = Boolean.valueOf(ping.getTest());
+
+                //Vérification du contenu envoyé
+                if(id == null | IP == null){
+                    result = "champ(s) inexistant";
+                }
+                else{
+                    //Vérification du contenu envoyé
+                    if(id.equals("") | IP.equals("")){
+                        result = "champ(s) inexistant";
+                    }
+                    else{
+                        //Vérification de la présence du pc dans la BD
+                        Boolean idExist = DAO.doIDExist(id, TestBoolean);
+
+                        //Enregistrement du pc s'il n'existe pas dans la BD
+                        if(idExist == true){
+                            //Rien
+                        }
+                        else{
+                            DAO.addPC(id, IP, TestBoolean);
+                        }
+                
+                        result = "OK";
+                    }
+                }
+
+                //Envoi de la réponse au client
+                out.println(result);
+                
+                //Fermeture de la connexion client
+                clientSocket.close();
+                
+            } 
+            catch (IOException ex) {
+                Logger.getLogger(AnswerPing.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
+    } 
 }

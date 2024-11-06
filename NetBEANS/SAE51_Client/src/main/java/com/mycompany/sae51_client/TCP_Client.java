@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- *
+ * Existe aussi dans SAE51 (merci d'appliquer les modifications dans les deux)
+ * Classe déjà testée dans SAE51 > Test Packages > TCP_Server > AnswerPingTest
+ * 
  * @author Maxime VALLET
  * @version 1.0
  */

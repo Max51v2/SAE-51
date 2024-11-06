@@ -13,7 +13,7 @@ import org.mindrot.jbcrypt.BCrypt;
  * Originaires de la SAE-52 (dev par Maxime VALLET) : getUserRightsFromLogin / getUsers
  * 
  * @author Maxime VALLET
- * @version 0.9
+ * @version 1.0
  */
 public class DAOusers {
     private static final String UserPostgres="postgres";
@@ -795,7 +795,7 @@ public class DAOusers {
      * @return JSONString       contenu de la table au format JSON (login/droits)
      */
     public String getUserLoginFromToken(String token, Boolean Test){
-        String RequeteSQL="SELECT login FROM users WHERE token != '' ORDER BY tokenlifecycle DESC";
+        String RequeteSQL="SELECT login, token FROM users WHERE token != '' ORDER BY tokenlifecycle DESC";
         String login="";
         String hashedToken="";
         String JSONString="";
@@ -825,12 +825,12 @@ public class DAOusers {
 
                         //Comparaison token utilisateur et le token de la BD
                         isTokenOK = BCrypt.checkpw(token, hashedToken);
+                        System.out.println("token : "+token+" / tokenDB : "+hashedToken+" / isTokenOK : "+isTokenOK.toString());
 
                         if(isTokenOK == true){
                             //Données BD
                             login = resultSet.getString("login");
                         }
- 
                     }
                 }
             }

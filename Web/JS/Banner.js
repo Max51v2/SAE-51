@@ -5,9 +5,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     //Ne pas toucher hors bug ou modif esthétique
     
-    //Définition du contenu de la banière
-    document.getElementById("id").innerHTML = sessionStorage.getItem("login");
-    document.getElementById("Rights").innerHTML = sessionStorage.getItem("droits");
+    
+    //Définition du contenu de la banière quand TokenCheck a fini de charger
+    document.addEventListener("TomcatTestFinished", function() {
+        document.getElementById("id").innerHTML = sessionStorage.getItem("login");
+        document.getElementById("Rights").innerHTML = sessionStorage.getItem("droits");
+    });
+    
     
     //Redirection vers la page d'aide
     document.getElementById("submitHelp").onclick = function () {

@@ -6,8 +6,10 @@ package Main;
  * ATTENTION : Veuillez à lancer le projet avant d'executer les tests sinon ils vont échouer
  * 
  * @author Maxime VALLET
- * @version 0.3
+ * @version 0.5
  */
+import Autre.TokenExpirationTest;
+import Autre.Warning;
 import DAO.DAOusersTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -19,6 +21,7 @@ import ServletsUser.DeleteUserTest;
 import ServletsUser.GetRedirectionTest;
 import ServletsUser.ListUsersTest;
 import ServletsUser.SetPasswordTest;
+import TCP_Server.AnswerPingTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -30,6 +33,9 @@ import ServletsUser.SetPasswordTest;
     GetRedirectionTest.class,
     ListUsersTest.class,
     DAOusersTest.class,
-    SetPasswordTest.class
+    SetPasswordTest.class,
+    AnswerPingTest.class,
+    TokenExpirationTest.class,
+    Warning.class //Laisser en dernier
 })
 public class RunTests {}
