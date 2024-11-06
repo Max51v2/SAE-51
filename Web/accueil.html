@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <title>Login</title>
-    <link rel="icon" type="images" href="./images/Logo.png">
+    <link rel="icon" type="images" href="./images/flavicon.webp" loading="lazy">
 
     <!-- CSS pour la bannière -->
     <link rel="stylesheet" href="./CSS/BannerDiv.css">
@@ -34,15 +34,15 @@
 
 
 <body>
-    <div id="rootdiv">
+    <div id="rootDiv">
         <div id="bannerDiv">
             <div id="user">
-                <img id="logoUser" src="./images/utilisateur.png" alt="Logo">
+                <img id="logoUser" src="./images/utilisateur.webp">
                 <p id="id"></p>
-                <img id="logoRights" src="./images/droits.png" alt="Logo">
+                <img id="logoRights" src="./images/droits.webp">
                 <p id="Rights"></p>
                 <button id="submitHelp" type="button">
-                    <p><img id="logoHelp" src="./images/help.png" alt="Logo"> Aide</p>
+                    <p><img id="logoHelp" src="./images/help.webp"> Aide</p>
                 </button>
             </div>
             <div id="pageName">
@@ -50,7 +50,7 @@
             </div>
             <div id="disconnect">
                 <button id="submitDisconnect" type="button">
-                    <p><img id="logoDisconnect" src="./images/deconnexion.png" alt="Logo"> Se déconnecter</p>
+                    <p><img id="logoDisconnect" src="./images/deconnexion.webp"> Se déconnecter</p>
                 </button> 
             </div>
         </div>
@@ -63,11 +63,11 @@
 
 
 <!-- ne pas toucher aux 2 scripts ci-dessous SAUF en cas de BUG -->
-<script src="./JS/URL.js" defer></script>
-<script src="./JS/TokenCheck.js" defer></script>
+<script src="./JS/URL.js" async></script>
+<script src="./JS/TokenCheck.js" async></script>
 
 <!-- Script qui remplit la bannière (login + droits) et qui contient les eventListener pour les boutons help et disconnect -->
-<script src="./JS/Banner.js" defer></script>
+<script src="./JS/Banner.js" async></script>
 
 <!-- Script de la page -->
 <script>

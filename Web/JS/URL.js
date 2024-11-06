@@ -1,19 +1,16 @@
 //Auteur : Maxime VALLET
-//Version : 1.5
+//Version : 1.6
 
 
 //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
 window.onunload = function(){reload()};
 
-
-
-// Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Nginx)
+// Adresse IP des serveurs
 var currentUrl = window.location.href;
 var url = new URL(currentUrl);
 window.ServerIP = url.hostname;
 window.currentPage = url.pathname.split('/').pop();
 window.localEditing = false;
-
 
 
 //Si ouvert en local => pas d'adresse IP
@@ -25,12 +22,15 @@ if(window.ServerIP === ""){
 
     window.localEditing = true;
 }
+else{
+    //Rien
+}
 
+//Test Tomcat
+TomcatTest();
 
 
 //Test de l'accès à Tomcat
-TomcatTest();
-
 async function TomcatTest() {
     try {
         await fetch(`https://${window.ServerIP}:8443/SAE51/TestTomcat`, {
@@ -51,9 +51,6 @@ async function TomcatTest() {
         document.dispatchEvent(new Event("TomcatTestFinished"));
     }
 }
-
-
-
 
 
 //Vérification du résultat fourni par le servlet

@@ -1,5 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 2.0
+//Version : 2.2
 
 
 //Token
@@ -12,16 +12,20 @@ document.addEventListener("TomcatTestFinished", function() {
     if (window.TomcatOK === true) {
         TokenCheck();
     } 
-    else {
-        console.log("TokenCheck => Info : l'authentification et la redirection sont désactivés")
-        
+    else{
         //Si Tomcat est down et que l'on édit pas en local on renvoi l'utilisateur vers la page de login
         if(window.localEditing === false){
-            //Redirection vers la page de login
-            goToLogin();
+            //Pas de redirection si sur la page d'accueil
+            if(window.currentPage === "help.html"){
+                //Rien
+            }
+            else{
+                //Redirection vers la page de login
+                goToLogin();
+            }
         }
         else{
-            //Rien
+            console.log("TokenCheck => Info : l'authentification et la redirection sont désactivés")
         }
     }
 });
@@ -31,28 +35,19 @@ document.addEventListener("TomcatTestFinished", function() {
 //Vérification de l'existance du token dans sessionStorage
 function TokenCheck(){
     if (token) {
-        if(token === ""){
-            
-
-            console.log("redirection")
-        }
-        else{
-            console.log("TokenCheck => token : "+token);
+        console.log("TokenCheck => token : "+token);
     
-            //Vérification du token auprès du Servlet
-            fetch(`https://${ServerIP}:8443/SAE51/CheckToken`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: token, Test: false })
-            })
-            .then(response => response.json())
-            .then(CheckTokenResult);
-        }
+        //Vérification du token auprès du Servlet
+        fetch(`https://${ServerIP}:8443/SAE51/CheckToken`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: token, Test: false })
+        })
+        .then(response => response.json())
+        .then(CheckTokenResult);
     } 
     else {
         console.log("TokenCheck => erreur : token inexistant");
-    
-        token = "";
 
         //Redirection
         GetRedirection();
@@ -101,8 +96,7 @@ function GetRedirectionResult(response){
 
         //Redirection
         if(response.redirect === "none"){
-            //On crée un événement afin de lancer le script qui remplit la bannière
-            document.dispatchEvent(new Event("TokenCheckDone"));
+            //Rien
         }
         else{
             window.location.href = response.redirect;

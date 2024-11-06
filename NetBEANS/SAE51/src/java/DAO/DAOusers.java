@@ -96,7 +96,7 @@ public class DAOusers {
      * @return        droits de l'utilisateur
      */
     public String getUserRightsFromLogin(String login, Boolean Test){
-        String RequeteSQL="SELECT droits FROM users WHERE login = ?";
+        String RequeteSQL="SELECT droits FROM users WHERE login = ? ORDER BY tokenlifecycle DESC";
         String rights="";
         
         //Selection de la BD
@@ -137,10 +137,9 @@ public class DAOusers {
      */
     public String getUserRightsFromToken(String token, Boolean Test){
         String RequeteSQL="SELECT token, droits FROM users WHERE token != '' ORDER BY tokenlifecycle DESC";
-        String droits="";
+        String droits="Aucun";
         String hashedToken="";
         Boolean isTokenOK = false;
-        Integer match = 0;
         
         //Selection de la BD
         changeConnection(Test);
@@ -155,34 +154,19 @@ public class DAOusers {
             
             // Exécution de la requête
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    //Si on a déjà trouvé le token dans la BD, on arrête de chercher
+                while (resultSet.next() & isTokenOK == false) {
+                    //Données BD
+                    hashedToken = resultSet.getString("token");
+
+                    //Comparaison token utilisateur et le token de la BD
+                    isTokenOK = BCrypt.checkpw(token, hashedToken);
+
                     if(isTokenOK == true){
-                        
-                    }
-                    else{
                         //Données BD
-                        hashedToken = resultSet.getString("token");
-
-                        //Comparaison token utilisateur et le token de la BD
-                        isTokenOK = BCrypt.checkpw(token, hashedToken);
-
-                        if(isTokenOK == true){
-                            //Données BD
-                            droits = resultSet.getString("droits");
-
-                            //Compteur
-                            match += 1;
-                        }
+                        droits = resultSet.getString("droits");
                     }
                 }
             }
-            
-            //Pas de token dans la BD
-            if(match == 0){
-                droits = "Aucun";
-            }
-            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -825,7 +809,6 @@ public class DAOusers {
 
                         //Comparaison token utilisateur et le token de la BD
                         isTokenOK = BCrypt.checkpw(token, hashedToken);
-                        System.out.println("token : "+token+" / tokenDB : "+hashedToken+" / isTokenOK : "+isTokenOK.toString());
 
                         if(isTokenOK == true){
                             //Données BD

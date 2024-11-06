@@ -1,5 +1,6 @@
 package ServletsUser;
 
+import Autre.ProjectConfig;
 import DAO.DAOusers;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -105,8 +106,12 @@ public class CheckPassword extends HttpServlet {
                                 token = RandomStringUtils.randomAlphanumeric(32);
                             }
 
+                            //Récupération du nombre de passes
+                            ProjectConfig conf = new ProjectConfig();
+                            Integer rounds = conf.getIntValue("TokenHashRounds");
+                            
                             //génération du hash du token
-                            String hashedToken = BCrypt.hashpw(token, BCrypt.gensalt(8));
+                            String hashedToken = BCrypt.hashpw(token, BCrypt.gensalt(rounds));
 
                             //Enregistrement du token dans la DB
                             DAO.setToken(hashedToken, login, 24, TestBoolean);
