@@ -10,20 +10,19 @@ Afin d'installer la VM, merci de vous réferer la partie "VM" du fichier "README
 #Projet
 à faire (liste non exhaustive) :
 Frontend :
-  => page web gestion des utilisateurs (tableau contenant les utilisateurs)
-  => page web qui référence les machines enregistrées + onglet pour séléctionner le réseau à scanner afin d'ajouter des machines
-  => page web qui donne des info sur la machine (CDC info statiques) + définition des seuils d'alerte des différentes métriques surveillées (CDC partie dynamique)
+  => page web gestion des utilisateurs : affichage + suppression + modif MDP
+  => page web gestion des machines : affichage + suppression + modification des droits
+  => page web qui donne des info sur la machine (CDC info statiques) + définition des seuils d'alerte des différentes métriques surveillées (CDC partie dynamique) + allumage/extinction/redémarrage machine
   => page web notifications
-  => JS pages Web
+  => JS pages Web mentionnées précédement
   
 - Backend
-  => tests Servlets + DAO users
-  => client TCP chiffré
-  => suppression de pc + liste des pc
+  => client/serveur TCP chiffré
   => gestion des droits utilisateur par ordinateur
   => récuppération info de suivi machines en continu > lancé avec OnStart (récupération en deux parties : statique (1 fois) et dynamique (en continu + mise en buffer))
   => le servlet viendra recup les infos  de la classe précédente et donnera le temps depuis la dernière act
   => suivi des métriques renvoyées + log et notif mail si pb détecté
+  => Tests unitaires des fonctionnalitées mentionnées précédement (hors chiffrement client/serveur TCP)
 
 - Client :
   => script Pshell lancé au démarrage
@@ -42,14 +41,13 @@ fait :
     => identification login + MDP / token
     => expiration des tokens après une periode d'inactivité
     => servlets et DAO utilisateurs
-    => suppression token
     => Gestion des permissions par page (+redirection)
     => Serveur TCP non chiffré
-    => Ajout PC
+    => Ajout + listage + suppression pc
     => Recup informations via fichier de config
-    => Tests servlets utilisateurs
+    => Tests unitaires : servlets utilisateurs + DAOusers (partiel) + serveur TCP + expiration des tokens
 - Frontend :
-    => page de login
+    => page de login + aide
     => template de page Web
 -Client
     => Client TCP non chiffré
@@ -90,6 +88,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 45h
+- maxime : 50h
 - erwann : 0h
 - gabin :
