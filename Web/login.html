@@ -223,6 +223,7 @@
                 sessionStorage.setItem("token", response.token);
 
                 //Redirection page
+                console.log(window.currentPage);
                 fetch(`https://${window.ServerIP}:8443/SAE51/GetRedirection`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
