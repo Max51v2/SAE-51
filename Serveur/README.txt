@@ -329,12 +329,12 @@ Version : 1.2
 |    |   sudo rm ./netbeans.deb
 |    |
 |    |   *Lancer NetBEANS (obligatoire)
-|    |   => "sudo netbeans --jdkhome /usr/java/[version JDK]" ou Start.sh
+|    |   => /home/$USER/Bureau/SAE-51/Serveur/Start.sh
 |    |
 |    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/$USER/Bureau/SAE-51/NetBEANS/SAE51  
 |    |
 |    |   *Ajout serveur Tomcat
-|    |   Tools > Server > Apache Tomcat or TomEE > Server location : "/opt/tomcat/" | username : "admin | login : "leffe"
+|    |   Tools > Server > Apache Tomcat or TomEE > Server location : "/opt/tomcat/" | username : "admin" | login : "leffe"
 |    |   
 |    +---------------------------------------------------------
 |
