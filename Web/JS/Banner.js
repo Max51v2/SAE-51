@@ -11,6 +11,9 @@ document.getElementById("submitHelp").onclick = function () {
     var currentUrl = window.location.href;
     var url = new URL(currentUrl);
     PreviousPage = url.pathname.split('/').pop();
+    if(PreviousPage == ""){
+        PreviousPage = "login.html";
+    }
     sessionStorage.setItem("PreviousPage", PreviousPage);
 
     window.location.href = 'help.html';

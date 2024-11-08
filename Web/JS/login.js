@@ -7,6 +7,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
     //Redirection vers la page d'aide
     document.getElementById("submitHelp").onclick = function () {
         window.location.href = 'help.html';
+
+        var currentUrl = window.location.href;
+        var url = new URL(currentUrl);
+        PreviousPage = url.pathname.split('/').pop();
+        if(PreviousPage == ""){
+            PreviousPage = "login.html";
+        }
+        sessionStorage.setItem("PreviousPage", PreviousPage);
     };
 
         
