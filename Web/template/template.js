@@ -1,4 +1,4 @@
-//Auteur(s) JS : Maxime VALLET, ?
+//Auteur(s) JS : ?
 //Version : ?
 
     

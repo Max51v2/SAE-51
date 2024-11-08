@@ -66,7 +66,6 @@ body{
     align-items: center;
 }
 #loginBox {
-    height: 760px;
     width: 450px;
     background-color: #f0f5f5;
     border-radius: 25px;
@@ -98,12 +97,14 @@ body{
     font-size: 18px;
 }
 #login{
-    width: 350px;
+    width: 342px;
     height: 30px;
+    margin-bottom: 15px;
 }
 #password{
-    width: 350px;
+    width: 342px;
     height: 30px;
+    margin-bottom: 30px;
 }
 #submit{
     align-items: center;
@@ -113,7 +114,9 @@ body{
     color: white;
     cursor: pointer;
     border-radius: 10px;
+    border-style: solid;
     margin: 0;
+    margin-bottom: 45px;
 }
 #style{
     height: fit-content;

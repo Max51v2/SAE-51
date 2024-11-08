@@ -1,5 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 1.6
+//Version : 1.7
 
 
 //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
@@ -9,8 +9,14 @@ window.onunload = function(){reload()};
 var currentUrl = window.location.href;
 var url = new URL(currentUrl);
 window.ServerIP = url.hostname;
-window.currentPage = url.pathname.split('/').pop();
 window.localEditing = false;
+window.currentPage = url.pathname.split('/').pop();
+
+
+//Vérification de la page act (si vide on est dans / aka login.html)
+if(window.currentPage == ""){
+    window.currentPage = "login.html";
+}
 
 
 //Si ouvert en local => pas d'adresse IP
