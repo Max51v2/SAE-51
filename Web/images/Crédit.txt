@@ -1,1 +1,4 @@
 Source icônes : Flaticon
+
+Merci de redimensionner les images à une taille résonnable et dans le format webp afin de les alléger
+=> convert -resize [pourcentage]% [image1.format] [image2].webp

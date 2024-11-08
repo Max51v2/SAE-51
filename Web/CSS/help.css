@@ -82,6 +82,9 @@ li {
     font-size: larger;
     list-style-type: none;
 }
+#resources{
+    padding-top: 50px;
+}
 #style{
     height: fit-content;
     width: fit-content;
