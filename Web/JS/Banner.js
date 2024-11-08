@@ -1,5 +1,5 @@
 //Auteur(s) JS : Maxime VALLET
-//Version : 1.1
+//Version : 1.2
 
 
 document.getElementById("id").innerHTML = sessionStorage.getItem("login");
@@ -42,6 +42,6 @@ function DeleteTokenResult(response){
         window.location.href = 'login.html';
     }
     else{
-        console.log("accueil => DeleteTokenResult => Erreur : "+response.erreur);
+        console.log("Banner.js => DeleteTokenResult() => Erreur : "+response.erreur);
     }
 }

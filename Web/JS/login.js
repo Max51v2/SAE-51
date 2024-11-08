@@ -1,5 +1,5 @@
 //Auteur JS : Maxime VALLET
-//Version : 1.2
+//Version : 1.3
 
 //Code ici
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
         else{
             //On affiche l'erreur
-            console.log("login => CheckPasswordResult => Erreur : "+response.erreur);
+            console.log("login.js => CheckPasswordResult() => Erreur : "+response.erreur);
         }
     }
 
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
         else{
             //On affiche l'erreur
-            console.log("login => GetRedirectionResult => Erreur : "+response.erreur);
+            console.log("login.js => GetRedirectionResult() => Erreur : "+response.erreur);
 
             //Redirection vers le login s'il n'y pas de règle de redirection dans la BD
             if(response.erreur === "Pas de redirection (BD)"){

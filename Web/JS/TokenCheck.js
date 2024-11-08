@@ -1,5 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 2.2
+//Version : 2.3
 
 
 //Token
@@ -25,7 +25,7 @@ document.addEventListener("TomcatTestFinished", function() {
             }
         }
         else{
-            console.log("TokenCheck => Info : l'authentification et la redirection sont désactivés")
+            console.log("TokenCheck.js => Info : l'authentification et la redirection sont désactivés")
         }
     }
 });
@@ -35,8 +35,6 @@ document.addEventListener("TomcatTestFinished", function() {
 //Vérification de l'existance du token dans sessionStorage
 function TokenCheck(){
     if (token) {
-        console.log("TokenCheck => token : "+token);
-    
         //Vérification du token auprès du Servlet
         fetch(`https://${ServerIP}:8443/SAE51/CheckToken`, {
             method: "POST",
@@ -47,7 +45,7 @@ function TokenCheck(){
         .then(CheckTokenResult);
     } 
     else {
-        console.log("TokenCheck => erreur : token inexistant");
+        console.log("TokenCheck.js => TokenCheck() => Info : token inexistant (sessionStorage)");
 
         //Redirection
         GetRedirection();
@@ -68,7 +66,7 @@ function CheckTokenResult(response) {
     }
     else{
         //Suppression du token stocké s'il est érroné
-        console.log("TokenCheck => CheckTokenResult => suppression token");
+        console.log("TokenCheck.js => CheckTokenResult() => Info : suppression token");
         sessionStorage.setItem("token", "");
 
         //Redireciton vers login.html afin de se reconnecter
@@ -92,7 +90,7 @@ function GetRedirection(){
 function GetRedirectionResult(response){
     //Vérification d'erreur
     if(response.erreur === "none"){
-        console.log("tokenCheck => GetRedirectionResult => redirection : "+response.redirect);
+        console.log("tokenCheck.js => GetRedirectionResult() => Info : redirection vers \""+response.redirect+"\"");
 
         //Redirection
         if(response.redirect === "none"){
@@ -104,11 +102,11 @@ function GetRedirectionResult(response){
     }
     else{
         //On affiche l'erreur
-        console.log("tokenCheck => GetRedirectionResult => erreur : "+response.erreur);
+        console.log("tokenCheck.js => GetRedirectionResult() => Erreur : "+response.erreur);
 
         //Redirection vers le login s'il n'y pas de règle de redirection dans la BD
         if(response.erreur === "Pas de redirection (BD)"){
-            //Redireciton vers login.html qui en théorie en a bien une
+            //Redirection vers login.html qui en théorie en a bien une
             goToLogin();
         }
     }

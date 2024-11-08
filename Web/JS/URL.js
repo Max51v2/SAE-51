@@ -1,5 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 1.7
+//Version : 1.8
 
 
 //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
@@ -21,7 +21,7 @@ if(window.currentPage == ""){
 
 //Si ouvert en local => pas d'adresse IP
 if(window.ServerIP === ""){
-    console.log("URL => Info : vous éditez le fichier en local")
+    console.log("URL.js => Info : vous éditez le fichier en local")
 
     //Définition d'un dresse par défaut
     window.ServerIP = "localhost";
@@ -47,7 +47,7 @@ async function TomcatTest() {
         .then(response => response.json())
         .then(TestTomcatResult)
         .catch(error => {
-            console.log("URL => Erreur => Le serveur Tomcat ne répond pas");
+            console.log("URL.js => TomcatTest() => Erreur : le serveur Tomcat ne répond pas");
             window.TomcatOK = false;
         });
     } catch (error) {
@@ -62,7 +62,7 @@ async function TomcatTest() {
 //Vérification du résultat fourni par le servlet
 function TestTomcatResult(response){
     if(response.erreur === "none"){
-        console.log("URL => Info => Tomcat OK")
+        console.log("URL.js => TestTomcatResult() => Info : Tomcat OK")
         window.TomcatOK = true;
     }
 }
