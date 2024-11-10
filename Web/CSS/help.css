@@ -80,6 +80,7 @@ li {
     width: 18px;
     height: 18px;
     padding-left: 10px;
+    cursor: pointer;
 }
 #documentation{
     padding-top: 50px;
