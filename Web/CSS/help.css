@@ -6,6 +6,13 @@ body {
     align-items: center;
     font-family: 'Arial', sans-serif;
 }
+li {
+    height: 30px;
+    font-size: larger;
+    list-style-type: none;
+    justify-content: center;
+    align-items: center;
+}
 #rootDiv{
     height: 100vh;
     width: 100vw;
@@ -63,32 +70,27 @@ body {
     align-items: center;
 }
 #pageContentDiv {
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
 }
 .logoContact{
     width: 18px;
     height: 18px;
     padding-left: 10px;
 }
-#contact{
-    padding-top: 120px;
-}
-li {
-    height: 30px;
-    font-size: larger;
-    list-style-type: none;
-    justify-content: center;
-    align-items: center;
-}
 #documentation{
     padding-top: 50px;
 }
 #submitJavadoc{
+    height: 18px;
+    background-color: white;
+    border: 0px;
+}
+#submitVMDoc{
     height: 18px;
     background-color: white;
     border: 0px;

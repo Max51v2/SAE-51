@@ -15,7 +15,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  *
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.2
  */
 @WebServlet(name = "AddUser", urlPatterns = {"/AddUser"})
 public class AddUser extends HttpServlet {
@@ -85,8 +85,11 @@ public class AddUser extends HttpServlet {
             else{
                 //Récuppération des droits de l'utilisateur
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
+                
+                //Récuppération des droits d'accès au servlet
+                String access = DAO.getServletRights("AddUser", rights, false);
 
-                if(rights.equals("Admin")){
+                if(access.equals("true")){
                     //On vérifie si l'utilisateur n'existe pas
                     doLoginExist = DAO.doLoginExist(login, TestBoolean);
 

@@ -15,7 +15,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  *
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.2
  */
 @WebServlet(name = "SetPassword", urlPatterns = {"/SetPassword"})
 public class SetPassword extends HttpServlet {
@@ -75,29 +75,35 @@ public class SetPassword extends HttpServlet {
                 //Récuppération des droits de l'utilisateur
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
 
-                if(rights.equals("Admin")){
-                    //génération du hash du MDP
-                    hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
-                        
-                    //Modification du MDP
-                    DAO.setPassword(target, hashedPassword, TestBoolean);
-                    
-                    jsonString = "{\"erreur\":\"none\"}";
-                }
-                else if(rights.equals("Utilisateur")){
-                    //Récupération du login de l'utilisateur qui a envoyé la demande
-                    login = DAO.getUserLoginFromToken(token, TestBoolean);
-                    
-                    //Si l'utilisateur qui a fait la demande veut modifier SON MDP
-                    if(login.equals(target)){
+                //Récuppération des droits d'accès au servlet
+                String access = DAO.getServletRights("SetPassword", rights, false);
+
+                if(access.equals("true")){
+                    if(rights.equals("Admin")){
                         //génération du hash du MDP
                         hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
 
                         //Modification du MDP
                         DAO.setPassword(target, hashedPassword, TestBoolean);
+
+                        jsonString = "{\"erreur\":\"none\"}";
                     }
-                    else{
-                        jsonString = "{\"erreur\":\"permission refusée\"}";
+                    //Un utilisateur peut uniquement changer son MDP
+                    else if(rights.equals("Utilisateur")){
+                        //Récupération du login de l'utilisateur qui a envoyé la demande
+                        login = DAO.getUserLoginFromToken(token, TestBoolean);
+
+                        //Si l'utilisateur qui a fait la demande veut modifier SON MDP
+                        if(login.equals(target)){
+                            //génération du hash du MDP
+                            hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+
+                            //Modification du MDP
+                            DAO.setPassword(target, hashedPassword, TestBoolean);
+                        }
+                        else{
+                            jsonString = "{\"erreur\":\"permission refusée\"}";
+                        }
                     }
                 }
                 else{

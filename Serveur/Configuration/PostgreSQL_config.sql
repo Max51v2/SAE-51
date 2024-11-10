@@ -1,8 +1,8 @@
 --Auteur original : Maxime VALLET (SAE 52)
 --Modifications : Maxime VALLET
 --  => modification table users : expiration des tokens
---  => Ajout tables : web_pages_access / pc / notifications
---Version : 0.7
+--  => Ajout tables : web_pages_access / pc / notifications / servlet_access
+--Version : 0.8
 
 
 --####################### BD sae_51 #######################
@@ -23,8 +23,6 @@ CREATE TABLE users (
     token text,
     tokenlifecycle integer
 );
-
-
 
 --MDP hashés avec Bcrypt (12 passes)
 --Compte admin par défaut (MDP "Admin")
@@ -53,14 +51,13 @@ INSERT INTO users (login, nom, prenom, droits, hash, token, tokenlifecycle) VALU
 
 
 
+
 --Table contenant les informations sur les droits d'accès aux pages
 CREATE TABLE web_pages_access (
     name text,
     droits text,
     redirect text
 );
-
-
 
 --Droits d'accès aux pages : 
 -- name (ex : 'login.html')
@@ -89,11 +86,14 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('accueil.html', 'A
 
 
 
+
 --Table contenant les pc à monitorer
 CREATE TABLE pc (
     id text PRIMARY KEY,
     ip text
 );
+
+
 
 
 --Table contenant les notifications de problèmes
@@ -103,6 +103,56 @@ CREATE TABLE notifications (
     problem text,
     date DATE DEFAULT CURRENT_DATE
 );
+
+
+
+
+--Table contenant les droits d'accès des différents servlets
+-- name : nom du servlet (ex : "CheckToken")
+-- role : droits de l'utilisateur ("Admin" | "Utilisateur" | "Aucun")
+-- access : droit d'accès ("true" | "false")
+CREATE TABLE servlet_access (
+    name text,
+    role text,
+    access text
+);
+
+--CheckToken (inutile)
+
+--TestTomcat (inutile)
+
+--CheckPassword (inutile)
+
+--AddUser
+INSERT INTO servlet_access (name, role, access) VALUES ('AddUser', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('AddUser', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('AddUser', 'Aucun', 'false');
+
+--DeleteUser
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUser', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUser', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUser', 'Aucun', 'false');
+
+--ListUsers
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsers', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsers', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsers', 'Aucun', 'false');
+
+--SetPassword
+INSERT INTO servlet_access (name, role, access) VALUES ('SetPassword', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('SetPassword', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('SetPassword', 'Aucun', 'false');
+
+--DeleteToken
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Aucun', 'false');
+
+--GetRedirection
+INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Aucun', 'true');
+
 
 
 
@@ -153,6 +203,22 @@ CREATE TABLE notifications (
     problem text,
     date DATE DEFAULT CURRENT_DATE
 );
+
+
+--Table contenant les droits d'accès des différents servlets
+-- name : nom du servlet (ex : "CheckToken")
+-- role : droits de l'utilisateur ("Admin" | "Utilisateur" | "Aucun")
+-- access : droit d'accès ("true" | "false")
+CREATE TABLE servlet_access (
+    name text,
+    role text,
+    access text
+);
+
+--Test
+INSERT INTO servlet_access (name, role, access) VALUES ('Test', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('Test', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('Test', 'Aucun', 'false');
 
 
 -- fin contenu de la BD sae_51

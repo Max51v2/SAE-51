@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.2
  */
 @WebServlet(name = "ListUsers", urlPatterns = {"/ListUsers"})
 public class ListUsers extends HttpServlet {
@@ -73,7 +73,10 @@ public class ListUsers extends HttpServlet {
                 //Récuppération des droits de l'utilisateur
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
 
-                if(rights.equals("Admin")){
+                //Récuppération des droits d'accès au servlet
+                String access = DAO.getServletRights("ListUsers", rights, false);
+
+                if(access.equals("true")){
                     //Récuppération des utilisateurs
                     jsonString = DAO.getUsers(TestBoolean);
                 }

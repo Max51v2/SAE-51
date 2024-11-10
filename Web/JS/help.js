@@ -24,6 +24,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
         window.location.href = "./Javadoc/index.html";
     };
 
+    //Redirection vers la page contenant la doc VM
+    document.getElementById("submitVMDoc").onclick = function () {
+        window.location.href = "./documentation/Doc_VM.txt";
+    };
+
     //Redirection vers la page contenant la doc serveur
     document.getElementById("submitServerDoc").onclick = function () {
         window.location.href = "./documentation/Doc_Serveur.txt";
