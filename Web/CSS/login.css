@@ -32,8 +32,6 @@ body{
     color: #BDBDBD;
     border: 0px;
     font-size: large;
-}
-#submitHelp p{
     display: flex;
     align-items: center;
     margin: 0;

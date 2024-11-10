@@ -27,6 +27,10 @@
     padding-right: 10px;
 }
 #submitHelp{
+    display: flex;
+    align-items: center;
+    margin: 0;
+    cursor: pointer;
     width: 120px;
     height: 50px;
     background-color: #333333;
@@ -34,12 +38,6 @@
     border: 0px;
     font-family: "Times New Roman";
     font-size: large;
-}
-#submitHelp p{
-    display: flex;
-    align-items: center;
-    margin: 0;
-    cursor: pointer;
 }
 #logoHelp{
     width: 30px;
@@ -70,11 +68,8 @@
     border: 0px;
     font-family: "Times New Roman";
     font-size: large;
-}
-#submitDisconnect p{
     display: flex;
     align-items: center;
-    margin: 0;
     cursor: pointer;
 }
 #logoDisconnect{

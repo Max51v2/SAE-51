@@ -39,17 +39,14 @@ li {
 #submitLogin{
     width: 120px;
     height: 50px;
-    background-color: #333333;
-    color: #BDBDBD;
-    border: 0px;
-    font-family: "Times New Roman";
-    font-size: large;
-}
-#submitLogin p{
     display: flex;
     align-items: center;
     margin: 0;
     cursor: pointer;
+    background-color: #333333;
+    color: #BDBDBD;
+    border: 0px;
+    font-size: large;
 }
 #logoLogin{
     width: 30px;
@@ -69,12 +66,14 @@ li {
     flex-direction: row;
     align-items: center;
 }
-#pageContentDiv {
-    height: 100%;
+#pageContentDiv{
+    flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
+
     justify-content: center;
+    align-items: center;
+    
     text-align: center;
 }
 .logoContact{
