@@ -76,11 +76,42 @@ body {
     padding-left: 10px;
 }
 #contact{
-    padding-top: 300px;
+    padding-top: 120px;
 }
 li {
+    height: 30px;
     font-size: larger;
     list-style-type: none;
+    justify-content: center;
+    align-items: center;
+}
+#documentation{
+    padding-top: 50px;
+}
+#submitJavadoc{
+    height: 18px;
+    background-color: white;
+    border: 0px;
+}
+#submitServerDoc{
+    height: 18px;
+    background-color: white;
+    border: 0px;
+}
+#submitClientDoc{
+    height: 18px;
+    background-color: white;
+    border: 0px;
+}
+#submitWebDoc{
+    height: 18px;
+    background-color: white;
+    border: 0px;
+}
+#submitProjectDoc{
+    height: 18px;
+    background-color: white;
+    border: 0px;
 }
 #resources{
     padding-top: 50px;
