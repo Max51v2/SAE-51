@@ -36,7 +36,7 @@ public class ProjectConfig {
         // Vérifie si le fichier existe
         File file = new File(configPathString);
         
-        //Vérification de l'existance du fichier contenant l'id
+        //Vérification de l'existance du fichier contenant les données de configuration
         if (file.exists()) {
             //Lecture du fichier
             try {
