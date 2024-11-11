@@ -2,3 +2,7 @@
 *.id
 /NetBEANS/SAE51_Client/nbproject/private/
 /NetBEANS/SAE51_Client/target/
+/app/Client/.idea
+/app/Client/target
+/app/Client/.gitignore
+/app/Client/src/test/
