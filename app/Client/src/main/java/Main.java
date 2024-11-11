@@ -16,7 +16,7 @@ public class Main {
         // Pour Java 10+ pour obtenir la RAM totale disponible
         if (osBean instanceof com.sun.management.OperatingSystemMXBean) {
             com.sun.management.OperatingSystemMXBean sunOSBean = (com.sun.management.OperatingSystemMXBean) osBean;
-            System.out.println("Mémoire physique totale : " + sunOSBean.getTotalPhysicalMemorySize() + " Mo");
+            System.out.println("Mémoire physique totale : " + sunOSBean.getTotalPhysicalMemorySize() / (1024 * 1024) + " Mo");
             System.out.println("Mémoire physique libre : " + sunOSBean.getFreePhysicalMemorySize() / (1024 * 1024) + " Mo");
         }
         SystemInfo systemInfo = new SystemInfo();
