@@ -78,7 +78,7 @@ Organisation du projet :
     => Serveur/Configuration : fichiers de configuration des serveurs + script de la BD PostgreSQL
 - NetBEANS : 
     => NetBEANS/SAE51 : backend du projet en Java (servlets, serveurs TCP, ...)
-    => NetBEANS/SAE51_Client : projet Java qui récuppère les données sur la machine / Serveurs TCP : découverte et envoi 
+    => NetBEANS/SAE51_Client : projet Java en cours de déplacement vers /app/Client (Erwann) 
     => NetBEANS/lib : librairies du projet Java (non inclus dans NetBeans par défaut)
     => NetBEANS/Templates : exemples de classes préfaites (DAO et Servlet)
 - Web :
@@ -86,6 +86,8 @@ Organisation du projet :
     => Web/JS : scripts JS (scripts présents sur plusieurs pages)
     => Web/images : logos, icones...
     => Web/template : page Web par défaut (celle à utiliser (copier-coller) lors de la création d'une nouvelle page web)
+- App :
+    => app/Client : Enregistrement de la machine auprès du serveur / récupération des infos statiques et dynamiques et envoi au serveur
 
 
 
