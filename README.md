@@ -10,6 +10,7 @@ Afin d'installer la VM, merci de vous référer à la partie "VM" du fichier "RE
 #Projet
 à faire (liste non exhaustive) :
 Frontend :
+  => Ajouter des messages d'erreur (erreurs envoyées par les servlets => voir Javadoc Servlets)
   => Page web gestion des utilisateurs : affichage + suppression + modif MDP
   => Page web gestion des machines : affichage + suppression + modification des droits
   => Page web qui donne des informations sur la machine (CDC info statiques) + définition des seuils d'alerte des différentes métriques surveillées (CDC partie dynamique) + allumage/extinction/redémarrage machine
