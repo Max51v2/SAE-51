@@ -27,14 +27,15 @@ public class DAOusersTest {
         String role = "Admin";
         String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
         Integer tokenLifeCycle = 999;
+        Boolean Test = true;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
-        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
-        //Récuppération du MDP hashé
-        String result = DAO.getUserPasswordHash(login, true);
+        //Récupération du MDP hashé
+        String result = DAO.getUserPasswordHash(login, Test);
         
         //Suppression de l'utilisateur
-        DAO.deleteUser(login, true);
+        DAO.deleteUser(login, Test);
         
         //Résultat attendu
         String ExpResult = hashedPassword;
@@ -61,13 +62,13 @@ public class DAOusersTest {
         Integer tokenLifeCycle = 999;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
         Boolean Test = true;
-        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
-        //Récuppération des droits de l'utilisateur
+        //Récupération des droits de l'utilisateur
         String result = DAO.getUserRightsFromLogin(login, Test);
         
         //Suppression de l'utilisateur
-        DAO.deleteUser(login, true);
+        DAO.deleteUser(login, Test);
         
         //Résultat attendu
         String ExpResult = role;
@@ -94,13 +95,13 @@ public class DAOusersTest {
         Integer tokenLifeCycle = 999;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
         Boolean Test = true;
-        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
-        //Récuppération des droits de l'utilisateur
+        //Récupération des droits de l'utilisateur
         String result = DAO.getUserRightsFromToken("10101010101010101010101010101010", Test);
         
         //Suppression de l'utilisateur
-        DAO.deleteUser(login, true);
+        DAO.deleteUser(login, Test);
         
         //Résultat attendu
         String ExpResult = role;
@@ -117,7 +118,34 @@ public class DAOusersTest {
      */
     @Test
     public void testSetToken() {
+        //Ajout d'un utilisateur ayant les droits d'admin
+        String login = "Admin1";
+        String nom = "Admin";
+        String prenom = "Originel";
+        String role = "Admin";
+        String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
+        Integer tokenLifeCycle = 999;
+        String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
+        Boolean Test = true;
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, "", Test);
         
+        //Définition du token de l'utilisateur
+        DAO.setToken(token, login, tokenLifeCycle, Test);
+        
+        //Récupération du token de l'utilisateur
+        String result = DAO.getToken(login, Test);
+        
+        //Suppression de l'utilisateur
+        DAO.deleteUser(login, Test);
+        
+        //Résultat attendu
+        String ExpResult = token;
+        
+        //Résultat
+        System.out.println("resultat testSetToken : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
     }
 
     /**
@@ -135,13 +163,13 @@ public class DAOusersTest {
         Integer tokenLifeCycle = 999;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
         Boolean Test = true;
-        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
-        //Récuppération des utilisateurs
+        //Récupération des utilisateurs
         String result = DAO.getUsers(Test);
         
         //Suppression de l'utilisateur
-        DAO.deleteUser(login, true);
+        DAO.deleteUser(login, Test);
         
         //Résultat attendu
         String ExpResult = "[{\"login\":\"Admin1\", \"prenom\":\"Originel\", \"nom\":\"Admin\", \"droits\":\"Admin\"}]";
@@ -166,14 +194,15 @@ public class DAOusersTest {
         String role = "Admin";
         String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
         Integer tokenLifeCycle = 999;
+        Boolean Test = true;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
-        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
-        //Récuppération de la durée de vie du token
-        Integer result = DAO.getTokenLifeCycle(login, true);
+        //Récupération de la durée de vie du token
+        Integer result = DAO.getTokenLifeCycle(login, Test);
         
         //Suppression de l'utilisateur
-        DAO.deleteUser(login, true);
+        DAO.deleteUser(login, Test);
         
         //Résultat attendu
         Integer ExpResult = tokenLifeCycle;
@@ -191,6 +220,34 @@ public class DAOusersTest {
     @Test
     public void testDeleteToken() {
         
+        //Ajout d'un utilisateur ayant les droits d'admin
+        String login = "Admin1";
+        String nom = "Admin";
+        String prenom = "Originel";
+        String role = "Admin";
+        String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
+        Integer tokenLifeCycle = 999;
+        String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
+        Boolean Test = true;
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
+        
+        //Suppression du token de l'utilisateur
+        DAO.deleteToken(login, Test);
+        
+        //Récupération du token de l'utilisateur
+        String result = DAO.getToken(login, Test);
+        
+        //Suppression de l'utilisateur
+        DAO.deleteUser(login, Test);
+        
+        //Résultat attendu
+        String ExpResult = "";
+        
+        //Résultat
+        System.out.println("resultat testDeleteToken : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
     }
 
     /**
@@ -206,20 +263,21 @@ public class DAOusersTest {
         String role = "Admin";
         String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
         Integer tokenLifeCycle = 999;
+        Boolean Test = true;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
-        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
-        //Récuppération du token hashé
-        String result = DAO.getToken(login, true);
+        //Récupération du token hashé
+        String result = DAO.getToken(login, Test);
         
         //Suppression de l'utilisateur
-        DAO.deleteUser(login, true);
+        DAO.deleteUser(login, Test);
         
         //Résultat attendu
         String ExpResult = token;
         
         //Résultat
-        System.out.println("resultat testGetTokenLifeCycle : "+result+" | exp : "+ExpResult);
+        System.out.println("resultat testGetToken : "+result+" | exp : "+ExpResult);
         
         //Vérification du résultat
         assertEquals(ExpResult, result);
@@ -238,14 +296,15 @@ public class DAOusersTest {
         String role = "Admin";
         String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
         Integer tokenLifeCycle = 999;
+        Boolean Test = true;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
-        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
-        //Récuppération de la durée de vie du token
-        Integer result = DAO.getTokenLifeCycle(login, true);
+        //Récupération de la durée de vie du token
+        Integer result = DAO.getTokenLifeCycle(login, Test);
         
         //Suppression de l'utilisateur
-        DAO.deleteUser(login, true);
+        DAO.deleteUser(login, Test);
         
         //Résultat attendu
         Integer ExpResult = tokenLifeCycle;
@@ -261,9 +320,66 @@ public class DAOusersTest {
      * Test of checkToken method, of class DAOusers.
      */
     @Test
-    public void testCheckToken() {
+    public void testCheckToken1() {
         
+        //Ajout d'un utilisateur ayant les droits d'admin
+        String login = "Admin1";
+        String nom = "Admin";
+        String prenom = "Originel";
+        String role = "Admin";
+        String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
+        Integer tokenLifeCycle = 999;
+        String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
+        Boolean Test = true;
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
+        //Récupération du des infos de l'utilisateur
+        String result = DAO.checkToken("10101010101010101010101010101010", Test);
+        
+        //Suppression de l'utilisateur
+        DAO.deleteUser(login, Test);
+        
+        //Résultat attendu
+        String ExpResult = "{\"login\":\"" + login + "\", \"droits\":\"" + role + "\", \"erreur\":\"none\"}";
+        
+        //Résultat
+        System.out.println("resultat testCheckToken2 : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
+    }
+    
+    /**
+     * Test of checkToken method, of class DAOusers.
+     */
+    @Test
+    public void testCheckToken2() {
+        
+        //Ajout d'un utilisateur ayant les droits d'admin
+        String login = "Admin1";
+        String nom = "Admin";
+        String prenom = "Originel";
+        String role = "Admin";
+        String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
+        Integer tokenLifeCycle = 999;
+        String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
+        Boolean Test = true;
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
+        
+        //Récupération du des infos de l'utilisateur
+        String result = DAO.checkToken("01010101010101010101010101010101", Test); //mauvais token
+        
+        //Suppression de l'utilisateur
+        DAO.deleteUser(login, Test);
+        
+        //Résultat attendu
+        String ExpResult = "{\"erreur\":\"pas de token (DB)\"}";
+        
+        //Résultat
+        System.out.println("resultat testCheckToken2 : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
     }
 
     /**
@@ -272,6 +388,31 @@ public class DAOusersTest {
     @Test
     public void testDeleteUser() {
         
+        //Ajout d'un utilisateur ayant les droits d'admin
+        String login = "Admin1";
+        String nom = "Admin";
+        String prenom = "Originel";
+        String role = "Admin";
+        String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
+        Integer tokenLifeCycle = 999;
+        String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
+        Boolean Test = true;
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
+        
+        //Suppression de l'utilisateur
+        DAO.deleteUser(login, Test);
+        
+        //Listage de l'utilisateur
+        String result = DAO.getUsers(Test);
+        
+        //Résultat attendu
+        String ExpResult = "[]";
+        
+        //Résultat
+        System.out.println("resultat testDeleteUser : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
     }
 
     /**
@@ -279,7 +420,42 @@ public class DAOusersTest {
      */
     @Test
     public void testGetActiveUsers() {
+        //Ajout d'un utilisateur ayant les droits d'admin
+        String login = "Admin1";
+        String nom = "Admin";
+        String prenom = "Originel";
+        String role = "Admin";
+        String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
+        Integer tokenLifeCycle = 0;
+        String token = ""; //token vide car lifecycle expiré
+        Boolean Test = true;
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
+        //Ajout d'un utilisateur ayant les droits d'admin
+        login = "Admin2";
+        nom = "Admin";
+        prenom = "Originel";
+        role = "Admin";
+        hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
+        tokenLifeCycle = 999;
+        token = "$2a$12$tMlZWS3Zd/XR7vW/xRYpGOPemuc0Plu6RuyJivFf5o/S.I/0Z4.Py"; //token : "01010101010101010101010101010101"
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
+        
+        //Listage des utilisateurs actifs
+        String result = DAO.getActiveUsers(Test);
+        
+        //Résultat attendu
+        String ExpResult = "[{\"login\":\"Admin2\", \"prenom\":\"Originel\", \"nom\":\"Admin\", \"droits\":\"Admin\"}]";
+        
+        //Suppression des utilisateurs
+        DAO.deleteUser("Admin1", Test);
+        DAO.deleteUser(login, Test);
+        
+        //Résultat
+        System.out.println("resultat testGetActiveUsers : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
     }
 
     /**
@@ -297,13 +473,13 @@ public class DAOusersTest {
         Integer tokenLifeCycle = 999;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
         Boolean Test = true;
-        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
         //Vérification de l'existance du login dans la BD
         Boolean result = DAO.doLoginExist(login, Test);
         
         //Suppression de l'utilisateur
-        DAO.deleteUser(login, true);
+        DAO.deleteUser(login, Test);
         
         //Résultat attendu
         Boolean ExpResult = true;
@@ -330,7 +506,7 @@ public class DAOusersTest {
         Integer tokenLifeCycle = 999;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
         Boolean Test = true;
-        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
         //Vérification de l'existance du login dans la BD
         Boolean result = DAO.doLoginExist("Jeff", Test);
@@ -354,14 +530,69 @@ public class DAOusersTest {
     @Test
     public void testAddUser() {
         
+        //Ajout d'un utilisateur ayant les droits d'admin
+        String login = "Admin1";
+        String nom = "Admin";
+        String prenom = "Originel";
+        String role = "Admin";
+        String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
+        Integer tokenLifeCycle = 999;
+        String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
+        Boolean Test = true;
+        DAO.addUser(login, nom, prenom, role, hashedPassword, Test);
+        
+        //Vérification de l'existance de l'utilisateur dans la BD
+        String result = DAO.getUsers(Test);
+        
+        //Suppression de l'utilisateur
+        DAO.deleteUser(login, Test);
+        
+        //Résultat attendu
+        String ExpResult = "[{\"login\":\"Admin1\", \"prenom\":\"Originel\", \"nom\":\"Admin\", \"droits\":\"Admin\"}]";
+        
+        //Résultat
+        System.out.println("resultat testAddUser : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
     }
 
     /**
      * Test of getRedirection method, of class DAOusers.
      */
     @Test
-    public void testGetRedirection() {
+    public void testGetRedirection1() {
         
+        //Vérification de l'existance de l'utilisateur dans la BD
+        String result = DAO.getRedirection("Admin", "accueil.html", false); //pas de modif donc pas besoin de dupliquer le contenu de la table
+        
+        //Résultat attendu
+        String ExpResult = "none";
+        
+        //Résultat
+        System.out.println("resultat testGetRedirection1 : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
+    }
+    
+    /**
+     * Test of getRedirection method, of class DAOusers.
+     */
+    @Test
+    public void testGetRedirection2() {
+        
+        //Vérification de l'existance de l'utilisateur dans la BD
+        String result = DAO.getRedirection("Admin", "inexistant.html", false); //pas de modif donc pas besoin de dupliquer le contenu de la table
+        
+        //Résultat attendu
+        String ExpResult = "No redirect";
+        
+        //Résultat
+        System.out.println("resultat testGetRedirection2 : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
     }
     
     /**
@@ -370,6 +601,35 @@ public class DAOusersTest {
     @Test
     public void testSetPassword() {
         
+        //Ajout d'un utilisateur ayant les droits d'admin
+        String login = "Admin1";
+        String nom = "Admin";
+        String prenom = "Originel";
+        String role = "Admin";
+        String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
+        Integer tokenLifeCycle = 999;
+        String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
+        Boolean Test = true;
+        DAO.addUser(login, nom, prenom, role, hashedPassword, Test);
+        
+        //Modification du MDP
+        hashedPassword = "$2a$12$SoV5pJfWez6/QL/ohIEHzOXjH/Ydo3ewEFMtINv.7CaCSR/qqimtC"; //MPD : heinenken
+        DAO.setPassword(login, hashedPassword, Test);
+        
+        //Vérification du MDP dans la BD
+        String result = DAOtest.getPassword(login, Test);
+        
+        //Suppression de l'utilisateur
+        DAO.deleteUser(login, Test);
+        
+        //Résultat attendu
+        String ExpResult = hashedPassword;
+        
+        //Résultat
+        System.out.println("resultat testSetPassword : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
     }
     
     /**
@@ -387,9 +647,9 @@ public class DAOusersTest {
         Integer tokenLifeCycle = 999;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
         Boolean Test = true;
-        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
         
-        //Récuppération des droits de l'utilisateur
+        //Récupération des droits de l'utilisateur
         String result = DAO.getUserLoginFromToken("10101010101010101010101010101010", Test);
         
         //Suppression de l'utilisateur
@@ -400,6 +660,43 @@ public class DAOusersTest {
         
         //Résultat
         System.out.println("resultat testGetUserLoginFromToken : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
+    }
+    
+    /**
+     * Test of getServletRights method, of class DAOusers.
+     */
+    @Test
+    public void testGetServletRights1() {
+        
+        //Récupération des droits de l'utilisateur
+        String result = DAO.getServletRights("ListUsers", "Admin", false);
+        
+        //Résultat attendu
+        String ExpResult = "true";
+        
+        //Résultat
+        System.out.println("resultat testGetServletRights1 : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
+    }
+    
+    /**
+     * Test of getServletRights method, of class DAOusers.
+     */
+    public void testGetServletRights2() {
+        
+        //Récupération des droits de l'utilisateur
+        String result = DAO.getServletRights("ListUsers", "Utilisateur", false);
+        
+        //Résultat attendu
+        String ExpResult = "true";
+        
+        //Résultat
+        System.out.println("resultat testGetServletRights2 : "+result+" | exp : "+ExpResult);
         
         //Vérification du résultat
         assertEquals(ExpResult, result);
