@@ -3,7 +3,8 @@
 # Modifications : Maxime VALLET
 #    => Remplacement Apache par Nginx
 #    => Dossier lib qui contient les librairies (afin d'avoir un chemin commun dans ou en dehors de la VM)
-# Version : 1.0
+#    => Dossier documentation
+# Version : 1.2
 
 
 
@@ -36,13 +37,17 @@ GitRep="/home/"$USER"/Bureau/SAE-51/Web/"
 NginxRep="/var/www/sae-51/"
 LibRep="/home/"$USER"/Bureau/SAE-51/NetBEANS/lib/"
 ConfFile="/home/"$USER"/Bureau/SAE-51/Serveur/Configuration/sae_51.conf"
+projectRep="/home/"$USER"/Bureau/SAE-51/"
+docRep=$NginxRep"documentation/"
 
 #Vidage du Répertoire Nginx
 sudo rm -rf $NginxRep*
 
 #Création répertoire Javadoc
 sudo mkdir -p /var/www/sae-51/Javadoc
-sudo mkdir -p /var/www/sae-51/JavadocClient
+
+#Création répertoire documentation
+sudo mkdir -p /var/www/sae-51/documentation
 
 #Création répertoire Netbeans (librairies)
 sudo mkdir -p /Netbeans
@@ -54,6 +59,11 @@ sudo cp -r $GitRep* $NginxRep
 sudo cp -r "/home/"$USER"/Bureau/SAE-51/NetBEANS/SAE51/dist/javadoc/"* $NginxRep"/Javadoc"
 sudo cp -n $LibRep* /Netbeans
 sudo cp -r $ConfFile /Netbeans/conf
+sudo cp -r $projectRep"Serveur/README_Java.txt" $docRep"Doc_Serveur.txt"
+sudo cp -r $projectRep"Serveur/README_VM.txt" $docRep"Doc_VM.txt"
+sudo cp -r $projectRep"Client/README.txt" $docRep"Doc_Client.txt"
+sudo cp -r $projectRep"Web/_README.txt" $docRep"Doc_Web.txt"
+sudo cp -r $projectRep"README.md" $docRep"Doc_Projet.txt"
 
 
 

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.2
  */
 @WebServlet(name = "GetRedirection", urlPatterns = {"/GetRedirection"})
 public class GetRedirection extends HttpServlet {
@@ -29,7 +29,7 @@ public class GetRedirection extends HttpServlet {
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : pas de page (req) | Pas de redirection (BD) | pas de page ou token null (req) | none <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : pas de page (req) | Pas de redirection (BD) | pas de page ou token null (req) | accès refusé | none <br>
      * String redirect       &emsp;&emsp;        la page sur laquelle l'utilisateur doit être redirigé ('none' si pas de redirection !!!) <br>
      * 
      * @param request       servlet request
@@ -72,15 +72,23 @@ public class GetRedirection extends HttpServlet {
                 //Récuppération des droits de l'utilisateur
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
-                //Récuppération de la redirection de l'utilisateur
-                redirect = DAO.getRedirection(rights, currentPage, TestBoolean);
+                //Récuppération des droits d'accès au servlet
+                String access = DAO.getServletRights("GetRedirection", rights, false);
 
-                //Vérification de la présence d'une entrée de redirection (BD)
-                if(redirect.equals("No redirect")){
-                    jsonString = "{\"erreur\":\"Pas de redirection (BD)\"}";
+                if(access.equals("true")){
+                    //Récuppération de la redirection de l'utilisateur
+                    redirect = DAO.getRedirection(rights, currentPage, TestBoolean);
+
+                    //Vérification de la présence d'une entrée de redirection (BD)
+                    if(redirect.equals("No redirect")){
+                        jsonString = "{\"erreur\":\"Pas de redirection (BD)\"}";
+                    }
+                    else{
+                       jsonString = "{\"redirect\":\""+redirect+"\", \"erreur\":\"none\"}";
+                    }
                 }
                 else{
-                   jsonString = "{\"redirect\":\""+redirect+"\", \"erreur\":\"none\"}";
+                    jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }
         }

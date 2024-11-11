@@ -71,7 +71,10 @@ public class DeleteUser extends HttpServlet {
                 //Récuppération des droits de l'utilisateur
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
 
-                if(rights.equals("Admin")){
+                //Récuppération des droits d'accès au servlet
+                String access = DAO.getServletRights("DeleteUser", rights, false);
+
+                if(access.equals("true")){
                     //Vérification de l'existance du login
                     doLoginExist = DAO.doLoginExist(login, TestBoolean);
 

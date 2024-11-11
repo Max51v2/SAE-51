@@ -824,4 +824,49 @@ public class DAOusers {
         
         return login;
     }
+    
+    
+    
+    
+    /**
+     * Renvoi les droits d'accès au servlet
+     * 
+     * @param name     nom de l'utilisateur connecté
+     * @param rights     droits de l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
+     */
+    public String getServletRights(String name, String rights, Boolean Test){
+        String RequeteSQL="SELECT access FROM servlet_access WHERE name = ? AND role = ?";
+        String access="false";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOusers.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, rights);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    access = resultSet.getString("access");
+                }
+            }
+            
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return access;
+    }
 }

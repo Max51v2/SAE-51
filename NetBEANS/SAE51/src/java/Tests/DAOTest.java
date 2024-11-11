@@ -93,7 +93,7 @@ public class DAOTest {
     
     
     /**
-     * Récuppération du token d'un utilisateur
+     * Récupération du token d'un utilisateur
      * 
      * @param login     login de l'utilisateur
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
@@ -129,5 +129,47 @@ public class DAOTest {
         }
         
         return token;
+    }
+    
+    
+    
+    
+    /**
+     * Récupération du MDP hashé d'un utilisateur
+     * 
+     * @param login     login de l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * 
+     * @return token
+     */
+    public String getPassword(String login, Boolean Test){
+        String RequeteSQL="SELECT hash FROM users WHERE login = ?";
+        String password = "";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOTest.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, login);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    password = resultSet.getString("hash");
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return password;
     }
 }

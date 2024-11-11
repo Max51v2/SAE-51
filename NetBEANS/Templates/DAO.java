@@ -1,11 +1,12 @@
-Auteur : Maxime VALLET
-Version : 1.0
+//Auteur : Maxime VALLET
+//Version : 1.1
 
 
-Ce qui est entre crochets est à modifier ou retirer selon la situation
+//Ce qui est entre crochets est à modifier ou retirer selon la situation
 
 
-Requête SQL qui renvoi une ligne de données :
+//Requête SQL qui renvoi une ligne de données :
+
     /**
      * Rôle de la méthode
      * 
@@ -54,7 +55,8 @@ Requête SQL qui renvoi une ligne de données :
 
 
 
-    Requête SQL qui renvoi plusieurs lignes de données :
+    //Requête SQL qui renvoi plusieurs lignes de données :
+
     /**
      * Rôle de la méthode
      * 
@@ -108,7 +110,8 @@ Requête SQL qui renvoi une ligne de données :
 
 
 
-    Requête SQL qui ne renvoi pas de données :
+    //Requête SQL qui ne renvoi pas de données :
+    
     /**
      * Rôle de la méthode
      * 

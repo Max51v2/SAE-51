@@ -1,14 +1,15 @@
 <!--
-    Auteur HTML + CSS : Maxime VALLET
-    Version : 0.3
+    Auteur HTML : Maxime VALLET
+    Version : 0.7
+    W3C validator (0 erreurs / 0 warnings): 10/11/24
 -->
 
 <!doctype html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Login</title>
-    <link rel="icon" type="images" href="./images/flavicon.webp" loading="lazy">
+    <title>Aide</title>
+    <link rel="icon" type="image/webp" href="./images/flavicon.webp">
 
     <!-- CSS Page -->
     <link rel="stylesheet" href="./CSS/help.css">
@@ -20,7 +21,7 @@
         <div id="bannerDiv">
             <div id="Login">
                 <button id="submitLogin" type="button">
-                    <p><img id="logoLogin" src="./images/deconnexion.webp"> Retour</p>
+                    <img id="logoLogin" src="./images/deconnexion.webp" alt="Logo déconnexion"> Retour
                 </button>
             </div>
             <div id="pageName">
@@ -33,32 +34,71 @@
             <!-- contenu de la page -->
 
             <div id="contact">
-                <h2>Pour toute question ou problème, merci de contacter :</h1>
+                <h2>Pour toute question ou problème, merci de contacter :</h2>
                 <ul>
-                    <li>Maxime VALLET&emsp;
-                        <a href="mailto:max.vallet@outlook.fr" target=”_blank”><img class="logoContact" src="./images/mail.webp"></a>
-                        <a href="https://github.com/Max51v2/" target=”_blank”><img class="logoContact" src="./images/github.webp"></a>
-                        <a href="https://www.linkedin.com/in/maxime-vallet-533240254/" target=”_blank”><img class="logoContact" src="./images/linkedin.webp"></a>
+                    <li><span title="Fullstack / VM"><u>Maxime VALLET</u></span>&emsp;
+                        <a href="mailto:max.vallet@outlook.fr" target=”_blank”><img class="logoContact" src="./images/mail.webp" alt="Logo mail"></a>
+                        <a href="https://github.com/Max51v2/" target=”_blank”><img class="logoContact" src="./images/github.webp" alt="Logo GitHub"></a>
+                        <a href="https://www.linkedin.com/in/maxime-vallet-533240254/" target=”_blank”><img class="logoContact" src="./images/linkedin.webp" alt="Logo contact"></a>
                     </li>
-                    <li>Erwann MADEC&emsp;
-                        <a href="mailto:erwann@madec.ovh" target=”_blank”><img class="logoContact" src="./images/mail.webp"></a>
-
+                    <li><span title="Fullstack / Client"><u>Erwann MADEC</u></span>&emsp;
+                        <a href="mailto:erwann@madec.ovh" target=”_blank”><img class="logoContact" src="./images/mail.webp" alt="Logo mail"></a>
                     </li>
                     
-                    <li>Gabin PETITCOLAS</li>
+                    <li><span title="?"><u>Gabin PETITCOLAS</u></span></li>
                 </ul> 
             </div>
+
+            <div id="documentation">
+                <h2>Documentation du projet :</h2>
+                <ul>
+                    <li>Javadoc :&emsp;
+                        <button id="submitJavadoc" type="button">
+                            <img class="logoContact" src="./images/external-link.webp" alt="Logo lien externe">
+                        </button>
+                    </li>
+                    <li>Documentation VM :&emsp;
+                        <button id="submitVMDoc" type="button">
+                            <img class="logoContact" src="./images/external-link.webp" alt="Logo lien externe">
+                        </button>
+                    </li>
+                    <li>Documentation Serveur :&emsp;
+                        <button id="submitServerDoc" type="button">
+                            <img class="logoContact" src="./images/external-link.webp" alt="Logo lien externe">
+                        </button>
+                    </li>
+                    <li>Documentation Client :&emsp;
+                        <button id="submitClientDoc" type="button">
+                            <img class="logoContact" src="./images/external-link.webp" alt="Logo lien externe">
+                        </button>
+                    </li>
+                    <li>Documentation Web :&emsp;
+                        <button id="submitWebDoc" type="button">
+                            <img class="logoContact" src="./images/external-link.webp" alt="Logo lien externe">
+                        </button>
+                    </li>
+                    <li>Organisation du Projet :&emsp;
+                        <button id="submitProjectDoc" type="button">
+                            <img class="logoContact" src="./images/external-link.webp" alt="Logo lien externe">
+                        </button>
+                    </li>
+                    <li><span title="Nécessite d'être collaborateur dans le répertoire tant qu'il est en privé"><u>Répertoire GitHub</u></span> :&emsp;
+                        <a href="https://github.com/Max51v2/SAE-51" target=”_blank”><img class="logoContact" src="./images/github.webp" alt="Logo GitHub"></a>
+                    </li>
+                </ul> 
+            </div>
+
             <div id="resources">
-                <h2>Ressources utilisées afin de réaliser cet outil :</h1>
+                <h2>Ressources utilisées afin de réaliser cet outil :</h2>
                 <ul>
                     <li>Icônes :&emsp;FlatIcon&ensp;
-                        <a href="https://www.flaticon.com/" target=”_blank”><img class="logoContact" src="./images/external-link.webp"></a>
+                        <a href="https://www.flaticon.com/" target=”_blank”><img class="logoContact" src="./images/external-link.webp" alt="Logo lien externe"></a>
+                    </li>
                 </ul> 
             </div>
         </div>
     </div>
-</body>
-</html>
+
 
 
 <!-- ne pas toucher aux 2 scripts ci-dessous SAUF en cas de BUG -->
@@ -67,3 +107,7 @@
 
 <!-- Script de la page -->
 <script src="./JS/help.js"></script>
+
+
+</body>
+</html>

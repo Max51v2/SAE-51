@@ -1,14 +1,15 @@
 <!--
-    Auteur HTML + CSS : Maxime VALLET
-    Version : 0.1
+    Auteur HTML : Maxime VALLET
+    Version : 0.2
+    W3C validator (0 erreurs / 0 warnings): 10/11/24
 -->
 
 <!doctype html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Login</title>
-    <link rel="icon" type="images" href="./images/flavicon.webp" loading="lazy">
+    <title>Accueil</title>
+    <link rel="icon" type="image/webp" href="./images/flavicon.webp">
 
     <!-- CSS pour la bannière -->
     <link rel="stylesheet" href="./CSS/BannerDiv.css">
@@ -22,12 +23,12 @@
     <div id="rootDiv">
         <div id="bannerDiv">
             <div id="user">
-                <img id="logoUser" src="./images/utilisateur.webp">
+                <img id="logoUser" src="./images/utilisateur.webp" alt="Logo utilisateur">
                 <p id="id"></p>
-                <img id="logoRights" src="./images/droits.webp">
+                <img id="logoRights" src="./images/droits.webp" alt="Logo droits">
                 <p id="Rights"></p>
                 <button id="submitHelp" type="button">
-                    <p><img id="logoHelp" src="./images/help.webp"> Aide</p>
+                    <img id="logoHelp" src="./images/help.webp" alt="Logo aide"> Aide
                 </button>
             </div>
             <div id="pageName">
@@ -35,7 +36,7 @@
             </div>
             <div id="disconnect">
                 <button id="submitDisconnect" type="button">
-                    <p><img id="logoDisconnect" src="./images/deconnexion.webp"> Se déconnecter</p>
+                    <img id="logoDisconnect" src="./images/deconnexion.webp" alt="Logo déconnexion"> Se déconnecter
                 </button> 
             </div>
         </div>
@@ -43,8 +44,7 @@
             <!-- contenu de la page -->
         </div>
     </div>
-</body>
-</html>
+
 
 
 <!-- ne pas toucher aux 2 scripts ci-dessous SAUF en cas de BUG -->
@@ -56,3 +56,7 @@
 
 <!-- Script de la page -->
 <script src="./JS/accueil.js"></script>
+
+
+</body>
+</html>

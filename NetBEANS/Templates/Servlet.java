@@ -1,8 +1,8 @@
-Auteur : Maxime VALLET
-Version : 1.0
+//Auteur : Maxime VALLET
+//Version : 1.2
 
 
-Ce qui est entre crochets est à modifier ou retirer selon la situation
+//Ce qui est entre crochets est à modifier ou retirer selon la situation
 
 
 package [?];
@@ -47,7 +47,7 @@ public class [nomServlet] extends HttpServlet {
         BufferedReader reader = request.getReader();
         Gson gsonRequest = new Gson();
         
-        // Convertion des données du JSON dans un objet Java
+        //Convertion des données du JSON dans un objet Java
         JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfo[?].class);
         
         //Données envoyées par la requête
@@ -61,22 +61,30 @@ public class [nomServlet] extends HttpServlet {
         String jsonString = "";
         
         //Vérification du contenu envoyé
-        if([?].equals("") | ... | [?].equals("")){
+        if([?] == null | ... | [?] == null){
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
-            //Récuppération des droits de l'utilisateur
-            rights = DAO.getUserRightsFromToken(token, TestBoolean);
-            
-            //Vérification des droits de l'utilisateur
-            if(rights.equals("?") | ... | rights.equals("?")){
-
-                //Code ici
-
+            if([?].equals("") | ... | [?].equals("")){
+                jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
-                jsonString = "{\"erreur\":\"accès refusé\"}";
+                //Récuppération des droits de l'utilisateur
+                rights = DAO.getUserRightsFromToken(token, TestBoolean);
+                
+                //Récuppération des droits d'accès au servlet (Merci d'ajouter votre servlet à la BD => voir "README_Java.txt" dossier "/Serveur")
+                String access = DAO.getServletRights("[Nom du servlet]", rights, false);
+
+                if(access.equals("true")){
+
+                    //Code ici
+
+                }
+                else{
+                    jsonString = "{\"erreur\":\"accès refusé\"}";
+                }
             }
+            
         }
         
         //Envoi des données
