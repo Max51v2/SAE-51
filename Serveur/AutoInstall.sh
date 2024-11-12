@@ -23,7 +23,7 @@ do
         echo
     fi
 
-    echo "Êtes-vous sûr de vouloir procéder à l'installation de : VSCode, gnome-terminal, git, ufw, curl, NetBeans, PostgreSQL, Tomcat et Nginx ? [O/N]"
+    echo "Êtes-vous sûr de vouloir procéder à l'installation de : VSCode, gnome-terminal, git, ufw, curl, wget, NetBeans, PostgreSQL, Tomcat et Nginx ? [O/N]"
     echo "Votre OS ne doit comporter aucun de ces programmes"
 
     echo
@@ -113,6 +113,12 @@ then
 
     clear
 
+    echo "Installation de wget"
+    echo
+    sudo apt install -y wget
+
+    clear
+
     echo "Installation de Git"
     echo
     sudo apt-get install git
@@ -143,7 +149,7 @@ then
 
     echo "Installation de PostgreSQL"
     echo
-    sudo apt install postgresql
+    sudo apt install -y postgresql
     clear
     cd /etc/postgresql/
     postgreSQLVersion=`ls | head -n 1`
