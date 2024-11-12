@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version 1.0
+#Version 1.1
 
 sudo clear
 
@@ -78,6 +78,7 @@ then
     if [ "$optionGA" = "o" ] || [ "$optionGA" = "O" ]
     then
         echo "Installation des Guest Addition"
+        echo
         sudo apt install make gcc dkms linux-source linux-headers-$(uname -r)
         cd /media/cdrom0
         sudo sh VBoxLinuxAdditions.run
@@ -86,12 +87,14 @@ then
     clear
 
     echo "Mise à jour du système"
+    echo
     sudo apt update
     sudo apt upgrade
 
     clear
 
     echo "Installation d'ufw"
+    echo
     sudo apt install ufw
     sudo systemctl enable ufw
     sudo ufw enable
@@ -99,16 +102,19 @@ then
     clear
 
     echo "Installation de curl"
+    echo
     sudo apt install curl
 
     clear
 
     echo "Installation de Git"
+    echo
     sudo apt-get install git
 
     clear
 
     echo "Installation du JDK"
+    echo
     sudo mkdir /usr/java
     cd /usr/java
     sudo mkdir ./openjdk-22.0.2
@@ -119,6 +125,7 @@ then
     clear
 
     echo "Installation de VSCode"
+    echo
     cd ~/Téléchargements
     #Pas sûr que ce lien soit statique (n'a pas changé en 1 mois malgré des MAJ)
     sudo wget -c https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode.deb
@@ -128,6 +135,7 @@ then
     clear
 
     echo "Installation de PostgreSQL"
+    echo
     sudo apt install postgresql
     clear
     cd /etc/postgresql/
@@ -142,6 +150,7 @@ then
     clear
 
     echo "Création des clés SSL"
+    echo
     sudo mkdir /certs
     cd /certs
     echo
@@ -151,6 +160,7 @@ then
     clear
 
     echo "Installation de Nginx"
+    echo
     sudo apt install nginx
     sudo mkdir /var/www/sae-51
     sudo chown -R $USER:$USER /var/www/sae-51
@@ -168,6 +178,7 @@ then
     clear
 
     echo "Installation de Tomcat"
+    echo
     sudo groupadd tomcat
     sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
     cd /tmp
@@ -202,6 +213,7 @@ then
     clear
 
     echo "Installation de NetBeans"
+    echo
     cd ~/Téléchargements
     sudo wget -c https://archive.apache.org/dist/netbeans/netbeans-installers/22/apache-netbeans_22-1_all.deb -O netbeans.deb
     sudo chmod 777 ./netbeans.deb

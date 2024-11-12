@@ -4,7 +4,7 @@ Modifications : Maxime VALLET
     => Installation des programmes sans snapd
     => Remplacement Apache par Nginx
     => Installation automatique
-Version : 1.4
+Version : 1.5
 
 
 
@@ -133,7 +133,10 @@ Version : 1.4
 |
 |    +-----------------------Commandes-----------------------
 |    |
+|    |   *L'OS doit être configuré en Français (ou alors il faut recréer un dossier "Bureau" et "Téléchargements")
+|    |
 |    |   sudo apt install gh
+|    |   sudo apt install git
 |    |   gh auth login
 |    |      => github.com > https > y > web browser
 |    |
