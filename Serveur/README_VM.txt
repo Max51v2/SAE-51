@@ -129,13 +129,14 @@ Version : 1.4
 
 
 
-+-------Procédure d'installation automatique (sauf VM)-------
++-------Procédure d'installation automatique Debian 12-------
 |
-|    +-------------------------Debian------------------------
+|    +-----------------------Commandes-----------------------
 |    |
 |    |   sudo apt install gh
 |    |   gh auth login
 |    |      => github.com > https > y > web browser
+|    |
 |    |   gh repo clone Max51v2/SAE-51 /home/$USER/Bureau/SAE-51
 |    |   /home/$USER/Bureau/SAE-51/Serveur/AutoInstall.sh
 |    |
@@ -159,13 +160,13 @@ Version : 1.4
 |    |   
 |    |   *Merci de vous référer à la section "VM" > "CONCLUSION A LIRE"
 |    |
-|    +--------------------------------------------------------
+|    +-------------------------------------------------------
 |
 +------------------------------------------------------------
 
 
 
-+--------Procédure d'installation Debian 12 (sauf VM)--------
++--------Procédure d'installation manuelle Debian 12---------
 |
 |    +-------------------------Debian------------------------
 |    |
