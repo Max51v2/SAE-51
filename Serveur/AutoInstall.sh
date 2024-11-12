@@ -23,7 +23,7 @@ do
         echo
     fi
 
-    echo "Êtes-vous sûr de vouloir procéder à l'installation de : VSCode, git, ufw, curl, NetBeans, PostgreSQL, Tomcat et Nginx ? [O/N]"
+    echo "Êtes-vous sûr de vouloir procéder à l'installation de : VSCode, gnome-terminal, git, ufw, curl, NetBeans, PostgreSQL, Tomcat et Nginx ? [O/N]"
     echo "Votre OS ne doit comporter aucun de ces programmes"
 
     echo
@@ -93,6 +93,12 @@ then
 
     clear
 
+    echo "Installation de gnome-terminal"
+    echo
+    sudo apt install gnome-terminal
+
+    clear
+
     echo "Installation d'ufw"
     echo
     sudo apt install ufw
@@ -141,8 +147,8 @@ then
     cd /etc/postgresql/
     postgreSQLVersion=`ls | head -n 1`
     cd /etc/postgresql/$postgreSQLVersion/main/
-    sudo cp /home/sae-51/Bureau/SAE-51/Serveur/Configuration/postgresql.conf /etc/postgresql/$postgreSQLVersion/main/postgresql.conf
-    sudo cp /home/sae-51/Bureau/SAE-51/Serveur/Configuration/pg_hba.conf /etc/postgresql/$postgreSQLVersion/main/pg_hba.conf
+    sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/postgresql.conf /etc/postgresql/$postgreSQLVersion/main/postgresql.conf
+    sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/pg_hba.conf /etc/postgresql/$postgreSQLVersion/main/pg_hba.conf
     sudo systemctl disable postgresql
     sudo systemctl restart postgresql.service
     sudo apt install postgresql-client
@@ -183,7 +189,7 @@ then
     sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
     cd /tmp
     #Liens de téléchargement tomcat car il change à chaque version
-    TOMCAT_URL=$(curl -sS https://tomcat.apache.org/download-90.cgi | grep \  '>tar.gz</a>' | head -1 | grep -E -o 'https://[a-z0-9:./-]+.tar.gz') TOMCAT_NAME=$(echo $TOMCAT_URL | grep -E -o 'apache-tomcat-[0-9.]+[0-9]')
+    TOMCAT_URL=$(curl -sS https://tomcat.apache.org/download-90.cgi | grep '>tar.gz</a>' | head -1 | grep -E -o 'https://[a-z0-9:./-]+.tar.gz') TOMCAT_NAME=$(echo $TOMCAT_URL | grep -E -o 'apache-tomcat-[0-9.]+[0-9]')
     wget -c $TOMCAT_URL
     sudo mkdir /opt/tomcat
     cd /opt/tomcat
@@ -197,7 +203,7 @@ then
     sed -i 's/\[VERSION JDK\]/openjdk-22.0.2/g' /etc/systemd/system/tomcat.service
     sudo ufw allow 8080
     sudo ufw allow 8443
-    sudo cp /home/sae-51/Bureau/SAE-51/Serveur/Configuration/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
+    sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
     cd /certs
     clear
     echo "Veuillez saisir \"leffe\""
