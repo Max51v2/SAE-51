@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version 1.6
+#Version 1.7
 
 
 sudo clear
@@ -80,6 +80,8 @@ sudo rm -rf /Netbeans/*
 sudo rmdir /Netbeans
 sudo rm -rf /certs/*
 sudo rmdir /certs/
+sudo rm -rf /var/www/sae-51/*
+sudo rmdir /var/www/sae-51/
 sudo apt autoremove -y
 
 echo "Suppression achevée"
