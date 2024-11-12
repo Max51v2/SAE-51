@@ -80,6 +80,5 @@ sudo apt autoremove
 echo "Suppression achevée"
 
 #Suppression du projet
-echo "Merci de copier-coller ceci :"
-echo "sudo rm -rf /home/$USER/Bureau/SAE-51/*"
-echo "sudo rmdir /home/$USER/Bureau/SAE-51"
+sudo rm -rf /home/$USER/Bureau/SAE-51/*
+sudo rm -rf /home/$USER/Bureau/SAE-51/
