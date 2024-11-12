@@ -190,10 +190,10 @@ then
     cd /tmp
     #Liens de téléchargement tomcat car il change à chaque version
     TOMCAT_URL=$(curl -sS https://tomcat.apache.org/download-90.cgi | grep '>tar.gz</a>' | head -1 | grep -E -o 'https://[a-z0-9:./-]+.tar.gz') TOMCAT_NAME=$(echo $TOMCAT_URL | grep -E -o 'apache-tomcat-[0-9.]+[0-9]')
-    wget -c $TOMCAT_URL
+    sudo wget -c $TOMCAT_URL
     sudo mkdir /opt/tomcat
     cd /opt/tomcat
-    sudo tar xzvf /tmp/apache-tomcat-9.0.96.tar.gz -C /opt/tomcat --strip-components=1
+    sudo tar xzvf /tmp/$TOMCAT_NAME".tar.gz" -C /opt/tomcat --strip-components=1
     cd /opt
     sudo chown -R tomcat: tomcat
     cd ./tomcat
@@ -209,8 +209,10 @@ then
     echo "Veuillez saisir \"leffe\""
     sudo openssl pkcs12 -export -in SAE51.crt -inkey SAE51.key -out SAE51.p12 -name tomcat
     clear
-    echo "Veuillez saisir \"administrateur\" si demandé"
-    sudo /usr/java/[version JDK]/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE51.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
+    cd /usr/java
+    Java_version=`ls | head -n 1`
+    cd /certs
+    sudo /usr/java/$Java_version/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE51.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/Tomcat.xml /opt/tomcat/conf/server.xml
     sudo systemctl daemon-reload
     sudo systemctl disable tomcat 
