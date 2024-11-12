@@ -3,7 +3,8 @@ Modifications : Maxime VALLET
     => Remplacement Ubuntu par Debian
     => Installation des programmes sans snapd
     => Remplacement Apache par Nginx
-Version : 1.2
+    => Installation automatique
+Version : 1.4
 
 
 
@@ -15,7 +16,7 @@ Version : 1.2
 |    |   login : sae-51
 |    |   MDP : leffe
 |    |
-|    |   Une fois connecté sur la VM, merci de suivre le README sur le Burea
+|    |   Une fois connecté sur la VM, merci de suivre le README sur le Bureau
 |    |
 |    |   *Démarrer les daemons + actualiser BD + Web
 |    |   /home/$USER/Bureau/SAE-51/Serveur/Start.sh
@@ -99,6 +100,11 @@ Version : 1.2
 |    |   *Certificat de l'authorité de certification
 |    |   => *Même après ajout, le navigateur affiche toujours que la connexion n'est pas sécurisé car le certificat est auto-signé
 |    |
+|    |   *Ajout des certificats (fait dans la VM)
+|    |   Il faut se connecter aux sites suivants et "Avancé" > "Accepter le risque et poursuivre" (si ce n'est pas fait, il y aura une erreur CORS !!!) :
+|    |   => Nginx : https://[@IP VM]/
+|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE51/
+|    |
 |    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
 |    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
 |    |   => Web et Serveur => VSCode | Servlets et Client => NetBEANS
@@ -121,6 +127,41 @@ Version : 1.2
 |
 +---------------------------------------------------------
 
+
+
++-------Procédure d'installation automatique (sauf VM)-------
+|
+|    +-------------------------Debian------------------------
+|    |
+|    |   sudo apt install gh
+|    |   gh auth login
+|    |      => github.com > https > y > web browser
+|    |   gh repo clone Max51v2/SAE-51 /home/$USER/Bureau/SAE-51
+|    |   /home/$USER/Bureau/SAE-51/Serveur/AutoInstall.sh
+|    |
+|    |   sudo -u postgres psql template1
+|    |
+|    |   ALTER USER postgres with encrypted password 'leffe';
+|    |   create role Administrateur WITH LOGIN PASSWORD 'Administrateur';
+|    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
+|    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/Configuration/PostgreSQL_config.sql
+|    |   \q
+|    |
+|    |   /home/$USER/Bureau/SAE-51/Serveur/Start.sh
+|    |       => saisir "o" pour la reconstruction de la BD et le lancement de Netbeans
+|    |
+|    |   *Ouvrir le projet qui se situe ici : "/home/$USER/Bureau/SAE-51/NetBEANS/SAE51"
+|    |   
+|    |   *Ajout serveur Tomcat
+|    |   => Tools > Server > Apache Tomcat or TomEE > Server location : "/opt/tomcat/" | username : "admin" | login : "leffe"
+|    |   
+|    |   *Lancez le projet
+|    |   
+|    |   *Merci de vous référer à la section "VM" > "CONCLUSION A LIRE"
+|    |
+|    +--------------------------------------------------------
+|
++------------------------------------------------------------
 
 
 
