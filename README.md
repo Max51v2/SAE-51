@@ -75,7 +75,8 @@ Organisation du projet :
     => Client/README : documentation
 - Serveur :
     => Serveur/README : document utilisation (et configuration du backend si pas de VM)
-    => Serveur/Configuration : fichiers de configuration des serveurs + script de la BD PostgreSQL
+    => Serveur/ConfigProjet : fichiers de configuration du projet + script de la BD PostgreSQL
+    => Serveur/Configuration : fichiers de configuration des serveurs
 - NetBEANS : 
     => NetBEANS/SAE51 : backend du projet en Java (servlets, serveurs TCP, ...)
     => NetBEANS/SAE51_Client : projet Java en cours de déplacement vers /app/Client (Erwann) 
@@ -92,6 +93,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 54h
+- maxime : 60h
 - erwann : 0h
 - gabin :

@@ -4,7 +4,7 @@
 #    => Remplacement Apache par Nginx
 #    => Dossier lib qui contient les librairies (afin d'avoir un chemin commun dans ou en dehors de la VM)
 #    => Dossier documentation
-# Version : 1.2
+# Version : 1.3
 
 
 
@@ -36,7 +36,7 @@ fi
 GitRep="/home/"$USER"/Bureau/SAE-51/Web/"
 NginxRep="/var/www/sae-51/"
 LibRep="/home/"$USER"/Bureau/SAE-51/NetBEANS/lib/"
-ConfFile="/home/"$USER"/Bureau/SAE-51/Serveur/Configuration/sae_51.conf"
+ConfFile="/home/"$USER"/Bureau/SAE-51/Serveur/ConfigProjet/sae_51.conf"
 projectRep="/home/"$USER"/Bureau/SAE-51/"
 docRep=$NginxRep"documentation/"
 
@@ -100,7 +100,7 @@ clear
 if [ "$option" = "o" ] || [ "$option" = "O" ]
 then
     #Connexion à la base
-    psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_51;" -f "/home/"$USER"/Bureau/SAE-51/Serveur/Configuration/PostgreSQL_config.sql"
+    psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_51;" -f "/home/"$USER"/Bureau/SAE-51/Serveur/ConfigProjet/PostgreSQL_config.sql"
 fi
 
 
@@ -161,7 +161,7 @@ fi
 
 
 #Affichage status NetBEANS
-ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/openjdk-22.0.2" | head -n 1`
+ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/"$Java_version | head -n 1`
 if [ "$ProcNetBEANS" = "" ]
 then
     echo "Status NetBEANS : inactive"

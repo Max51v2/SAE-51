@@ -148,7 +148,7 @@ Version : 1.5
 |    |   ALTER USER postgres with encrypted password 'leffe';
 |    |   create role Administrateur WITH LOGIN PASSWORD 'Administrateur';
 |    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
-|    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/Configuration/PostgreSQL_config.sql
+|    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/ConfigProjet/PostgreSQL_config.sql
 |    |   \q
 |    |
 |    |   /home/$USER/Bureau/SAE-51/Serveur/Start.sh
@@ -271,7 +271,7 @@ Version : 1.5
 |    |   create role Administrateur WITH LOGIN PASSWORD 'Administrateur';
 |    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |
-|    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/Configuration/PostgreSQL_config.sql
+|    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/ConfigProjet/PostgreSQL_config.sql
 |    |
 |    |   \q
 |    |
