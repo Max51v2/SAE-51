@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version 1.2
+#Version 1.3
 
 
 sudo clear
@@ -73,6 +73,8 @@ fi
 sudo apt autoremove --purge apache-netbeans
 sudo rm -rf /Netbeans/*
 sudo rmdir /Netbeans
+sudo rm -rf /Certs/*
+sudo rmdir /Certs/
 
 echo "Suppression achevée"
 

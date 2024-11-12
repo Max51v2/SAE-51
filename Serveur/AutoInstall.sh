@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version 1.1
+#Version 1.2
 
 sudo clear
 
@@ -123,10 +123,11 @@ then
     echo
     sudo mkdir /usr/java
     cd /usr/java
-    sudo mkdir ./openjdk-22.0.2
-    sudo wget -c https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_linux-x64_bin.tar.gz
-    sudo tar xzvf ./openjdk-22.0.2_linux-x64_bin.tar.gz -C ./openjdk-22.0.2 --strip-components=1
-    sudo rm openjdk-22.0.2_linux-x64_bin.tar.gz
+    sudo mkdir ./openjdk
+    JDK="openjdk-22.0.2_linux-x64_bin.tar.gz"
+    sudo wget -c https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/$JDK
+    sudo tar xzvf ./$JDK -C ./openjdk --strip-components=1
+    sudo rm $JDK
 
     clear
 
@@ -180,7 +181,11 @@ then
     sudo systemctl restart nginx
     sudo ufw allow 'Nginx HTTPS'
     sudo ufw allow 'Nginx HTTP'
-    
+
+    clear
+    cd /usr/java
+    Java_version=`ls | head -n 1`
+
     clear
 
     echo "Installation de Tomcat"
@@ -189,10 +194,10 @@ then
     sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
     cd /tmp
     #Liens de téléchargement tomcat car il change à chaque version
-    TOMCAT_URL=$(curl -sS https://tomcat.apache.org/download-90.cgi | grep '>tar.gz</a>' | head -1 | grep -E -o 'https://[a-z0-9:./-]+.tar.gz') TOMCAT_NAME=$(echo $TOMCAT_URL | grep -E -o 'apache-tomcat-[0-9.]+[0-9]')
+    TOMCAT_URL=$(curl -sS https://tomcat.apache.org/download-90.cgi | grep '>tar.gz</a>' | head -1 | grep -E -o 'https://[a-z0-9:./-]+.tar.gz')
+    TOMCAT_NAME=$(echo $TOMCAT_URL | grep -E -o 'apache-tomcat-[0-9.]+[0-9]')
     sudo wget -c $TOMCAT_URL
     sudo mkdir /opt/tomcat
-    cd /opt/tomcat
     sudo tar xzvf /tmp/$TOMCAT_NAME".tar.gz" -C /opt/tomcat --strip-components=1
     cd /opt
     sudo chown -R tomcat: tomcat
@@ -200,7 +205,7 @@ then
     sudo chown -R tomcat webapps/ work/ temp/ logs/ conf/
     sudo chmod o+x /opt/tomcat/bin/
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/tomcat.service /etc/systemd/system/tomcat.service
-    sed -i 's/\[VERSION JDK\]/openjdk-22.0.2/g' /etc/systemd/system/tomcat.service
+    sed -i 's/\[VERSION JDK\]/'$Java_version'/g' /etc/systemd/system/tomcat.service
     sudo ufw allow 8080
     sudo ufw allow 8443
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
@@ -208,9 +213,6 @@ then
     clear
     echo "Veuillez saisir \"leffe\""
     sudo openssl pkcs12 -export -in SAE51.crt -inkey SAE51.key -out SAE51.p12 -name tomcat
-    clear
-    cd /usr/java
-    Java_version=`ls | head -n 1`
     cd /certs
     sudo /usr/java/$Java_version/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE51.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/Tomcat.xml /opt/tomcat/conf/server.xml

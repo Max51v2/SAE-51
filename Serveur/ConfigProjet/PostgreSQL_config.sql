@@ -228,4 +228,4 @@ INSERT INTO servlet_access (name, role, access) VALUES ('Test', 'Aucun', 'false'
 --Msg fin
 \echo
 \echo
-\echo Fait
+\echo #####Fait#####
