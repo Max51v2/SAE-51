@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version 1.4
+#Version 1.6
 
 
 sudo clear
@@ -57,14 +57,19 @@ do
 done
 
 #Retrait programmes
+clear
+cd /usr/java
+Java_version=`ls | head -n 1`
+clear
+
 sudo apt-get -y --purge remove postgresql postgresql-*
 sudo apt-get -y purge nginx nginx-common
 sudo rm -rf /opt/tomcat/*
 sudo rmdir /tomcat
 if [ "$optionJDK" = "o" ] || [ "$optionJDK" = "O" ]
 then
-    sudo rm -rf /usr/java/openjdk-22.0.2/*
-    sudo rmdir /usr/java/openjdk-22.0.2/
+    sudo rm -rf /usr/java/$Java_version/*
+    sudo rmdir /usr/java/$Java_version/
 fi
 if [ "$optionCode" = "o" ] || [ "$optionCode" = "O" ]
 then
@@ -75,7 +80,7 @@ sudo rm -rf /Netbeans/*
 sudo rmdir /Netbeans
 sudo rm -rf /certs/*
 sudo rmdir /certs/
-sudo apt autoremove
+sudo apt autoremove -y
 
 echo "Suppression achevée"
 

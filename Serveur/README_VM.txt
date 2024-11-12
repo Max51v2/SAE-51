@@ -1,11 +1,12 @@
 Auteur original : Maxime VALLET (SAE 52)
-Version : 1.6
+Version : 2.0
 Modifications : Maxime VALLET
     => Remise en ordre de la procédure et ajout de détails
     => Remplacement Ubuntu par Debian
     => Installation des programmes sans snapd
     => Remplacement Apache par Nginx
-    => Installation automatique
+    => Installation/désintallation automatique
+    => Prérequis
 
 
 
@@ -20,7 +21,23 @@ Modifications : Maxime VALLET
 |    |   *Démarrer les daemons + actualiser BD + Web
 |    |   /home/$USER/Bureau/SAE-51/Serveur/Start.sh
 |    |
-|    |   *Le copier-coller est supporté entre la VM et l'hôte et vise-versa
+|    |   *Le copier-coller est supporté entre la VM et l'hôte et vice-versa
+|    |
+|    +---------------------------------------------------------
+|
+|    +------------------------Prérequis------------------------
+|    |
+|    |   *Minimum
+|    |   => CPU : Mieux qu'un celeron
+|    |   => RAM : +6Go
+|    |   => Stockage : 14 go
+|    |   => VirtualBox : Version 7.0.14 à 7.0.22 (version 7.1 non fonctionnelle) + VirtualBox Extension Pack
+|    |
+|    |   *Recommandé
+|    |   => CPU : Mieux qu'un celeron
+|    |   => RAM : +8Go
+|    |   => Stockage : 20 go
+|    |   => VirtualBox : Version 7.0.14 à 7.0.22 (version 7.1 non fonctionnelle) + VirtualBox Extension Pack
 |    |
 |    +---------------------------------------------------------
 |
@@ -65,7 +82,7 @@ Modifications : Maxime VALLET
 |    |
 |    |   *Script reconstruction BD
 |    |   ./Start.sh a une option pour reconstruire la base à partir du script "PostgreSQL_config.sql" situé dans "/Serveur/ConfigProjet"
-|    |   => !!! toute modification de la BD doit se faire dans ce script sql (il faut ensuite lancer Start.sh afin de l'actualiser) !!!
+|    |   => !!! toute modification de la BD doit se faire dans ce script SQL (il faut ensuite lancer Start.sh afin de l'actualiser) !!!
 |    |
 |    +---------------------------------------------------------
 |
@@ -85,12 +102,12 @@ Modifications : Maxime VALLET
 |    |   => les identifiants et MDP pour NetBEANS sont dispo dans VM > NetNEANS
 |    |
 |    |   Se connecter à GitHub dans VSCode :
-|    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à Github
+|    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à GitHub
 |    |
-|    |   Cloner un répertoire Github sur le BUREAU (obligatoire avant de commencer) :
-|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-51" > Bureau NetBEANS
+|    |   Cloner un répertoire GitHub sur le BUREAU (obligatoire avant de commencer) :
+|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from GitHub" > "Max51v2/SAE-51" > Bureau NetBEANS
 |    |
-|    |   Remplacer le répertoire Github local par celui en ligne (si tu veux reset les modifs du projet)
+|    |   Remplacer le répertoire GitHub local par celui en ligne (si tu veux reset les modifs du projet)
 |    |   => icône source control (branche à gauche) > survoler menu déroulant "Source control graph" > cliquer sur l'icon pull
 |    |
 |    |   Pour sauvegarder le projet > VSCode
@@ -106,7 +123,7 @@ Modifications : Maxime VALLET
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE51/
 |    |
 |    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
-|    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
+|    |   => Il n'a pas besoin de toucher au contenu du répertoire GitHub local et tout est sauvegardé en faisant un "commit and push"
 |    |   => Web et Serveur => VSCode | Servlets => NetBEANS | Client => Intellij IDEA
 |    |   => Il n'y a besoin du terminal que pour lancer Start.sh
 |    |
@@ -118,7 +135,7 @@ Modifications : Maxime VALLET
 |    |   ==> déjà enregistré dans les marques page sur la VM
 |    |
 |    |   *Cartes réseau :
-|    |   => il y'a deux cartes réseaux : une en mode bridge et une en mode NAT
+|    |   => il y'a deux cartes réseau : une en mode bridge et une en mode NAT
 |    |   => dans le cas ou la première fonctionne (enp0s3), les serveurs sont accessibles à partir de l'IP de l'OS hôte (donc accessible au réseau local)
 |    |   => dans le cas ou la deuxième est la seule qui fonctionne (enp0s8), les serveurs sont accessibles à partir de l'IP de la carte virtuelle VirtualBox (donc accessible à l'OS hôte uniquement)
 |    |   => aucune modif requise/ raison : impossible d'utiliser le mode bridge sur eduroam
@@ -130,6 +147,22 @@ Modifications : Maxime VALLET
 
 
 +-------Procédure d'installation automatique Debian 12-------
+|
+|    +------------------Prérequis (hors VM)------------------
+|    |
+|    |   *Minimum
+|    |   => CPU : Celeron
+|    |   => RAM : +4Go
+|    |   => Stockage : 14 go
+|    |   => OS : Linux (Debian (ou dérivé : Linux Mint fonctionnel))
+|    |
+|    |   *Recommandé
+|    |   => CPU : Mieux qu'un celeron
+|    |   => RAM : +6Go
+|    |   => Stockage : 20 go
+|    |   => OS : Linux (Debian (ou dérivé : Linux Mint fonctionnel))
+|    |
+|    +---------------------------------------------------------
 |
 |    +-----------------------Commandes-----------------------
 |    |
@@ -146,7 +179,6 @@ Modifications : Maxime VALLET
 |    |   sudo -u postgres psql template1
 |    |
 |    |   ALTER USER postgres with encrypted password 'leffe';
-|    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/ConfigProjet/PostgreSQL_config.sql
 |    |   \q
 |    |
 |    |   /home/$USER/Bureau/SAE-51/Serveur/Start.sh
@@ -167,9 +199,59 @@ Modifications : Maxime VALLET
 
 
 
++----------Procédure de désintallation automatique-----------
+|
+|    +-----------------------Commande------------------------
+|    |
+|    |   /home/$USER/Bureau/SAE-51/Serveur/AutoRemove.sh
+|    |
+|    +-------------------------------------------------------
+|
++------------------------------------------------------------
+
+
+
 +--------Procédure d'installation manuelle Debian 12---------
 |
-|    +-------------------------Debian------------------------
+|    +------------------Prérequis (hors VM)------------------
+|    |
+|    |   *Minimum
+|    |   => CPU : Celeron
+|    |   => RAM : +4Go
+|    |   => Stockage : 14 go
+|    |   => OS : Linux (Debian (ou dérivé : Linux Mint fonctionnel))
+|    |
+|    |   *Recommandé
+|    |   => CPU : Mieux qu'un celeron
+|    |   => RAM : +6Go
+|    |   => Stockage : 20 go
+|    |   => OS : Linux (Debian (ou dérivé : Linux Mint fonctionnel))
+|    |
+|    +---------------------------------------------------------
+|
+|    +-------------------------Général------------------------
+|    |
+|    |   sudo apt update
+|    |   sudo apt upgrade
+|    |   sudo apt-get install git
+|    |
+|    |   *ufw
+|    |   => sudo apt install ufw
+|    |   => sudo systemctl enable ufw
+|    |   => sudo ufw enable
+|    |
+|    |   *Installer les Guest additions
+|    |
+|    |   *Script de demarrage des daemons
+|    |   chmod u+x /home/$USER/Bureau/SAE-51/Serveur/Start.sh
+|    |   
+|    |   *Demarrage deamons (une fois l'installation terminée): voir section VM > Général
+|    |
+|    |   !!! Merci de vérifier que les liens de téléchargement des paquets .deb sont toujours d'actualité !!!
+|    |
+|    +--------------------------------------------------------
+|
+|    +------------------Guest additions (VM)-------------------
 |    |
 |    |   *Guest additions
 |    |   => sudo apt install make gcc dkms linux-source linux-headers-$(uname -r)
@@ -178,27 +260,18 @@ Modifications : Maxime VALLET
 |    |   => sudo sh VBoxLinuxAdditions.run
 |    |   => *redémarrer
 |    |
-|    |   *ufw
-|    |   => sudo apt install ufw
-|    |   => sudo systemctl enable ufw
-|    |   => sudo ufw enable
-|    |
 |    +--------------------------------------------------------
 |
-|    +-------------------------Général------------------------
+|    +--------------------------Autre-------------------------
 |    |
 |    |   sudo apt update
 |    |   sudo apt upgrade
 |    |   sudo apt-get install git
 |    |
-|    |   *Installer les Guest additions
-|    |
-|    |   *Script de demarrage des daemons
-|    |   chmod u+x /home/$USER/Bureau/SAE-51/Serveur/Start.sh
-|    |   
-|    |   *Demarrage deamons (une fois installation terminée): voir section VM > Général
-|    |
-|    |   !!! Merci de vérifier que les liens de téléchargement des paquets .deb sont toujours d'actualité !!!
+|    |   *ufw
+|    |   => sudo apt install ufw
+|    |   => sudo systemctl enable ufw
+|    |   => sudo ufw enable
 |    |
 |    +--------------------------------------------------------
 |
@@ -257,10 +330,10 @@ Modifications : Maxime VALLET
 |    |
 |    |   sudo systemctl restart postgresql.service
 |    |   
-|    |   *Test du fontionnement (MDP : "leffe")
+|    |   *Test du fonctionnement (MDP : "leffe")
 |    |   => sudo apt install postgresql-client
 |    |   => psql -h localhost -U postgres -d template1
-|    |   *Si vous accedez à la Bd "Template1", cela fontionne sinon reprenez les étapes précédentes
+|    |   *Si vous accedez à la Bd "Template1", cela fonctionne sinon reprenez les étapes précédentes
 |    |
 |    |   \q
 |    |
@@ -343,7 +416,7 @@ Modifications : Maxime VALLET
 |    |   => entre les deux balises "<tomcat-users>"
 |    |
 |    |   sudo systemctl disable tomcat 
-|    |   sudo systemctl stop tomcat                                                     (une fois les test terminés)
+|    |   sudo systemctl stop tomcat                                                     (une fois les tests terminés)
 |    |   
 |    |   *Il est nécéssaire de passer par "localhost:8080" afin d'accéder à l'interface admin
 |    |
@@ -386,7 +459,7 @@ Modifications : Maxime VALLET
 |    |
 |    +---------------------------------------------------------
 |
-|    +----------------------------VM--------------------------- 
+|    +-----------------Nettoyage VM (optionnel)---------------- 
 |    |
 |    |   *Diminuer la taille de la VM
 |    |   => Vider le cache snapd et journaux (VM)

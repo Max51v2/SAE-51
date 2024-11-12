@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version 1.3
+#Version 1.4
 
 sudo clear
 
@@ -235,7 +235,6 @@ then
     sudo chmod 777 ./netbeans.deb
     sudo apt install -y ./netbeans.deb
     sudo rm ./netbeans.deb
-    sudo systemctl disable netbeans
 
 
     #Fin
