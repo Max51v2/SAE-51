@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version 1.3
+#Version 1.4
 
 
 sudo clear
@@ -57,8 +57,8 @@ do
 done
 
 #Retrait programmes
-sudo apt-get --purge remove postgresql postgresql-*
-sudo apt-get purge nginx nginx-common
+sudo apt-get -y --purge remove postgresql postgresql-*
+sudo apt-get -y purge nginx nginx-common
 sudo rm -rf /opt/tomcat/*
 sudo rmdir /tomcat
 if [ "$optionJDK" = "o" ] || [ "$optionJDK" = "O" ]
@@ -68,16 +68,18 @@ then
 fi
 if [ "$optionCode" = "o" ] || [ "$optionCode" = "O" ]
 then
-    sudo apt-get remove code
+    sudo apt-get -y remove code
 fi
-sudo apt autoremove --purge apache-netbeans
+sudo apt autoremove -y --purge apache-netbeans
 sudo rm -rf /Netbeans/*
 sudo rmdir /Netbeans
-sudo rm -rf /Certs/*
-sudo rmdir /Certs/
+sudo rm -rf /certs/*
+sudo rmdir /certs/
+sudo apt autoremove
 
 echo "Suppression achevée"
 
 #Suppression du projet
-sudo rm -rf /home/$USER/Bureau/SAE-51/*
-sudo rmdir /home/$USER/Bureau/SAE-51/
+echo "Merci de copier-coller ceci :"
+echo "sudo rm -rf /home/$USER/Bureau/SAE-51/*"
+echo "sudo rmdir /home/$USER/Bureau/SAE-51"

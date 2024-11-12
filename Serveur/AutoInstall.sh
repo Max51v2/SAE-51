@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version 1.2
+#Version 1.3
 
 sudo clear
 
@@ -79,7 +79,7 @@ then
     then
         echo "Installation des Guest Addition"
         echo
-        sudo apt install make gcc dkms linux-source linux-headers-$(uname -r)
+        sudo apt install -y make gcc dkms linux-source linux-headers-$(uname -r)
         cd /media/cdrom0
         sudo sh VBoxLinuxAdditions.run
     fi
@@ -95,13 +95,13 @@ then
 
     echo "Installation de gnome-terminal"
     echo
-    sudo apt install gnome-terminal
+    sudo apt install -y gnome-terminal
 
     clear
 
     echo "Installation d'ufw"
     echo
-    sudo apt install ufw
+    sudo apt install -y ufw
     sudo systemctl enable ufw
     sudo ufw enable
 
@@ -109,7 +109,7 @@ then
 
     echo "Installation de curl"
     echo
-    sudo apt install curl
+    sudo apt install -y curl
 
     clear
 
@@ -136,7 +136,7 @@ then
     cd ~/Téléchargements
     #Pas sûr que ce lien soit statique (n'a pas changé en 1 mois malgré des MAJ)
     sudo wget -c https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode.deb
-    sudo apt install ./vscode.deb
+    sudo apt install -y ./vscode.deb
     sudo rm ./vscode.deb 
 
     clear
@@ -152,7 +152,7 @@ then
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/pg_hba.conf /etc/postgresql/$postgreSQLVersion/main/pg_hba.conf
     sudo systemctl disable postgresql
     sudo systemctl restart postgresql.service
-    sudo apt install postgresql-client
+    sudo apt install -y postgresql-client
 
     clear
 
@@ -168,7 +168,7 @@ then
 
     echo "Installation de Nginx"
     echo
-    sudo apt install nginx
+    sudo apt install -y nginx
     sudo mkdir /var/www/sae-51
     sudo chown -R $USER:$USER /var/www/sae-51
     sudo chmod -R 755 /var/www/sae-51
@@ -227,7 +227,7 @@ then
     cd ~/Téléchargements
     sudo wget -c https://archive.apache.org/dist/netbeans/netbeans-installers/22/apache-netbeans_22-1_all.deb -O netbeans.deb
     sudo chmod 777 ./netbeans.deb
-    sudo apt install ./netbeans.deb
+    sudo apt install -y ./netbeans.deb
     sudo rm ./netbeans.deb
     sudo systemctl disable netbeans
 
