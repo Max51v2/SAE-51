@@ -1,10 +1,11 @@
 Auteur original : Maxime VALLET (SAE 52)
+Version : 1.6
 Modifications : Maxime VALLET
+    => Remise en ordre de la procédure et ajout de détails
     => Remplacement Ubuntu par Debian
     => Installation des programmes sans snapd
     => Remplacement Apache par Nginx
     => Installation automatique
-Version : 1.5
 
 
 
@@ -16,8 +17,6 @@ Version : 1.5
 |    |   login : sae-51
 |    |   MDP : leffe
 |    |
-|    |   Une fois connecté sur la VM, merci de suivre le README sur le Bureau
-|    |
 |    |   *Démarrer les daemons + actualiser BD + Web
 |    |   /home/$USER/Bureau/SAE-51/Serveur/Start.sh
 |    |
@@ -27,7 +26,7 @@ Version : 1.5
 |
 |    +-------------------------VSCode--------------------------
 |    |
-|    |   *Modifier le nom et l'@ mail
+|    |   *Modifier le nom et l'@ mail utilisé par Git
 |    |   git config --global user.name "[Prenom Nom]"
 |    |   git config --global user.email "[@ Mail]"
 |    |
@@ -37,12 +36,13 @@ Version : 1.5
 |    |
 |    |   *NetBEANS est lancé par Start.sh sur demande
 |    |
-|    |   *Commande
+|    |   *Commande (démarrage manuel)
 |    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
 |    |
 |    |   *MDP projet : "leffe"
+|    |   => s'il n'y a pas de MDP, merci d'en définir un nouveau ("leffe")
 |    |
-|    |   *Interface administration (accessible depuis localhost uniquement)
+|    |   *Interface administration tomcat (demandé au lancement du serveur lorsque le projet est démarré)
 |    |   login : "admin"
 |    |   MDP : "leffe"
 |    |
@@ -64,8 +64,8 @@ Version : 1.5
 |    |   https://www.javaguides.net/p/jdbc-tutorial.html
 |    |
 |    |   *Script reconstruction BD
-|    |   ./Start.sh a une option pour reconstruire la base à partir du script "PostgreSQL_config.sql"
-|    |   => !!! toute modification de la BD doit se faire dans ce script sql (il faut refaire tourner Start.sh) !!!
+|    |   ./Start.sh a une option pour reconstruire la base à partir du script "PostgreSQL_config.sql" situé dans "/Serveur/ConfigProjet"
+|    |   => !!! toute modification de la BD doit se faire dans ce script sql (il faut ensuite lancer Start.sh afin de l'actualiser) !!!
 |    |
 |    +---------------------------------------------------------
 |
@@ -81,7 +81,7 @@ Version : 1.5
 |
 |    +-------------------CONCLUSION A LIRE--------------------- 
 |    |
-|    |   Pour lancer les daemons, actualiser les fichiers Web, reconstruire la DB et démarrer NetBeans lancez Start.sh (cf. section VM > Général)
+|    |   Pour lancer les daemons, actualiser les fichiers Web, reconstruire la DB et démarrer NetBeans, lancez Start.sh (cf. section VM > Général)
 |    |   => les identifiants et MDP pour NetBEANS sont dispo dans VM > NetNEANS
 |    |
 |    |   Se connecter à GitHub dans VSCode :
@@ -91,14 +91,14 @@ Version : 1.5
 |    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-51" > Bureau NetBEANS
 |    |
 |    |   Remplacer le répertoire Github local par celui en ligne (si tu veux reset les modifs du projet)
-|    |   => icon source control (branche à gauche) > survoler menu déroulant "Source control graph" > cliquer sur l'icon pull
+|    |   => icône source control (branche à gauche) > survoler menu déroulant "Source control graph" > cliquer sur l'icon pull
 |    |
 |    |   Pour sauvegarder le projet > VSCode
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Changes" > cliquer sur le + pour ajouter tous les fichiers (tt dans être dans "staged changes")
 |    |   => menu détaillé bouton commit > commit and push > Ajouter un commentaire (non commenté) > valider (en haut à droite)
 |    |
 |    |   *Certificat de l'authorité de certification
-|    |   => *Même après ajout, le navigateur affiche toujours que la connexion n'est pas sécurisé car le certificat est auto-signé
+|    |   => Même après ajout, le navigateur affiche toujours que la connexion n'est pas sécurisé car le certificat est auto-signé
 |    |
 |    |   *Ajout des certificats (fait dans la VM)
 |    |   Il faut se connecter aux sites suivants et "Avancé" > "Accepter le risque et poursuivre" (si ce n'est pas fait, il y aura une erreur CORS !!!) :
@@ -107,7 +107,7 @@ Version : 1.5
 |    |
 |    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
 |    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
-|    |   => Web et Serveur => VSCode | Servlets et Client => NetBEANS
+|    |   => Web et Serveur => VSCode | Servlets => NetBEANS | Client => Intellij IDEA
 |    |   => Il n'y a besoin du terminal que pour lancer Start.sh
 |    |
 |    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM) :
@@ -146,8 +146,6 @@ Version : 1.5
 |    |   sudo -u postgres psql template1
 |    |
 |    |   ALTER USER postgres with encrypted password 'leffe';
-|    |   create role Administrateur WITH LOGIN PASSWORD 'Administrateur';
-|    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/ConfigProjet/PostgreSQL_config.sql
 |    |   \q
 |    |
@@ -267,9 +265,6 @@ Version : 1.5
 |    |   \q
 |    |
 |    |   psql -U postgres -h localhost -d template1
-|    |   
-|    |   create role Administrateur WITH LOGIN PASSWORD 'Administrateur';
-|    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |
 |    |   \i /home/[nom session]/Bureau/SAE-51/Serveur/ConfigProjet/PostgreSQL_config.sql
 |    |
