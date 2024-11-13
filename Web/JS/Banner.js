@@ -27,7 +27,7 @@ document.getElementById("submitDisconnect").onclick = function () {
     //Vérification auprès du Servlet
     fetch(`https://${window.ServerIP}:8443/SAE51/DeleteToken`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({ login: login, token: token, Test: false })
     }).then(response => response.json())
       .then(DeleteTokenResult);

@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         //Vérification auprès du Servlet
         fetch(`https://${window.ServerIP}:8443/SAE51/CheckPassword`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({ login: login, password: password, Test: false })
             }).then(response => response.json())
             .then(CheckPasswordResult);
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             //Redirection page
             fetch(`https://${window.ServerIP}:8443/SAE51/GetRedirection`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({ token: response.token, currentPage: window.currentPage, Test: false })
             }).then(response => response.json())
             .then(GetRedirectionResult);

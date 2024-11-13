@@ -41,7 +41,7 @@ async function TomcatTest() {
     try {
         await fetch(`https://${window.ServerIP}:8443/SAE51/TestTomcat`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({})
         })
         .then(response => response.json())
