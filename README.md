@@ -10,6 +10,7 @@ Afin d'installer la VM, merci de vous référer à la partie "VM" du fichier "RE
 #Projet
 à faire (liste non exhaustive) :
 Frontend :
+  => Ajouter des messages d'erreur (erreurs envoyées par les servlets => voir Javadoc Servlets)
   => Page web gestion des utilisateurs : affichage + suppression + modif MDP
   => Page web gestion des machines : affichage + suppression + modification des droits
   => Page web qui donne des informations sur la machine (CDC info statiques) + définition des seuils d'alerte des différentes métriques surveillées (CDC partie dynamique) + allumage/extinction/redémarrage machine
@@ -74,10 +75,11 @@ Organisation du projet :
     => Client/README : documentation
 - Serveur :
     => Serveur/README : document utilisation (et configuration du backend si pas de VM)
-    => Serveur/Configuration : fichiers de configuration des serveurs + script de la BD PostgreSQL
+    => Serveur/ConfigProjet : fichiers de configuration du projet + script de la BD PostgreSQL
+    => Serveur/Configuration : fichiers de configuration des serveurs
 - NetBEANS : 
     => NetBEANS/SAE51 : backend du projet en Java (servlets, serveurs TCP, ...)
-    => NetBEANS/SAE51_Client : projet Java qui récuppère les données sur la machine / Serveurs TCP : découverte et envoi 
+    => NetBEANS/SAE51_Client : projet Java en cours de déplacement vers /app/Client (Erwann) 
     => NetBEANS/lib : librairies du projet Java (non inclus dans NetBeans par défaut)
     => NetBEANS/Templates : exemples de classes préfaites (DAO et Servlet)
 - Web :
@@ -85,10 +87,12 @@ Organisation du projet :
     => Web/JS : scripts JS (scripts présents sur plusieurs pages)
     => Web/images : logos, icones...
     => Web/template : page Web par défaut (celle à utiliser (copier-coller) lors de la création d'une nouvelle page web)
+- App :
+    => app/Client : Enregistrement de la machine auprès du serveur / récupération des infos statiques et dynamiques et envoi au serveur
 
 
 
 #heures (point michaël) :
-- maxime : 54h
-- erwann : 0h
+- maxime : 60h
+- erwann : 10h
 - gabin :

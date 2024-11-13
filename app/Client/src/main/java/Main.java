@@ -22,8 +22,24 @@ import oshi.software.os.OperatingSystem;
 import static java.lang.Thread.sleep;
 
 public class Main {
+<<<<<<< HEAD
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
         String[] Info_hardware = new String[7];
+=======
+    public static void main(String[] args) {
+        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
+
+        System.out.println("Nom de l'OS : " + osBean.getName());
+        System.out.println("Version de l'OS : " + osBean.getVersion());
+        System.out.println("Architecture de l'OS : " + osBean.getArch());
+
+        // Pour Java 10+ pour obtenir la RAM totale disponible
+        if (osBean instanceof com.sun.management.OperatingSystemMXBean) {
+            com.sun.management.OperatingSystemMXBean sunOSBean = (com.sun.management.OperatingSystemMXBean) osBean;
+            System.out.println("Mémoire physique totale : " + sunOSBean.getTotalPhysicalMemorySize() / (1024 * 1024) + " Mo");
+            System.out.println("Mémoire physique libre : " + sunOSBean.getFreePhysicalMemorySize() / (1024 * 1024) + " Mo");
+        }
+>>>>>>> 5a78e00038430b51116da81844ff18bd5f8c321a
         SystemInfo systemInfo = new SystemInfo();
 
         CentralProcessor processor = systemInfo.getHardware().getProcessor();
@@ -53,6 +69,7 @@ public class Main {
         //System.out.println("nancy :\t" + nancy.getHostAddress());
         long maxFreqHz = processor.getMaxFreq();
 
+<<<<<<< HEAD
         
         // Afficher la fréquence en GHz
         System.out.printf("Fréquence maximale du processeur : %.2f GHz%n", maxFreqHz / 1_000_000_000.0);
@@ -75,3 +92,7 @@ public class Main {
         }
         }
 }
+=======
+    }
+}
+>>>>>>> 5a78e00038430b51116da81844ff18bd5f8c321a

@@ -6,7 +6,7 @@ Des templates permettant de créer les méthodes de la DAO ainsi que des servlet
 
 
 Servlets :
-    => Merci d'ajouter vos nouveaux servlets dans la table "servlet_access" de la BD "sae_51" dans le document "/Serveur/Configuration/PostgreSQL_config.sql"
+    => Merci d'ajouter vos nouveaux servlets dans la table "servlet_access" de la BD "sae_51" dans le document "/Serveur/ConfigProjet/PostgreSQL_config.sql"
         => afin que les droits fonctionnent, il faut lancer Start.sh ("/home/$USER/Bureau/SAE-51/Serveur/Start.sh") afin de reconstruire la BD
 
 

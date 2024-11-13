@@ -1,10 +1,12 @@
 #!/bin/bash
 # Auteur original : Maxime VALLET (SAE 52)
+# Version : 1.5
 # Modifications : Maxime VALLET
 #    => Remplacement Apache par Nginx
 #    => Dossier lib qui contient les librairies (afin d'avoir un chemin commun dans ou en dehors de la VM)
 #    => Dossier documentation
-# Version : 1.2
+#    => Vérification de la bonne execution du script SQL
+#    => Vérification de l'entrée utilisateur (redemande l'entrée tant qu'elle n'est pas valide)
 
 
 
@@ -36,7 +38,7 @@ fi
 GitRep="/home/"$USER"/Bureau/SAE-51/Web/"
 NginxRep="/var/www/sae-51/"
 LibRep="/home/"$USER"/Bureau/SAE-51/NetBEANS/lib/"
-ConfFile="/home/"$USER"/Bureau/SAE-51/Serveur/Configuration/sae_51.conf"
+ConfFile="/home/"$USER"/Bureau/SAE-51/Serveur/ConfigProjet/sae_51.conf"
 projectRep="/home/"$USER"/Bureau/SAE-51/"
 docRep=$NginxRep"documentation/"
 
@@ -84,23 +86,45 @@ fi
 #On recharge Nginx car le contenu du rep a changé
 sudo systemctl reload nginx
 
-clear
-
-echo "Souhaitez-vous reconstruire la Base de Données ? [O/N]
-*Cela va effacer le contenu de la BD"
-
-echo
-
-read  -n 1 -p "Option :" option
 
 clear
 
+
+option="undetermined"
+c=0
+
+#Tant que l'on a pas une option valide, on redemande à l'utilisateur d'en saisir une
+while [ "$option" != "o" ] && [ "$option" != "O" ] && [ "$option" != "n" ] && [ "$option" != "N" ]
+do
+    clear
+
+    if [ "$c" -ge 1 ]
+    then
+        echo "Mauvaise saisie \"$option\", merci de resaisir votre option"
+
+        echo
+    fi
+
+    echo "Souhaitez-vous reconstruire la Base de Données ? [O/N]"
+    echo "Cela va effacer le contenu de la BD"
+
+    echo
+
+    sleep 1
+
+    #Lecture de l'entrée utilisateur
+    read  -n 1 -p "Option :" option
+
+    c=$(($c+1)) 
+done
+
+clear
 
 #Reconstruction BD
 if [ "$option" = "o" ] || [ "$option" = "O" ]
 then
     #Connexion à la base
-    psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_51;" -f "/home/"$USER"/Bureau/SAE-51/Serveur/Configuration/PostgreSQL_config.sql"
+    psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_51;" -f "/home/"$USER"/Bureau/SAE-51/Serveur/ConfigProjet/PostgreSQL_config.sql" > /tmp/trace_Start_sh.txt
 fi
 
 
@@ -112,11 +136,33 @@ if [ "$ProcNetBEANS" = "" ]
 then
     #Recupération option utilisateur
     clear
-    echo "Souhaitez-vous lancer NetBeans ? [O/N]"
 
-    echo
+    optionNetbeans="undetermined"
+    c=0
 
-    read  -n 1 -p "Option :" optionNetbeans
+    #Tant que l'on a pas une option valide, on redemande à l'utilisateur d'en saisir une
+    while [ "$optionNetbeans" != "o" ] && [ "$optionNetbeans" != "O" ] && [ "$optionNetbeans" != "n" ] && [ "$optionNetbeans" != "N" ]
+    do
+        clear
+
+        if [ "$c" -ge 1 ]
+        then
+            echo "Mauvaise saisie \"$optionNetbeans\", merci de resaisir votre option"
+
+            echo
+        fi
+
+        echo "Souhaitez-vous lancer NetBeans ? [O/N]"
+
+        echo
+
+        sleep 1
+
+        #Lecture de l'entrée utilisateur
+        read  -n 1 -p "Option :" optionNetbeans
+
+        c=$(($c+1)) 
+    done
 
     #Lancement NetBEANS
     if [ "$optionNetbeans" = "o" ] || [ "$optionNetbeans" = "O" ]
@@ -155,13 +201,21 @@ echo
 #Statut DB
 if [ "$option" = "o" ] || [ "$option" = "O" ]
 then
-    echo "Base de données SQL reconstruite"
+    if grep -q "#####Fait#####" /tmp/trace_Start_sh.txt
+    then
+        echo "Base de données SQL reconstruite"
+    else
+        echo "Erreur lors de la reconstruction de la Base de données"
+    fi
+
+    rm /tmp/trace_Start_sh.txt
+
     echo
 fi
 
 
 #Affichage status NetBEANS
-ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/openjdk-22.0.2" | head -n 1`
+ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/"$Java_version | head -n 1`
 if [ "$ProcNetBEANS" = "" ]
 then
     echo "Status NetBEANS : inactive"

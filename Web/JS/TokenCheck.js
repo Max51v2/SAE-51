@@ -38,7 +38,7 @@ function TokenCheck(){
         //Vérification du token auprès du Servlet
         fetch(`https://${ServerIP}:8443/SAE51/CheckToken`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({ token: token, Test: false })
         })
         .then(response => response.json())
@@ -79,7 +79,7 @@ function CheckTokenResult(response) {
 function GetRedirection(){
     fetch(`https://${window.ServerIP}:8443/SAE51/GetRedirection`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({ token: token, currentPage: window.currentPage, Test: false })
         }).then(response => response.json())
         .then(GetRedirectionResult);

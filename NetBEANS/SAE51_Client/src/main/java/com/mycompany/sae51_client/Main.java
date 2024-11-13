@@ -27,7 +27,6 @@ public class Main {
         System.out.println("IP serveur : "+ServerIP);
         
         //Ajout du pc à la DB (serveur TCP PingAnswer : port 4444)
-        //à faire : changer localhost par scanner
         TCP_Client tcp = new TCP_Client(ServerIP, 4444);
         String jsonString = "{\"id\":\""+id+"\", \"IP\":\""+IP+"\", \"Test\":\"false\"}";
         String result = tcp.run(jsonString);

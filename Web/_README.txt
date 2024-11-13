@@ -7,7 +7,7 @@ Si vous souhaitez modifier l'organisation de ce dossier, merci de modifier les c
 ==> il est préférable de maintenir l'organisation actuelle
 
 
-Si vous créez une nouvelle page Web, merci d'ajouter votre page dans la table "web_pages_access" située dans la BD sae_51 en première partie du doc (Serveur/Configuration/PostgreSQL.sql) 
+Si vous créez une nouvelle page Web, merci d'ajouter votre page dans la table "web_pages_access" située dans la BD sae_51 en première partie du doc (Serveur/ConfigProjet/PostgreSQL.sql) 
 => Sinon TokenCheck va automatiquement vous renvoyer vers "login.html"
 
 
