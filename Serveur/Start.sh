@@ -59,11 +59,11 @@ sudo mkdir -p /Netbeans/conf
 #Copie des fichiers
 sudo cp -r $GitRep* $NginxRep
 sudo cp -r "/home/"$USER"/Bureau/SAE-51/NetBEANS/SAE51/dist/javadoc/"* $NginxRep"/Javadoc"
-sudo cp -n $LibRep* /Netbeans
+sudo cp -r $LibRep* /Netbeans
 sudo cp -r $ConfFile /Netbeans/conf
 sudo cp -r $projectRep"Serveur/README_Java.txt" $docRep"Doc_Serveur.txt"
 sudo cp -r $projectRep"Serveur/README_VM.txt" $docRep"Doc_VM.txt"
-sudo cp -r $projectRep"Client/README.txt" $docRep"Doc_Client.txt"
+sudo cp -r $projectRep"app/README.txt" $docRep"Doc_Client.txt"
 sudo cp -r $projectRep"Web/_README.txt" $docRep"Doc_Web.txt"
 sudo cp -r $projectRep"README.md" $docRep"Doc_Projet.txt"
 
