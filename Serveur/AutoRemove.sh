@@ -64,8 +64,7 @@ clear
 
 sudo apt-get -y --purge remove postgresql postgresql-*
 sudo apt-get -y purge nginx nginx-common
-sudo rm -rf /opt/tomcat/*
-sudo rmdir /tomcat
+sudo rm -rf /opt/tomcat/
 if [ "$optionJDK" = "o" ] || [ "$optionJDK" = "O" ]
 then
     sudo rm -rf /usr/java/$Java_version/*
@@ -76,16 +75,12 @@ then
     sudo apt-get -y remove code
 fi
 sudo apt autoremove -y --purge apache-netbeans
-sudo rm -rf /Netbeans/*
-sudo rmdir /Netbeans
-sudo rm -rf /certs/*
-sudo rmdir /certs/
-sudo rm -rf /var/www/sae-51/*
-sudo rmdir /var/www/sae-51/
+sudo rm -rf /Netbeans/
+sudo rm -rf /certs/
+sudo rm -rf /var/www/sae-51/
 sudo apt autoremove -y
 
 echo "Suppression achevée"
 
 #Suppression du projet
-sudo rm -rf /home/$USER/Bureau/SAE-51/*
 sudo rm -rf /home/$USER/Bureau/SAE-51/
