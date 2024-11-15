@@ -23,7 +23,7 @@ public class CheckPasswordTest {
      *  - MDP : ok
      */
     @Test
-    public void testAddUser1() throws IOException {
+    public void testCheckPassword1() throws IOException {
         DAOTest DAO = new DAOTest();
         DAOusers DAO2 = new DAOusers();
         POSTRequest req = new POSTRequest();
@@ -69,7 +69,7 @@ public class CheckPasswordTest {
      *  - MDP : ok
      */
     @Test
-    public void testAddUser2() throws IOException {
+    public void testCheckPassword2() throws IOException {
         DAOTest DAO = new DAOTest();
         DAOusers DAO2 = new DAOusers();
         POSTRequest req = new POSTRequest();
@@ -115,7 +115,7 @@ public class CheckPasswordTest {
      *  - MDP : ok
      */
     @Test
-    public void testAddUser3() throws IOException {
+    public void testCheckPassword3() throws IOException {
         DAOTest DAO = new DAOTest();
         DAOusers DAO2 = new DAOusers();
         POSTRequest req = new POSTRequest();
@@ -161,7 +161,7 @@ public class CheckPasswordTest {
      *  - MDP : incorrect
      */
     @Test
-    public void testAddUser4() throws IOException {
+    public void testCheckPassword4() throws IOException {
         DAOTest DAO = new DAOTest();
         DAOusers DAO2 = new DAOusers();
         POSTRequest req = new POSTRequest();

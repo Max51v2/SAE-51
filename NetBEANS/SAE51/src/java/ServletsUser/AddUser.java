@@ -1,5 +1,7 @@
 package ServletsUser;
 
+import Autre.ProjectConfig;
+import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -15,7 +17,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  *
  * @author Maxime VALLET
- * @version 1.2
+ * @version 1.4
  */
 @WebServlet(name = "AddUser", urlPatterns = {"/AddUser"})
 public class AddUser extends HttpServlet {
@@ -26,7 +28,7 @@ public class AddUser extends HttpServlet {
      * Variables à envoyer au servlet (POST)<br>
      * String nom       &emsp;&emsp;        nom de l'utilisateur <br>
      * String prenom       &emsp;&emsp;        prenom de l'utilisateur <br>
-     * String role       &emsp;&emsp;        prenom de l'utilisateur <br>
+     * String role       &emsp;&emsp;        droits de l'utilisateur <br>
      * String login       &emsp;&emsp;        login de l'utilisateur <br>
      * String password       &emsp;&emsp;        MDP de l'utilisateur <br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
@@ -51,7 +53,11 @@ public class AddUser extends HttpServlet {
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
+        //Nom du servlet
+        String servletName = "AddUser";
+        
         DAOusers DAO = new DAOusers();
+        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -71,6 +77,8 @@ public class AddUser extends HttpServlet {
         String rights = "Aucun";
         Boolean doLoginExist;
         String jsonString = "";
+        String loginLog = "Aucun";
+        String error = "no error";
         
         
         //Vérification du contenu envoyé
@@ -87,7 +95,7 @@ public class AddUser extends HttpServlet {
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
                 //Récuppération des droits d'accès au servlet
-                String access = DAO.getServletRights("AddUser", rights, false);
+                String access = DAO.getServletRights(servletName, rights, false);
 
                 if(access.equals("true")){
                     //On vérifie si l'utilisateur n'existe pas
@@ -114,6 +122,19 @@ public class AddUser extends HttpServlet {
             }
         }
         
+        //Log
+        loginLog = DAO.getLogin();
+        JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
+        error = JSONlog.getErreur();
+        ProjectConfig conf = new ProjectConfig();
+        String LogLevel = conf.getStringValue("LogLevel");
+        //Enregistrement des logs
+        if(LogLevel.equals("ErrorsOnly") & !error.equals("none")){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
+        }
+        else if(LogLevel.equals("All")){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
+        }
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

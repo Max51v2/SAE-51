@@ -1,5 +1,7 @@
 package ServletsUser;
 
+import Autre.ProjectConfig;
+import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -45,7 +47,11 @@ public class ListUsers extends HttpServlet {
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
+        //Nom du servlet
+        String servletName = "ListUsers";
+        
         DAOusers DAO = new DAOusers();
+        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -59,6 +65,9 @@ public class ListUsers extends HttpServlet {
         Boolean TestBoolean = Boolean.valueOf(user.getTest());
         String rights = "Aucun";
         String jsonString = "";
+        String loginLog = "Aucun";
+        String error = "no error";
+        String access = "";
         
         //Vérification du contenu envoyé
         if(token == null){
@@ -74,7 +83,7 @@ public class ListUsers extends HttpServlet {
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
 
                 //Récuppération des droits d'accès au servlet
-                String access = DAO.getServletRights("ListUsers", rights, false);
+                access = DAO.getServletRights("ListUsers", rights, false);
 
                 if(access.equals("true")){
                     //Récuppération des utilisateurs
@@ -86,6 +95,24 @@ public class ListUsers extends HttpServlet {
             }
         }
         
+        //Log
+        loginLog = DAO.getLogin();
+        if(access.equals("false")){    //note : on ne renvoi le champ "erreur que s'il y'en a une
+            JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
+            error = JSONlog.getErreur();
+        }
+        else{
+            error = "none";
+        }
+        ProjectConfig conf = new ProjectConfig();
+        String LogLevel = conf.getStringValue("LogLevel");
+        //Enregistrement des logs
+        if(LogLevel.equals("ErrorsOnly") & !error.equals("none")){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
+        }
+        else if(LogLevel.equals("All")){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
+        }
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

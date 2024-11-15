@@ -1,6 +1,7 @@
 package ServletsUser;
 
 import Autre.ProjectConfig;
+import DAO.DAOLogs;
 import DAO.DAOusers;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -17,7 +18,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  *
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.3
  */
 @WebServlet(name = "CheckPassword", urlPatterns = {"/CheckPassword"})
 public class CheckPassword extends HttpServlet {
@@ -48,7 +49,11 @@ public class CheckPassword extends HttpServlet {
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
+        //Nom du servlet
+        String servletName = "CheckPassword";
+        
         DAOusers DAO = new DAOusers();
+        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -63,6 +68,8 @@ public class CheckPassword extends HttpServlet {
         Boolean TestBoolean = Boolean.valueOf(user.getTest());
         String rights = "Aucun";
         String token = "";
+        String loginLog = "Aucun";
+        String error = "no error";
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
@@ -95,6 +102,8 @@ public class CheckPassword extends HttpServlet {
                         //si le hash de la DB est identique au hash envoyé 
                         Boolean isPasswordOK = BCrypt.checkpw(password, hashDB);
                         if(isPasswordOK == true){
+                            loginLog = login;
+                            
                             //Récupération des droits utilisateur
                             rights = DAO.getUserRightsFromLogin(login, TestBoolean);
 
@@ -131,7 +140,18 @@ public class CheckPassword extends HttpServlet {
             }
         }
         
-        
+        //Log
+        JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
+        error = JSONlog.getErreur();
+        ProjectConfig conf = new ProjectConfig();
+        String LogLevel = conf.getStringValue("LogLevel");
+        //Enregistrement des logs
+        if(LogLevel.equals("ErrorsOnly") & !error.equals("none")){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
+        }
+        else if(LogLevel.equals("All")){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
+        }
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

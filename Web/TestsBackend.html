@@ -8,8 +8,6 @@
     <h1>Ceci est une page de test</h1>
     <br><br><br><br>
     <h2>Tests Backend</h2>
-    <input id="testCheckPassword" type="button" value="CheckPassword" onclick="doFunction();" />
-    <input id="testCheckToken" type="button" value="CheckToken" onclick="doFunction();" />
     <input id="testDeleteUser" type="button" value="DeleteUser (Utilisateur1)" onclick="doFunction();" />
     <input id="testListUsers" type="button" value="ListUsers" onclick="doFunction();" />
     <input id="test20Connexions" type="button" value="20 Connexions" onclick="doFunction();" />
@@ -29,27 +27,8 @@
 
 
     //tests à partir d'ici
-    token1 = "";
+    token1 = sessionStorage.getItem("token");
     token2 = "";
-
-    document.getElementById("testCheckPassword").onclick = function () { 
-        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Admin1", password: "Admin", Test: false})}).then(r1 => r1.json()).then(PasswordVerification1)
-        fetch("https://"+window.ServerIP+":8443/SAE51/CheckPassword", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", Test: false})}).then(r2 => r2.json()).then(PasswordVerification2)
-    };
-
-    function PasswordVerification1(r1){
-        console.log(r1);
-        token1 = r1.token;
-    }
-    function PasswordVerification2(r2){
-        console.log(r2);
-        token2 = r2.token;
-    }
-
-    document.getElementById("testCheckToken").onclick = function () { 
-        fetch("https://"+window.ServerIP+":8443/SAE51/CheckToken", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: token1, Test: false})}).then(r3 => r3.json()).then(TokenVerification1)
-        fetch("https://"+window.ServerIP+":8443/SAE51/CheckToken", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: token2, Test: false})}).then(r4 => r4.json()).then(TokenVerification2)
-    };
 
     function TokenVerification1(r3){
         console.log(r3);
@@ -102,7 +81,7 @@
     }
 
     document.getElementById("testAddUser").onclick = function () { 
-        fetch("https://"+window.ServerIP+":8443/SAE51/AddUser", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", nom: "Originel", prenom: "Utilisateur", token: token1, Test: false})}).then(r8 => r8.json()).then(AddUserVerification)
+        fetch("https://"+window.ServerIP+":8443/SAE51/AddUser", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: "Utilisateur1", password: "Utilisateur", nom: "Originel", prenom: "Utilisateur", droits: "Utilisateur", token: token1, Test: false})}).then(r8 => r8.json()).then(AddUserVerification)
     };
     
     function AddUserVerification(r8){

@@ -16,8 +16,9 @@ public class GetJSONInfoUsers{
         private String currentPage;
         private String Test;
         private String target;
+        private String erreur;
         
-        public GetJSONInfoUsers(String login, String nom, String prenom, String droits, String token, String password, String currentPage, String Test, String target){
+        public GetJSONInfoUsers(String login, String nom, String prenom, String droits, String token, String password, String currentPage, String Test, String target, String erreur){
             this.login=login;
             this.nom=nom;
             this.prenom=prenom;
@@ -27,6 +28,7 @@ public class GetJSONInfoUsers{
             this.currentPage=currentPage;
             this.Test = Test;
             this.target = target;
+            this.erreur = erreur;
         }
 
         public String getLogin() {
@@ -99,5 +101,13 @@ public class GetJSONInfoUsers{
 
         public void setTarget(String target) {
             this.target = target;
+        }
+        
+        public String getErreur() {
+            return erreur;
+        }
+
+        public void setErreur(String erreur) {
+            this.erreur = erreur;
         }
     }

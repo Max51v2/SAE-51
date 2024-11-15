@@ -1,5 +1,7 @@
 package ServletsUser;
 
+import Autre.ProjectConfig;
+import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -41,7 +43,11 @@ public class CheckToken extends HttpServlet {
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
+        //Nom du servlet
+        String servletName = "CheckToken";
+        
         DAOusers DAO = new DAOusers();
+        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -56,6 +62,8 @@ public class CheckToken extends HttpServlet {
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
+        String loginLog = "Aucun";
+        String error = "no error";
         
         
         //Si login null alors on ne fait rien
@@ -77,6 +85,27 @@ public class CheckToken extends HttpServlet {
                     e.printStackTrace();
                 }
             }
+        }
+        
+        //Log
+        JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
+        loginLog = JSONlog.getLogin();
+        String rights = JSONlog.getDroits();
+        error = JSONlog.getErreur();
+        if(loginLog == null){
+            loginLog = "Aucun";
+        }
+        if(rights == null){
+            rights = "Aucun";
+        }
+        ProjectConfig conf = new ProjectConfig();
+        String LogLevel = conf.getStringValue("LogLevel");
+        //Enregistrement des logs
+        if(LogLevel.equals("ErrorsOnly") & !error.equals("none")){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
+        }
+        else if(LogLevel.equals("All")){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
         }
         
         //Envoi des données

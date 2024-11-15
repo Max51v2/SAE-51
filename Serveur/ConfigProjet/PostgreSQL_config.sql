@@ -155,6 +155,18 @@ INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Aucun
 
 
 
+--Table contenant les logs d'utilisation des servlets
+CREATE TABLE logs (
+    id SERIAL PRIMARY KEY,
+    servlet text,
+    ip text,
+    login text,
+    droits text,
+    error text,
+    date text
+);
+
+
 
 --######################## BD test ########################
 DROP DATABASE test;
@@ -219,6 +231,19 @@ CREATE TABLE servlet_access (
 INSERT INTO servlet_access (name, role, access) VALUES ('Test', 'Admin', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('Test', 'Utilisateur', 'false');
 INSERT INTO servlet_access (name, role, access) VALUES ('Test', 'Aucun', 'false');
+
+
+
+--Table contenant les logs d'utilisation des servlets
+CREATE TABLE logs (
+    id SERIAL PRIMARY KEY,
+    servlet text,
+    ip text,
+    login text,
+    droits text,
+    error text,
+    date text
+);
 
 
 -- fin contenu de la BD sae_51

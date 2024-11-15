@@ -19,6 +19,7 @@ public class DAOusers {
     private static final String UserPostgres="postgres";
     private static final String PasswordPostgres="leffe";
     private static String UrlBD="";
+    private String loginLog = "Aucun";
     
     
     //Défini la DB sur laquelle on se connecte
@@ -136,10 +137,11 @@ public class DAOusers {
      * @return        droits de l'utilisateur
      */
     public String getUserRightsFromToken(String token, Boolean Test){
-        String RequeteSQL="SELECT token, droits FROM users WHERE token != '' ORDER BY tokenlifecycle DESC";
+        String RequeteSQL="SELECT token, droits, login FROM users WHERE token != '' ORDER BY tokenlifecycle DESC";
         String droits="Aucun";
         String hashedToken="";
         Boolean isTokenOK = false;
+        loginLog = "Aucun";
         
         //Selection de la BD
         changeConnection(Test);
@@ -164,6 +166,7 @@ public class DAOusers {
                     if(isTokenOK == true){
                         //Données BD
                         droits = resultSet.getString("droits");
+                        loginLog = resultSet.getString("login");
                     }
                 }
             }
@@ -868,5 +871,20 @@ public class DAOusers {
         }
         
         return access;
+    }
+    
+    
+    
+    
+    /**
+     * Récupération du login pour le loger
+     * 
+     * @return loginLogBackup       login de l'utilisateur lors de la dernière vérification
+     */
+    public String getLogin(){
+        String loginLogBackup = loginLog;
+        loginLog = "Aucun";
+        
+        return loginLogBackup;
     }
 }

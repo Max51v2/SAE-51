@@ -1,5 +1,7 @@
 package ServletsUser;
 
+import Autre.ProjectConfig;
+import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -42,7 +44,11 @@ public class GetRedirection extends HttpServlet {
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
+        //Nom du servlet
+        String servletName = "GetRedirection";
+        
         DAOusers DAO = new DAOusers();
+        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -58,6 +64,8 @@ public class GetRedirection extends HttpServlet {
         String token = user.getToken();
         String redirect = "";
         String jsonString = "";
+        String loginLog = "Aucun";
+        String error = "no error";
        
         //Vérification du contenu envoyé
         if(currentPage == null | currentPage == null){
@@ -93,6 +101,19 @@ public class GetRedirection extends HttpServlet {
             }
         }
         
+        //Log
+        loginLog = DAO.getLogin();
+        JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
+        error = JSONlog.getErreur();
+        ProjectConfig conf = new ProjectConfig();
+        String LogLevel = conf.getStringValue("LogLevel");
+        //Enregistrement des logs
+        if(LogLevel.equals("ErrorsOnly") & !error.equals("none")){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
+        }
+        else if(LogLevel.equals("All")){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
+        }
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {
