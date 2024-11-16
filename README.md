@@ -48,6 +48,7 @@ fait :
     => Récupération des informations via le fichier de config
     => Tests unitaires : servlets utilisateurs + DAOusers (partiel) + serveur TCP + expiration des tokens
     => Droits d'accès aux servlets
+    => Système de log (erreurs ou toutes les actions (fichier de config))
 - Frontend :
     => Page de login + aide
     => Template de page Web
