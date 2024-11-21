@@ -6,3 +6,4 @@
 /app/Client/target
 /app/Client/.gitignore
 /app/Client/src/test/
+/.idea

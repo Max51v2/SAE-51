@@ -35,12 +35,11 @@ public class PCInfo {
         String rootPath = projectPath.substring(0,projectPath.indexOf("SAE-51")+6);
 
         //Chemin du fichier contenant l'id
-        //Chemin du fichier contenant l'id
         if(osBean.getName().contains("Windows")){
-            IDPathString = rootPath+"\\Serveur\\Configuration\\sae_51.conf";
+            IDPathString = rootPath+"\\app\\u.id";
         }
         else{
-            IDPathString = rootPath+"/Serveur/Configuration/sae_51.conf";
+            IDPathString = rootPath+"/app/u.id";
         }
         Path IDPath = Paths.get(IDPathString);
         
