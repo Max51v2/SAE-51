@@ -2,6 +2,8 @@ package com.mycompany.sae51_client;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,19 +20,23 @@ public class ProjectConfig {
     String pathSizeFromProject = "NetBEANS/SAE51_Client";
     String confFile = "";
     Map<String, String> map = new HashMap<String, String>();
-    
+    OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
+    String configPathString;
+
     public  ProjectConfig(){
-        //Chemin du fichier qui contient l'ID du pc
+        //Chemin du projet Java
         String projectPath = System.getProperty("user.dir");
-        
-        //Taille de la chaîne contenant le chemain
-        Integer pathSize = projectPath.length();
-        
-        //Taille de la chaîne contenant le chemin en partant de la racine du projet
-        Integer pathSizeFromProject = this.pathSizeFromProject.length();
-        
+
+        //Racine du projet
+        String rootPath = projectPath.substring(0,projectPath.indexOf("SAE-51")+6);
+
         //Chemin du fichier contenant l'id
-        String configPathString = projectPath.substring(0, pathSize - pathSizeFromProject) + "Serveur/Configuration/sae_51.conf";
+        if(osBean.getName().contains("Windows")){
+            configPathString = rootPath+"\\Serveur\\ConfigProjet\\sae_51.conf";
+        }
+        else{
+            configPathString = rootPath+"/Serveur/ConfigProjet/sae_51.conf";
+        }
         Path configPath = Paths.get(configPathString);
         
         // Vérifie si le fichier existe

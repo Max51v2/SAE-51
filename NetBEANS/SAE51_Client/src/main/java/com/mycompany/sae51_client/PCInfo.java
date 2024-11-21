@@ -2,6 +2,8 @@ package com.mycompany.sae51_client;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -22,19 +24,24 @@ import org.apache.commons.lang3.RandomStringUtils;
 public class PCInfo {
     String pathSizeFromProject = "NetBEANS/SAE51_Client";
     String id = "";
+    OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
+    String IDPathString;
     
     public String getPCID(){
-        //Chemin du fichier qui contient l'ID du pc
+        //Chemin du projet Java
         String projectPath = System.getProperty("user.dir");
-        
-        //Taille de la chaîne contenant le chemain
-        Integer pathSize = projectPath.length();
-        
-        //Taille de la chaîne contenant le chemin en partant de la racine du projet
-        Integer pathSizeFromProject = this.pathSizeFromProject.length();
-        
+
+        //Racine du projet
+        String rootPath = projectPath.substring(0,projectPath.indexOf("SAE-51")+6);
+
         //Chemin du fichier contenant l'id
-        String IDPathString = projectPath.substring(0, pathSize - pathSizeFromProject) + "Client//u.id";
+        //Chemin du fichier contenant l'id
+        if(osBean.getName().contains("Windows")){
+            IDPathString = rootPath+"\\Serveur\\Configuration\\sae_51.conf";
+        }
+        else{
+            IDPathString = rootPath+"/Serveur/Configuration/sae_51.conf";
+        }
         Path IDPath = Paths.get(IDPathString);
         
         // Vérifie si le fichier existe
