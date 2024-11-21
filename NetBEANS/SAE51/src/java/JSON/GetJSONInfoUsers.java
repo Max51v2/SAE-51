@@ -4,7 +4,7 @@ package JSON;
  * Permet de récupérer les informations contenues dans un JSON (exemple utilisation : voir req POST servlet / TokenExpiration)
  * 
  * @author Maxime VALLET
- * @version 1.2
+ * @version 1.3
  */
 public class GetJSONInfoUsers{
         private String login;
@@ -17,9 +17,11 @@ public class GetJSONInfoUsers{
         private String Test;
         private String target;
         private String erreur;
+        private String beginDate;
+        private String endDate;
+        private String logLevelReq;
         
-        public GetJSONInfoUsers(String login, String nom, String prenom, String droits, String token, String password, String currentPage, String Test, String target, String erreur){
-            this.login=login;
+        public GetJSONInfoUsers(String login, String nom, String prenom, String droits, String token, String password, String currentPage, String Test, String target, String erreur, String beginDate, String endDate, String logLevelReq){            this.login=login;
             this.nom=nom;
             this.prenom=prenom;
             this.droits=droits;
@@ -29,6 +31,9 @@ public class GetJSONInfoUsers{
             this.Test = Test;
             this.target = target;
             this.erreur = erreur;
+            this.beginDate = beginDate;
+            this.endDate = endDate;
+            this.logLevelReq = logLevelReq;
         }
 
         public String getLogin() {
@@ -78,7 +83,7 @@ public class GetJSONInfoUsers{
         public void setPassword(String password) {
             this.password = password;
         }
-        
+
         public String getCurrentPage() {
             return currentPage;
         }
@@ -94,7 +99,7 @@ public class GetJSONInfoUsers{
         public void setTest(String Test) {
             this.Test = Test;
         }
-        
+
         public String getTarget() {
             return target;
         }
@@ -102,12 +107,36 @@ public class GetJSONInfoUsers{
         public void setTarget(String target) {
             this.target = target;
         }
-        
+
         public String getErreur() {
             return erreur;
         }
 
         public void setErreur(String erreur) {
             this.erreur = erreur;
+        }
+
+        public String getBeginDate() {
+            return beginDate;
+        }
+
+        public void setBeginDate(String beginDate) {
+            this.beginDate = beginDate;
+        }
+
+        public String getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(String endDate) {
+            this.endDate = endDate;
+        }
+        
+        public String getLogLevelReq() {
+            return logLevelReq;
+        }
+
+        public void setLogLevelReq(String logLevelReq) {
+            this.logLevelReq = logLevelReq;
         }
     }

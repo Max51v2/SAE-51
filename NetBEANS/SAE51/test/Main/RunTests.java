@@ -18,6 +18,7 @@ import ServletsUser.CheckPasswordTest;
 import ServletsUser.CheckTokenTest;
 import ServletsUser.DeleteTokenTest;
 import ServletsUser.DeleteUserTest;
+import ServletsUser.GetLogsTest;
 import ServletsUser.GetRedirectionTest;
 import ServletsUser.ListUsersTest;
 import ServletsUser.SetPasswordTest;
@@ -36,6 +37,7 @@ import TCP_Server.AnswerPingTest;
     SetPasswordTest.class,
     AnswerPingTest.class,
     TokenExpirationTest.class,
+    GetLogsTest.class,
     Warning.class //Laisser en dernier
 })
 public class RunTests {}

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Auteur original : Maxime VALLET (SAE 52)
-# Version : 1.5
+# Version : 1.6
 # Modifications : Maxime VALLET
 #    => Remplacement Apache par Nginx
 #    => Dossier lib qui contient les librairies (afin d'avoir un chemin commun dans ou en dehors de la VM)
@@ -206,9 +206,8 @@ then
         echo "Base de données SQL reconstruite"
     else
         echo "Erreur lors de la reconstruction de la Base de données"
+        echo "Trace d'execution disponible ici : /tmp/trace_Start_sh.txt"
     fi
-
-    rm /tmp/trace_Start_sh.txt
 
     echo
 fi

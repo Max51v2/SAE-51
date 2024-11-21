@@ -1,9 +1,12 @@
 Auteur : Maxime VALLET
-Version : 2.4
+Version : 2.5
 
 
 Afin d'installer la VM, merci de vous référer à la partie "VM" du fichier "README_VM.txt" dans le dossier "Serveur"
   => les instructions d'installation sont disponibles ce fichier
+
+
+IMPORTANT : merci de suivre les templates pour le projet SAE51 afin de pouvoir intégrer les features
 
 
 
@@ -12,6 +15,7 @@ Afin d'installer la VM, merci de vous référer à la partie "VM" du fichier "RE
 Frontend :
   => Ajouter des messages d'erreur (erreurs envoyées par les servlets => voir Javadoc Servlets)
   => Page web gestion des utilisateurs : affichage + suppression + modif MDP
+  => Page d'affichage des logs
   => Page web gestion des machines : affichage + suppression + modification des droits
   => Page web qui donne des informations sur la machine (CDC info statiques) + définition des seuils d'alerte des différentes métriques surveillées (CDC partie dynamique) + allumage/extinction/redémarrage machine
   => Page web notifications

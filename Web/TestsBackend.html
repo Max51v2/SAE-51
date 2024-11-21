@@ -14,7 +14,7 @@
     <input id="testAddUser" type="button" value="AddUser (Utilisateur1)" onclick="doFunction();" />
     <input id="testDeleteToken" type="button" value="DeleteToken (Utilisateur1)" onclick="doFunction();" />
     <input id="testSetPassword" type="button" value="SetPassword (Utilisateur1)" onclick="doFunction();" />
-
+    <input id="testGetLogs" type="button" value="GetLogs (nécéssite de changer les dates dans la page)" onclick="doFunction();" />
 
 
 <!-- ne pas toucher aux 2 scripts ci-dessous SAUF en cas de BUG -->
@@ -102,6 +102,14 @@
     
     function SetPasswordVerification(r10){
         console.log(r10);
+    }
+
+    document.getElementById("testGetLogs").onclick = function () { 
+        fetch("https://"+window.ServerIP+":8443/SAE51/GetLogs", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ beginDate: "20241121_000000", endDate: "20241121_100000", token: token1, logLevelReq: "ErrorsOnly", Test: false})}).then(r11 => r11.json()).then(GetLogsVerification)
+    };
+    
+    function GetLogsVerification(r11){
+        console.log(r11);
     }
 </script>
 

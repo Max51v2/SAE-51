@@ -153,6 +153,11 @@ INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Admin
 INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Utilisateur', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Aucun', 'true');
 
+--GetLogs
+INSERT INTO servlet_access (name, role, access) VALUES ('GetLogs', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetLogs', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetLogs', 'Aucun', 'false');
+
 
 
 --Table contenant les logs d'utilisation des servlets
@@ -168,6 +173,7 @@ CREATE TABLE logs (
 
 
 
+--#########################################################
 --######################## BD test ########################
 DROP DATABASE test;
 
@@ -245,10 +251,16 @@ CREATE TABLE logs (
     date text
 );
 
+--Test
+INSERT INTO logs (servlet, ip, login, droits, error, date) VALUES ('Test', '1.1.1.1', 'Hell walker', 'Admin', 'none', '19931210_000001');
+INSERT INTO logs (servlet, ip, login, droits, error, date) VALUES ('Test2', '2.2.2.2', 'Maxime', 'Admin', 'erreur', '20241124_012900');
 
 -- fin contenu de la BD sae_51
 
 --########################## FIN ##########################
+--#########################################################
+
+
 
 --Msg fin
 \echo

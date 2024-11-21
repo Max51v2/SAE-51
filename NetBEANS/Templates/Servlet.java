@@ -1,5 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 1.2
+//Version : 2.1
 
 
 //Ce qui est entre crochets est à modifier ou retirer selon la situation
@@ -7,7 +7,16 @@
 
 package [?];
 
-[imports]
+import Autre.ProjectConfig;
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -41,24 +50,30 @@ public class [nomServlet] extends HttpServlet {
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
-        DAO[?] DAO = new DAO[?]();
+        DAO.DAO[?] DAO = new DAO[?]();
+        DAOLogs log = new DAOLogs();
+
+        //Nom du servlet
+        String servletName = "[NomServlet]";
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
         Gson gsonRequest = new Gson();
         
         //Convertion des données du JSON dans un objet Java
-        JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfo[?].class);
+        JSON.GetJSONInfo[?] json = gsonRequest.fromJson(reader, JSON.GetJSONInfo[?].class);
         
         //Données envoyées par la requête
-        String [?] = user.get[?]();
+        String [?] = json.get[?]();
                     ...
-        String [?] = user.get[?]();
-        Boolean TestBoolean = Boolean.valueOf(user.getTest());
+        String [?] = json.get[?]();
+        Boolean TestBoolean = Boolean.valueOf(json.getTest());
 
         //Données
         String rights = "Aucun";
         String jsonString = "";
+        String loginLog = "Aucun";
+        String error = "no error";
         
         //Vérification du contenu envoyé
         if([?] == null | ... | [?] == null){
@@ -73,9 +88,11 @@ public class [nomServlet] extends HttpServlet {
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
                 //Récuppération des droits d'accès au servlet (Merci d'ajouter votre servlet à la BD => voir "README_Java.txt" dossier "/Serveur")
-                String access = DAO.getServletRights("[Nom du servlet]", rights, false);
+                String access = DAO.getServletRights(servletName, rights, false);
 
                 if(access.equals("true")){
+                    //Au cas où le JSON change de structure par rapport aux erreurs
+                    error = "none";
 
                     //Code ici
 
@@ -84,15 +101,35 @@ public class [nomServlet] extends HttpServlet {
                     jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }
-            
         }
         
+
+        //Log
+        loginLog = DAO.getLogin();
+        //Si error possède la val "none" on ne lit pas le champ erreur pour éviter un exception en cas de structure JSON différente
+        if(!error.equals("none")){
+            JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
+            error = JSONlog.getErreur();
+        }
+        //Récupération du niveau de log
+        ProjectConfig conf = new ProjectConfig();
+        String LogLevel = conf.getStringValue("LogLevel");
+        //Enregistrement des logs
+        if(LogLevel.equals("ErrorsOnly") & ! error.equals("none") & TestBoolean == false){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
+        }
+        else if(LogLevel.equals("All") & TestBoolean == false){
+            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
+        }
+
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {
             out.print(jsonString);
             out.flush();
         }
     }
+
+
 
     //Ignorer ce qu'il y'a en dessous (rajouté par l'IDE)
 

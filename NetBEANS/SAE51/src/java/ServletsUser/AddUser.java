@@ -129,10 +129,10 @@ public class AddUser extends HttpServlet {
         ProjectConfig conf = new ProjectConfig();
         String LogLevel = conf.getStringValue("LogLevel");
         //Enregistrement des logs
-        if(LogLevel.equals("ErrorsOnly") & !error.equals("none")){
+        if(LogLevel.equals("ErrorsOnly") & !error.equals("none") & TestBoolean == false){
             log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
         }
-        else if(LogLevel.equals("All")){
+        else if(LogLevel.equals("All") & TestBoolean == false){
             log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
         }
         
