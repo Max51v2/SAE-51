@@ -94,14 +94,14 @@ public class ProjectConfig {
     
     
     public String getStringValue(String parameter){
-        String result = map.get(parameter);
+        String result = map.get(parameter).trim();
         
         return result;
     }
     
     
     public Integer getIntValue(String parameter){
-        Integer result = Integer.valueOf(map.get(parameter));
+        Integer result = Integer.valueOf(map.get(parameter).trim());
         
         return result;
     }

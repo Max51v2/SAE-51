@@ -23,11 +23,12 @@ public class Main {
         //Obtention de l'IP du serveur
         ProjectConfig conf = new ProjectConfig();
         String ServerIP = conf.getStringValue("ServerIP");
+        Integer ServerPort = conf.getIntValue("AnswerPingPort");
         
         System.out.println("IP serveur : "+ServerIP);
         
-        //Ajout du pc à la DB (serveur TCP PingAnswer : port 4444)
-        TCP_Client tcp = new TCP_Client(ServerIP, 4444);
+        //Ajout du pc à la DB (serveur TCP PingAnswer : port 50000)
+        TCP_Client tcp = new TCP_Client(ServerIP, ServerPort);
         String jsonString = "{\"id\":\""+id+"\", \"IP\":\""+IP+"\", \"Test\":\"false\"}";
         String result = tcp.run(jsonString);
         
