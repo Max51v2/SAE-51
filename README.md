@@ -1,17 +1,33 @@
 Auteur : Maxime VALLET
-Version : 2.5
+Version : 3.0
 
+I) Présentation
+ à faire
 
-Afin d'installer la VM, merci de vous référer à la partie "VM" du fichier "README_VM.txt" dans le dossier "Serveur"
-  => les instructions d'installation sont disponibles ce fichier
+II) Comment installer le projet ?
+ 1) Installation et configuration des programmes
+  a) Utiliser la VM contenant tous les programmes configurés :
+    - Vous retrouverez les informations utiles dans la section "VM" du document situé ici : "/Serveur/README.txt"
+    - Il est recommandé de procéder dans cet ordre : télécharger la VM > suivre les README donnés à chaque partie de l'installation > lire la partie "VM" du document suivant : "/Serveur/README.txt"
+  b) Installer les programmes manuellement :
+    - Vous retrouverez les informations dans la section "VM" du document situé ici : "/Serveur/README.txt"
 
+ 2) Démarrer le projet
+    - Lancez Start.sh puis saisissez "o" pour reconstruire la BD (à faire lors du premier démarrage ou à chaque commit) puis "o" pour lancer NetBeans
+    - Lancez le projet Java ouvert dans NetBeans et saisissez les logins+MDP si besoin (voir doc "/Serveur/README.txt")
+    - Ouvrir le navigateur de la VM ou le navigateur de l'OS hôte (nécéssite d'ajouter les certificats > voir doc "/Serveur/README.txt")
 
+III) Qui contacter en cas de question ?
+ - Serveurs, VM / Backend : Authentification, info statiques PC, logs et tests unitaires / HTML, CSS et JS pages de login, aide et template : Maxime VALLET
+ - HTML et CSS : Gabin PETITCOLAS
+ - Client : Erwann MADEC
+
+IV) Modification VM
+MODIFICATIONS VM : sudo ufw allow 50000 / ajouter la redirection de port 4444 pour du TCP sur la carte NAT de la VM
+
+V) Avancement du projet
 IMPORTANT : merci de suivre les templates pour le projet SAE51 afin de pouvoir intégrer les features
 
-MODIFICATIONS VM : sudo ufw allow 4444 / ajouter la redirection de port 4444 pour du TCP sur la carte NAT de la VM
-
-
-#Projet
 à faire (liste non exhaustive) :
 Frontend :
   => Ajouter des messages d'erreur (erreurs envoyées par les servlets => voir Javadoc Servlets)
