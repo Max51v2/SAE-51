@@ -6,11 +6,14 @@ package Main;
  * ATTENTION : Veuillez à lancer le projet avant d'executer les tests sinon ils vont échouer
  * 
  * @author Maxime VALLET
- * @version 0.5
+ * @version 0.7
  */
 import Autre.TokenExpirationTest;
 import Autre.Warning;
 import DAO.DAOusersTest;
+import ServletsPC.DeletePCTest;
+import ServletsPC.ListPCStaticInfoTest;
+import ServletsPC.ListPCTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import ServletsUser.AddUserTest;
@@ -38,6 +41,9 @@ import TCP_Server.AnswerPingTest;
     AnswerPingTest.class,
     TokenExpirationTest.class,
     GetLogsTest.class,
+    DeletePCTest.class,
+    ListPCStaticInfoTest.class,
+    ListPCTest.class,
     Warning.class //Laisser en dernier
 })
 public class RunTests {}

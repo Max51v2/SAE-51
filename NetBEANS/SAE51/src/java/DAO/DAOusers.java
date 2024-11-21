@@ -13,7 +13,7 @@ import org.mindrot.jbcrypt.BCrypt;
  * Originaires de la SAE-52 (dev par Maxime VALLET) : getUserRightsFromLogin / getUsers
  * 
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.5
  */
 public class DAOusers {
     private static final String UserPostgres="postgres";

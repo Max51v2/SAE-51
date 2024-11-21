@@ -1,6 +1,7 @@
 package TCP_Server;
 
 import DAO.DAOPC;
+import Tests.DAOTest;
 import Tests.TCP_Client;
 import java.io.IOException;
 import org.junit.After;
@@ -20,6 +21,7 @@ public class AnswerPingTest {
     AnswerPing server = new AnswerPing();
     TCP_Client client = new TCP_Client("localhost", 5555);
     DAOPC DAO = new DAOPC();
+    DAOTest DAOTest = new DAOTest();
 
     
      @Before
@@ -52,7 +54,7 @@ public class AnswerPingTest {
         String resultREQ = client.run(jsonString);
         
         //Récuppération des entrées dans la BD des pc
-        String resultDB = DAO.getPC(true);
+        String resultDB = DAOTest.getPC(true);
         
         //Résultat attendu
         String ExpResultREQ = "OK";
@@ -93,7 +95,7 @@ public class AnswerPingTest {
         String resultREQ = client.run(jsonString);
         
         //Récuppération des entrées dans la BD des pc
-        String resultDB = DAO.getPC(true);
+        String resultDB = DAOTest.getPC(true);
         
         //Résultat attendu
         String ExpResultREQ = "OK";
@@ -136,7 +138,7 @@ public class AnswerPingTest {
         String resultREQ = client.run(jsonString);
         
         //Récuppération des entrées dans la BD des pc
-        String resultDB = DAO.getPC(true);
+        String resultDB = DAOTest.getPC(true);
         
         //Résultat attendu
         String ExpResultREQ = "champ(s) inexistant";

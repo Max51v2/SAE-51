@@ -1,7 +1,8 @@
-package ServletsUser;
+package ServletsPC;
 
 import Autre.ProjectConfig;
 import DAO.DAOLogs;
+import DAO.DAOPC;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -12,35 +13,40 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author Maxime VALLET
- * @version 1.4
+ * @version 1.0
  */
-@WebServlet(name = "AddUser", urlPatterns = {"/AddUser"})
-public class AddUser extends HttpServlet {
+@WebServlet(name = "ListPCStaticInfo", urlPatterns = {"/ListPCStaticInfo"})
+public class ListPCStaticInfo extends HttpServlet {
 
     /**
-     * Ajoute un utilisateur dans la BD<br><br>
+     * Liste les infos statiques d'un PC spécifié<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
-     * String nom       &emsp;&emsp;        nom de l'utilisateur <br>
-     * String prenom       &emsp;&emsp;        prenom de l'utilisateur <br>
-     * String role       &emsp;&emsp;        droits de l'utilisateur <br>
-     * String login       &emsp;&emsp;        login de l'utilisateur <br>
-     * String password       &emsp;&emsp;        MDP de l'utilisateur <br>
+     * String id       &emsp;&emsp;        id de l'ordinateur <br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | login existe (DB) | none <br>
-     * String login       &emsp;&emsp;        login de l'utilisateur <br>
-     * String prenom       &emsp;&emsp;        prenom de l'utilisateur <br>
-     * String nom       &emsp;&emsp;        nom de l'utilisateur <br>
-     * String droits       &emsp;&emsp;        droits de l'utilisateur <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | none <br>
+     * String id       &emsp;&emsp;        id de la machine <br>
+     * String cpu_model       &emsp;&emsp;        modèle du procésseur <br>
+     * Integer cores       &emsp;&emsp;        nombre de coeurs du CPU <br>
+     * Integer threads       &emsp;&emsp;        nombre de threads du CPu <br>
+     * String maximum_frequency       &emsp;&emsp;        fréquence max du procésseur (boost) <br>
+     * String ram_quantity       &emsp;&emsp;        capacitée totale de la RAM <br>
+     * Integer dimm_quantity       &emsp;&emsp;        nombre de barrettes de RAM <br>
+     * String dimm_speed       &emsp;&emsp;        vitesse des barrettes de RAM <br>
+     * Integer storage_device_number       &emsp;&emsp;        nombre de périphériques de stockages <br>
+     * String storage_space       &emsp;&emsp;        capacité de stockage total <br>
+     * Integer network_int_number       &emsp;&emsp;        nombre d'interfaces <br>
+     * String network_int_speed       &emsp;&emsp;        vitesse des interfaces <br>
+     * String os       &emsp;&emsp;        OS utilisé <br>
+     * String version       &emsp;&emsp;        version de l'OS <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -52,68 +58,51 @@ public class AddUser extends HttpServlet {
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
-        //Nom du servlet
-        String servletName = "AddUser";
-        
-        DAOusers DAO = new DAOusers();
+        DAO.DAOPC DAO2 = new DAOPC();
+        DAO.DAOusers DAO = new DAOusers();
         DAOLogs log = new DAOLogs();
+
+        //Nom du servlet
+        String servletName = "ListPCStaticInfo";
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
         Gson gsonRequest = new Gson();
         
-        // Convertion des données du JSON dans un objet Java
-        JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfoUsers.class);
+        //Convertion des données du JSON dans un objet Java
+        JSON.GetJSONInfoPC json = gsonRequest.fromJson(reader, JSON.GetJSONInfoPC.class);
         
+        //Données envoyées par la requête
+        String id = json.getId();
+        String token = json.getToken();
+        Boolean TestBoolean = Boolean.valueOf(json.getTest());
+
         //Données
-        String token = user.getToken();
-        String nom = user.getNom();
-        String prenom = user.getPrenom();
-        String role = user.getDroits();
-        String login = user.getLogin();
-        String password = user.getPassword();
-        Boolean TestBoolean = Boolean.valueOf(user.getTest());
         String rights = "Aucun";
-        Boolean doLoginExist;
         String jsonString = "";
         String loginLog = "Aucun";
         String error = "no error";
         
-        
         //Vérification du contenu envoyé
-        if(token == null | nom == null | prenom == null | login == null | password == null | role == null ){
+        if(token == null | id == null){
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
-            //Vérification du contenu envoyé
-            if(token.equals("") | nom.equals("") | prenom.equals("") | login.equals("") | password.equals("") | role.equals("")){
+            if(token.equals("") | id.equals("")){
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
                 //Récuppération des droits de l'utilisateur
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
-                //Récuppération des droits d'accès au servlet
+                //Récuppération des droits d'accès au servlet (Merci d'ajouter votre servlet à la BD => voir "README_Java.txt" dossier "/Serveur")
                 String access = DAO.getServletRights(servletName, rights, false);
 
                 if(access.equals("true")){
-                    //On vérifie si l'utilisateur n'existe pas
-                    doLoginExist = DAO.doLoginExist(login, TestBoolean);
 
-                    if(doLoginExist == false){
-                        //génération du hash du MDP
-                        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
-
-                        //Ajout de l'utilisateur
-                        DAO.addUser(login, nom, prenom, role, hashedPassword, TestBoolean);
-
-                        //Récuppération des utilisateurs
-                        jsonString = "{\"erreur\":\"none\"}";
-
-                    }
-                    else{
-                        jsonString = "{\"erreur\":\"login existe (DB)\"}";
-                    }
+                    //Récupération des ordinateurs auquel l'utilisateur a accès
+                    String login = DAO.getLogin();
+                    jsonString = DAO2.getPCStaticInfo(id, login, rights, TestBoolean);
                 }
                 else{
                     jsonString = "{\"erreur\":\"accès refusé\"}";
@@ -121,20 +110,25 @@ public class AddUser extends HttpServlet {
             }
         }
         
+
         //Log
         loginLog = DAO.getLogin();
-        JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
-        error = JSONlog.getErreur();
+        //Si error possède la val "none" on ne lit pas le champ erreur pour éviter un exception en cas de structure JSON différente
+        if(!error.equals("none")){
+            JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
+            error = JSONlog.getErreur();
+        }
+        //Récupération du niveau de log
         ProjectConfig conf = new ProjectConfig();
         String LogLevel = conf.getStringValue("LogLevel");
         //Enregistrement des logs
-        if(LogLevel.equals("ErrorsOnly") & !error.equals("none") & TestBoolean == false){
+        if(LogLevel.equals("ErrorsOnly") & ! error.equals("none") & TestBoolean == false){
             log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
         }
         else if(LogLevel.equals("All") & TestBoolean == false){
             log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
         }
-        
+
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {
             out.print(jsonString);

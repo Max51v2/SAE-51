@@ -10,35 +10,44 @@ public class GetJSONInfoPC{
         private String Test;
         private String id;
         private String IP;
+        private String token;
         
-        public GetJSONInfoPC(String Test, String IP, String id){
+        public GetJSONInfoPC(String Test, String IP, String id, String token){
             this.Test = Test;
             this.IP = IP;
             this.id = id;
+            this.token = token;
         }
 
-    public String getTest() {
-        return Test;
-    }
+        public String getTest() {
+            return Test;
+        }
 
-    public void setTest(String Test) {
-        this.Test = Test;
-    }
+        public void setTest(String Test) {
+            this.Test = Test;
+        }
 
-    public String getId() {
-        return id;
-    }
+        public String getId() {
+            return id;
+        }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+        public void setId(String id) {
+            this.id = id;
+        }
 
-    public String getIP() {
-        return IP;
-    }
+        public String getIP() {
+            return IP;
+        }
 
-    public void setIP(String IP) {
-        this.IP = IP;
-    }
+        public void setIP(String IP) {
+            this.IP = IP;
+        }
         
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
     }

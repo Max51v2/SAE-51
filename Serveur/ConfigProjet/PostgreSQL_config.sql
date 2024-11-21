@@ -88,11 +88,32 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('accueil.html', 'A
 
 
 --Table contenant les pc à monitorer
+--Les droits sont stockés de la façon suivant : "login1/.../loginN"
 CREATE TABLE pc (
     id text PRIMARY KEY,
-    ip text
+    ip text,
+    droits text
 );
 
+
+
+--Table contenant les pc à monitorer
+CREATE TABLE pc_static_info (
+    id text PRIMARY KEY,
+    cpu_model text,
+    cores integer,
+    threads integer,
+    maximum_frequency text,
+    ram_quantity text,
+    dimm_quantity integer,
+    dimm_speed text,
+    storage_device_number integer,
+    storage_space text,
+    network_int_number integer,
+    network_int_speed text,
+    os text,
+    version text
+);
 
 
 
@@ -158,6 +179,21 @@ INSERT INTO servlet_access (name, role, access) VALUES ('GetLogs', 'Admin', 'tru
 INSERT INTO servlet_access (name, role, access) VALUES ('GetLogs', 'Utilisateur', 'false');
 INSERT INTO servlet_access (name, role, access) VALUES ('GetLogs', 'Aucun', 'false');
 
+--DeletePC
+INSERT INTO servlet_access (name, role, access) VALUES ('DeletePC', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeletePC', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeletePC', 'Aucun', 'false');
+
+--ListPC
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPC', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPC', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPC', 'Aucun', 'false');
+
+--ListPCStaticInfo
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStaticInfo', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStaticInfo', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStaticInfo', 'Aucun', 'false');
+
 
 
 --Table contenant les logs d'utilisation des servlets
@@ -210,7 +246,8 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Adm
 --Table contenant les pc à monitorer
 CREATE TABLE pc (
     id text PRIMARY KEY,
-    ip text
+    ip text,
+    droits text
 );
 
 
@@ -254,6 +291,26 @@ CREATE TABLE logs (
 --Test
 INSERT INTO logs (servlet, ip, login, droits, error, date) VALUES ('Test', '1.1.1.1', 'Hell walker', 'Admin', 'none', '19931210_000001');
 INSERT INTO logs (servlet, ip, login, droits, error, date) VALUES ('Test2', '2.2.2.2', 'Maxime', 'Admin', 'erreur', '20241124_012900');
+
+
+
+--Table contenant les pc à monitorer
+CREATE TABLE pc_static_info (
+    id text PRIMARY KEY,
+    cpu_model text,
+    cores integer,
+    threads integer,
+    maximum_frequency text,
+    ram_quantity text,
+    dimm_quantity integer,
+    dimm_speed text,
+    storage_device_number integer,
+    storage_space text,
+    network_int_number integer,
+    network_int_speed text,
+    os text,
+    version text
+);
 
 -- fin contenu de la BD sae_51
 

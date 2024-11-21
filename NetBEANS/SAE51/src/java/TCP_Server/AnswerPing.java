@@ -129,7 +129,7 @@ public class AnswerPing {
                             //Rien
                         }
                         else{
-                            DAO.addPC(id, IP, TestBoolean);
+                            DAO.addPC(id, IP, "", TestBoolean);
                         }
                 
                         result = "OK";

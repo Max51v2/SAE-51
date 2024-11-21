@@ -24,7 +24,7 @@ Frontend :
   
 - Backend
   => Client/serveur TCP chiffré
-  => Gestion des droits d'utilisateur par ordinateur
+  => Gestion des droits d'utilisateur par ordinateur : Ajout d'un utilisateur à une machine
   => Récupération info de suivi machines en continu > lancé avec OnStart (récupération en deux parties : statique (1 fois) et dynamique (en continu + mise en buffer))
   => Le servlet viendra recup les informations de la classe précédente et donnera le temps depuis la dernière act
   => Suivi des métriques renvoyées + log et notif mail si pb détecté
@@ -54,6 +54,8 @@ fait :
     => Tests unitaires : servlets utilisateurs + DAOusers (partiel) + serveur TCP + expiration des tokens
     => Droits d'accès aux servlets
     => Système de log (erreurs ou toutes les actions (fichier de config))
+    => Gestion des droits d'utilisateur par ordinateur : sauf ajout utilisateur
+    => ajout + suppression + listage données statiques pc
 - Frontend :
     => Page de login + aide
     => Template de page Web
@@ -99,6 +101,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 60h
+- maxime : 70h
 - erwann : 10h
 - gabin :

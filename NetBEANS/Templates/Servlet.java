@@ -1,5 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 2.1
+//Version : 2.2
 
 
 //Ce qui est entre crochets est à modifier ou retirer selon la situation
@@ -50,7 +50,7 @@ public class [nomServlet] extends HttpServlet {
         //Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
-        DAO.DAO[?] DAO = new DAO[?]();
+        DAO.DAOusers DAO = new DAOusers();
         DAOLogs log = new DAOLogs();
 
         //Nom du servlet
