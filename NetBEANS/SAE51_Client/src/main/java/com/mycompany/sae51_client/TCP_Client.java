@@ -22,6 +22,8 @@ public class TCP_Client {
     public TCP_Client(String IP, Integer port){
         this.IP = IP;
         this.port = port;
+
+        System.out.println("WARNING : en cas de pb, merci de vérifier que le port est ouvert sur le pare-feu et qu'il y'a une règle de redirection sur la carte NAT de la VM");
     }
     
     

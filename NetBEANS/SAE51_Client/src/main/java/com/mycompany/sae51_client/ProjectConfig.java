@@ -32,10 +32,10 @@ public class ProjectConfig {
 
         //Chemin du fichier contenant l'id
         if(osBean.getName().contains("Windows")){
-            configPathString = rootPath+"\\Serveur\\ConfigProjet\\sae_51.conf";
+            configPathString = rootPath+"\\app\\Client.conf";
         }
         else{
-            configPathString = rootPath+"/Serveur/ConfigProjet/sae_51.conf";
+            configPathString = rootPath+"/app/Client.conf";
         }
         Path configPath = Paths.get(configPathString);
         
