@@ -8,6 +8,7 @@ Afin d'installer la VM, merci de vous référer à la partie "VM" du fichier "RE
 
 IMPORTANT : merci de suivre les templates pour le projet SAE51 afin de pouvoir intégrer les features
 
+MODIFICATIONS VM : sudo ufw allow 4444 / ajouter la redirection de port 4444 pour du TCP sur la carte NAT de la VM
 
 
 #Projet
