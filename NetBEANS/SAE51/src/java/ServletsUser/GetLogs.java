@@ -1,6 +1,6 @@
 package ServletsUser;
 
-import Autre.ProjectConfig;
+import Autre.AddLog;
 import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 1.1
+ * @version 1.4
  */
 @WebServlet(name = "GetLogs", urlPatterns = {"/GetLogs"})
 public class GetLogs extends HttpServlet {
@@ -77,7 +77,6 @@ public class GetLogs extends HttpServlet {
         String rights = "Aucun";
         String jsonString = "";
         String loginLog = "Aucun";
-        String error = "no error";
         
         //Vérification du contenu envoyé
         if(token == null | beginDate == null | endDate == null | logLevelReq == null){
@@ -88,53 +87,43 @@ public class GetLogs extends HttpServlet {
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
-                //Vérification de la période envoyée
-                String beginDate1 = beginDate.substring(0,beginDate.indexOf("_"));
-                String beginDate2 = beginDate.substring(beginDate.indexOf("_")+1, beginDate.length());
-                Long beginDate3 = Long.valueOf(beginDate1+beginDate2);
-                String endDate1 = endDate.substring(0,endDate.indexOf("_"));
-                String endDate2 = endDate.substring(endDate.indexOf("_")+1, endDate.length());
-                Long endDate3 = Long.valueOf(endDate1+endDate2);
-                
-                //Si la date max est se situe avant ou au même moment que celle de début
-                if(endDate3 <= beginDate3){
-                    jsonString = "{\"erreur\":\"mauvaise période (req)\"}";
-                }
-                else{
-                    //Récuppération des droits de l'utilisateur
-                    rights = DAO.getUserRightsFromToken(token, TestBoolean);
+                //Récuppération des droits de l'utilisateur
+                rights = DAO.getUserRightsFromToken(token, TestBoolean);
 
-                    //Récuppération des droits d'accès au servlet (Merci d'ajouter votre servlet à la BD => voir "README_Java.txt" dossier "/Serveur")
-                    String access = DAO.getServletRights(servletName, rights, false);
+                //Récuppération des droits d'accès au servlet (Merci d'ajouter votre servlet à la BD => voir "README_Java.txt" dossier "/Serveur")
+                String access = DAO.getServletRights(servletName, rights, false);
 
-                    if(access.equals("true")){
-                        //Récupération des logs
-                        jsonString = log.getLogsFromPeriod(beginDate, endDate, logLevelReq, TestBoolean);
-                        
-                        error = "none";
+                //Si l'utilisateur a les droits
+                if(access.equals("true")){
+                    
+                    //Vérification de la période envoyée
+                    String beginDate1 = beginDate.substring(0,beginDate.indexOf("_"));
+                    String beginDate2 = beginDate.substring(beginDate.indexOf("_")+1, beginDate.length());
+                    Long beginDate3 = Long.valueOf(beginDate1+beginDate2);
+                    String endDate1 = endDate.substring(0,endDate.indexOf("_"));
+                    String endDate2 = endDate.substring(endDate.indexOf("_")+1, endDate.length());
+                    Long endDate3 = Long.valueOf(endDate1+endDate2);
+
+                    //Si la date max est se situe avant ou au même moment que celle de début
+                    if(endDate3 <= beginDate3){
+                        jsonString = "{\"erreur\":\"mauvaise période (req)\"}";
                     }
                     else{
-                        jsonString = "{\"erreur\":\"accès refusé\"}";
+                        //Récupération des logs
+                        jsonString = log.getLogsFromPeriod(beginDate, endDate, logLevelReq, TestBoolean);
                     }
+                }
+                else{
+                    jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }
         }
         
+        
         //Log
         loginLog = DAO.getLogin();
-        if(!error.equals("none")){
-            JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
-            error = JSONlog.getErreur();
-        }
-        ProjectConfig conf = new ProjectConfig();
-        String LogLevel = conf.getStringValue("LogLevel");
-        //Enregistrement des logs
-        if(LogLevel.equals("ErrorsOnly") & ! error.equals("none") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
-        }
-        else if(LogLevel.equals("All") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
-        }
+        AddLog addLog = new AddLog();
+        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
 
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

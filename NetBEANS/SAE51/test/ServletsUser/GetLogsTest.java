@@ -48,7 +48,7 @@ public class GetLogsTest {
         DAO2.deleteUser(login, true);
         
         //Résultat attendu
-        String ExpResult = "[{\"id\":\"1\", \"servlet\":\"Test\", \"ip\":\"1.1.1.1\", \"login\":\"Hell walker\", \"droits\":\"Admin\", \"error\":\"none\", \"date\":\"10/12/1993 | 00:00:01\"},{\"id\":\"2\", \"servlet\":\"Test2\", \"ip\":\"2.2.2.2\", \"login\":\"Maxime\", \"droits\":\"Admin\", \"error\":\"erreur\", \"date\":\"24/11/2024 | 01:29:00\"}]";
+        String ExpResult = "[{\"id\":\"1\", \"servlet\":\"Test\", \"ip\":\"1.1.1.1\", \"login\":\"Hell walker\", \"droits\":\"Admin\", \"date\":\"10/12/1993 | 00:00:01\"},{\"id\":\"2\", \"servlet\":\"Test2\", \"ip\":\"2.2.2.2\", \"login\":\"Maxime\", \"droits\":\"Admin\", \"date\":\"24/11/2024 | 01:29:00\"}]";
         
         //Résultat
         System.out.println("resultat testGetLogs1 : "+result+" | exp : "+ExpResult);
@@ -232,7 +232,7 @@ public class GetLogsTest {
         DAO2.deleteUser(login, true);
         
         //Résultat attendu
-        String ExpResult = "[{\"id\":\"2\", \"servlet\":\"Test2\", \"ip\":\"2.2.2.2\", \"login\":\"Maxime\", \"droits\":\"Admin\", \"error\":\"erreur\", \"date\":\"24/11/2024 | 01:29:00\"}]";
+        String ExpResult = "[{\"id\":\"2\", \"servlet\":\"Test2\", \"ip\":\"2.2.2.2\", \"login\":\"Maxime\", \"droits\":\"Admin\", \"date\":\"24/11/2024 | 01:29:00\"}]";
         
         //Résultat
         System.out.println("resultat testGetLogs5 : "+result+" | exp : "+ExpResult);

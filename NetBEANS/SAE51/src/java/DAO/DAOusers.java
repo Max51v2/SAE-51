@@ -11,7 +11,7 @@ import org.mindrot.jbcrypt.BCrypt;
  * Classe contenant toutes les intéractions avec la BD partie utilisateur<br>
  * 
  * Originaires de la SAE-52 (dev par Maxime VALLET) : getUserRightsFromLogin / getUsers
- * 
+ *  
  * @author Maxime VALLET
  * @version 1.5
  */
@@ -444,6 +444,7 @@ public class DAOusers {
         String JSONString="";
         Boolean isTokenOK = false;
         Integer match = 0;
+        loginLog = "Aucun";
         
         //Selection de la BD
         changeConnection(Test);
@@ -474,6 +475,7 @@ public class DAOusers {
                             //Données BD
                             login = resultSet.getString("login");
                             droits = resultSet.getString("droits");
+                            loginLog = login;
                         
                             //JSON contenant les données souhaitées
                             JSONString = "{\"login\":\"" + login + "\", \"droits\":\"" + droits + "\", \"erreur\":\"none\"}";

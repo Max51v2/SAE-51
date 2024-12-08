@@ -1,5 +1,6 @@
 package ServletsUser;
 
+import Autre.AddLog;
 import Autre.ProjectConfig;
 import DAO.DAOLogs;
 import DAO.DAOusers;
@@ -17,7 +18,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  *
  * @author Maxime VALLET
- * @version 1.2
+ * @version 1.4
  */
 @WebServlet(name = "SetPassword", urlPatterns = {"/SetPassword"})
 public class SetPassword extends HttpServlet {
@@ -68,7 +69,6 @@ public class SetPassword extends HttpServlet {
         String login = "";
         String jsonString = "";
         String loginLog = "Aucun";
-        String error = "no error";
         
         //Vérification du contenu envoyé
         if(token == null | password == null | target == null){
@@ -86,7 +86,9 @@ public class SetPassword extends HttpServlet {
                 //Récuppération des droits d'accès au servlet
                 String access = DAO.getServletRights("SetPassword", rights, false);
 
+                //Si l'utilisateur a les droits
                 if(access.equals("true")){
+                    //Un Admin peut uniquement changer le MDP de tout le monde
                     if(rights.equals("Admin")){
                         //génération du hash du MDP
                         hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
@@ -120,19 +122,11 @@ public class SetPassword extends HttpServlet {
             }
         }
         
+        
         //Log
         loginLog = DAO.getLogin();
-        JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
-        error = JSONlog.getErreur();
-        ProjectConfig conf = new ProjectConfig();
-        String LogLevel = conf.getStringValue("LogLevel");
-        //Enregistrement des logs
-        if(LogLevel.equals("ErrorsOnly") & !error.equals("none") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
-        }
-        else if(LogLevel.equals("All") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
-        }
+        AddLog addLog = new AddLog();
+        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

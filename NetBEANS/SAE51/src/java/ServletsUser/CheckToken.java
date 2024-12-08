@@ -1,6 +1,6 @@
 package ServletsUser;
 
-import Autre.ProjectConfig;
+import Autre.AddLog;
 import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.2
  */
 @WebServlet(name = "CheckToken", urlPatterns = {"/CheckToken"})
 public class CheckToken extends HttpServlet {
@@ -87,26 +87,19 @@ public class CheckToken extends HttpServlet {
             }
         }
         
-        //Log
+        
+        //Droits d'infos sur l'utilisateur pour les logger (exclusif à ce servlet)
         JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
-        loginLog = JSONlog.getLogin();
         String rights = JSONlog.getDroits();
-        error = JSONlog.getErreur();
-        if(loginLog == null){
-            loginLog = "Aucun";
-        }
-        if(rights == null){
+        if(rights.equals("")){
             rights = "Aucun";
         }
-        ProjectConfig conf = new ProjectConfig();
-        String LogLevel = conf.getStringValue("LogLevel");
-        //Enregistrement des logs
-        if(LogLevel.equals("ErrorsOnly") & !error.equals("none") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
-        }
-        else if(LogLevel.equals("All") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
-        }
+        
+        
+        //Log
+        loginLog = DAO.getLogin();
+        AddLog addLog = new AddLog();
+        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

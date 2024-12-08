@@ -11,6 +11,7 @@ import java.util.Calendar;
 /**
  *
  * @author Maxime VALLET
+ * @version 1.1
  */
 public class DAOLogs {
     private static final String UserPostgres="postgres";
@@ -167,7 +168,7 @@ public class DAOLogs {
                             }
 
                             // Ajouter l'objet JSON
-                            JSONString += "{\"id\":\""+id+"\", \"servlet\":\""+servlet+"\", \"ip\":\""+ip+"\", \"login\":\""+login+"\", \"droits\":\""+droits+"\", \"error\":\""+error+"\", \"date\":\""+Date+"\"}";
+                            JSONString += "{\"id\":\""+id+"\", \"servlet\":\""+servlet+"\", \"ip\":\""+ip+"\", \"login\":\""+login+"\", \"droits\":\""+droits+"\", \"date\":\""+Date+"\"}";
 
                             c += 1;
                         }

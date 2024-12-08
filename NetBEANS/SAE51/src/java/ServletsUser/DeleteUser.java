@@ -1,5 +1,6 @@
 package ServletsUser;
 
+import Autre.AddLog;
 import Autre.ProjectConfig;
 import DAO.DAOLogs;
 import DAO.DAOusers;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 
  * @author Maxime VALLET
- * @version 1.2
+ * @version 1.4
  */
 @WebServlet(name = "DeleteUser", urlPatterns = {"/DeleteUser"})
 public class DeleteUser extends HttpServlet {
@@ -82,6 +83,7 @@ public class DeleteUser extends HttpServlet {
                 //Récuppération des droits d'accès au servlet
                 String access = DAO.getServletRights("DeleteUser", rights, false);
 
+                //Si l'utilisateur a les droits
                 if(access.equals("true")){
                     //Vérification de l'existance du login
                     doLoginExist = DAO.doLoginExist(login, TestBoolean);
@@ -104,19 +106,11 @@ public class DeleteUser extends HttpServlet {
             }
         }
         
+        
         //Log
         loginLog = DAO.getLogin();
-        JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
-        error = JSONlog.getErreur();
-        ProjectConfig conf = new ProjectConfig();
-        String LogLevel = conf.getStringValue("LogLevel");
-        //Enregistrement des logs
-        if(LogLevel.equals("ErrorsOnly") & !error.equals("none") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
-        }
-        else if(LogLevel.equals("All") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
-        }
+        AddLog addLog = new AddLog();
+        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

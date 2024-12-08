@@ -1,6 +1,6 @@
 package ServletsUser;
 
-import Autre.ProjectConfig;
+import Autre.AddLog;
 import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
@@ -17,7 +17,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  *
  * @author Maxime VALLET
- * @version 1.4
+ * @version 1.6
  */
 @WebServlet(name = "AddUser", urlPatterns = {"/AddUser"})
 public class AddUser extends HttpServlet {
@@ -77,7 +77,6 @@ public class AddUser extends HttpServlet {
         Boolean doLoginExist;
         String jsonString = "";
         String loginLog = "Aucun";
-        String error = "no error";
         
         
         //Vérification du contenu envoyé
@@ -121,19 +120,11 @@ public class AddUser extends HttpServlet {
             }
         }
         
+        
         //Log
         loginLog = DAO.getLogin();
-        JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
-        error = JSONlog.getErreur();
-        ProjectConfig conf = new ProjectConfig();
-        String LogLevel = conf.getStringValue("LogLevel");
-        //Enregistrement des logs
-        if(LogLevel.equals("ErrorsOnly") & !error.equals("none") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
-        }
-        else if(LogLevel.equals("All") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
-        }
+        AddLog addLog = new AddLog();
+        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

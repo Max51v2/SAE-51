@@ -1,5 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 2.2
+//Version : 2.4
 
 
 //Ce qui est entre crochets est à modifier ou retirer selon la situation
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author [?]
  * @version [?]
  */
-@WebServlet(name = "[nomServlet]", urlPatterns = {"/[nomServlet]"}) // ATTENTION, RENOMMER LE SERVLET (refactor > rename) NE CHANGE PAS LE CONTENU DE CETTE LIGNE (donc il sera non joignable)
+@WebServlet(name = "[?]", urlPatterns = {"/[?]"}) // ATTENTION, il faut mettre le nom du servlet dans les deux points à compléter
 public class [nomServlet] extends HttpServlet {
 
     /**
@@ -73,13 +73,13 @@ public class [nomServlet] extends HttpServlet {
         String rights = "Aucun";
         String jsonString = "";
         String loginLog = "Aucun";
-        String error = "no error";
         
         //Vérification du contenu envoyé
         if([?] == null | ... | [?] == null){
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
+            //Vérification du contenu envoyé
             if([?].equals("") | ... | [?].equals("")){
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
@@ -90,9 +90,8 @@ public class [nomServlet] extends HttpServlet {
                 //Récuppération des droits d'accès au servlet (Merci d'ajouter votre servlet à la BD => voir "README_Java.txt" dossier "/Serveur")
                 String access = DAO.getServletRights(servletName, rights, false);
 
+                //Si l'utilisateur a les droits
                 if(access.equals("true")){
-                    //Au cas où le JSON change de structure par rapport aux erreurs
-                    error = "none";
 
                     //Code ici
 
@@ -106,21 +105,8 @@ public class [nomServlet] extends HttpServlet {
 
         //Log
         loginLog = DAO.getLogin();
-        //Si error possède la val "none" on ne lit pas le champ erreur pour éviter un exception en cas de structure JSON différente
-        if(!error.equals("none")){
-            JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
-            error = JSONlog.getErreur();
-        }
-        //Récupération du niveau de log
-        ProjectConfig conf = new ProjectConfig();
-        String LogLevel = conf.getStringValue("LogLevel");
-        //Enregistrement des logs
-        if(LogLevel.equals("ErrorsOnly") & ! error.equals("none") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
-        }
-        else if(LogLevel.equals("All") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
-        }
+        AddLog addLog = new AddLog();
+        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
 
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

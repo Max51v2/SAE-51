@@ -1,5 +1,6 @@
 package ServletsUser;
 
+import Autre.AddLog;
 import Autre.ProjectConfig;
 import DAO.DAOLogs;
 import DAO.DAOusers;
@@ -18,7 +19,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  *
  * @author Maxime VALLET
- * @version 1.3
+ * @version 1.5
  */
 @WebServlet(name = "CheckPassword", urlPatterns = {"/CheckPassword"})
 public class CheckPassword extends HttpServlet {
@@ -140,18 +141,11 @@ public class CheckPassword extends HttpServlet {
             }
         }
         
+        
         //Log
-        JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
-        error = JSONlog.getErreur();
-        ProjectConfig conf = new ProjectConfig();
-        String LogLevel = conf.getStringValue("LogLevel");
-        //Enregistrement des logs
-        if(LogLevel.equals("ErrorsOnly") & !error.equals("none") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);
-        }
-        else if(LogLevel.equals("All") & TestBoolean == false){
-            log.addLog(servletName, request.getRemoteAddr(), loginLog, rights, error, TestBoolean);    
-        }
+        //loginLog = DAO.getLogin(); //servlet spécifique donc ligne en com
+        AddLog addLog = new AddLog();
+        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {
