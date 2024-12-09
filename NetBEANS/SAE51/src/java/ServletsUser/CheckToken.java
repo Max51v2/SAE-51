@@ -91,8 +91,13 @@ public class CheckToken extends HttpServlet {
         //Droits d'infos sur l'utilisateur pour les logger (exclusif à ce servlet)
         JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
         String rights = JSONlog.getDroits();
-        if(rights.equals("")){
+        if(rights == null){
             rights = "Aucun";
+        }
+        else{
+            if(rights.equals("")){
+                rights = "Aucun";
+            }
         }
         
         
