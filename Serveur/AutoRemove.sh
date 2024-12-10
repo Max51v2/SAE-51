@@ -1,3 +1,4 @@
+#!/bin/bash
 #Auteur : Maxime VALLET
 #Version 1.7
 

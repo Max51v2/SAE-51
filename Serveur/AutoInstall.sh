@@ -1,3 +1,4 @@
+#!/bin/bash
 #Auteur : Maxime VALLET
 #Version 1.4
 
@@ -178,6 +179,7 @@ then
     sudo mkdir /var/www/sae-51
     sudo chown -R $USER:$USER /var/www/sae-51
     sudo chmod -R 755 /var/www/sae-51
+      sudo chmod -R 755 /var/www/sae-51/*
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/Nginx.txt /etc/nginx/sites-available/sae-51
     sudo rm /etc/nginx/sites-available/default
     sudo ln -s /etc/nginx/sites-available/sae-51 /etc/nginx/sites-enabled/
