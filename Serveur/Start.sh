@@ -67,6 +67,9 @@ sudo cp -r $projectRep"app/README.txt" $docRep"Doc_Client.txt"
 sudo cp -r $projectRep"Web/_README.txt" $docRep"Doc_Web.txt"
 sudo cp -r $projectRep"README.md" $docRep"Doc_Projet.txt"
 
+#droits serv nginx
+sudo chmod -R 755 /var/www/sae-51
+sudo chmod -R 755 /var/www/sae-51/*
 
 
 #Récupération du status du daemon Nginx
