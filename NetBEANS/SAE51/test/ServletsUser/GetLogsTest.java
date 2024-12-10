@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author root
+ * @author Maxime VALLET
  */
 public class GetLogsTest {
     

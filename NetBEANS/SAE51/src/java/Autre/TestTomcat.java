@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Test de fonctionnalité de tomcat
+ * Test de fonctionnalité de tomcat (TokenCheck.js)
  * 
  * @author Maxime VALLET
  * @version 1.0

@@ -1,7 +1,6 @@
 package ServletsPC;
 
 import Autre.AddLog;
-import DAO.DAOLogs;
 import DAO.DAOPC;
 import DAO.DAOusers;
 import com.google.gson.Gson;
@@ -47,7 +46,6 @@ public class DeletePC extends HttpServlet {
         
         DAO.DAOPC DAO2 = new DAOPC();
         DAO.DAOusers DAO = new DAOusers();
-        DAOLogs log = new DAOLogs();
 
         //Nom du servlet
         String servletName = "DeletePC";
@@ -71,10 +69,12 @@ public class DeletePC extends HttpServlet {
         
         //Vérification du contenu envoyé
         if(token == null | id == null){
+            //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
             if(token.equals("") | id.equals("")){
+                //JSON renvoyé
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
@@ -89,9 +89,11 @@ public class DeletePC extends HttpServlet {
                     //Suppression de l'ordinateur
                     DAO2.deletePC(id, TestBoolean);
                     
+                    //JSON renvoyé
                     jsonString = "{}";
                 }
                 else{
+                    //JSON renvoyé
                     jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }

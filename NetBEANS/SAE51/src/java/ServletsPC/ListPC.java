@@ -1,7 +1,6 @@
 package ServletsPC;
 
 import Autre.AddLog;
-import DAO.DAOLogs;
 import DAO.DAOPC;
 import DAO.DAOusers;
 import com.google.gson.Gson;
@@ -48,7 +47,6 @@ public class ListPC extends HttpServlet {
         
         DAO.DAOPC DAO2 = new DAOPC();
         DAO.DAOusers DAO = new DAOusers();
-        DAOLogs log = new DAOLogs();
 
         //Nom du servlet
         String servletName = "ListPC";
@@ -71,10 +69,12 @@ public class ListPC extends HttpServlet {
         
         //Vérification du contenu envoyé
         if(token == null){
+            //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
             if(token.equals("")){
+                //JSON renvoyé
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
@@ -92,6 +92,7 @@ public class ListPC extends HttpServlet {
                     jsonString = DAO2.getPC(login, rights, TestBoolean);
                 }
                 else{
+                    //JSON renvoyé
                     jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }

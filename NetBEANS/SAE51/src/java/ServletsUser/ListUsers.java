@@ -1,8 +1,6 @@
 package ServletsUser;
 
 import Autre.AddLog;
-import Autre.ProjectConfig;
-import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -52,7 +50,6 @@ public class ListUsers extends HttpServlet {
         String servletName = "ListUsers";
         
         DAOusers DAO = new DAOusers();
-        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -71,11 +68,13 @@ public class ListUsers extends HttpServlet {
         
         //Vérification du contenu envoyé
         if(token == null){
+            //JSON renvoyé
             jsonString = "{\"erreur\":\"pas de token (req)\"}";
         }
         else{
             //Vérification du contenu envoyé
             if(token.equals("")){
+                //JSON renvoyé
                 jsonString = "{\"erreur\":\"pas de token (req)\"}";
             }
             else{
@@ -91,6 +90,7 @@ public class ListUsers extends HttpServlet {
                     jsonString = DAO.getUsers(TestBoolean);
                 }
                 else{
+                    //JSON renvoyé
                     jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }

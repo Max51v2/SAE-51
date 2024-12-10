@@ -1,6 +1,5 @@
 package JSON;
 
-import JSON.GetJSONInfoUsers;
 import java.util.List;
 
 /**

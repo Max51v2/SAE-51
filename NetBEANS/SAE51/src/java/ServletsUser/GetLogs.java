@@ -80,10 +80,12 @@ public class GetLogs extends HttpServlet {
         
         //Vérification du contenu envoyé
         if(token == null | beginDate == null | endDate == null | logLevelReq == null){
+            //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
             if(token.equals("") | beginDate.equals("") | endDate.equals("") | logLevelReq.equals("")){
+                //JSON renvoyé
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
@@ -106,6 +108,7 @@ public class GetLogs extends HttpServlet {
 
                     //Si la date max est se situe avant ou au même moment que celle de début
                     if(endDate3 <= beginDate3){
+                        //JSON renvoyé
                         jsonString = "{\"erreur\":\"mauvaise période (req)\"}";
                     }
                     else{
@@ -114,6 +117,7 @@ public class GetLogs extends HttpServlet {
                     }
                 }
                 else{
+                    //JSON renvoyé
                     jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }

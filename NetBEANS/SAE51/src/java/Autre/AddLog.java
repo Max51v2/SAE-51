@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  * Ajoute ou non les logs
  * 
  * @author Maxime VALLET
+ * @version 1.0
  */
 public class AddLog {
     DAO.DAOusers DAO = new DAOusers();

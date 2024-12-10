@@ -51,7 +51,6 @@ public class [nomServlet] extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         
         DAO.DAOusers DAO = new DAOusers();
-        DAOLogs log = new DAOLogs();
 
         //Nom du servlet
         String servletName = "[NomServlet]";

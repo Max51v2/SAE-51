@@ -1,8 +1,6 @@
 package ServletsUser;
 
 import Autre.AddLog;
-import Autre.ProjectConfig;
-import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -48,7 +46,6 @@ public class DeleteUser extends HttpServlet {
         String servletName = "DeleteUser";
         
         DAOusers DAO = new DAOusers();
-        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -65,15 +62,16 @@ public class DeleteUser extends HttpServlet {
         Boolean doLoginExist;
         String jsonString = "";
         String loginLog = "Aucun";
-        String error = "no error";
         
         //Vérification du contenu envoyé
         if(token == null | login == null){
+            //JSON renvoyé
             jsonString = "{\"erreur\":\"pas de login ou token (req)\"}";
         }
         else{
             //Vérification du contenu envoyé
             if(token.equals("") | login.equals("")){
+                //JSON renvoyé
                 jsonString = "{\"erreur\":\"pas de login ou token (req)\"}";
             }
             else{
@@ -96,6 +94,7 @@ public class DeleteUser extends HttpServlet {
                         jsonString = "{\"erreur\":\"none\"}";
                     }
                     else{
+                        //JSON renvoyé
                         jsonString = "{\"erreur\":\"login inexistant (DB)\"}";
                     }
                 }

@@ -2,7 +2,6 @@ package ServletsUser;
 
 import Autre.AddLog;
 import Autre.ProjectConfig;
-import DAO.DAOLogs;
 import DAO.DAOusers;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -54,7 +53,6 @@ public class CheckPassword extends HttpServlet {
         String servletName = "CheckPassword";
         
         DAOusers DAO = new DAOusers();
-        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -110,6 +108,7 @@ public class CheckPassword extends HttpServlet {
 
                             //Génération d'une chaine de 32 caractères (token)
                             if(TestBoolean == true){
+                                //Sert uniquement pour les tests unitaires
                                 token = "10101010101010101010101010101010";
                             }
                             else{

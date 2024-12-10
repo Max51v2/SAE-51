@@ -1,7 +1,6 @@
 package ServletsUser;
 
 import Autre.AddLog;
-import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -56,7 +55,6 @@ public class AddUser extends HttpServlet {
         String servletName = "AddUser";
         
         DAOusers DAO = new DAOusers();
-        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -81,11 +79,13 @@ public class AddUser extends HttpServlet {
         
         //Vérification du contenu envoyé
         if(token == null | nom == null | prenom == null | login == null | password == null | role == null ){
+            //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
             //Vérification du contenu envoyé
             if(token.equals("") | nom.equals("") | prenom.equals("") | login.equals("") | password.equals("") | role.equals("")){
+                //JSON renvoyé
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
@@ -106,15 +106,17 @@ public class AddUser extends HttpServlet {
                         //Ajout de l'utilisateur
                         DAO.addUser(login, nom, prenom, role, hashedPassword, TestBoolean);
 
-                        //Récuppération des utilisateurs
+                        //JSON renvoyé
                         jsonString = "{\"erreur\":\"none\"}";
 
                     }
                     else{
+                        //JSON renvoyé
                         jsonString = "{\"erreur\":\"login existe (DB)\"}";
                     }
                 }
                 else{
+                    //JSON renvoyé
                     jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }

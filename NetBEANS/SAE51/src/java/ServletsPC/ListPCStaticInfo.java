@@ -60,7 +60,6 @@ public class ListPCStaticInfo extends HttpServlet {
         
         DAO.DAOPC DAO2 = new DAOPC();
         DAO.DAOusers DAO = new DAOusers();
-        DAOLogs log = new DAOLogs();
 
         //Nom du servlet
         String servletName = "ListPCStaticInfo";
@@ -84,10 +83,12 @@ public class ListPCStaticInfo extends HttpServlet {
         
         //Vérification du contenu envoyé
         if(token == null | id == null){
+            //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
             if(token.equals("") | id.equals("")){
+                //JSON renvoyé
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
@@ -105,6 +106,7 @@ public class ListPCStaticInfo extends HttpServlet {
                     jsonString = DAO2.getPCStaticInfo(id, login, rights, TestBoolean);
                 }
                 else{
+                    //JSON renvoyé
                     jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }

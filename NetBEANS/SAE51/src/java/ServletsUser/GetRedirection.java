@@ -1,8 +1,6 @@
 package ServletsUser;
 
 import Autre.AddLog;
-import Autre.ProjectConfig;
-import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -49,7 +47,6 @@ public class GetRedirection extends HttpServlet {
         String servletName = "GetRedirection";
         
         DAOusers DAO = new DAOusers();
-        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -69,11 +66,13 @@ public class GetRedirection extends HttpServlet {
        
         //Vérification du contenu envoyé
         if(currentPage == null | currentPage == null){
+            //JSON renvoyé
             jsonString = "{\"erreur\":\"pas de page ou token null (req)\"}";
         }
         else{
             //Vérification du contenu envoyé
             if(currentPage.equals("")){
+                //JSON renvoyé
                 jsonString = "{\"erreur\":\"pas de token (req)\"}";
             }
             else{
@@ -90,13 +89,16 @@ public class GetRedirection extends HttpServlet {
 
                     //Vérification de la présence d'une entrée de redirection (BD)
                     if(redirect.equals("No redirect")){
+                        //JSON renvoyé
                         jsonString = "{\"erreur\":\"Pas de redirection (BD)\"}";
                     }
                     else{
+                        //JSON renvoyé
                        jsonString = "{\"redirect\":\""+redirect+"\", \"erreur\":\"none\"}";
                     }
                 }
                 else{
+                    //JSON renvoyé
                     jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }

@@ -1,8 +1,6 @@
 package ServletsUser;
 
 import Autre.AddLog;
-import Autre.ProjectConfig;
-import DAO.DAOLogs;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -50,7 +48,6 @@ public class SetPassword extends HttpServlet {
         String servletName = "SetPassword";
         
         DAOusers DAO = new DAOusers();
-        DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -72,11 +69,13 @@ public class SetPassword extends HttpServlet {
         
         //Vérification du contenu envoyé
         if(token == null | password == null | target == null){
+            //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
             //Vérification du contenu envoyé
             if(token.equals("") | target.equals("") | password.equals("")){
+                //JSON renvoyé
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
@@ -96,6 +95,7 @@ public class SetPassword extends HttpServlet {
                         //Modification du MDP
                         DAO.setPassword(target, hashedPassword, TestBoolean);
 
+                        //JSON renvoyé
                         jsonString = "{\"erreur\":\"none\"}";
                     }
                     //Un utilisateur peut uniquement changer son MDP
@@ -112,11 +112,13 @@ public class SetPassword extends HttpServlet {
                             DAO.setPassword(target, hashedPassword, TestBoolean);
                         }
                         else{
+                            //JSON renvoyé
                             jsonString = "{\"erreur\":\"permission refusée\"}";
                         }
                     }
                 }
                 else{
+                    //JSON renvoyé
                     jsonString = "{\"erreur\":\"accès refusé\"}";
                 }
             }
