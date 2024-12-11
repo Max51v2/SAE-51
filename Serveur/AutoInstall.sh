@@ -168,8 +168,7 @@ then
     sudo mkdir /certs
     cd /certs
     echo
-    echo "Merci d'entrer \"leffe\" pour le MDP et peu importe pour le reste)"
-    sudo openssl req -x509 -nodes -days 10000 -newkey rsa:4096 -keyout /certs/SAE51.key -out /certs/SAE51.crt
+    sudo openssl req -x509 -nodes -days 10000 -newkey rsa:4096 -keyout /certs/SAE51.key -out /certs/SAE51.crt -subj "/C=FR/ST=Meurthe-et-moselle/L=Nancy/O=sae-52/OU=Meurthe-et-moselle/CN=www.tkt.fr/emailAddress=max.vallet@outlook.fr"
 
     clear
 
@@ -219,8 +218,7 @@ then
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
     cd /certs
     clear
-    echo "Veuillez saisir \"leffe\""
-    sudo openssl pkcs12 -export -in SAE51.crt -inkey SAE51.key -out SAE51.p12 -name tomcat
+    sudo openssl pkcs12 -export -in SAE51.crt -inkey SAE51.key -out SAE51.p12 -name tomcat -passout pass:leffe
     cd /certs
     sudo /usr/java/$Java_version/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE51.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/Tomcat.xml /opt/tomcat/conf/server.xml
