@@ -34,7 +34,7 @@ sudo cp /home/$1/Bureau/SAE-51/Serveur/Docker/Config/Nginx.txt $DockerFilePath/N
 sudo cp /certs/SAE51.crt $DockerFilePath/SAE51.crt
 sudo cp /certs/SAE51.key $DockerFilePath/SAE51.key
 
-docker build -t nginx /home/$1/Bureau/SAE-51/Serveur/Docker/Nginx
+docker build -t nginx_sae51 /home/$1/Bureau/SAE-51/Serveur/Docker/Nginx
 
 sudo rm -rf $DockerFilePath/Web
 sudo rm $DockerFilePath/Nginx.txt
@@ -54,7 +54,7 @@ cp /home/$1/Bureau/SAE-51/Serveur/Docker/Config/pg_hba.conf $DockerFilePath/pg_h
 cp /home/$1/Bureau/SAE-51/Serveur/Docker/Config/StartPSQL.sh $DockerFilePath/StartPSQL.sh
 cp /home/$1/Bureau/SAE-51/Serveur/ConfigProjet/PostgreSQL_config.sql $DockerFilePath/PostgreSQL_config.sql
 
-docker build -t psql /home/$1/Bureau/SAE-51/Serveur/Docker/PostgreSQL
+docker build -t psql_sae51 /home/$1/Bureau/SAE-51/Serveur/Docker/PostgreSQL
 
 sudo rm $DockerFilePath/pg_hba.conf
 sudo rm $DockerFilePath/postgresql.conf
@@ -79,7 +79,7 @@ sudo cp /home/$1/Bureau/SAE-51/Serveur/Docker/Config/tomcat-users.xml $DockerFil
 sudo cp /home/$1/Bureau/SAE-51/NetBEANS/SAE51/dist/SAE51.war $DockerFilePath/SAE51.war
 cp /home/$1/Bureau/SAE-51/Serveur/ConfigProjet/sae_51.conf $DockerFilePath/sae_51.conf
 
-docker build -t tomcat /home/$1/Bureau/SAE-51/Serveur/Docker/Tomcat
+docker build -t tomcat_sae51 /home/$1/Bureau/SAE-51/Serveur/Docker/Tomcat
 
 sudo rm $DockerFilePath/SAE51.crt
 sudo rm $DockerFilePath/SAE51.key

@@ -1,7 +1,7 @@
 services:
   db:
-    image: psql
-    container_name: psql
+    image: psql_sae51
+    container_name: psql_sae51
     environment:
       POSTGRES_PASSWORD: leffe
       POSTGRES_USER: postgres
@@ -11,8 +11,8 @@ services:
     restart: unless-stopped
 
   backend:
-    image: tomcat
-    container_name: tomcat
+    image: tomcat_sae51
+    container_name: tomcat_sae51
     ports:
       - 8443:8443
       - 8080:8080
@@ -20,8 +20,8 @@ services:
     restart: unless-stopped
 
   web:
-    image: nginx
-    container_name: nginx
+    image: nginx_sae51
+    container_name: nginx_sae51
     ports:
       - 443:443
     network_mode: "host"

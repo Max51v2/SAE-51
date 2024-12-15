@@ -12,7 +12,7 @@ RUN rm -f /etc/localtime && \
 RUN apt update && apt upgrade && apt install -y nginx && apt-get clean
 
 #Installation d'Apache
-RUN apt update && apt install -y apache2
+RUN apt install -y apache2
 
 #Copie des pages Web
 COPY Web/ /var/www/sae-51
