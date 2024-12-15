@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version : 1.5
+#Version : 2.0
 
 # à faire : Monter le contenu de la BD PostgreSQL sur un volume partagé afin qu'il ne soit pas effacé à chaque fois que le conteneur est recréé
 # !!! Le contenu de ce dossier a été ajouté après la date de remis du projet !!!
@@ -16,7 +16,7 @@ Windows :
 
 
 II) Commandes à exécuter
-a) Clonage du répertoire sur le Bureau
+a) Clonage du répertoire sur le Bureau (s'il ne l'est pas déjà)
 sudo apt install git
 git clone https://github.com/Max51v2/SAE-51.git /home/$USER/Bureau/SAE-51
 

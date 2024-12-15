@@ -42,11 +42,6 @@ apt-cache policy docker-ce >> /tmp/DockerBuildLogs.txt
 clear
 echo "Installation de docker-ce :"
 sudo apt install -y docker-ce >> /tmp/DockerBuildLogs.txt
-clear
-
-#Creation du réseau utilisé par les conteneurs
-echo "Creation du réseau utilisé par les conteneurs :"
-docker network create my_network
 
 clear
 
