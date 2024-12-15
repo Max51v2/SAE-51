@@ -29,8 +29,22 @@ echo "Nginx"
 DockerFilePath="/home/$1/Bureau/SAE-51/Serveur/Docker/Nginx"
 cd $DockerFilePath
 
-mkdir -p $DockerFilePath/Web
-sudo cp -r /home/$1/Bureau/SAE-51/Web/* $DockerFilePath/Web
+GitRep="/home/"$1"/Bureau/SAE-51/Web/"
+NginxRep="/var/www/sae-51/"
+projectRep="/home/"$1"/Bureau/SAE-51/"
+docRep=$DockerFilePath"/Web/documentation/" 
+
+sudo mkdir -p $DockerFilePath/Web
+sudo mkdir -p $DockerFilePath/Web/documentation
+sudo mkdir -p $DockerFilePath/Web/Javadoc
+
+sudo cp -r $GitRep* $DockerFilePath/Web
+sudo cp -r "/home/"$1"/Bureau/SAE-51/NetBEANS/SAE51/dist/javadoc/"* $DockerFilePath"/Web/Javadoc/"
+sudo cp -r $projectRep"Serveur/README_Java.txt" $docRep"Doc_Serveur.txt"
+sudo cp -r $projectRep"Serveur/README_VM.txt" $docRep"Doc_VM.txt"
+sudo cp -r $projectRep"app/README.txt" $docRep"Doc_Client.txt"
+sudo cp -r $projectRep"Web/_README.txt" $docRep"Doc_Web.txt"
+sudo cp -r $projectRep"README.md" $docRep"Doc_Projet.txt"
 sudo cp /home/$1/Bureau/SAE-51/Serveur/Docker/Config/Nginx.txt $DockerFilePath/Nginx.txt
 sudo cp /certs/SAE51.crt $DockerFilePath/SAE51.crt
 sudo cp /certs/SAE51.key $DockerFilePath/SAE51.key

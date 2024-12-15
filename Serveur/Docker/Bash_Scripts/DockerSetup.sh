@@ -43,6 +43,7 @@ clear
 echo "Ajout de l'uilisateur au groupe docker :"
 sudo addgroup docker
 sudo usermod -aG docker $1
+sudo systemctl disable docker
 sudo systemctl restart docker
 
 clear
