@@ -14,7 +14,6 @@ sudo -u $1 docker compose -f ./Dockercompose.yml up -d
 clear 
 
 #Réseau docker
-docker network create my_network
 docker network connect my_network psql
 docker network connect my_network tomcat
 docker network connect my_network nginx

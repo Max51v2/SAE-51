@@ -4,24 +4,6 @@
 
 clear
 
-#Installation de docker
-echo "Installation des dépendances (apt-transport-https / curl / ca-certificates / software-properties-common)"
-sudo apt install -y apt-transport-https ca-certificates curl software-properties-common > /tmp/DockerBuildLogs.txt
-clear
-echo "Ajout des clés du répertoire de docker"
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - >> /tmp/DockerBuildLogs.txt
-clear
-echo "Ajout du répertoire de Docker"
-sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" >> /tmp/DockerBuildLogs.txt
-clear
-apt-cache policy docker-ce >> /tmp/DockerBuildLogs.txt
-clear
-echo "Installation de docker-ce"
-sudo apt install -y docker-ce >> /tmp/DockerBuildLogs.txt
-clear
-
-clear
-
 #Arrêt et suppression des conteneurs
 sudo /home/$1/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
 

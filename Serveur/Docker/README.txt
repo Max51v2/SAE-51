@@ -20,27 +20,20 @@ a) Clonage du répertoire sur le Bureau
 sudo apt install git
 git clone https://github.com/Max51v2/SAE-51.git /home/$USER/Bureau/SAE-51
 
-b) Ouverture des ports du pare-feu
-=> 8443(Tomcat) et 50000 (Apache)
-sudo ufw allow 50000
-sudo ufw allow 8443
+b) Script de configuration
+/home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerSetup.sh "$USER"
 
-c) Ajout de l'utilisateur au groupe docker
-Taper la commande puis déconnectez/reconnectez-vous :
-sudo usermod -aG docker $USER
+c) Attention : si vous n'avez pas un ordinateur assez puissant, les requêtes peuvent ne pas aboutir (backend)
 
 
-III) Conteneurs
+III) Conteneurs (nécéssite une distribution basée sur Debian)
 Créer les conteneurs Docker :
     !!! ATTENTION !!! => si vous mettez à jour le projet java il faut build le projet dans NetBeans (icône avec le marteau et le balai)
-    Debian : 
-        sudo /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerBuild.sh "$USER"
+    BuildSAE51
 
 Lancement des conteneurs Docker :
-    !!! ATTENTION !!! => si un port est déjà utilisé, le conteneur ne se lancera pas
-    Debian :
-        sudo /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStart.sh "$USER"
+    !!! ATTENTION !!! => si un port est déjà utilisé, le conteneur ne se lancera pas (443 / 5432 / 8443 / 8080)
+    StartSAE51
 
 Arrêt des conteneurs Docker :
-    Debian :
-        sudo /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStop.sh "$USER"
+    StopSAE51
