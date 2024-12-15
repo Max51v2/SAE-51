@@ -41,7 +41,9 @@ clear
 
 #Ajout de l'utilisateur au groupe docker
 echo "Ajout de l'uilisateur au groupe docker :"
-sudo usermod -aG docker $1  > /tmp/DockerSetupLogs.txt
+sudo addgroup docker
+sudo usermod -aG docker $1
+sudo systemctl restart docker
 
 clear
 
