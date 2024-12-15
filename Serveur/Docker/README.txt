@@ -17,8 +17,11 @@ Windows :
 
 II) Commandes à exécuter
 a) Clonage du répertoire sur le Bureau (s'il ne l'est pas déjà)
+sudo apt install gh
 sudo apt install git
-git clone https://github.com/Max51v2/SAE-51.git /home/$USER/Bureau/SAE-51
+gh auth login
+=> github.com > https > y > web browser
+gh repo clone Max51v2/SAE-51 /home/$USER/Bureau/SAE-51
 
 b) Script de configuration
 /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerSetup.sh "$USER"
