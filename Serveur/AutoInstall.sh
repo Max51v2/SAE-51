@@ -212,7 +212,7 @@ then
     sudo chown -R tomcat webapps/ work/ temp/ logs/ conf/
     sudo chmod o+x /opt/tomcat/bin/
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/tomcat.service /etc/systemd/system/tomcat.service
-    sed -i 's/\[VERSION JDK\]/'$Java_version'/g' /etc/systemd/system/tomcat.service
+    sed -i 's/\[VERSION JDK\]/openjdk/g' /etc/systemd/system/tomcat.service
     sudo ufw allow 8080
     sudo ufw allow 8443
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
