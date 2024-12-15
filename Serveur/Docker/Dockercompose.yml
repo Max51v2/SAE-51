@@ -1,0 +1,35 @@
+services:
+  db:
+    image: psql
+    container_name: psql
+    environment:
+      POSTGRES_PASSWORD: leffe
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - my_network
+    restart: unless-stopped
+
+  backend:
+    image: tomcat
+    container_name: tomcat
+    ports:
+      - 8443:8443
+      - 8080:8080
+    networks:
+      - my_network
+    restart: unless-stopped
+
+  web:
+    image: nginx
+    container_name: nginx
+    ports:
+      - 443:443
+    networks:
+      - my_network
+    restart: unless-stopped
+
+networks:
+  my_network:
+    driver: bridge
