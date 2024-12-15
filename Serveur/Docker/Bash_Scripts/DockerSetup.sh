@@ -14,12 +14,6 @@ echo "alias StopSAE51='sudo /home/\$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scrip
 
 clear
 
-#Ajout de l'utilisateur au groupe docker
-echo "Ajout de l'uilisateur au groupe docker :"
-sudo usermod -aG docker $1  > /tmp/DockerSetupLogs.txt
-
-clear
-
 #Ouverture des ports du pare-feu
 echo "Installation d'ufw et ouverture des ports utilisés par Tomcat et Nginx :"
 sudo apt install ufw >> /tmp/DockerSetupLogs.txt
@@ -42,6 +36,12 @@ apt-cache policy docker-ce >> /tmp/DockerBuildLogs.txt >> /tmp/DockerSetupLogs.t
 clear
 echo "Installation de docker-ce :"
 sudo apt install -y docker-ce >> /tmp/DockerBuildLogs.txt >> /tmp/DockerSetupLogs.txt
+
+clear
+
+#Ajout de l'utilisateur au groupe docker
+echo "Ajout de l'uilisateur au groupe docker :"
+sudo usermod -aG docker $1  > /tmp/DockerSetupLogs.txt
 
 clear
 
