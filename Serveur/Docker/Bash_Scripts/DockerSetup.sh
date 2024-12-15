@@ -16,32 +16,32 @@ clear
 
 #Ajout de l'utilisateur au groupe docker
 echo "Ajout de l'uilisateur au groupe docker :"
-sudo usermod -aG docker $1
+sudo usermod -aG docker $1  > /tmp/DockerSetupLogs.txt
 
 clear
 
 #Ouverture des ports du pare-feu
 echo "Installation d'ufw et ouverture des ports utilisés par Tomcat et Nginx :"
-sudo apt install ufw
+sudo apt install ufw >> /tmp/DockerSetupLogs.txt
 clear
 echo "Ajout des règles du pare-feu :"
-sudo ufw allow 443
-sudo ufw allow 8443
+sudo ufw allow 443 >> /tmp/DockerSetupLogs.txt
+sudo ufw allow 8443 >> /tmp/DockerSetupLogs.txt
 
 #Installation de docker
 echo "Installation des dépendances (apt-transport-https / curl / ca-certificates / software-properties-common) :"
-sudo apt install -y apt-transport-https ca-certificates curl software-properties-common > /tmp/DockerBuildLogs.txt
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common >> /tmp/DockerSetupLogs.txt
 clear
 echo "Ajout des clés du répertoire de docker :"
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - >> /tmp/DockerBuildLogs.txt
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - >> /tmp/DockerSetupLogs.txt
 clear
 echo "Ajout du répertoire de Docker :"
-sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" >> /tmp/DockerBuildLogs.txt
+sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" >> /tmp/DockerSetupLogs.txt
 clear
-apt-cache policy docker-ce >> /tmp/DockerBuildLogs.txt
+apt-cache policy docker-ce >> /tmp/DockerBuildLogs.txt >> /tmp/DockerSetupLogs.txt
 clear
 echo "Installation de docker-ce :"
-sudo apt install -y docker-ce >> /tmp/DockerBuildLogs.txt
+sudo apt install -y docker-ce >> /tmp/DockerBuildLogs.txt >> /tmp/DockerSetupLogs.txt
 
 clear
 
