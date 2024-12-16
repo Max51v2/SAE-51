@@ -55,6 +55,7 @@ Frontend :
 
 
 fait :
+- Docker
 - VM
     => Retrait de snapcraft de la VM
     => Remplacement d'Apache par Nginx
@@ -117,6 +118,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 70h
+- maxime : 85h
 - erwann : 10h
 - gabin :
