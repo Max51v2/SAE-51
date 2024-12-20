@@ -11,19 +11,23 @@ II) Comment installer le projet ?
     - Il est recommandé de procéder dans cet ordre : télécharger la VM > suivre les README donnés à chaque partie de l'installation > lire la partie "VM" du document suivant : "/Serveur/README.txt"
   b) Installer les programmes manuellement :
     - Vous retrouverez les informations dans la section "VM" du document situé ici : "/Serveur/README.txt"
+  c) Installer les programmes automatiquement :
+    - Vous retrouverez les informations dans la section "Procédure d'installation automatique Debian 12" du document situé ici : "/Serveur/README.txt"
+  d)  Conteneurs Docker :
+    - Vous retrouverez les informations dans le README situé ici : "/Serveur/Docker/README.txt"
 
- 2) Démarrer le projet
+ 2) Démarrer le projet (hors Docker)
     - Lancez Start.sh puis saisissez "o" pour reconstruire la BD (à faire lors du premier démarrage ou à chaque commit) puis "o" pour lancer NetBeans
     - Lancez le projet Java ouvert dans NetBeans et saisissez les logins+MDP si besoin (voir doc "/Serveur/README.txt")
     - Ouvrir le navigateur de la VM ou le navigateur de l'OS hôte (nécéssite d'ajouter les certificats > voir doc "/Serveur/README.txt")
 
 III) Qui contacter en cas de question ?
- - Serveurs, VM / Backend : Authentification, info statiques PC, logs et tests unitaires / HTML, CSS et JS pages de login, aide et template : Maxime VALLET
+ - Serveurs : VM, script d'installation et Docker / Backend : Authentification, info statiques PC, logs et tests unitaires / HTML, CSS et JS pages de login, aide et template : Maxime VALLET
  - HTML et CSS : Gabin PETITCOLAS
  - Client : Erwann MADEC
 
 IV) Modification VM
-MODIFICATIONS VM : sudo ufw allow 50000 / ajouter la redirection de port 4444 pour du TCP sur la carte NAT de la VM
+MODIFICATIONS VM : sudo ufw allow 50000 / ajouter la redirection du port 50000 pour du TCP sur la carte NAT de la VM
 
 V) Avancement du projet
 IMPORTANT : merci de suivre les templates pour le projet SAE51 afin de pouvoir intégrer les features
@@ -95,13 +99,11 @@ abandon :
 Organisation du projet :
 - Documentation : 
     => Documentation : schémas / CDC / présentations
-- Client :
-    => Client/Client.ps1 : script qui lance le projet java
-    => Client/README : documentation
 - Serveur :
     => Serveur/README : document utilisation (et configuration du backend si pas de VM)
     => Serveur/ConfigProjet : fichiers de configuration du projet + script de la BD PostgreSQL
     => Serveur/Configuration : fichiers de configuration des serveurs
+    => Serveur/Docker : Scripts de configuration, build, démarrage et arrêt des conteurs Docker (+ressources : config serveurs, scripts conteneurs...)
 - NetBEANS : 
     => NetBEANS/SAE51 : backend du projet en Java (servlets, serveurs TCP, ...)
     => NetBEANS/SAE51_Client : projet Java en cours de déplacement vers /app/Client (Erwann) 
