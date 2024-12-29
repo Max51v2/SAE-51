@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 3.0
+Version : 3.1
 
 I) Présentation
  à faire
@@ -77,9 +77,11 @@ fait :
     => Système de log (erreurs ou toutes les actions (fichier de config))
     => Gestion des droits d'utilisateur par ordinateur : sauf ajout utilisateur
     => ajout + suppression + listage données statiques pc
+    => Renouvelement de session
 - Frontend :
     => Page de login + aide
     => Template de page Web
+    => Vérification de l'éxpiration de la session (+pop up pour la renouveler)
 - Client
     => Client TCP non chiffré
     => Récupération ID+IP et envoi au serv
@@ -120,6 +122,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 85h
+- maxime : 95h
 - erwann : 10h
 - gabin :
