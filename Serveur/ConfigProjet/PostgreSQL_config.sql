@@ -2,7 +2,7 @@
 --Modifications : Maxime VALLET
 --  => modification table users : expiration des tokens
 --  => Ajout tables : web_pages_access / pc / notifications / servlet_access
---Version : 0.9
+--Version : 1.0
 
 
 --####################### BD sae_51 #######################
@@ -148,7 +148,7 @@ INSERT INTO servlet_access (name, role, access) VALUES ('SetPassword', 'Aucun', 
 --DeleteToken
 INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Admin', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Utilisateur', 'true');
-INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Aucun', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Aucun', 'true');
 
 --GetRedirection
 INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Admin', 'true');
@@ -175,6 +175,17 @@ INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStaticInfo', 'Adm
 INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStaticInfo', 'Utilisateur', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStaticInfo', 'Aucun', 'false');
 
+--GetTokenStatus
+INSERT INTO servlet_access (name, role, access) VALUES ('GetTokenStatus', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetTokenStatus', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetTokenStatus', 'Aucun', 'true');
+
+--GetCheckIntervall
+INSERT INTO servlet_access (name, role, access) VALUES ('GetCheckIntervall', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetCheckIntervall', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetCheckIntervall', 'Aucun', 'false');
+
+
 
 
 --Table contenant les logs d'utilisation des servlets
@@ -187,6 +198,10 @@ CREATE TABLE logs (
     error text,
     date text
 );
+
+
+
+
 
 
 

@@ -1,8 +1,8 @@
 //Auteur(s) JS : Maxime VALLET
-//Version : 0.2
+//Version : 1.0
 
     
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("TokenCheckFinished", (event) => {
 
     //Redirection vers la page de login
     document.getElementById("submitLogin").onclick = function () {

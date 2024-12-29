@@ -20,6 +20,7 @@ if [ -e /certs/SAE51.p12 ]; then
 else
     sudo openssl pkcs12 -export -in SAE51.crt -inkey SAE51.key -out SAE51.p12 -name tomcat -passout pass:leffe
 fi
+sudo chmod 755 /certs/*
 
 
 #nginx

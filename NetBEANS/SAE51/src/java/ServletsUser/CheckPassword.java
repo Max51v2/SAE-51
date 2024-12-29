@@ -18,7 +18,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  *
  * @author Maxime VALLET
- * @version 1.5
+ * @version 1.7
  */
 @WebServlet(name = "CheckPassword", urlPatterns = {"/CheckPassword"})
 public class CheckPassword extends HttpServlet {
@@ -123,7 +123,8 @@ public class CheckPassword extends HttpServlet {
                             String hashedToken = BCrypt.hashpw(token, BCrypt.gensalt(rounds));
 
                             //Enregistrement du token dans la DB
-                            DAO.setToken(hashedToken, login, 24, TestBoolean);
+                            Integer TokenLifeCycle = conf.getIntValue("TokenLifeCycle");
+                            DAO.setToken(hashedToken, login, TokenLifeCycle, TestBoolean);
 
                             //JSON renvoyé
                             jsonString = "{\"droits\":\""+rights+"\", \"token\":\""+token+"\", \"login\":\""+login+"\", \"erreur\":\"none\"}";

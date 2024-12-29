@@ -36,7 +36,7 @@ document.addEventListener("TomcatTestFinished", function() {
 function TokenCheck(){
     if (token) {
         //Vérification du token auprès du Servlet
-        fetch(`https://${ServerIP}:8443/SAE51/CheckToken`, {
+        fetch(`https://${window.ServerIP}:8443/SAE51/CheckToken`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({ token: token, Test: false })
@@ -94,7 +94,8 @@ function GetRedirectionResult(response){
 
         //Redirection
         if(response.redirect === "none"){
-            //Rien
+            //événement qui lance les scripts de la page
+            document.dispatchEvent(new Event("TokenCheckFinished"));
         }
         else{
             window.location.href = response.redirect;

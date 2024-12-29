@@ -1,49 +1,44 @@
-#OS : Debian 12 (dérivés normalement fonctionnels)
-#NE PAS METTRE DEBIAN / J'ai perdu 3H!!! à cause de ça
-FROM ubuntu:latest
+#OS : Debian 12
+FROM ubuntu:22.04
 
 #Créé et maintenu par Maxime VALLET
 LABEL maintainer="max.vallet@outlook.fr"
 
-#MAJ OS, installation wget et curl
-RUN apt update && apt upgrade && apt install -y wget curl libapr1 libapr1-dev libssl-dev libtcnative-1 && apt-get clean
-
+#Installation des dépendances
+RUN apt-get update && \
+    apt-get install -y wget curl libapr1 libapr1-dev libssl-dev libtcnative-1 && \
+    apt-get clean && \
 #Changement du fuseau horaire
-RUN rm -f /etc/localtime && \
+    rm -f /etc/localtime && \
     ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
 
 #Copie des clés SSL
-COPY SAE51.key /certs/SAE51.key
-COPY SAE51.crt /certs/SAE51.crt
-COPY SAE51.p12 /certs/SAE51.p12
+COPY SAE51.key SAE51.crt SAE51.p12 /certs/
 
 #Copie du script de configuration de JDK et Tomcat et données de conf
-COPY Tomcat.sh /conf/Tomcat.sh
-COPY StartTomcat.sh /conf/StartTomcat.sh
-COPY Tomcat.xml /conf/Tomcat.xml
-COPY tomcat-users.xml /conf/tomcat-users.xml
-COPY SAE51.war /conf/SAE51.war
-COPY sae_51.conf /Netbeans/conf/sae_51.conf
+COPY Tomcat.sh StartTomcat.sh Tomcat.xml tomcat-users.xml SAE51.war sae_51.conf /conf/
 
 #VAR env
 ENV JAVA_HOME=/usr/lib/jvm/openjdk
 ENV CATALINA_HOME=/opt/tomcat
-ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 
-#Execution du script de config
-RUN chmod 777 /conf/Tomcat.sh && \
+#Modification des droits d'accès
+RUN chmod 755 /conf/Tomcat.sh && \
+    chmod 755 /conf/StartTomcat.sh && \
+#Installation de Tomcat
     /conf/Tomcat.sh && \
-    chmod 777 /conf/StartTomcat.sh
-
-#Ajout des répertoire de tomcat
-RUN chmod 777 /opt/tomcat && \
-    chmod 777 /conf && \
-    chmod 777 /certs && \
-    chmod 777 /Netbeans
+#Modification des droits d'accès
+    chown -R tomcat:tomcat /opt/tomcat && \
+    chown -R tomcat:tomcat /conf && \
+    chown -R tomcat:tomcat /certs && \
+    chown -R tomcat:tomcat /Netbeans && \
+#Nettoyage des daemons
+    apt-get remove -y wget && \
+    apt-get clean && \
+    apt-get autoremove -y
 
 #Ports
 EXPOSE 8443
-EXPOSE 8080
 
 USER tomcat
 

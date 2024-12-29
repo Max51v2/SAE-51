@@ -2,7 +2,7 @@
 //Version : ?
 
     
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("TokenCheckFinished", (event) => {
 
     // CODE ICI
 

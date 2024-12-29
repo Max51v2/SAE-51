@@ -1,8 +1,8 @@
 //Auteur JS : Maxime VALLET
-//Version : 1.3
+//Version : 1.4
 
-//Code ici
-document.addEventListener("DOMContentLoaded", (event) => {
+
+document.addEventListener("TokenCheckFinished", (event) => {
 
     //Redirection vers la page d'aide
     document.getElementById("submitHelp").onclick = function () {

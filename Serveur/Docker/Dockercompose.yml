@@ -5,24 +5,17 @@ services:
     environment:
       POSTGRES_PASSWORD: leffe
       POSTGRES_USER: postgres
-    ports:
-      - "5432:5432"
     network_mode: "host"
     restart: unless-stopped
 
   backend:
     image: tomcat_sae51
     container_name: tomcat_sae51
-    ports:
-      - 8443:8443
-      - 8080:8080
     network_mode: "host"  
     restart: unless-stopped
 
   web:
     image: nginx_sae51
     container_name: nginx_sae51
-    ports:
-      - 443:443
     network_mode: "host"
     restart: unless-stopped

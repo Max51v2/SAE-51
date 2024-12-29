@@ -1,5 +1,6 @@
 package DAO;
 
+import Autre.ProjectConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import org.mindrot.jbcrypt.BCrypt;
  * @version 1.5
  */
 public class DAOusers {
+    ProjectConfig conf = new ProjectConfig();
     private static final String UserPostgres="postgres";
     private static final String PasswordPostgres="leffe";
     private static String UrlBD="";
@@ -481,7 +483,8 @@ public class DAOusers {
                             JSONString = "{\"login\":\"" + login + "\", \"droits\":\"" + droits + "\", \"erreur\":\"none\"}";
 
                             //Reset du cycle de vie du token
-                            setLifeCycle(login, 24, Test);
+                            Integer TokenLifeCycle = conf.getIntValue("TokenLifeCycle");
+                            setLifeCycle(login, TokenLifeCycle, Test);
 
                             //Compteur
                             match += 1;

@@ -1,1 +1,1 @@
-Les classes situées dans ce package sont uniquement utilisées dans les test unitaires
+Les classes situées dans ce packet sont uniquement utilisées dans les test unitaires

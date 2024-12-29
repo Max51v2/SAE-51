@@ -51,7 +51,7 @@ public class TokenExpirationTest {
         run.start(500, true);
         
         //Pause
-        Thread.sleep(1750);
+        Thread.sleep(2000);
         
         //Arrêt de la vérification des tokens
         run.stop();
@@ -123,7 +123,9 @@ public class TokenExpirationTest {
         
         //Vérification des résultats
         String result = "";
-        if(result1 == 24 ){
+        ProjectConfig conf = new ProjectConfig();
+        Integer TLF = conf.getIntValue("TokenLifeCycle");
+        if(result1 == TLF ){
             result = "OK";
         }
         else{

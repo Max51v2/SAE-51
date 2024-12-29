@@ -21,11 +21,15 @@ TOMCAT_NAME=$(echo $TOMCAT_URL | grep -E -o 'apache-tomcat-[0-9.]+[0-9]')
 wget -c $TOMCAT_URL
 mkdir /opt/tomcat
 tar xzvf /tmp/$TOMCAT_NAME".tar.gz" -C /opt/tomcat --strip-components=1
+rm /tmp/$TOMCAT_NAME".tar.gz"
 cd /opt
-chown -R tomcat: tomcat
+chown -R tomcat tomcat
 cd ./tomcat
 chown -R tomcat webapps/ work/ temp/ logs/ conf/
 chmod o+x /opt/tomcat/bin/
 /usr/lib/jvm/openjdk/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore /certs/SAE51.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
 cp /conf/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
 cp /conf/Tomcat.xml /opt/tomcat/conf/server.xml
+mkdir /Netbeans
+mkdir /Netbeans/conf
+cp /conf/sae_51.conf /Netbeans/conf/sae_51.conf

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 1.4
+ * @version 1.5
  */
 @WebServlet(name = "GetRedirection", urlPatterns = {"/GetRedirection"})
 public class GetRedirection extends HttpServlet {
@@ -81,7 +81,7 @@ public class GetRedirection extends HttpServlet {
                 
                 //Récuppération des droits d'accès au servlet
                 String access = DAO.getServletRights("GetRedirection", rights, false);
-
+                
                 //Si l'utilisateur a les droits
                 if(access.equals("true")){
                     //Récuppération de la redirection de l'utilisateur

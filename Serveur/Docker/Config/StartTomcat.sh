@@ -11,5 +11,5 @@ curl -u admin:leffe -T /conf/SAE51.war "http://localhost:8080/manager/text/deplo
 #Boucle infinie pour garder le conteneur actif
 while true
 do
-sleep 5
+sleep 60
 done
