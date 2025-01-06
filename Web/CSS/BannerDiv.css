@@ -18,13 +18,13 @@
     align-items: center;
 }
 #logoUser{
-    width: 30px;
-    height: auto;
+    width: auto;
+    height: 20px;
     padding-right: 10px;
 }
 #logoRights{
-    width: 30px;
-    height: auto;
+    width: auto;
+    height: 20px;
     padding-left: 20px;
     padding-right: 10px;
 }
@@ -33,30 +33,37 @@
     display: flex;
     align-items: center
 }
-#disconnect{
+#disconnect {
     height: 50px;
     width: 450px;
-    padding-right: 15px;
+    padding-right: 10px;
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
     justify-content: end;
 }
-#submitDisconnect{
+#submitDisconnect {
     width: 160px;
-    height: 40px;
+    height: 45px;
+    padding: 10px;
+    border: 0px;
     background-color: #090707;
     color: #ffffff;
-    border: 0px;
-    font-family: "Times New Roman";
-    font-size: large;
     display: flex;
-    align-items: center;
+    align-items: center; /* Centrage vertical des éléments internes */
+    justify-content: center; /* Centrage horizontal des éléments internes (si nécessaire) */
+    font-family: "Times New Roman";
+    font-size: medium;
     cursor: pointer;
 }
+#submitDisconnect p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
 #logoDisconnect{
-    width: 30px;
-    height: auto;
+    width: auto;
+    height: 20px;
     padding-right: 10px;
     align-items: center;
 }
