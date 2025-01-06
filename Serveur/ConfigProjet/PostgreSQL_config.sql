@@ -65,11 +65,6 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'A
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Utilisateur', 'none');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Aucun', 'login.html');
 
--- discovery.html
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('discovery.html', 'Admin', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('discovery.html', 'Utilisateur', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('discovery.html', 'Aucun', 'login.html');
-
 -- monitoring.html
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('monitoring.html', 'Admin', 'none');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('monitoring.html', 'Utilisateur', 'none');

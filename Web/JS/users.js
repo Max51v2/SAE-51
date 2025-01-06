@@ -2,7 +2,13 @@
 //Version : ?
 
 
+
+
+
 document.addEventListener("TokenCheckFinished", (event) => {
+
+    window.deleteUser = deleteUser;
+    window.changePassword = changePassword;
 
     // Récupérer la liste des utilisateurs et remplir le tableau
     function fetchUsers() {
@@ -31,67 +37,61 @@ document.addEventListener("TokenCheckFinished", (event) => {
                 userTableBody.appendChild(row);
             });
         })
-        .catch(error => console.error("Erreur lors de la récupération des utilisateurs :", error));
     }
 
     // Supprimer un utilisateur
     function deleteUser(login) {
-        fetch(`https://${window.ServerIP}:8443/SAE51/DeleteUser`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ login: login, token: token, Test: false })
-        })
-        .then(response => response.json())
-        .then(result => {
-            console.log(result);
-            if (result.success) {
-                alert("Utilisateur supprimé avec succès !");
-                fetchUsers(); // Rafraîchit la liste des utilisateurs
-            } else {
-                alert("Erreur lors de la suppression de l'utilisateur.");
-            }
-        })
-        .catch(error => console.error("Erreur lors de la suppression de l'utilisateur :", error));
+        UserLogin = sessionStorage.getItem('login');
+
+        if(UserLogin === login){
+            alert('Vous ne pouvez pas supprimer votre propre compte')
+        }
+        else{
+            fetch(`https://${window.ServerIP}:8443/SAE51/DeleteUser`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ login: login, token: token, Test: false })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.erreur === "none") {
+                    alert("Utilisateur supprimé avec succès !");
+                    fetchUsers(); // Rafraîchit la liste des utilisateurs
+                } else {
+                    alert("Erreur lors de la suppression de l'utilisateur.");
+                    console.log(result)
+                }
+            })
+        }
     }
 
     // Changer le mot de passe d'un utilisateur
     function changePassword(login) {
         const newPassword = prompt(`Entrez le nouveau mot de passe pour ${login}:`);
         if (newPassword) {
-            fetch(`https://${window.ServerIP}:8443/SAE51/UpdatePassword`, {
+            fetch(`https://${window.ServerIP}:8443/SAE51/SetPassword`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ login: login, password: newPassword, token: token, Test: false })
+                body: JSON.stringify({ target: login, password: newPassword, token: token, Test: false })
             })
             .then(response => response.json())
             .then(result => {
-                console.log(result);
-                if (result.success) {
+                if (result.erreur === "none") {
                     alert("Mot de passe modifié avec succès !");
                 } else {
                     alert("Erreur lors de la modification du mot de passe.");
+                    console.log(result)
                 }
             })
-            .catch(error => console.error("Erreur lors de la modification du mot de passe :", error));
         }
     }
 
     // Initialisation - récupérer le token et charger les utilisateurs
     function initialize() {
-        fetch(`https://${window.ServerIP}:8443/SAE51/CheckPassword`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ login: "Admin1", password: "Admin", Test: false })
-        })
-        .then(response => response.json())
-        .then(result => {
-            token = result.token;
-            fetchUsers(); // Récupère et affiche les utilisateurs après avoir obtenu le token
-        })
-        .catch(error => console.error("Erreur lors de l'authentification :", error));
+        fetchUsers(); // Récupère et affiche les utilisateurs
     }
 
     // Exécute la fonction d'initialisation au chargement de la page
-    window.onload = initialize;
+    window.onload = initialize();
 
 })
