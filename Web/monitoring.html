@@ -1,0 +1,127 @@
+<!--
+    Auteur HTML : Gabin PETITCOLAS
+    Version : ?
+    W3C validator (0 erreurs / 0 warnings): ?
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surveillance des Machines - Surveillance en Direct</title>
+
+    <!-- CSS pour la bannière -->
+    <link rel="stylesheet" href="./CSS/BannerDiv.css">
+
+    <!-- CSS pour la page -->
+    <link rel="stylesheet" href="./CSS/page.css">
+</head>
+<body>
+    <div id="bannerDiv">
+        <div id="user">
+            <img id="logoUser" src="./images/utilisateur.webp" alt="Logo">
+            <p id="id"></p>
+            <img id="logoRights" src="./images/droits.webp" alt="Logo">
+            <p id="Rights"></p>
+        </div>
+        <div id="pageName">
+            <h2>Surveillance des Machines</h2>
+        </div>
+        <div id="disconnect">
+            <button id="submitDisconnect" type="button">
+                <p><img id="logoDisconnect" src="./images/deconnexion.webp" alt="Logo"> Se déconnecter</p>
+            </button>
+        </div>
+    </div>
+
+    <div id="container">
+        <div id="sideNav">
+            <ul>
+                <li><a href="./control.html"><i>⚙️</i> Allumage & Extinction</a></li>
+                <li><a href="./monitoring.html" class="active"><i>📊</i> Surveillance en Direct</a></li>
+                <li><a href="./alerts.html"><i>🚨</i> Alertes & Seuils</a></li>
+                <li><a href="./users.html"><i>👥</i> Gestion des Utilisateurs</a></li>
+                <li><a href="./discovery.html"><i>🔍</i> Détection des Machines</a></li>
+            </ul>
+        </div>
+
+        <div id="mainContent">
+            <section id="monitoring" class="active">
+                <h2>Surveillance en Direct</h2>
+
+                <!-- Premier tableau -->
+                <h3>Configuration Matérielle</h3>
+                <table id="hardwareConfigTable">
+                    <thead>
+                        <tr>
+                            <th>CPU</th>
+                            <th>RAM</th>
+                            <th>Stockage</th>
+                            <th>Réseau</th>
+                            <th>Session</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Intel i7-12700K, 12, 4.9GHz</td>
+                            <td>32GB, 2, 3200MHz</td>
+                            <td>2, 1TB</td>
+                            <td>2, 1Gbps</td>
+                            <td>Windows 11 Pro</td>
+                        </tr>
+                        <tr>
+                            <td>AMD Ryzen 5 5600X, 6, 4.6GHz</td>
+                            <td>16GB, 1, 3600MHz</td>
+                            <td>1, 512GB</td>
+                            <td>1, 100Mbps</td>
+                            <td>Windows 10 Home</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Deuxième tableau -->
+                <h3>Performances en Temps Réel</h3>
+                <table id="realtimePerformanceTable">
+                    <thead>
+                        <tr>
+                            <th>CPU</th>
+                            <th>RAM</th>
+                            <th>Stockage</th>
+                            <th>Réseau</th>
+                            <th>Ventilateurs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>75%, 65°C, 95W</td>
+                            <td>16GB (50%)</td>
+                            <td>50%, 500GB/1TB, 45°C, 0%</td>
+                            <td>10ms, 850Mbps</td>
+                            <td>1200 RPM</td>
+                        </tr>
+                        <tr>
+                            <td>45%, 50°C, 65W</td>
+                            <td>8GB (70%)</td>
+                            <td>70%, 350GB/500GB, 55°C, 1%</td>
+                            <td>15ms, 600Mbps</td>
+                            <td>800 RPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+    
+    
+<!-- ne pas toucher aux 3 scripts ci-dessous SAUF en cas de BUG -->
+<script src="./JS/URL.js" async></script>
+<script src="./JS/TokenCheck.js" async></script>
+<script src="./JS/CheckTokenExpiration.js" async></script>
+
+<!-- Script qui remplit la bannière (login + droits) et qui contient les eventListener pour les boutons help et disconnect -->
+<script src="./JS/Banner.js" defer></script>
+
+<!-- Script de la page -->
+
+</body>
+</html>

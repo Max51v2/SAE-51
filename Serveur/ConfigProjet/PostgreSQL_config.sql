@@ -45,25 +45,40 @@ CREATE TABLE web_pages_access (
 -- droits : droit du type d'utilisateur => à faire pour chaque type d'utilisateur (ex : 'Admin' ou 'Utilisateur' ou "Aucun" (si "Aucun" non présent => redirection vers login.html))
 -- redirect : ou l'utilisateur doit être redirigé => 'none' : pas de redirection car il a les droits / 'nomPage.html'
 
--- TestsBackend.html
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('TestsBackend.html', 'Admin', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('TestsBackend.html', 'Utilisateur', 'accueil.html');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('TestsBackend.html', 'Aucun', 'login.html');
-
 -- help.html
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Admin', 'none');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Utilisateur', 'none');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Aucun', 'none');
 
 -- login.html
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Admin', 'accueil.html');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Utilisateur', 'accueil.html');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Admin', 'alerts.html');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Utilisateur', 'alerts.html');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Aucun', 'none');
 
--- accueil.html
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('accueil.html', 'Admin', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('accueil.html', 'Utilisateur', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('accueil.html', 'Aucun', 'login.html');
+-- alerts.html
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('alerts.html', 'Admin', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('alerts.html', 'Utilisateur', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('alerts.html', 'Aucun', 'login.html');
+
+-- control.html
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Admin', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Utilisateur', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Aucun', 'login.html');
+
+-- discovery.html
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('discovery.html', 'Admin', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('discovery.html', 'Utilisateur', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('discovery.html', 'Aucun', 'login.html');
+
+-- monitoring.html
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('monitoring.html', 'Admin', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('monitoring.html', 'Utilisateur', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('monitoring.html', 'Aucun', 'login.html');
+
+-- users.html
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('users.html', 'Admin', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('users.html', 'Utilisateur', 'alerts.html');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('users.html', 'Aucun', 'login.html');
 
 
 

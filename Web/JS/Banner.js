@@ -5,20 +5,6 @@
 document.getElementById("id").innerHTML = sessionStorage.getItem("login");
 document.getElementById("Rights").innerHTML = sessionStorage.getItem("droits");
     
-//Redirection vers la page d'aide
-document.getElementById("submitHelp").onclick = function () {
-    //Récuppèration de la page d'origine (bouton retour)
-    var currentUrl = window.location.href;
-    var url = new URL(currentUrl);
-    PreviousPage = url.pathname.split('/').pop();
-    if(PreviousPage == ""){
-        PreviousPage = "login.html";
-    }
-    sessionStorage.setItem("PreviousPage", PreviousPage);
-
-    window.location.href = 'help.html';
-};
-    
 //Déconnexion de l'utilisateur
 document.getElementById("submitDisconnect").onclick = function () {
     login = sessionStorage.getItem("login");

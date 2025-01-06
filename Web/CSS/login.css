@@ -1,121 +1,123 @@
+<title>Glassmorphism login Form Tutorial in html css</title>
+ 
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+<!--Stylesheet-->
+<style media="screen">
+  *,
+*:before{}
+*:after{
+padding: 0;
+margin: 0;
+box-sizing: border-box;
+}
 body{
-    margin: 0;
-    font-family: 'Arial', sans-serif;
+background-color: #080710;
 }
-#rootDiv{
-    height: 100vh;
-    width: 100vw;
+.background{
+width: 430px;
+height: 520px;
+position: absolute;
+transform: translate(-50%,-50%);
+left: 50%;
+top: 50%;
+}
+.background .shape{
+height: 200px;
+width: 200px;
+position: absolute;
+border-radius: 50%;
+}
 
-    display: flex;
-    flex-direction: column;
+form{
+height: 520px;
+width: 400px;
+background-color: rgba(255,255,255,0.13);
+position: absolute;
+transform: translate(-50%,-50%);
+top: 50%;
+left: 50%;
+border-radius: 10px;
+backdrop-filter: blur(10px);
+border: 2px solid rgba(255,255,255,0.1);
+box-shadow: 0 0 40px rgba(8,7,16,0.6);
+padding: 50px 35px;
 }
-#bannerDiv{
-    width: 100%;
-    height: 50px;
-    display: flex;
-    flex-direction: row; 
-    justify-content: space-between;
-    background-color: #333333;
-    color: #BDBDBD;
+form *{
+font-family: 'Poppins',sans-serif;
+color: #ffffff;
+letter-spacing: 0.5px;
+outline: none;
+border: none;
 }
-#help{
-    height: 50px;
-    padding-left: 15px;
-    display: flex;
-    flex-direction: row;
-    align-items: center
+form h3{
+font-size: 32px;
+font-weight: 500;
+line-height: 42px;
+text-align: center;
 }
-#submitHelp{
-    width: 120px;
-    height: 50px;
-    background-color: #333333;
-    color: #BDBDBD;
-    border: 0px;
-    font-size: large;
+.icon-container {
     display: flex;
-    align-items: center;
-    margin: 0;
-    cursor: pointer;
-}
-#logoHelp{
-    width: 30px;
-    height: 30px;
-    padding-right: 10px;
-    align-items: center;
-}
-#pageName{
-    height: 50px;
-    display: flex;
-    align-items: center
-}
-#placeholder{
-    height: 50px;
-    width: 140px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-#loginDiv{
-    flex: 1;
-    display: flex;
-
     justify-content: center;
     align-items: center;
+    margin-bottom: -10px; /* Ajuste l'espace avec le texte en dessous */
 }
-#loginBox {
-    width: 450px;
-    background-color: #f0f5f5;
-    border-radius: 25px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
+.eye-icon {
+    width: 60px; /* Ajustez la taille si nécessaire */
+    height: auto;
 }
-#logoDiv{
-    height: 280px;
-    width: 450px;
-    margin-top: 90px;
-    
-    display: flex;
-    justify-content: center;
+label{
+display: block;
+margin-top: 30px;
+font-size: 16px;
+font-weight: 500;
 }
-#logo{
-    height: 250px;
-    width: 250px;
-    
-    border-radius: 15px;
-    object-fit: cover;
+input{
+display: block;
+height: 50px;
+width: 100%;
+background-color: rgba(255,255,255,0.07);
+border-radius: 3px;
+padding: 0 10px;
+margin-top: 8px;
+font-size: 14px;
+font-weight: 300;
 }
-#loginFormDiv{
-    width: 350px;
-    text-align: left;
-
-    font-size: 18px;
+::placeholder{
+color: #e5e5e5;
 }
-#login{
-    width: 342px;
-    height: 30px;
-    margin-bottom: 15px;
+button{
+margin-top: 50px;
+width: 100%;
+background-color: #ffffff;
+color: #080710;
+padding: 15px 0;
+font-size: 18px;
+font-weight: 600;
+border-radius: 5px;
+cursor: pointer;
 }
-#password{
-    width: 342px;
-    height: 30px;
-    margin-bottom: 30px;
+.social{
+margin-top: 30px;
+display: flex;
 }
-#submit{
-    align-items: center;
-    width: 350px;
-    height: 40px;
-    background-color: #333333;
-    color: white;
-    cursor: pointer;
-    border-radius: 10px;
-    border-style: solid;
-    margin: 0;
-    margin-bottom: 45px;
+.social div{
+background: red;
+width: 150px;
+border-radius: 3px;
+padding: 5px 10px 10px 5px;
+background-color: rgba(255,255,255,0.27);
+color: #eaf0fb;
+text-align: center;
 }
-#style{
-    height: fit-content;
-    width: fit-content;
+.social div:hover{
+background-color: rgba(255,255,255,0.47);
+}
+.social .fb{
+margin-left: 25px;
+}
+.social i{
+margin-right: 4px;
 }

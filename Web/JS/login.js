@@ -1,23 +1,9 @@
 //Auteur JS : Maxime VALLET
-//Version : 1.4
+//Version : 1.0
 
-
+//Code ici
 document.addEventListener("TokenCheckFinished", (event) => {
 
-    //Redirection vers la page d'aide
-    document.getElementById("submitHelp").onclick = function () {
-        window.location.href = 'help.html';
-
-        var currentUrl = window.location.href;
-        var url = new URL(currentUrl);
-        PreviousPage = url.pathname.split('/').pop();
-        if(PreviousPage == ""){
-            PreviousPage = "login.html";
-        }
-        sessionStorage.setItem("PreviousPage", PreviousPage);
-    };
-
-        
     //Vérification du MDP
     document.getElementById("submit").onclick = function () { 
 
@@ -30,11 +16,11 @@ document.addEventListener("TokenCheckFinished", (event) => {
 
         //Vérification auprès du Servlet
         fetch(`https://${window.ServerIP}:8443/SAE51/CheckPassword`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ login: login, password: password, Test: false })
-            }).then(response => response.json())
-            .then(CheckPasswordResult);
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ login: login, password: password, Test: false })
+        }).then(response => response.json())
+        .then(CheckPasswordResult);
     };
         
 
@@ -46,17 +32,23 @@ document.addEventListener("TokenCheckFinished", (event) => {
             sessionStorage.setItem("droits", response.droits);
             sessionStorage.setItem("token", response.token);
 
+            //Console
+            console.log("login => login : "+sessionStorage.getItem("login"));
+            console.log("login => droits : "+sessionStorage.getItem("droits"));
+            console.log("login => token : "+sessionStorage.getItem("token")); //le token ici est en clair contrairement à la BD (hash Bcrypt)
+
             //Redirection page
+            currentToken = sessionStorage.getItem("token");
             fetch(`https://${window.ServerIP}:8443/SAE51/GetRedirection`, {
             method: "POST",
-            headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ token: response.token, currentPage: window.currentPage, Test: false })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: currentToken, currentPage: window.currentPage, Test: false })
             }).then(response => response.json())
             .then(GetRedirectionResult);
         }
         else{
             //On affiche l'erreur
-            console.log("login.js => CheckPasswordResult() => Erreur : "+response.erreur);
+            console.log("login => CheckPasswordResult => Erreur : "+response.erreur);
         }
     }
 
@@ -73,7 +65,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
         }
         else{
             //On affiche l'erreur
-            console.log("login.js => GetRedirectionResult() => Erreur : "+response.erreur);
+            console.log("login => GetRedirectionResult => Erreur : "+response.erreur);
 
             //Redirection vers le login s'il n'y pas de règle de redirection dans la BD
             if(response.erreur === "Pas de redirection (BD)"){
