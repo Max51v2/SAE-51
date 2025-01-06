@@ -1,6 +1,6 @@
 #!/bin/bash
 #Auteur : Maxime VALLET
-#Version 1.2
+#Version 1.3
 
 clear
 
@@ -23,7 +23,7 @@ clear
 
 #Ouverture des ports du pare-feu
 echo "Installation d'ufw et ouverture des ports utilisés par Tomcat et Nginx :"
-sudo apt install ufw >> /tmp/DockerSetupLogs.txt
+sudo apt-get install ufw >> /tmp/DockerSetupLogs.txt
 clear
 echo "Ajout des règles du pare-feu :"
 sudo ufw allow 443 >> /tmp/DockerSetupLogs.txt
@@ -33,14 +33,14 @@ clear
 
 #Installation de docker
 echo "Installation des dépendances (apt-transport-https / curl / ca-certificates / software-properties-common) :"
-sudo apt install -y apt-transport-https ca-certificates curl software-properties-common >> /tmp/DockerSetupLogs.txt
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common >> /tmp/DockerSetupLogs.txt
 echo "Ajout des clés du répertoire de docker :"
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - >> /tmp/DockerSetupLogs.txt
 echo "Ajout du répertoire de Docker :"
 sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" >> /tmp/DockerSetupLogs.txt
 apt-cache policy docker-ce >> /tmp/DockerBuildLogs.txt >> /tmp/DockerSetupLogs.txt
 echo "Installation de docker-ce :"
-sudo apt install -y docker-ce >> /tmp/DockerBuildLogs.txt >> /tmp/DockerSetupLogs.txt
+sudo apt-get install -y docker-ce >> /tmp/DockerBuildLogs.txt >> /tmp/DockerSetupLogs.txt
 
 clear
 

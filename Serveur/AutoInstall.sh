@@ -80,7 +80,7 @@ then
     then
         echo "Installation des Guest Addition"
         echo
-        sudo apt install -y make gcc dkms linux-source linux-headers-$(uname -r)
+        sudo apt-get install -y make gcc dkms linux-source linux-headers-$(uname -r)
         cd /media/cdrom0
         sudo sh VBoxLinuxAdditions.run
     fi
@@ -96,13 +96,13 @@ then
 
     echo "Installation de gnome-terminal"
     echo
-    sudo apt install -y gnome-terminal
+    sudo apt-get install -y gnome-terminal
 
     clear
 
     echo "Installation d'ufw"
     echo
-    sudo apt install -y ufw
+    sudo apt-get install -y ufw
     sudo systemctl enable ufw
     sudo ufw enable
 
@@ -110,13 +110,13 @@ then
 
     echo "Installation de curl"
     echo
-    sudo apt install -y curl
+    sudo apt-get install -y curl
 
     clear
 
     echo "Installation de wget"
     echo
-    sudo apt install -y wget
+    sudo apt-get install -y wget
 
     clear
 
@@ -143,23 +143,25 @@ then
     cd ~/Téléchargements
     #Pas sûr que ce lien soit statique (n'a pas changé en 1 mois malgré des MAJ)
     sudo wget -c https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode.deb
-    sudo apt install -y ./vscode.deb
+    sudo apt-get install -y ./vscode.deb
     sudo rm ./vscode.deb 
 
     clear
 
     echo "Installation de PostgreSQL"
     echo
-    sudo apt install -y postgresql
-    clear
-    cd /etc/postgresql/
-    postgreSQLVersion=`ls | head -n 1`
-    cd /etc/postgresql/$postgreSQLVersion/main/
-    sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/postgresql.conf /etc/postgresql/$postgreSQLVersion/main/postgresql.conf
-    sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/pg_hba.conf /etc/postgresql/$postgreSQLVersion/main/pg_hba.conf
+    sudo apt-get install -y gnupg gnupg1 gnupg2 lsb-release
+    sudo apt-get install -y wget ca-certificates
+    sudo wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+    sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    sudo apt-get update
+    sudo apt-get install -y postgresql-15 postgresql-client
+    cd /etc/postgresql/15/main/
+    sudo systemctl stop postgresql
+    sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/postgresql.conf /etc/postgresql/15/main/postgresql.conf
+    sudo cp /home/$USER/Bureau/SAE-51/Serveur/Configuration/pg_hba.conf /etc/postgresql/15/main/pg_hba.conf
     sudo systemctl disable postgresql
-    sudo systemctl restart postgresql.service
-    sudo apt install -y postgresql-client
+    sudo systemctl start postgresql.service
 
     clear
 
@@ -174,7 +176,7 @@ then
 
     echo "Installation de Nginx"
     echo
-    sudo apt install -y nginx
+    sudo apt-get install -y nginx
     sudo mkdir /var/www/sae-51
     sudo chown -R $USER:$USER /var/www/sae-51
     sudo chmod -R 755 /var/www/sae-51
@@ -233,13 +235,17 @@ then
     cd ~/Téléchargements
     sudo wget -c https://archive.apache.org/dist/netbeans/netbeans-installers/22/apache-netbeans_22-1_all.deb -O netbeans.deb
     sudo chmod 777 ./netbeans.deb
-    sudo apt install -y ./netbeans.deb
+    sudo apt-get install -y ./netbeans.deb
     sudo rm ./netbeans.deb
 
 
     #Fin
     if [ "$optionGA" = "o" ] || [ "$optionGA" = "O" ]
     then
+        sudo apt clean
+        sudo apt autoremove
+
+        clear
         echo "Merci de redémarrer votre ordinateur afin de terminer l'installation"
     fi
 
