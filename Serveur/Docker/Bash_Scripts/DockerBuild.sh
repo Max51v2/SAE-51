@@ -52,7 +52,6 @@ sudo cp /certs/SAE51.key $DockerFilePath/SAE51.key
 
 docker build -t nginx_sae51 /home/$1/Bureau/SAE-51/Serveur/Docker/Nginx
 
-sudo rm -rf $DockerFilePath/Web
 sudo rm $DockerFilePath/Nginx.txt
 sudo rm $DockerFilePath/SAE51.crt
 sudo rm $DockerFilePath/SAE51.key
