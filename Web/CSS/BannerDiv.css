@@ -3,8 +3,8 @@
     height: 50px;
     display: flex;
     justify-content: space-between;
-    background-color: #090707;
-    color: #ffffff;
+    background-color: #000000;
+    color: #fefafa;
     padding: 10px;
     align-items: center;
     border-bottom: 2px solid white;
@@ -47,8 +47,8 @@
     height: 45px;
     padding: 10px;
     border: 0px;
-    background-color: #090707;
-    color: #ffffff;
+    background-color: #000000;
+    color: #fefafa;
     display: flex;
     align-items: center; /* Centrage vertical des éléments internes */
     justify-content: center; /* Centrage horizontal des éléments internes (si nécessaire) */
