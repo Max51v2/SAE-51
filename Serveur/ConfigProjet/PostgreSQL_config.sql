@@ -72,9 +72,13 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('monitoring.html',
 
 -- users.html
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('users.html', 'Admin', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('users.html', 'Utilisateur', 'alerts.html');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('users.html', 'Utilisateur', 'ChangePassword.html');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('users.html', 'Aucun', 'login.html');
 
+-- ChangePassword.html
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.html', 'Admin', 'users.html');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.html', 'Utilisateur', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.html', 'Aucun', 'login.html');
 
 
 

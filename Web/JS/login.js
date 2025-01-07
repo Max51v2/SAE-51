@@ -45,11 +45,6 @@ document.addEventListener("TokenCheckFinished", (event) => {
             sessionStorage.setItem("droits", response.droits);
             sessionStorage.setItem("token", response.token);
 
-            //Console
-            console.log("login => login : "+sessionStorage.getItem("login"));
-            console.log("login => droits : "+sessionStorage.getItem("droits"));
-            console.log("login => token : "+sessionStorage.getItem("token")); //le token ici est en clair contrairement à la BD (hash Bcrypt)
-
             //Redirection page
             currentToken = sessionStorage.getItem("token");
             fetch(`https://${window.ServerIP}:8443/SAE51/GetRedirection`, {
