@@ -31,7 +31,7 @@ public class GetCheckIntervall extends HttpServlet {
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
      * String erreur       &emsp;&emsp;        types d'erreur : champ manquant (req) | accès refusé | login existe (DB) | none <br>
-     * Integer CheckIntervall       &emsp;&emsp;        status du token : almostExpired | valid <br>
+     * String CheckIntervall       &emsp;&emsp;        status du token : almostExpired | valid <br>
      * 
      * @param request       servlet request
      * @param response      servlet response

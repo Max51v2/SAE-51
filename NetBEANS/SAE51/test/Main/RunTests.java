@@ -3,10 +3,10 @@ package Main;
 
 /**
  * Classe qui lance tous les tests unitaires
- * ATTENTION : Veuillez à lancer le projet avant d'executer les tests sinon ils vont échouer
+ * ATTENTION : Veuillez à lancer le projet avant d'exécuter les tests sinon ils vont échouer
  * 
  * @author Maxime VALLET
- * @version 0.7
+ * @version 0.8
  */
 import Autre.TokenExpirationTest;
 import Autre.Warning;
@@ -21,6 +21,7 @@ import ServletsUser.CheckPasswordTest;
 import ServletsUser.CheckTokenTest;
 import ServletsUser.DeleteTokenTest;
 import ServletsUser.DeleteUserTest;
+import ServletsUser.GetAccessiblePagesTest;
 import ServletsUser.GetCheckIntervallTest;
 import ServletsUser.GetLogsTest;
 import ServletsUser.GetRedirectionTest;
@@ -48,6 +49,7 @@ import TCP_Server.AnswerPingTest;
     ListPCTest.class,
     GetTokenStatusTest.class,
     GetCheckIntervallTest.class,
+    GetAccessiblePagesTest.class,
     Warning.class //Laisser en dernier
 })
 public class RunTests {}

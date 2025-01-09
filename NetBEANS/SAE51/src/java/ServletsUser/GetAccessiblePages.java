@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 public class GetAccessiblePages extends HttpServlet {
 
     /**
-     * Récupère les pages accessible à l'utilisateur<br><br>
+     * Récupère les pages accessible à l'utilisateur (afin d'afficher les boutons associés aux pages)<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
@@ -29,8 +29,9 @@ public class GetAccessiblePages extends HttpServlet {
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : champ manquant (req) | accès refusé | login existe (DB) | none <br>
-     * Integer CheckIntervall       &emsp;&emsp;        status du token : almostExpired | valid <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ manquant (req) | accès refusé | none <br>
+     * OU
+     * String page       &emsp;&emsp;        pages accessibles <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -43,7 +44,7 @@ public class GetAccessiblePages extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         
         //Nom du servlet
-        String servletName = "AddUser";
+        String servletName = "GetAccessiblePages";
         
         DAOusers DAO = new DAOusers();
         
