@@ -1,0 +1,70 @@
+<!--
+    Auteur HTML : Gabin PETITCOLAS
+    Version : ?
+    W3C validator (0 erreurs / 0 warnings): ?
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/webp" href="./images/flavicon.webp">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surveillance des Machines - Détection des Machines</title>
+
+    <!-- CSS pour la bannière -->
+    <link rel="stylesheet" href="./CSS/BannerDiv.css">
+
+    <!-- CSS pour la page -->
+    <link rel="stylesheet" href="./CSS/page.css">
+</head>
+<body>
+    <div id="bannerDiv">
+        <div id="user">
+            <img id="logoUser" src="./images/utilisateur.webp" alt="Logo">
+            <p id="id"></p>
+            <img id="logoRights" src="./images/droits.webp" alt="Logo">
+            <p id="Rights"></p>
+        </div>
+        <div id="pageName">
+            <h2>Surveillance des Machines</h2>
+        </div>
+        <div id="disconnect">
+            <button id="submitDisconnect" type="button">
+                <p><img id="logoDisconnect" src="./images/deconnexion.webp" alt="Logo"> Se déconnecter</p>
+            </button>
+        </div>
+    </div>
+
+    <div id="container">
+        <div id="sideNav">
+            <ul>
+                <li><a href="./control.html"><i>⚙️</i> Allumage & Extinction</a></li>
+                <li><a href="./monitoring.html"><i>📊</i> Surveillance en Direct</a></li>
+                <li><a href="./alerts.html"><i>🚨</i> Alertes & Seuils</a></li>
+                <li><a href="./users.html"><i>👥</i> Gestion des Utilisateurs</a></li>
+                <li><a href="./discovery.html" class="active"><i>🔍</i> Détection des Machines</a></li>
+            </ul>
+        </div>
+
+        <div id="mainContent">
+            <section id="discovery" class="active">
+                <h2>Détection des Machines</h2>
+                <button class="button">Lancer la détection</button>
+            </section>
+        </div>
+    </div>
+
+    
+    
+<!-- ne pas toucher aux 3 scripts ci-dessous SAUF en cas de BUG -->
+<script src="./JS/URL.js" async></script>
+<script src="./JS/TokenCheck.js" async></script>
+<script src="./JS/CheckTokenExpiration.js" async></script>
+
+<!-- Script qui remplit la bannière (login + droits) et qui contient les eventListener pour les boutons help et disconnect -->
+<script src="./JS/Banner.js" async></script>
+
+<!-- Script de la page -->
+
+</body>
+</html>

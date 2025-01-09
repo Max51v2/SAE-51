@@ -47,6 +47,10 @@ function TokenCheck(){
     else {
         console.log("TokenCheck.js => TokenCheck() => Info : token inexistant (sessionStorage)");
 
+        //Stockage du login et des droits (uniquement à titre indicatif car les servlets revérifient !)
+        sessionStorage.setItem("login", "Pas connecté");
+        sessionStorage.setItem("droits", "Aucun");
+
         //Redirection
         GetRedirection();
     }
@@ -96,6 +100,9 @@ function GetRedirectionResult(response){
         if(response.redirect === "none"){
             //événement qui lance les scripts de la page
             document.dispatchEvent(new Event("TokenCheckFinished"));
+
+            //Supression des pages accessibles
+            sessionStorage.setItem("AccessiblePages", "");
         }
         else{
             window.location.href = response.redirect;
@@ -117,10 +124,14 @@ function GetRedirectionResult(response){
 //Retour au login
 function goToLogin(){
     if(window.currentPage === "login.html"){
-        //Rien
+        //Supression des pages accessibles
+        sessionStorage.setItem("AccessiblePages", "");
     }
     else{
         //Redireciton vers login.html
         window.location.href = 'login.html';
+
+        //Supression des pages accessibles
+        sessionStorage.setItem("AccessiblePages", "");
     }
 }

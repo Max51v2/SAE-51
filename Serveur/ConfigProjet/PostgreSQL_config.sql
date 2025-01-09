@@ -44,11 +44,7 @@ CREATE TABLE web_pages_access (
 -- name (ex : 'login.html')
 -- droits : droit du type d'utilisateur => à faire pour chaque type d'utilisateur (ex : 'Admin' ou 'Utilisateur' ou "Aucun" (si "Aucun" non présent => redirection vers login.html))
 -- redirect : ou l'utilisateur doit être redirigé => 'none' : pas de redirection car il a les droits / 'nomPage.html'
-
--- help.html
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Admin', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Utilisateur', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Aucun', 'none');
+-- !!! METTRE DANS L'ORDRE DANS LEQUEL LES PAGES APPARAISSENT DANS LA BARRE LATTERALLE (bouttons changement de page) !!!
 
 -- login.html
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Admin', 'alerts.html');
@@ -79,6 +75,11 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('users.html', 'Auc
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.html', 'Admin', 'users.html');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.html', 'Utilisateur', 'none');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.html', 'Aucun', 'login.html');
+
+-- help.html (laisser en dernier)
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Admin', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Utilisateur', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Aucun', 'none');
 
 
 
@@ -202,7 +203,7 @@ INSERT INTO servlet_access (name, role, access) VALUES ('GetCheckIntervall', 'Au
 --GetAccessiblePages
 INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Admin', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Utilisateur', 'true');
-INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Aucun', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Aucun', 'true');
 
 
 

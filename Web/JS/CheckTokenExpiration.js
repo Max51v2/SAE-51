@@ -203,7 +203,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
         }
         else{
             //Redireciton vers login.html
-            //window.location.href = 'login.html';
+            window.location.href = 'login.html';
         }
     }
 })

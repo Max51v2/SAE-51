@@ -28,11 +28,6 @@
     padding-left: 30px;
     padding-right: 10px;
 }
-#pageName{
-    height: 50px;
-    display: flex;
-    align-items: center
-}
 #disconnect {
     height: 50px;
     width: 450px;
