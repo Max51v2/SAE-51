@@ -564,7 +564,7 @@ public class DAOusersTest {
     public void testGetRedirection1() {
         
         //Vérification de l'existance de l'utilisateur dans la BD
-        String result = DAO.getRedirection("Admin", "accueil.html", false); //pas de modif donc pas besoin de dupliquer le contenu de la table
+        String result = DAO.getRedirection("Admin", "accueil.html", true); //pas de modif donc pas besoin de dupliquer le contenu de la table
         
         //Résultat attendu
         String ExpResult = "none";
@@ -697,6 +697,41 @@ public class DAOusersTest {
         
         //Résultat
         System.out.println("resultat testGetServletRights2 : "+result+" | exp : "+ExpResult);
+        
+        //Vérification du résultat
+        assertEquals(ExpResult, result);
+    }
+    
+    
+    
+    /**
+     * Test of getUsers method, of class DAOusers.
+     */
+    @Test
+    public void testGetAccessiblePages() {
+        
+        //Ajout d'un utilisateur ayant les droits d'admin
+        String login = "Admin1";
+        String nom = "Admin";
+        String prenom = "Originel";
+        String role = "Admin";
+        String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
+        Integer tokenLifeCycle = 999;
+        String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"
+        Boolean Test = true;
+        DAOtest.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, Test);
+        
+        //Récupération des utilisateurs
+        String result = DAO.getAccessiblePages(Test, role);
+        
+        //Suppression de l'utilisateur
+        DAO.deleteUser(login, Test);
+        
+        //Résultat attendu
+        String ExpResult = "[{\"page\":\"accueil.html\"}]";
+        
+        //Résultat
+        System.out.println("resultat testGetAccessiblePages : "+result+" | exp : "+ExpResult);
         
         //Vérification du résultat
         assertEquals(ExpResult, result);

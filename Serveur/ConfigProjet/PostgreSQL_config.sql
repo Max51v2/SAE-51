@@ -162,7 +162,7 @@ INSERT INTO servlet_access (name, role, access) VALUES ('SetPassword', 'Aucun', 
 --DeleteToken
 INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Admin', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Utilisateur', 'true');
-INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Aucun', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Aucun', 'false');
 
 --GetRedirection
 INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Admin', 'true');
@@ -199,6 +199,10 @@ INSERT INTO servlet_access (name, role, access) VALUES ('GetCheckIntervall', 'Ad
 INSERT INTO servlet_access (name, role, access) VALUES ('GetCheckIntervall', 'Utilisateur', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('GetCheckIntervall', 'Aucun', 'false');
 
+--GetAccessiblePages
+INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Aucun', 'false');
 
 
 
@@ -251,6 +255,7 @@ CREATE TABLE web_pages_access (
 );
 
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Admin', 'accueil.html');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('accueil.html', 'Admin', 'none');
 
 
 --Table contenant les pc à monitorer
@@ -284,6 +289,71 @@ CREATE TABLE servlet_access (
 INSERT INTO servlet_access (name, role, access) VALUES ('Test', 'Admin', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('Test', 'Utilisateur', 'false');
 INSERT INTO servlet_access (name, role, access) VALUES ('Test', 'Aucun', 'false');
+
+--AddUser
+INSERT INTO servlet_access (name, role, access) VALUES ('AddUser', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('AddUser', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('AddUser', 'Aucun', 'false');
+
+--DeleteUser
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUser', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUser', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUser', 'Aucun', 'false');
+
+--ListUsers
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsers', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsers', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsers', 'Aucun', 'false');
+
+--SetPassword
+INSERT INTO servlet_access (name, role, access) VALUES ('SetPassword', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('SetPassword', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('SetPassword', 'Aucun', 'false');
+
+--DeleteToken
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteToken', 'Aucun', 'false');
+
+--GetRedirection
+INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetRedirection', 'Aucun', 'true');
+
+--GetLogs
+INSERT INTO servlet_access (name, role, access) VALUES ('GetLogs', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetLogs', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetLogs', 'Aucun', 'false');
+
+--DeletePC
+INSERT INTO servlet_access (name, role, access) VALUES ('DeletePC', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeletePC', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeletePC', 'Aucun', 'false');
+
+--ListPC
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPC', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPC', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPC', 'Aucun', 'false');
+
+--ListPCStaticInfo
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStaticInfo', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStaticInfo', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStaticInfo', 'Aucun', 'false');
+
+--GetTokenStatus
+INSERT INTO servlet_access (name, role, access) VALUES ('GetTokenStatus', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetTokenStatus', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetTokenStatus', 'Aucun', 'true');
+
+--GetCheckIntervall
+INSERT INTO servlet_access (name, role, access) VALUES ('GetCheckIntervall', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetCheckIntervall', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetCheckIntervall', 'Aucun', 'false');
+
+--GetAccessiblePages
+INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Aucun', 'false');
 
 
 

@@ -127,7 +127,7 @@ public class DeleteTokenTest {
         String login = "Admin1";
         String nom = "Admin";
         String prenom = "Originel";
-        String role = "Aucun";
+        String role = "none";
         String hashedPassword = "$2a$12$l3MjhFmfr7VGoL0uPX2VKuEmXxboZzyABhjVNqH9.TnrCD2hEvfmm"; // MDP = "leffe"
         Integer tokenLifeCycle = 999;
         String token = "$2a$08$VOtVbubOhyXhjEffToT.n.F9d8t9kwY0ulySEMKKoGZDisi4ni1s."; //token : "10101010101010101010101010101010"

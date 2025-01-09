@@ -21,7 +21,7 @@ import ServletsUser.CheckPasswordTest;
 import ServletsUser.CheckTokenTest;
 import ServletsUser.DeleteTokenTest;
 import ServletsUser.DeleteUserTest;
-import ServletsUser.GetCheckIntervall;
+import ServletsUser.GetCheckIntervallTest;
 import ServletsUser.GetLogsTest;
 import ServletsUser.GetRedirectionTest;
 import ServletsUser.GetTokenStatusTest;
@@ -47,7 +47,7 @@ import TCP_Server.AnswerPingTest;
     ListPCStaticInfoTest.class,
     ListPCTest.class,
     GetTokenStatusTest.class,
-    GetCheckIntervall.class,
+    GetCheckIntervallTest.class,
     Warning.class //Laisser en dernier
 })
 public class RunTests {}

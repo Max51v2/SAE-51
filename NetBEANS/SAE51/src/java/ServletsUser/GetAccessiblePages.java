@@ -15,22 +15,22 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 1.4
+ * @version 1.0
  */
-@WebServlet(name = "DeleteToken", urlPatterns = {"/DeleteToken"})
-public class DeleteToken extends HttpServlet {
+@WebServlet(urlPatterns = {"/GetAccessiblePages"})
+public class GetAccessiblePages extends HttpServlet {
 
     /**
-     * Supprime un token de la BD<br><br>
+     * Récupère les pages accessible à l'utilisateur<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
-     * String login       &emsp;&emsp;        login de l'utilisateur à qui il faut supprimer le token <br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : pas de login ou token (req) | login inexistant (DB) | accès refusé | none <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ manquant (req) | accès refusé | login existe (DB) | none <br>
+     * Integer CheckIntervall       &emsp;&emsp;        status du token : almostExpired | valid <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -43,7 +43,7 @@ public class DeleteToken extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         
         //Nom du servlet
-        String servletName = "DeleteToken";
+        String servletName = "AddUser";
         
         DAOusers DAO = new DAOusers();
         
@@ -55,7 +55,6 @@ public class DeleteToken extends HttpServlet {
         JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfoUsers.class);
         
         //Données
-        String login = user.getLogin();
         String token = user.getToken();
         Boolean TestBoolean = Boolean.valueOf(user.getTest());
         String rights = "Aucun";
@@ -63,42 +62,27 @@ public class DeleteToken extends HttpServlet {
         String jsonString = "";
         String loginLog = "Aucun";
         
+        
         //Vérification du contenu envoyé
-        if(login == null | token == null){
-            jsonString = "{\"erreur\":\"pas de login ou token (req)\"}";
+        if(token == null){
+            //JSON renvoyé
+            jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
             //Vérification du contenu envoyé
-            if(login.equals("") | token.equals("")){
+            if(token.equals("")){
                 //JSON renvoyé
-                jsonString = "{\"erreur\":\"pas de login (req)\"}";
+                jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
             else{
                 //Récuppération des droits de l'utilisateur
                 rights = DAO.getUserRightsFromToken(token, TestBoolean);
-
+                
                 //Récuppération des droits d'accès au servlet
-                String access = DAO.getServletRights("DeleteToken", rights, TestBoolean);
+                String access = DAO.getServletRights(servletName, rights, false);
 
-                //Si l'utilisateur a les droits
                 if(access.equals("true")){
-                    //Vérification de l'existance du login
-                    doLoginExist = DAO.doLoginExist(login, TestBoolean);
-
-                    if(doLoginExist == true){
-                        //Suppression du token
-                        DAO.deleteToken(login, TestBoolean);
-
-                        //Remise à 0 du lifecycle du token
-                        DAO.setLifeCycle(login, 0, TestBoolean);
-
-                        //JSON renvoyé
-                        jsonString = "{\"erreur\":\"none\"}";
-                    }
-                    else{
-                        //JSON renvoyé
-                        jsonString = "{\"erreur\":\"login inexistant (DB)\"}";
-                    }
+                    jsonString = DAO.getAccessiblePages(TestBoolean, rights);
                 }
                 else{
                     //JSON renvoyé

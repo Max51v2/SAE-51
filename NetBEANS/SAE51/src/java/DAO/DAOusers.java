@@ -881,6 +881,74 @@ public class DAOusers {
     
     
     
+     /**
+     * Renvoi les pages accessibles à l'utilisateur
+     * 
+     * @param rights    droits de l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
+     */
+    public String getAccessiblePages(Boolean Test, String rights){
+        String RequeteSQL="SELECT name, droits, redirect FROM web_pages_access WHERE droits = ? ORDER BY name ASC";
+        String droits = "";
+        String page = "";
+        String redirect = "";
+        String JSONString="";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOusers.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, rights);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Integer c = 1;
+                
+                // Ouvrir le tableau JSON
+                JSONString += "[";
+
+                while (resultSet.next()) {
+                    page = resultSet.getString("name");
+                    redirect = resultSet.getString("redirect");
+
+                    if(redirect.equals("none")){
+                        // Ajouter l'objet JSON
+                        JSONString += "{\"page\":\"" + page + "\"}";
+                        
+                        // Ajouter une virgule avant chaque entrée sauf la première
+                        if (c > 1) {
+                            JSONString += ",";
+                        }
+                    }
+
+                    c += 1;
+                }
+
+                // Fermer le tableau JSON
+                JSONString += "]";
+
+            }
+            
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return JSONString;
+    }
+    
+    
+    
+    
     /**
      * Récupération du login pour le loger
      * 

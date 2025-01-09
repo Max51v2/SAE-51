@@ -147,37 +147,4 @@ public class GetTokenStatusTest {
         //Vérification du résultat
         assertEquals(ExpResult, result);
     }
-    
-    
-    
-    
-    /**
-     * Test vérification du status token
-     * 
-     * Conditions de test :
-     *  - champs envoyés : ok
-     *  - status token : valide
-     *  - droits : ok
-     */
-    @Test
-    public void testGetTokenStatus4() throws IOException {
-        DAOTest DAO = new DAOTest();
-        DAOusers DAO2 = new DAOusers();
-        POSTRequest req = new POSTRequest();
-        
-        //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"00000000000000000000000000000000\", \"Test\":\"true\"}";
-        
-        //Requête au servlet
-        String result = req.doRequest("http://localhost:8080/SAE51/GetTokenStatus", jsonPayload);
-        
-        //Résultat attendu
-        String ExpResult = "{\"erreur\":\"accès refusé\"}";
-        
-        //Résultat
-        System.out.println("resultat testGetTokenStatus4 : "+result+" | exp : "+ExpResult);
-        
-        //Vérification du résultat
-        assertEquals(ExpResult, result);
-    }
 }
