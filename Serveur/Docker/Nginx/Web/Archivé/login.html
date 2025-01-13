@@ -1,0 +1,64 @@
+<!--
+    Auteur HTML : Maxime VALLET
+    Version 1.4
+    W3C validator (0 erreurs / 0 warnings): 10/11/24
+-->
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="icon" type="image/webp" href="./images/flavicon.webp">
+
+    <!-- CSS Page -->
+    <link rel="stylesheet" href="./CSS/login.css">
+</head>
+
+
+<body>
+    <div id="rootDiv">
+        <div id="bannerDiv">
+            <div id="help">
+                <button id="submitHelp" type="button">
+                    <img id="logoHelp" src="./images/help.webp" alt="Logo aide"> Aide
+                </button>
+            </div>
+            <div id="pageName">
+                <h2>Page de login</h2>
+            </div>
+            <div id="placeholder"></div>
+        </div>
+
+        <div id="loginDiv">
+            <div id="loginBox">
+                <div id="logoDiv">
+                    <img id="logo" src="./images/Logo.webp" alt="Logo projet">
+                </div>
+                <div id="loginFormDiv">
+                    <h1>Indentification</h1>
+                    <form id="loginForm">
+                        <label for="login">Nom d'utilisateur :</label>
+                        <input type="text" id="login" name="login" required>
+                        <label for="password">Mot de passe :</label>
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" id="submit">Valider</button>
+                        <br>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<!-- ne pas toucher aux 2 scripts ci-dessous SAUF en cas de BUG -->
+<script src="./JS/URL.js" async></script>
+<script src="./JS/TokenCheck.js" async></script>
+
+<!-- Script de la page -->
+<script src="./JS/login.js" async></script>
+
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+
+#mainContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: large;
+    padding-top: 30px;
+}
+li{
+    list-style-type: none;
+}
+h2{
+    padding-bottom: 10px;
+}
+.logoContact{
+    height: 18px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+#documentation{
+    padding-top: 70px;
+}
+#submitJavadoc{
+    height: 18px;
+    border: 0px;
+}
+#submitVMDoc{
+    height: 18px;
+    border: 0px;
+}
+#submitServerDoc{
+    height: 18px;
+    border: 0px;
+}
+#submitClientDoc{
+    height: 18px;
+    border: 0px;
+}
+#submitWebDoc{
+    height: 18px;
+    border: 0px;
+}
+#submitProjectDoc{
+    height: 18px;
+    border: 0px;
+}
+#resources{
+    padding-top: 70px;
+}
