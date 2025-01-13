@@ -19,7 +19,10 @@ var ButtonDict = {
 
 //Récupération des pages
 let AccessiblePages = sessionStorage.getItem("AccessiblePages");
-        
+
+//Récupération des droits de l'utilisateur 
+let Rights = sessionStorage.getItem("Rights");
+
 //Si il n'y a pas de valeur
 if(!AccessiblePages){
     document.addEventListener("TokenCheckFinished", (event) => {
@@ -87,7 +90,7 @@ function FecthAccessiblePages(){
         userTableBody.innerHTML = ""; // Vide le tableau avant d'ajouter les nouvelles données
 
         AccessiblePages.forEach(page => {
-            if(window.currentPage === "help.html" && page.page === "help.html"){
+            if(window.currentPage === "help.html" && page.page === "help.html" && Rights === "Pas connecté"){
                 //On ne met pas le bouton qui emmène l'utilisateur vers help.html s'il est déjà dessus
             }
             else{
