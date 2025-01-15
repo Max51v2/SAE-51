@@ -113,17 +113,6 @@ CREATE TABLE pc_static_info (
 
 
 
---Table contenant les notifications de problèmes
--- id : identifiant du pc (table pc)
-CREATE TABLE notifications (
-    id text PRIMARY KEY,
-    problem text,
-    date DATE DEFAULT CURRENT_DATE
-);
-
-
-
-
 --Table contenant les droits d'accès des différents servlets
 -- name : nom du servlet (ex : "CheckToken")
 -- role : droits de l'utilisateur ("Admin" | "Utilisateur" | "Aucun")
@@ -220,6 +209,13 @@ CREATE TABLE logs (
 
 
 
+--Table contenant les notifications à aficher à l'utilisateur
+CREATE TABLE notification (
+    description text,
+    content text,
+    users text
+);
+
 
 
 
@@ -264,15 +260,6 @@ CREATE TABLE pc (
     id text PRIMARY KEY,
     ip text,
     droits text
-);
-
-
---Table contenant les notifications de problèmes
--- id : identifiant du pc (table pc)
-CREATE TABLE notifications (
-    id text PRIMARY KEY,
-    problem text,
-    date DATE DEFAULT CURRENT_DATE
 );
 
 
@@ -392,6 +379,15 @@ CREATE TABLE pc_static_info (
     os text,
     version text
 );
+
+
+--Table contenant les notifications à aficher à l'utilisateur
+CREATE TABLE notification (
+    description text,
+    content text,
+    users text
+);
+
 
 -- fin contenu de la BD sae_51
 
