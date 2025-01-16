@@ -37,7 +37,7 @@ Créer les conteneurs Docker :
     BuildSAE51
 
 Lancement des conteneurs Docker :
-    !!! ATTENTION !!! => si un port est déjà utilisé, le conteneur ne se lancera pas (443 / 5432 / 8443 / 8080)
+    !!! ATTENTION !!! => si un port est déjà utilisé, le conteneur ne se lancera pas (443 / 8443)
     StartSAE51
 
 Arrêt des conteneurs Docker :

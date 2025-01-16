@@ -78,7 +78,7 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.ht
 
 -- logs.html
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Admin', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Utilisateur', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Utilisateur', 'alerts.html');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Aucun', 'login.html');
 
 -- notifications.html
