@@ -76,6 +76,16 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.ht
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.html', 'Utilisateur', 'none');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.html', 'Aucun', 'login.html');
 
+-- logs.html
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Admin', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Utilisateur', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Aucun', 'login.html');
+
+-- notifications.html
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('notifications.html', 'Admin', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('notifications.html', 'Utilisateur', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('notifications.html', 'Aucun', 'login.html');
+
 -- help.html (laisser en dernier)
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Admin', 'none');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Utilisateur', 'none');
@@ -194,6 +204,11 @@ INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'A
 INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Utilisateur', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Aucun', 'true');
 
+--GetNotifications
+INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Aucun', 'false');
+
 
 
 --Table contenant les logs d'utilisation des servlets
@@ -213,7 +228,8 @@ CREATE TABLE logs (
 CREATE TABLE notification (
     description text,
     content text,
-    users text
+    users text,
+    date text
 );
 
 
@@ -343,6 +359,11 @@ INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'A
 INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Utilisateur', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('GetAccessiblePages', 'Aucun', 'false');
 
+--GetNotifications
+INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Aucun', 'false');
+
 
 
 --Table contenant les logs d'utilisation des servlets
@@ -385,7 +406,8 @@ CREATE TABLE pc_static_info (
 CREATE TABLE notification (
     description text,
     content text,
-    users text
+    users text,
+    date text
 );
 
 

@@ -5,11 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  *
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.2
  */
 public class DAONotifications {
     private static final String UserPostgres="postgres";
@@ -54,7 +56,7 @@ public class DAONotifications {
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
     public void addNotification(String description, String content, String users, Boolean Test){
-        String RequeteSQL="INSERT INTO notification (description, content, users) VALUES (?, ?, ?)";
+        String RequeteSQL="INSERT INTO notification (description, content, users, date) VALUES (?, ?, ?, ?)";
         
         //Selection de la BD
         changeConnection(Test);
@@ -66,10 +68,14 @@ public class DAONotifications {
             //Requête SQL
             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
             
+            //Récupération de la date actuelle
+            String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            
             //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
             preparedStatement.setString(1, description);
             preparedStatement.setString(2, content);
             preparedStatement.setString(3, users);
+            preparedStatement.setString(4, date);
             
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();
@@ -118,10 +124,11 @@ public class DAONotifications {
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
     public String getNotifications(String userLogin, Boolean BypassAuth, Boolean Test){
-        String RequeteSQL="SELECT description, content, users FROM notification";
+        String RequeteSQL="SELECT description, content, users, date FROM notification";
         String content="";
         String description="";
         String users="";
+        String date = "";
         String JSONString="";
         
         //Selection de la BD
@@ -152,14 +159,22 @@ public class DAONotifications {
                         //Récupération de la notification
                         description = resultSet.getString("description");
                         content = resultSet.getString("content");
+                        date = resultSet.getString("date");
                     
                         // Ajouter une virgule avant chaque entrée sauf la première
                         if (c > 1) {
                             JSONString += ",";
                         }
 
-                        // Ajouter l'objet JSON
-                        JSONString += "{\"description\":\""+description+"\", \"content\":\""+content+"\"}";
+                        //On ajoute pas la date si c'est un test
+                        if(Test == true){
+                            // Ajouter l'objet JSON
+                            JSONString += "{\"description\":\""+description+"\", \"content\":\""+content+"\"}";
+                        }
+                        else{
+                            // Ajouter l'objet JSON
+                            JSONString += "{\"description\":\""+description+"\", \"content\":\""+content+"\", \"date\":\""+date+"\"}";
+                        }
 
                         c += 1;
                     }
@@ -167,14 +182,23 @@ public class DAONotifications {
                         //Récupération de la notification
                         description = resultSet.getString("description");
                         content = resultSet.getString("content");
+                        date = resultSet.getString("date");
                     
                         // Ajouter une virgule avant chaque entrée sauf la première
                         if (c > 1) {
                             JSONString += ",";
                         }
 
-                        // Ajouter l'objet JSON
-                        JSONString += "{\"description\":\""+description+"\", \"content\":\""+content+"\"}";
+                        //On ajoute pas la date si c'est un test
+                        if(Test == true){
+                            // Ajouter l'objet JSON
+                            JSONString += "{\"description\":\""+description+"\", \"content\":\""+content+"\"}";
+                        }
+                        else{
+                            // Ajouter l'objet JSON
+                            JSONString += "{\"description\":\""+description+"\", \"content\":\""+content+"\", \"date\":\""+date+"\"}";
+                        }
+                        
 
                         c += 1;
                     }

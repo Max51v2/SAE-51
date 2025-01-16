@@ -10,6 +10,7 @@ package Main;
  */
 import Autre.TokenExpirationTest;
 import Autre.Warning;
+import DAO.DAONotificationsTest;
 import DAO.DAOusersTest;
 import ServletsPC.DeletePCTest;
 import ServletsPC.ListPCStaticInfoTest;
@@ -50,6 +51,7 @@ import TCP_Server.AnswerPingTest;
     GetTokenStatusTest.class,
     GetCheckIntervallTest.class,
     GetAccessiblePagesTest.class,
+    DAONotificationsTest.class,
     Warning.class //Laisser en dernier
 })
 public class RunTests {}
