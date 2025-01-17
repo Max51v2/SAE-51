@@ -10,13 +10,15 @@ do
   if pg_isready -h "localhost" -p "5432" > /dev/null 2>&1
   then
     #Si serveur actif, on arrête le while
-    exit 0
+    break
   fi
 
   #Attend avant la prochaine tentative
   echo "Waiting for PostgreSQL server"
   sleep 1
 done
+
+echo "PostgreSQL server ON"
 
 #Démarrage du serveur tomcat en arrière plan
 /opt/tomcat/bin/catalina.sh run &
@@ -25,16 +27,20 @@ done
 while true
 do
   #Tentative de connexion au serveur PostgreSQL
-  nc -z "localhost" -p "8080" > /dev/null 2>&1
+  if curl -s http://localhost:8080 | grep -q "Apache Tomcat"
   then
     #Si serveur actif, on arrête le while
-    exit 0
+    break
   fi
 
   #Attend avant la prochaine tentative
   echo "Waiting for Tomcat server"
   sleep 1
 done
+
+echo "Tomcat server ON"
+
+echo "Deploying project"
 
 #Déploiement du .war sur le serveur Tomcat
 curl -u admin:leffe -T /conf/SAE51.war "http://localhost:8080/manager/text/deploy?path=/SAE51&update=true"

@@ -1,23 +1,8 @@
 //Auteur(s) JS : Maxime VALLET
-//Version : 1.0
+//Version : 1.2
 
     
 document.addEventListener("TokenCheckFinished", (event) => {
-
-    //Redirection vers la page de login
-    document.getElementById("submitLogin").onclick = function () {
-        //Récuppération de la page précédente
-        PreviousPage = sessionStorage.getItem("PreviousPage");
-
-        //Vérification du contenu de la variable (si null => login.html)
-        if(PreviousPage){
-            window.location.href = PreviousPage;
-        }
-        else{
-            window.location.href = "login.html";
-        }
-    };
-
 
     //Redirection vers la page contenant le javadoc
     document.getElementById("submitJavadoc").onclick = function () {

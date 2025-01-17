@@ -10,7 +10,9 @@ var ButtonDict = {
     "help.html": '<a href="./help.html"><i>❓</i> Page d\'aide</a>',
     "monitoring.html": '<a href="./monitoring.html"><i>📊</i> Surveillance en Direct</a>',
     "users.html": '<a href="./users.html"><i>👥</i> Gestion des Utilisateurs</a>',
-    "login.html": '<a href="./login.html"><i>↩</i> Retour à la page login</a>'
+    "login.html": '<a href="./login.html"><i>↩</i> Retour à la page login</a>',
+    "logs.html": '<a href="./logs.html"><i>🧾</i> Logs</a>',
+    "notifications.html": '<a href="./notifications.html"><i>🔔</i> Notifications</a>'
 };
 
 

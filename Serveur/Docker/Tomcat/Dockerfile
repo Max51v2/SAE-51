@@ -6,7 +6,7 @@ LABEL maintainer="max.vallet@outlook.fr"
 
 #Installation des dépendances
 RUN apt-get update && \
-    apt-get install -y wget curl libapr1 libapr1-dev libssl-dev libtcnative-1 postgresql-client-common && \
+    apt-get install -y wget curl libapr1 libapr1-dev libssl-dev libtcnative-1 postgresql-client postgresql-client-common && \
     apt-get clean && \
 #Changement du fuseau horaire
     rm -f /etc/localtime && \
