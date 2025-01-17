@@ -1,11 +1,42 @@
 #!/bin/bash
 #Auteur : Maxime VALLET
-#Version 1.0
+#Version 2.0
 
+
+#On attend que le serveur psql soit démarré
+while true
+do
+  #Tentative de connexion au serveur PostgreSQL
+  if pg_isready -h "localhost" -p "5432" > /dev/null 2>&1
+  then
+    #Si serveur actif, on arrête le while
+    exit 0
+  fi
+
+  #Attend avant la prochaine tentative
+  echo "Waiting for PostgreSQL server"
+  sleep 1
+done
+
+#Démarrage du serveur tomcat en arrière plan
+/opt/tomcat/bin/catalina.sh run &
+
+#On attend que le serveur tomcat soit démarré
+while true
+do
+  #Tentative de connexion au serveur PostgreSQL
+  nc -z "localhost" -p "8080" > /dev/null 2>&1
+  then
+    #Si serveur actif, on arrête le while
+    exit 0
+  fi
+
+  #Attend avant la prochaine tentative
+  echo "Waiting for Tomcat server"
+  sleep 1
+done
 
 #Déploiement du .war sur le serveur Tomcat
-/opt/tomcat/bin/catalina.sh run &
-sleep 5
 curl -u admin:leffe -T /conf/SAE51.war "http://localhost:8080/manager/text/deploy?path=/SAE51&update=true"
 
 #Boucle infinie pour garder le conteneur actif

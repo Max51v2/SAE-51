@@ -17,7 +17,7 @@ RUN apt-get update && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && \
     apt-get update && \
-    apt-get install -y postgresql-$PG_MAJOR postgresql-common gosu && \
+    apt-get install -y postgresql-$PG_MAJOR postgresql-common postgresql-client-common gosu && \
 #Changement du fuseau horaire
     rm -f /etc/localtime && \
     ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
