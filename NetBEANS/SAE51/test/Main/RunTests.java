@@ -6,7 +6,7 @@ package Main;
  * ATTENTION : Veuillez à lancer le projet avant d'exécuter les tests sinon ils vont échouer
  * 
  * @author Maxime VALLET
- * @version 0.8
+ * @version 0.9
  */
 import Autre.TokenExpirationTest;
 import Autre.Warning;
@@ -25,6 +25,7 @@ import ServletsUser.DeleteUserTest;
 import ServletsUser.GetAccessiblePagesTest;
 import ServletsUser.GetCheckIntervallTest;
 import ServletsUser.GetLogsTest;
+import ServletsUser.GetNotificationsTest;
 import ServletsUser.GetRedirectionTest;
 import ServletsUser.GetTokenStatusTest;
 import ServletsUser.ListUsersTest;
@@ -52,6 +53,7 @@ import TCP_Server.AnswerPingTest;
     GetCheckIntervallTest.class,
     GetAccessiblePagesTest.class,
     DAONotificationsTest.class,
+    GetNotificationsTest.class,
     Warning.class //Laisser en dernier
 })
 public class RunTests {}

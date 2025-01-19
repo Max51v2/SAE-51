@@ -111,7 +111,7 @@ public class GetNotificationsTest {
         DAO2.deleteUser(login, true);
         
         //Résultat attendu
-        String ExpResult = "[{\"description\":\"test1\", \"content\":\"test content 1\"]";
+        String ExpResult = "[{\"description\":\"test1\", \"content\":\"test content 1\"}]";
         
         //Résultat
         System.out.println("resultat testGetNotifications2 : "+result+" | exp : "+ExpResult);

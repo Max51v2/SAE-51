@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.1
  */
 @WebServlet(name = "GetNotifications", urlPatterns = {"/GetNotifications"})
 public class GetNotifications extends HttpServlet {
 
     /**
-     * Renvoi les logs sur une période donnée<br><br>
+     * Renvoi les notifications d'un utilisateur<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
@@ -32,7 +32,7 @@ public class GetNotifications extends HttpServlet {
      * Variables renvoyées par le servlet (JSON)<br>
      * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé <br>
      * OU
-     * String title       &emsp;&emsp;        titre de la notification <br>
+     * String description       &emsp;&emsp;        description de la notification <br>
      * String content       &emsp;&emsp;        contenu de la notification <br>
      * String date       &emsp;&emsp;        date de la notification (format : "yyyyMMdd_HHmmss") <br>
      * 
@@ -47,7 +47,7 @@ public class GetNotifications extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         
         //Nom du servlet
-        String servletName = "GetLogs";
+        String servletName = "GetNotifications";
         
         DAO.DAOusers DAO = new DAOusers();
         DAOLogs log = new DAOLogs();

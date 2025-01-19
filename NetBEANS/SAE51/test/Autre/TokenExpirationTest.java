@@ -51,7 +51,7 @@ public class TokenExpirationTest {
         run.start(500, true);
         
         //Pause
-        Thread.sleep(2000);
+        Thread.sleep(1750);
         
         //Arrêt de la vérification des tokens
         run.stop();
