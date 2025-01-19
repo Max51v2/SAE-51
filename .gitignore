@@ -1,4 +1,3 @@
-*.id
 /NetBEANS/SAE51_Client/nbproject/private/
 /NetBEANS/SAE51_Client/target/
 /app/Client/.idea
@@ -6,3 +5,10 @@
 /app/Client/.gitignore
 /app/Client/src/test/
 /.idea
+
+#On ignore tout sauf la Javadoc (car elle est retirée par Netbeans lors de la compilation...)
+/Serveur/Docker/Nginx/Web/*
+!/Serveur/Docker/Nginx/Web/Javadoc/**
+
+#On ignore l'id unique de la machine (Client)
+*.id
