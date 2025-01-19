@@ -1,10 +1,10 @@
 //Auteur(s) JS : Maxime VALLET
-//Version : 1.0
+//Version : 1.2
 
 
 //Dictionnaire contenant les bouttons à ajouter selon le nom des pages renvoyés par le servlet
 var ButtonDict = {
-    "alerts.html": '<a href="./alerts.html" class="active"><i>🚨</i> Alertes & Seuils</a>',
+    "alerts.html": '<a href="./alerts.html"><i>🚨</i> Alertes & Seuils</a>',
     "ChangePassword.html": '<a href="./ChangePassword.html"><i>🔑</i> Modification du MDP</a>',
     "control.html": '<a href="./control.html"><i>⚙️</i> Allumage & Extinction</a>',
     "help.html": '<a href="./help.html"><i>❓</i> Page d\'aide</a>',
@@ -14,8 +14,6 @@ var ButtonDict = {
     "logs.html": '<a href="./logs.html"><i>🧾</i> Logs</a>',
     "notifications.html": '<a href="./notifications.html"><i>🔔</i> Notifications</a>'
 };
-
-
 
 
 
@@ -100,6 +98,12 @@ function FecthAccessiblePages(){
                 row.innerHTML = `
                     ${ButtonDict[page.page]}
                 `;
+
+                //On ajoute la ligne à la classe "active" si c'est la page affichée
+                if(window.currentPage === page.page){
+                    row.classList.add("active")
+                }
+
                 userTableBody.appendChild(row);
             }
         });

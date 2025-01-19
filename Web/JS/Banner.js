@@ -1,5 +1,5 @@
 //Auteur(s) JS : Maxime VALLET
-//Version : 2.0
+//Version : 2.1
 
 
 //Retrieve login and rights from session storage
@@ -7,14 +7,20 @@ login = sessionStorage.getItem("login");
 Rights = sessionStorage.getItem("droits");
 
 //S'ils n'existent pas, on attend la fin de l'auth
-if(!login){
+if(!Rights){
     document.addEventListener("TokenCheckFinished", (event) => {
         //Une fois l'auth terminée, on les récupèrent à nouveau
         login = sessionStorage.getItem("login");
         Rights = sessionStorage.getItem("droits");
 
+        //Affichage des droits
         document.getElementById("id").innerHTML = login;
-        document.getElementById("Rights").innerHTML = Rights;
+        if(login === "Pas connecté"){
+            document.getElementById("Rights").innerHTML = "Aucun";
+        }
+        else{
+            document.getElementById("Rights").innerHTML = Rights;
+        }
 
         //Event listner boutton déconnexion
         DeleteToken();
@@ -22,8 +28,14 @@ if(!login){
 }
 //S'ils existent, on les affichent
 else{
+    //Affichage des droits
     document.getElementById("id").innerHTML = login;
-    document.getElementById("Rights").innerHTML = Rights; 
+    if(login === "Pas connecté"){
+        document.getElementById("Rights").innerHTML = "Aucun";
+    }
+    else{
+        document.getElementById("Rights").innerHTML = Rights;
+    }
 
     //Event listner boutton déconnexion
     DeleteToken();
@@ -62,7 +74,7 @@ function DeleteToken(){
 function DeleteTokenResult(response){
     if(response.erreur === "none"){
         //Suppression des données dans sessionStorage
-        sessionStorage.setItem("login", "");
+        sessionStorage.setItem("login", "Pas connecté");
         sessionStorage.setItem("rights", "");
         sessionStorage.setItem("token", "");
         sessionStorage.setItem("AccessiblePages", "");

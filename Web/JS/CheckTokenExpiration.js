@@ -156,7 +156,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
     function DeleteTokenResult(response){
         if(response.erreur === "none"){
             //Suppression des données dans sessionStorage
-            sessionStorage.setItem("login", "");
+            sessionStorage.setItem("login", "Pas connecté");
             sessionStorage.setItem("rights", "");
             sessionStorage.setItem("token", "");
         

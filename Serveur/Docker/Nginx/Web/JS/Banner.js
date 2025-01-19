@@ -1,49 +1,80 @@
 //Auteur(s) JS : Maxime VALLET
-//Version : 1.6
+//Version : 2.1
 
 
 //Retrieve login and rights from session storage
-id = sessionStorage.getItem("login");
+login = sessionStorage.getItem("login");
 Rights = sessionStorage.getItem("droits");
 
-//If they don't exist, the script wait for TokenCheck.js to finish running
-if(!id){
+//S'ils n'existent pas, on attend la fin de l'auth
+if(!Rights){
     document.addEventListener("TokenCheckFinished", (event) => {
-        //Once done, we retrieve them again and add them to the page
-        id = sessionStorage.getItem("login");
+        //Une fois l'auth terminée, on les récupèrent à nouveau
+        login = sessionStorage.getItem("login");
         Rights = sessionStorage.getItem("droits");
 
-        document.getElementById("id").innerHTML = id;
-        document.getElementById("Rights").innerHTML = Rights; 
+        //Affichage des droits
+        document.getElementById("id").innerHTML = login;
+        if(login === "Pas connecté"){
+            document.getElementById("Rights").innerHTML = "Aucun";
+        }
+        else{
+            document.getElementById("Rights").innerHTML = Rights;
+        }
+
+        //Event listner boutton déconnexion
+        DeleteToken();
     })
 }
-//If they already exist, we display them directly
+//S'ils existent, on les affichent
 else{
-    document.getElementById("id").innerHTML = id;
-    document.getElementById("Rights").innerHTML = Rights; 
+    //Affichage des droits
+    document.getElementById("id").innerHTML = login;
+    if(login === "Pas connecté"){
+        document.getElementById("Rights").innerHTML = "Aucun";
+    }
+    else{
+        document.getElementById("Rights").innerHTML = Rights;
+    }
+
+    //Event listner boutton déconnexion
+    DeleteToken();
 }
 
 
 //Déconnexion de l'utilisateur
-document.getElementById("submitDisconnect").onclick = function () {
+function DeleteToken(){
     login = sessionStorage.getItem("login");
     token = sessionStorage.getItem("token");
-        
-    //Vérification auprès du Servlet
-    fetch(`https://${window.ServerIP}:8443/SAE51/DeleteToken`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json; charset=UTF-8" },
-        body: JSON.stringify({ login: login, token: token, Test: false })
-    }).then(response => response.json())
-    .then(DeleteTokenResult);
-};
+
+    //On cache le boutton si la personne n'est pas connectée
+    if(login === "Pas connecté"){
+        document.getElementById("submitDisconnect").style.display = 'none';
+    }
+    else{
+        document.getElementById("submitDisconnect").style.display = 'block';
+    }
+
+    //Event listner boutton disconnect
+    document.getElementById("submitDisconnect").onclick = function () {
+
+        //Vérification auprès du Servlet
+        fetch(`https://${window.ServerIP}:8443/SAE51/DeleteToken`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
+            body: JSON.stringify({ login: login, token: token, Test: false })
+        }).then(response => response.json())
+        .then(DeleteTokenResult);
+    };
+}
+
         
 
 //Vérification de la réponse du servlet DeleteToken
 function DeleteTokenResult(response){
     if(response.erreur === "none"){
         //Suppression des données dans sessionStorage
-        sessionStorage.setItem("login", "");
+        sessionStorage.setItem("login", "Pas connecté");
         sessionStorage.setItem("rights", "");
         sessionStorage.setItem("token", "");
         sessionStorage.setItem("AccessiblePages", "");
