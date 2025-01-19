@@ -1,4 +1,3 @@
-
 #mainContent{
     display: flex;
     flex-direction: column;
@@ -7,16 +6,21 @@
     font-size: large;
     padding-top: 30px;
 }
-li{
+#mainContent li{
     list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
 }
 .title{
     padding-bottom: 10px;
 }
 .logoContact{
     height: 18px;
-    padding-left: 10px;
     cursor: pointer;
+    padding-left: 10px;
+    background-color: #f3f3f3;
 }
 #documentation{
     padding-top: 70px;

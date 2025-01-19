@@ -78,9 +78,11 @@ fait :
     => Gestion des droits d'utilisateur par ordinateur : sauf ajout utilisateur
     => ajout + suppression + listage données statiques pc
     => Renouvelement de session
+    => Système de notifications
 - Frontend :
-    => Page de login + aide
-    => Template de page Web
+    => Page de login + aide + Gestion utilisateurs
+    => Génération de la nav bar selon les droits d'accès
+    => Templates
     => Vérification de l'éxpiration de la session (+pop up pour la renouveler)
 - Client
     => Client TCP non chiffré

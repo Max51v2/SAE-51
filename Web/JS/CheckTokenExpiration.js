@@ -1,15 +1,20 @@
 //Auteur(s) JS : Maxime VALLET
-//Version : 1.0
+//Version : 1.2
 
 document.addEventListener("TokenCheckFinished", (event) => {
 
     //Durée d'un cycle de vérification des tokens
     let CheckIntervall = sessionStorage.getItem('CheckIntervall');
 
+    let skipGoToLogin = false
+
+    //Token utilisateur
+    token = sessionStorage.getItem("token");
+
     //Valeur par défaut s'il n'y a pas de token (raisons)
     if(!token){
         token = "rien"
-        login = "rien"
+        login = "Pas connecté"
     }
 
     //On ne renvoi pas l'utilisateur vers le login s'il n'a pas de token et qu'il est sur la page d'aide car ça ne sert à rien
@@ -62,7 +67,16 @@ document.addEventListener("TokenCheckFinished", (event) => {
 
         console.log("CheckTokenExpiration.js => TokenStatusCheck() => Info : Vérification de la validité de la session lancée (vérification toutes les "+(CheckIntervall/1000)+"s)")
 
+        //Tant que le token est valide
         while(tokenStatus !== "expired"){
+
+            //Arrêt de la vérification si l'utilisateur est sur la page d'aide en étant non identifié
+            if(skipGoToLogin == true){
+                console.log("CheckTokenExpiration.js => TokenStatusCheck() => Info : Vérification de la validité de la session stoppée (No Auth + help.html)")
+
+                break
+            }
+
             //On vérifie le status du token à chaque intervalle d'expiration de ceux-ci
             await sleep(CheckIntervall)
 
@@ -78,11 +92,13 @@ document.addEventListener("TokenCheckFinished", (event) => {
     }
 
 
+    //Fonction de pause du script
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
 
+    //Vérification du résutlat du servlet
     function GetTokenStatusResult(response){
 
         //S'il n'y a pas d'erreur
@@ -121,22 +137,18 @@ document.addEventListener("TokenCheckFinished", (event) => {
     }
 
 
+    //Suppression du token
     function DeleteToken(){
-        if (skipGoToLogin == true){
-            //On ne fait rien si l'utilisateur est sur la page d'aide et qu'il n'a pas de token
-        }
-        else{
-            login = sessionStorage.getItem("login");
-            token = sessionStorage.getItem("token");
+        login = sessionStorage.getItem("login");
+        token = sessionStorage.getItem("token");
 
-            //Vérification auprès du Servlet
-            fetch(`https://${window.ServerIP}:8443/SAE51/DeleteToken`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ login: login, token: token, Test: false })
-            }).then(response => response.json())
-            .then(DeleteTokenResult);
-        }
+        //Vérification auprès du Servlet
+        fetch(`https://${window.ServerIP}:8443/SAE51/DeleteToken`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
+            body: JSON.stringify({ login: login, token: token, Test: false })
+        }).then(response => response.json())
+        .then(DeleteTokenResult);
     }
 
 
