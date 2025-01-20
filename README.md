@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 3.1
+Version : 3.2
 
 I) Présentation
  à faire
@@ -22,16 +22,21 @@ II) Comment installer le projet ?
     - Ouvrir le navigateur de la VM ou le navigateur de l'OS hôte (nécéssite d'ajouter les certificats > voir doc "/Serveur/README.txt")
 
 III) Qui contacter en cas de question ?
- - Serveurs : VM, script d'installation et Docker / Backend : Authentification, info statiques PC, logs et tests unitaires / HTML, CSS et JS pages de login, aide et template : Maxime VALLET
+ - Serveurs : VM / script d'installation et Docker / Backend : Authentification, info statiques PC, logs et tests unitaires / HTML, CSS et JS pages de login, aide et template : Maxime VALLET
  - HTML et CSS : Gabin PETITCOLAS
  - Client : Erwann MADEC
 
 IV) Modification VM
-MODIFICATIONS VM : sudo ufw allow 50000 / ajouter la redirection du port 50000 pour du TCP sur la carte NAT de la VM
+- sudo ufw allow 50000
+- ajouter la redirection du port 50000 pour du TCP sur la carte NAT de la VM
 
 V) Avancement du projet
 IMPORTANT : merci de suivre les templates pour le projet SAE51 afin de pouvoir intégrer les features
 
+
+
+
+######################################################################################################
 à faire (liste non exhaustive) :
 Frontend :
   => Ajouter des messages d'erreur (erreurs envoyées par les servlets => voir Javadoc Servlets)
@@ -124,6 +129,6 @@ Organisation du projet :
 
 
 #heures (point michaël) :
-- maxime : 95h
+- maxime : 110h
 - erwann : 10h
 - gabin :

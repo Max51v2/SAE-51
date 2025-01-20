@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version : 2.1
+#Version : 2.2
 
 # à faire : Monter le contenu de la BD PostgreSQL sur un volume partagé afin qu'il ne soit pas effacé à chaque fois que le conteneur est recréé
 # !!! Le contenu de ce dossier a été ajouté après la date de remis du projet !!!
@@ -26,9 +26,8 @@ gh repo clone Max51v2/SAE-51 /home/$USER/Bureau/SAE-51
 b) Script de configuration
 /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerSetup.sh "$USER"
 
-c) Attention : 
-    - Si votre ordinateur n'est pas assez puissant, les performances ne seront pas très bonnes (utilisez AutoInstall.sh dans ce cas)
-    - Il faut compter environ 1,5Go de stockage pour les images
+c) Prérequis : 
+    - Il faut compter environ 1,5Go de stockage pour les conteneurs
 
 
 III) Conteneurs (nécéssite une distribution basée sur Debian)

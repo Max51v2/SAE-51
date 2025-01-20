@@ -1,5 +1,5 @@
 Auteur original : Maxime VALLET (SAE 52)
-Version : 2.0
+Version : 2.2
 Modifications : Maxime VALLET
     => Remise en ordre de la procédure et ajout de détails
     => Remplacement Ubuntu par Debian
@@ -308,8 +308,13 @@ Modifications : Maxime VALLET
 |    |
 |    |   !!! En cas d'utilisation en dehors du cadre de ce projet, remplacez les MDP !!!
 |    |
-|    |   Installation (ubuntu):
-|    |   sudo apt install postgresql
+|    |   Installation :
+|    |   sudo apt-get install -y gnupg gnupg1 gnupg2 lsb-release
+|    |   sudo apt-get install -y wget ca-certificates
+|    |   sudo wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+|    |   sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+|    |   sudo apt-get update
+|    |   sudo apt-get install -y postgresql-15
 |    |
 |    |   cd /etc/postgresql/[Version PostgreSQL]/main/
 |    |   sudo nano postgresql.conf
