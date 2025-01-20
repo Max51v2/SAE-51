@@ -10,15 +10,13 @@ clear
 if [ -f "/usr/bin/apt" ]
 then
     #Rien
+    :
 else
     echo "Distribution incompatible (nécéssite APT)"
 
     #Arrêt du script
     exit 1
 fi
-
-#Arrêt et suppression des conteneurs
-sudo /home/$1/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
 
 #Démarrage des conteneurs
 cd /home/$1/Bureau/SAE-51/Serveur/Docker

@@ -9,6 +9,7 @@ sudo clear
 if [ -f "/usr/bin/apt" ]
 then
     #Rien
+    :
 else
     echo "Distribution incompatible (nécéssite APT)"
 
