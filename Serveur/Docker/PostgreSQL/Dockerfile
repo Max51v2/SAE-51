@@ -3,6 +3,7 @@ FROM ubuntu:22.04
 
 #Créé et maintenu par Maxime VALLET
 LABEL maintainer="max.vallet@outlook.fr"
+LABEL org.opencontainers.image.source=https://github.com/OWNER/REPO
 
 #Variables d'environnement
 ENV PG_MAJOR=15
@@ -11,7 +12,7 @@ ENV PATH=$PATH:/usr/lib/postgresql/$PG_MAJOR/bin
 ARG DEBIAN_FRONTEND=noninteractive
 
 #Installation des dépendances
-RUN apt-get update && \
+RUN apt-get update &&\
     apt-get install -y gnupg gnupg1 gnupg2 lsb-release && \
     apt-get install -y wget ca-certificates && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
