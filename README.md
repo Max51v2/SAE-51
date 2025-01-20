@@ -48,18 +48,7 @@ II) Comment installer le projet ?
 
 
  2) Installation et configuration des programmes
-  -- VM V1 --
-    a) Utiliser la VM contenant tous les programmes configurés :
-      - Vous retrouverez les informations utiles dans la section "VM" du document situé ici : "/Serveur/README.txt"
-      - Il est recommandé de procéder dans cet ordre : télécharger la VM > suivre les README donnés à chaque partie de l'installation > lire la partie "VM" du document suivant : "/Serveur/README.txt"
-    b) Installer les programmes manuellement :
-      - Vous retrouverez les informations dans la section "VM" du document situé ici : "/Serveur/README.txt"
-    c) Installer les programmes automatiquement :
-      - Vous retrouverez les informations dans la section "Procédure d'installation automatique Debian 12" du document situé ici : "/Serveur/README.txt"
-    d)  Conteneurs Docker :
-      - Vous retrouverez les informations dans le README situé ici : "/Serveur/Docker/README.txt"
-
-  -- Autre --
+  -- Tout --
     Se référencer aux documentations indiquées dans le tableau précédent
 
  3) Démarrer le projet
