@@ -1,4 +1,4 @@
-Auteur original : Maxime VALLET (SAE 52)
+﻿Auteur original : Maxime VALLET (SAE 52)
 Version : 3.0
 Modifications : Maxime VALLET
     => Remise en ordre de la procédure et ajout de détails
