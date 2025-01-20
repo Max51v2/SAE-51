@@ -1,7 +1,7 @@
 services:
   db:
-    image: psql_sae51
-    container_name: ghcr.io/max51v2/psql_sae51
+    image: ghcr.io/max51v2/psql_sae51
+    container_name: psql_sae51
     environment:
       POSTGRES_PASSWORD: leffe
       POSTGRES_USER: postgres

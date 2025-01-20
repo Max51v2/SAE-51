@@ -22,7 +22,7 @@ fi
 echo "Démarrage des conteneurs :"
 if [ "$2" = "Deploy" ]
 then
-    sudo -u $1 docker compose -f /Dockercompose.yml up -d
+    sudo -u $1 docker compose -p sae51 -f /Dockercompose.yml up -d
 else
     cd /home/$1/Bureau/SAE-51/Serveur/Docker
     sudo -u $1 docker compose -f ./Dockercompose.yml up -d
