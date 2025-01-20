@@ -1,32 +1,22 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
-import com.sun.jna.platform.win32.COM.WbemcliUtil;
-import com.sun.jna.platform.win32.Ole32;
-import com.sun.jna.platform.win32.WinNT;
 import oshi.SystemInfo;
-import oshi.hardware.CentralProcessor;
-import oshi.hardware.GlobalMemory;
-import oshi.hardware.HardwareAbstractionLayer;
-import oshi.hardware.Sensors;
+import oshi.hardware.*;
 import oshi.software.os.OperatingSystem;
+
+import javax.net.ssl.*;
 
 import static java.lang.Thread.sleep;
 
 public class Main {
-<<<<<<< HEAD
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
         String[] Info_hardware = new String[7];
-=======
-    public static void main(String[] args) {
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
 
         System.out.println("Nom de l'OS : " + osBean.getName());
@@ -36,10 +26,8 @@ public class Main {
         // Pour Java 10+ pour obtenir la RAM totale disponible
         if (osBean instanceof com.sun.management.OperatingSystemMXBean) {
             com.sun.management.OperatingSystemMXBean sunOSBean = (com.sun.management.OperatingSystemMXBean) osBean;
-            System.out.println("Mémoire physique totale : " + sunOSBean.getTotalPhysicalMemorySize() / (1024 * 1024) + " Mo");
-            System.out.println("Mémoire physique libre : " + sunOSBean.getFreePhysicalMemorySize() / (1024 * 1024) + " Mo");
+            Info_hardware[4] = sunOSBean.getTotalPhysicalMemorySize() / (1024 * 1024) + " Mo";
         }
->>>>>>> 5a78e00038430b51116da81844ff18bd5f8c321a
         SystemInfo systemInfo = new SystemInfo();
 
         CentralProcessor processor = systemInfo.getHardware().getProcessor();
@@ -54,9 +42,65 @@ public class Main {
         Info_hardware[1] = os.getVersionInfo().getVersion();
         Info_hardware[2] = os.getVersionInfo().getBuildNumber();
         Info_hardware[3] = processor.getProcessorIdentifier().getName();
-        Info_hardware[4] = memory.getTotal() / (1024 * 1024) / 1000 + "";
         Info_hardware[5] = processor.getLogicalProcessorCount() + "";
         Info_hardware[6] = processor.getPhysicalProcessorCount() + "";
+        String serverAddress = "localhost"; // Adresse du serveur
+        int port = 12345; // Port sécurisé
+
+        try {
+            // Initialiser le contexte SSL
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, new TrustManager[] {
+                    new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) { }
+                        @Override
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) { }
+                        @Override
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() { return null; }
+                    }
+            }, null);
+
+            SSLSocketFactory socketFactory = sslContext.getSocketFactory();
+
+
+            // Créer un SSLSocket
+            SSLSocket socket = (SSLSocket) socketFactory.createSocket(serverAddress, port);
+
+            System.out.println("Connexion sécurisée établie avec le serveur.");
+
+            // Flux de communication
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            // Afficher le message de bienvenue du serveur
+            System.out.println("Serveur : " + in.readLine());
+
+            // Envoyer des messages en continu
+            Scanner scanner = new Scanner(System.in);
+            String message;
+            while (true) {
+                System.out.print("Vous : ");
+                message = scanner.nextLine(); // Lire un message depuis le clavier
+
+                out.println(message); // Envoyer le message au serveur
+                out.println(Info_hardware); // Envoyer le message au serveur
+
+                // Lire et afficher la réponse du serveur
+                String response = in.readLine();
+                System.out.println("Serveur : " + response);
+
+                // Si le message est "exit", quitter la boucle
+                if ("exit".equalsIgnoreCase(message)) {
+                    break;
+                }
+            }
+
+            System.out.println("Connexion terminée.");
+        } catch (Exception e) {
+            System.err.println("Erreur côté client : " + e.getMessage());
+            e.printStackTrace();
+        }
         for (int i = 0; Info_hardware.length > i; i++) {
             System.out.println(Info_hardware[i]);
         }
@@ -68,9 +112,29 @@ public class Main {
 // Adresse IP (byte[])
         //System.out.println("nancy :\t" + nancy.getHostAddress());
         long maxFreqHz = processor.getMaxFreq();
+        HardwareAbstractionLayer hal = systemInfo.getHardware();
+        Sensors sensors = hal.getSensors();
+        double temps = sensors.getCpuTemperature();
 
-<<<<<<< HEAD
-        
+        System.out.println(temps);
+        for (HWDiskStore disk : hal.getDiskStores()) {
+            System.out.println("Nom du disque : " + disk.getName());
+            System.out.printf("Capacité totale : %.2f Go%n", disk.getSize() / 1e9);
+            System.out.println("Espace disponible :" + (disk.getReadBytes() / 1e9));
+            System.out.println("Statut SMART : " + disk.getTransferTime());
+
+            // Les données S.M.A.R.T. incluent des attributs qui peuvent indiquer la durée de vie restante
+            System.out.println("Attributs S.M.A.R.T. : " + disk.updateAttributes());
+        }
+        String computerName = System.getenv("COMPUTERNAME"); // Windows
+        if (computerName == null) {
+            computerName = System.getenv("HOSTNAME"); // Linux/Mac
+        }
+
+        // Vérification et affichage
+        if (computerName != null) {
+            System.out.println("Nom de l'ordinateur : " + computerName);
+        }
         // Afficher la fréquence en GHz
         System.out.printf("Fréquence maximale du processeur : %.2f GHz%n", maxFreqHz / 1_000_000_000.0);
         while (true) {// Obtenir les fréquences actuelles par cœur (en Hz)
@@ -92,7 +156,3 @@ public class Main {
         }
         }
 }
-=======
-    }
-}
->>>>>>> 5a78e00038430b51116da81844ff18bd5f8c321a
