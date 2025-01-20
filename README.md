@@ -1,6 +1,8 @@
 Auteur : Maxime VALLET
 Version : 4.0
 
+En cas de problèmes d'affichage, merci d'ouvrir la doc depuis le projet et de séléctionner l'affichage de type "Raw"
+
 I) Présentation
  à faire
 
