@@ -5,6 +5,17 @@
 
 sudo clear
 
+#Vérification du packet manager de la distribution (APT)
+if [ -f "/usr/bin/apt" ]
+then
+    #Rien
+else
+    echo "Distribution incompatible (nécéssite APT)"
+
+    #Arrêt du script
+    exit 1
+fi
+
 optionJDK="undetermined"
 c=0
 #Tant que l'on a pas une option valide, on redemande à l'utilisateur d'en saisir une

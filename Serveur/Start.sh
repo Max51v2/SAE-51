@@ -1,6 +1,6 @@
 #!/bin/bash
 # Auteur original : Maxime VALLET (SAE 52)
-# Version : 1.6
+# Version : 1.8
 # Modifications : Maxime VALLET
 #    => Remplacement Apache par Nginx
 #    => Dossier lib qui contient les librairies (afin d'avoir un chemin commun dans ou en dehors de la VM)
@@ -8,6 +8,17 @@
 #    => Vérification de la bonne execution du script SQL
 #    => Vérification de l'entrée utilisateur (redemande l'entrée tant qu'elle n'est pas valide)
 
+
+#Vérification du packet manager de la distribution (APT)
+if [ -f "/usr/bin/apt" ]
+then
+    #Rien
+else
+    echo "Distribution incompatible (nécéssite APT)"
+
+    #Arrêt du script
+    exit 1
+fi
 
 
 #Récupperation de la version de Java (lancement NetBEANS)

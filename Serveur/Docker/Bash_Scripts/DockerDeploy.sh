@@ -1,6 +1,8 @@
 #!/bin/bash
+#Dérivé de DockerSetup.sh mais sert à mettre en place des conteneurs prebuild sur le repo GitHub
 #Auteur : Maxime VALLET
-#Version 1.5
+#Version 1.0
+
 
 clear
 
@@ -15,6 +17,70 @@ else
     exit 1
 fi
 
+
+#Création des répertoires où seront stockés les fichiers
+mkdir -p /home/$USER/Bureau
+mkdir -p /home/$USER/Bureau/SAE-51
+mkdir -p /home/$USER/Bureau/SAE-51/Serveur
+mkdir -p /home/$USER/Bureau/SAE-51/Serveur/Docker
+mkdir -p /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/
+
+
+#Ajout des scripts d'arrêt de démarrage des conteneurs
+echo "
+    #!/bin/bash
+    #Merci d\'aussi appliquer les modifs dans DockerDeploy.sh
+    #Auteur : Maxime VALLET
+    #Version 1.2
+
+
+    clear
+
+    #Vérification du packet manager de la distribution (APT)
+    if [ -f \"/usr/bin/apt\" ]
+    then
+        #Rien
+    else
+        echo \"Distribution incompatible (nécéssite APT)\"
+
+        #Arrêt du script
+        exit 1
+    fi
+
+    #Arrêt et suppression des conteneurs
+    sudo /home/$1/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStop.sh \"$1\"
+
+    #Démarrage des conteneurs
+    cd /home/$1/Bureau/SAE-51/Serveur/Docker
+    sudo -u $1 docker compose -f ./Dockercompose.yml up -d
+" > /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStart.sh
+
+echo "
+    #!/bin/bash
+    #Merci d\'aussi appliquer les modifs dans DockerDeploy.sh
+    #Auteur : Maxime VALLET
+    #Version 1.2
+
+    clear
+
+    #Vérification du packet manager de la distribution (APT)
+    if [ -f \"/usr/bin/apt\" ]
+    then
+        #Rien
+    else
+        echo \"Distribution incompatible (nécéssite APT)\"
+
+        #Arrêt du script
+        exit 1
+    fi
+
+    #Arrêt des conteneurs
+    echo \"Arrêt et suppression des conteneurs existants :\"
+    sudo docker stop $(docker ps -a -q)
+    sudo docker rm $(docker ps -a -q)
+" > /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStop.sh
+
+
 #Ajout des alias afin de raccourcir les commandes
 TestAllias=$(cat ~/.bashrc | grep "#Alias pour les conteneurs docker de la SAE51")
 if [ "$TestAllias" = "$null" ]
@@ -23,7 +89,6 @@ then
     echo "" >> ~/.bashrc
     echo "#Alias pour les conteneurs docker de la SAE51" >> ~/.bashrc
     echo "alias StartSAE51='sudo /home/\$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStart.sh '\$USER''" >> ~/.bashrc
-    echo "alias BuildSAE51='sudo /home/\$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerBuild.sh '\$USER''" >> ~/.bashrc
     echo "alias StopSAE51='sudo /home/\$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStop.sh '\$USER''" >> ~/.bashrc
 else
     echo "Alias existants :"
