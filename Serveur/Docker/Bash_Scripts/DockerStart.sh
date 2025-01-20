@@ -19,8 +19,11 @@ else
 fi
 
 #Démarrage des conteneurs
+echo "Démarrage des conteneurs :"
 cd /home/$1/Bureau/SAE-51/Serveur/Docker
 sudo -u $1 docker compose -f ./Dockercompose.yml up -d
+
+echo
 
 #Conteneurs
 echo "Conteneurs existants :"
