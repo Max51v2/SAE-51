@@ -23,10 +23,10 @@ OS basé sur Debian
 
 I) Mise en place de l'environnement
 a) Clonage du répertoire sur le Bureau (s'il ne l'est pas déjà)
-sudo apt install gh
-sudo apt install git
+sudo apt-get install -y git gh
 gh auth login
-=> github.com > https > y > web browser
+=> github.com > https > y > web browser > entrer
+==> se rendre sur "https://github.com/login/device" et rentrer le code
 gh repo clone Max51v2/SAE-51 /home/$USER/Bureau/SAE-51
 
 
@@ -79,8 +79,7 @@ Windows :
 
 II) Mise en place de l'environnement
 a) Clonage du répertoire sur le Bureau (s'il ne l'est pas déjà)
-sudo apt install gh
-sudo apt install git
+sudo apt-get install -y git gh
 gh auth login
 => github.com > https > y > web browser
 gh repo clone Max51v2/SAE-51 /home/$USER/Bureau/SAE-51
