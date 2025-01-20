@@ -30,8 +30,8 @@ document.addEventListener("TokenCheckFinished", (event) => {
                     <td>${user.login}</td>
                     <td>${user.droits}</td>
                     <td>
-                        <button class="button delete-btn" onclick="deleteUser('${user.login}')">Supprimer</button>
-                        <button class="button password-btn" onclick="changePassword('${user.login}')">Modifier MDP</button>
+                        <button class="button-54" onclick="deleteUser('${user.login}')">Supprimer</button>
+                        <button class="button-54" onclick="changePassword('${user.login}')">Modifier MDP</button>
                     </td>
                 `;
                 userTableBody.appendChild(row);
