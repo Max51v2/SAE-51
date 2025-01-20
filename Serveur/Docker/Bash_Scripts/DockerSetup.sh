@@ -102,7 +102,7 @@ then
     #Copie des scripts
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStart.sh /DockerStart.sh
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStop.sh /DockerStop.sh
-    sudo cp /home/$USER/Bureau/SAE-51/Serveur/Docker/Dockercompose.yml /Dockercompose.yml
+    sudo cp /home/$USER/Bureau/SAE-51/Serveur/Docker/DockercomposeDeploy.yml /Dockercompose.yml
 
     #Droits scripts
     chmod 775 /DockerStart.sh
