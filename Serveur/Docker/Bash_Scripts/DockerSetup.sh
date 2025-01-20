@@ -33,7 +33,7 @@ then
 
     elif [ "$2" = "Deploy" ]
     then
-        echo "alias StartSAE51='sudo /DockerStart.sh '\$USER''" >> ~/.bashrc
+        echo "alias StartSAE51='sudo /DockerStart.sh '\$USER' 'Deploy''" >> ~/.bashrc
         echo "alias StopSAE51='sudo /DockerStop.sh '\$USER''" >> ~/.bashrc
         echo "alias UpdateSAE51='sudo docker pull ghcr.io/max51v2/tomcat_sae51:latest && sudo docker pull ghcr.io/max51v2/psql_sae51:latest && docker pull ghcr.io/max51v2/nginx_sae51:latest'" >> ~/.bashrc
     fi
@@ -102,6 +102,7 @@ then
     #Copie des scripts
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStart.sh /DockerStart.sh
     sudo cp /home/$USER/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStop.sh /DockerStop.sh
+    sudo cp /home/$USER/Bureau/SAE-51/Serveur/Docker/Dockercompose.yml /Dockercompose.yml
 
     #Droits scripts
     chmod 775 /DockerStart.sh
