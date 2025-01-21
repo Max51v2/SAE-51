@@ -64,7 +64,7 @@ echo "Ajout du répertoire de Docker :"
 sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" >> /tmp/DockerSetupLogs.txt
 apt-cache policy docker-ce >> /tmp/DockerBuildLogs.txt >> /tmp/DockerSetupLogs.txt
 echo "Installation de docker-ce :"
-sudo apt-get install -y docker-ce >> /tmp/DockerBuildLogs.txt >> /tmp/DockerSetupLogs.txt
+sudo apt-get install -y docker-ce >> /tmp/DockerBuildLogs.txt
 
 clear
 
