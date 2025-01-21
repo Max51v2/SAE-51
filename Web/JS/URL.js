@@ -24,7 +24,7 @@ if(window.ServerIP === ""){
     console.log("URL.js => Info : vous éditez le fichier en local")
 
     //Définition d'un dresse par défaut
-    window.ServerIP = "localhost";
+    window.ServerIP = "192.168.1.31";
 
     window.localEditing = true;
 }
