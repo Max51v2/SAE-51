@@ -1,14 +1,7 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("TokenCheckFinished", () => {
     // Récupération des informations utilisateur
     const userLogin = sessionStorage.getItem("login");
     const token = sessionStorage.getItem("token");
-
-    // Vérification de la présence des informations nécessaires
-    if (!userLogin || !token) {
-        alert("Erreur : Identifiant ou token manquant.");
-        window.location.href = "./login.html"; // Redirection si non connecté
-        return;
-    }
 
     // Gestion de la soumission du formulaire
     document.getElementById("changePasswordForm").addEventListener("submit", (event) => {
@@ -33,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Mot de passe modifié avec succès !");
                 document.getElementById("changePasswordForm").reset(); // Réinitialise le formulaire
             } else {
-                alert("Erreur lors de la modification du mot de passe.");
+                alert("Erreur lors de la modification du mot de passe. : "+response.erreur);
                 console.error(result);
             }
         })
