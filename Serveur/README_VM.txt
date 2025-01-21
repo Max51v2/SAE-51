@@ -152,14 +152,22 @@ Modifications : Maxime VALLET
 |    |   *Minimum
 |    |   => CPU : Mieux qu'un celeron
 |    |   => RAM : +2Go
-|    |   => Stockage : ? go
+|    |   => Stockage : 7 go
 |    |   => VirtualBox : Version 7.0.14 à 7.0.22 (version 7.1 non fonctionnelle) + VirtualBox Extension Pack
 |    |
 |    |   *Recommandé
 |    |   => CPU : Mieux qu'un celeron
 |    |   => RAM : +4Go
-|    |   => Stockage : ? go
+|    |   => Stockage : 10 go
 |    |   => VirtualBox : Version 7.0.14 à 7.0.22 (version 7.1 non fonctionnelle) + VirtualBox Extension Pack
+|    |
+|    +---------------------------------------------------------
+|
+|    +------------------------Général--------------------------
+|    |
+|    |   Lien VM : https://drive.google.com/drive/folders/1eR6_7cUz4dXcGUcmmercmu7xthQqEPQi?usp=sharing
+|    |   login : sae-51
+|    |   MDP : leffe
 |    |
 |    +---------------------------------------------------------
 |
