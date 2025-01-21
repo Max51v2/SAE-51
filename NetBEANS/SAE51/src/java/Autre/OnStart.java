@@ -31,7 +31,7 @@ public class OnStart implements ServletContextListener {
         //lancement du serveur de réponse au ping du client
         run2.start(AnswerPingPort);
         System.out.println("Serveur TCP de réponse au ping du client lancé sur le port "+AnswerPingPort);
-        run3.start(12345);
+        //run3.start(12345);
         
         System.out.println("##########################################");
   }
@@ -49,9 +49,9 @@ public class OnStart implements ServletContextListener {
             run2.stop();
             System.out.println("Serveur TCP de réponse au ping du client arrêté");
         } 
-          if (run3 != null) {
-            run3.stop();
-           System.out.println("Serveur TCP info arrêté");
-        } 
+        //if (run3 != null) {
+        //    run3.stop();
+        //   System.out.println("Serveur TCP info arrêté");
+        //} 
     }
 }
