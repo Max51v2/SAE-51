@@ -116,6 +116,11 @@ public class SetPassword extends HttpServlet {
                             jsonString = "{\"erreur\":\"permission refusée\"}";
                         }
                     }
+                    else{
+                        //JSON renvoyé
+                        jsonString = "{\"erreur\":\"Unknown rights\"}";
+                    }
+                    
                 }
                 else{
                     //JSON renvoyé
