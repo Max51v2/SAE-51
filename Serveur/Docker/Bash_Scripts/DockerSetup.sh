@@ -47,7 +47,7 @@ clear
 
 #Ouverture des ports du pare-feu
 echo "Installation d'ufw et ouverture des ports utilisés par Tomcat et Nginx :"
-sudo apt-get install ufw > /tmp/DockerSetupLogs.txt
+sudo apt-get install -y ufw > /tmp/DockerSetupLogs.txt
 clear
 echo "Ajout des règles du pare-feu :"
 sudo ufw allow 443 >> /tmp/DockerSetupLogs.txt
