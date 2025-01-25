@@ -7,6 +7,9 @@ document.addEventListener("TokenCheckFinished", (event) => {
     const closeModal = document.querySelector(".close-button");
     const addUserForm = document.getElementById("addUserForm");
 
+    //Token utilisateur
+    token = sessionStorage.getItem("token");
+
     // Récupérer la liste des utilisateurs et remplir le tableau
     function fetchUsers() {
         fetch(`https://${window.ServerIP}:8443/SAE51/ListUsers`, {
@@ -61,7 +64,9 @@ document.addEventListener("TokenCheckFinished", (event) => {
             prenom: formData.get("prenom"),
             login: formData.get("login"),
             droits: formData.get("droits"),
-            token: token
+            password: formData.get("MDP"),
+            token: token,
+            Test : "false"
         };
 
         fetch(`https://${window.ServerIP}:8443/SAE51/AddUser`, {
