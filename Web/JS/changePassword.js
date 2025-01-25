@@ -1,20 +1,33 @@
 document.addEventListener("TokenCheckFinished", () => {
-    // Récupération des informations utilisateur
     const userLogin = sessionStorage.getItem("login");
     const token = sessionStorage.getItem("token");
 
-    // Gestion de la soumission du formulaire
+    const newPasswordInput = document.getElementById("newPassword");
+    const confirmPasswordInput = document.getElementById("confirmPassword");
+    const errorMessage = document.getElementById("errorMessage");
+
+    // Vérification en temps réel des mots de passe
+    confirmPasswordInput.addEventListener("input", () => {
+        if (newPasswordInput.value === confirmPasswordInput.value) {
+            errorMessage.style.display = "none";
+            confirmPasswordInput.style.borderColor = "#00cc66"; // Vert si OK
+        } else {
+            errorMessage.style.display = "block";
+            confirmPasswordInput.style.borderColor = "#ff0000"; // Rouge si non OK
+        }
+    });
+
     document.getElementById("changePasswordForm").addEventListener("submit", (event) => {
         event.preventDefault();
 
-        const newPassword = document.getElementById("newPassword").value;
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
 
-        if (!newPassword) {
-            alert("Veuillez entrer un nouveau mot de passe.");
+        if (newPassword !== confirmPassword) {
+            errorMessage.style.display = "block";
             return;
         }
 
-        // Requête pour modifier le mot de passe
         fetch(`https://${window.ServerIP}:8443/SAE51/SetPassword`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -24,9 +37,10 @@ document.addEventListener("TokenCheckFinished", () => {
         .then(result => {
             if (result.erreur === "none") {
                 alert("Mot de passe modifié avec succès !");
-                document.getElementById("changePasswordForm").reset(); // Réinitialise le formulaire
+                document.getElementById("changePasswordForm").reset();
+                confirmPasswordInput.style.borderColor = "#444"; // Réinitialisation de la bordure
             } else {
-                alert("Erreur lors de la modification du mot de passe. : "+response.erreur);
+                alert("Erreur lors de la modification du mot de passe : " + result.erreur);
                 console.error(result);
             }
         })
