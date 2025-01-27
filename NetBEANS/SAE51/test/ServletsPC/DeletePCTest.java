@@ -42,7 +42,7 @@ public class DeletePCTest {
         
         //Ajout du pc
         String IP = "localhost";
-        String id = "123456789";
+        Integer id = 123456789;
         DAO3.addPC(id, IP, "", Test);
         
         //Ajout des infos statiques du pc
@@ -120,7 +120,7 @@ public class DeletePCTest {
         
         //Ajout du pc
         String IP = "localhost";
-        String id = "123456789";
+        Integer id = 123456789;
         DAO3.addPC(id, IP, "", Test);
         
         //Ajout des infos statiques du pc
@@ -190,7 +190,7 @@ public class DeletePCTest {
         
         //Ajout du pc
         String IP = "localhost";
-        String id = "123456789";
+        Integer id = 123456789;
         DAO3.addPC(id, IP, "", Test);
         
         //Ajout des infos statiques du pc

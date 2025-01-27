@@ -26,7 +26,7 @@ public class DeletePC extends HttpServlet {
      * Supprime un PC dans la BD<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
-     * String id       &emsp;&emsp;        id de l'ordinateur <br>
+     * Integer id       &emsp;&emsp;        id de l'ordinateur <br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
@@ -58,7 +58,7 @@ public class DeletePC extends HttpServlet {
         JSON.GetJSONInfoPC json = gsonRequest.fromJson(reader, JSON.GetJSONInfoPC.class);
         
         //Données envoyées par la requête
-        String id = json.getId();
+        Integer id = json.getId();
         String token = json.getToken();
         Boolean TestBoolean = Boolean.valueOf(json.getTest());
 

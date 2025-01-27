@@ -30,7 +30,7 @@ import ServletsUser.GetRedirectionTest;
 import ServletsUser.GetTokenStatusTest;
 import ServletsUser.ListUsersTest;
 import ServletsUser.SetPasswordTest;
-import TCP_Server.AnswerPingTest;
+
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -43,7 +43,6 @@ import TCP_Server.AnswerPingTest;
     ListUsersTest.class,
     DAOusersTest.class,
     SetPasswordTest.class,
-    AnswerPingTest.class,
     TokenExpirationTest.class,
     GetLogsTest.class,
     DeletePCTest.class,

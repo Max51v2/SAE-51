@@ -42,9 +42,9 @@ public class ListPCTest {
         
         //Ajout des pc
         String IP = "localhost";
-        String id1 = "123456789";
+        Integer id1 = 123456789;
         DAO3.addPC(id1, IP, "Pierre/Paul/Admin1/Jacques", Test);
-        String id2 = "987654321";
+        Integer id2 = 987654321;
         DAO3.addPC(id2, IP, "Pierre/Paul/Admin1/Jacques", Test);
         
         //Ajout des infos statiques des pc
@@ -79,8 +79,8 @@ public class ListPCTest {
         DAO2.deleteUser("Admin1", true);
         
         //Retrait des pc
-        DAO3.deletePC("123456789", Test);
-        DAO3.deletePC("987654321", Test);
+        DAO3.deletePC(123456789, Test);
+        DAO3.deletePC(987654321, Test);
         
         //Résultat
         System.out.println("resultat ListPCTest1 : "+result+" | exp : "+ExpResult);
@@ -117,9 +117,9 @@ public class ListPCTest {
         
         //Ajout des pc
         String IP = "localhost";
-        String id1 = "123456789";
+        Integer id1 = 123456789;
         DAO3.addPC(id1, IP, "Pierre/Paul/Admin1/Jacques", Test);
-        String id2 = "987654321";
+        Integer id2 = 987654321;
         DAO3.addPC(id2, IP, "Pierre/Paul/Jacques", Test);
         
         //Ajout des infos statiques des pc
@@ -154,8 +154,8 @@ public class ListPCTest {
         DAO2.deleteUser("Admin1", true);
         
         //Retrait des pc
-        DAO3.deletePC("123456789", Test);
-        DAO3.deletePC("987654321", Test);
+        DAO3.deletePC(123456789, Test);
+        DAO3.deletePC(987654321, Test);
         
         //Résultat
         System.out.println("resultat testListPC2 : "+result+" | exp : "+ExpResult);
@@ -193,9 +193,9 @@ public class ListPCTest {
         
         //Ajout des pc
         String IP = "localhost";
-        String id1 = "123456789";
+        Integer id1 =123456789;
         DAO3.addPC(id1, IP, "Pierre/Paul/Jacques", Test);
-        String id2 = "987654321";
+        Integer id2 = 987654321;
         DAO3.addPC(id2, IP, "Pierre/Paul/Jacques", Test);
         
         //Ajout des infos statiques des pc
@@ -230,8 +230,8 @@ public class ListPCTest {
         DAO2.deleteUser("Admin1", true);
         
         //Retrait des pc
-        DAO3.deletePC("123456789", Test);
-        DAO3.deletePC("987654321", Test);
+        DAO3.deletePC(123456789, Test);
+        DAO3.deletePC(987654321, Test);
         
         //Résultat
         System.out.println("resultat testListPC3 : "+result+" | exp : "+ExpResult);
@@ -269,9 +269,9 @@ public class ListPCTest {
         
         //Ajout des pc
         String IP = "localhost";
-        String id1 = "123456789";
+        Integer id1 = 123456789;
         DAO3.addPC(id1, IP, "Pierre/Paul/Jacques", Test);
-        String id2 = "987654321";
+        Integer id2 = 987654321;
         DAO3.addPC(id2, IP, "Pierre/Paul/Jacques", Test);
         
         //Ajout des infos statiques des pc
@@ -306,8 +306,8 @@ public class ListPCTest {
         DAO2.deleteUser("Admin1", true);
         
         //Retrait des pc
-        DAO3.deletePC("123456789", Test);
-        DAO3.deletePC("987654321", Test);
+        DAO3.deletePC(123456789, Test);
+        DAO3.deletePC(987654321, Test);
         
         //Résultat
         System.out.println("resultat testListPC4 : "+result+" | exp : "+ExpResult);

@@ -4,13 +4,13 @@ import javax.net.ssl.*;
 import java.io.*;
 import java.net.Socket;
 import java.security.KeyStore;
+import java.util.Arrays;
 
 public class SecureServer implements Runnable {
     private int port;
     private boolean running = true;
     private SSLServerSocket serverSocket;
 
-    
     public synchronized void start(int port) {
         this.port = port;
         new Thread(this).start();
@@ -54,10 +54,11 @@ public class SecureServer implements Runnable {
             e.printStackTrace();
         }
     }
+
     public synchronized void stop() {
         this.running = false;
         try {
-            if (serverSocket != null || !serverSocket.isClosed()) {
+            if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
                 System.out.println("Serveur arrêté proprement.");
             }

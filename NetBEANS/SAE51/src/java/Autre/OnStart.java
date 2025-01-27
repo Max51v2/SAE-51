@@ -1,5 +1,6 @@
 package Autre;
-import TCP_Server.AnswerPing;
+
+
 import TCP_Server.SecureServer;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -12,7 +13,6 @@ import javax.servlet.ServletContextListener;
  */
 public class OnStart implements ServletContextListener {
   TokenExpiration run = new TokenExpiration();
-  AnswerPing run2 = new AnswerPing();
   ProjectConfig conf = new ProjectConfig();
   SecureServer run3 = new SecureServer();
   
@@ -29,7 +29,7 @@ public class OnStart implements ServletContextListener {
         System.out.println("Vérification des tokens expirés lancée");
         
         //lancement du serveur de réponse au ping du client
-        run2.start(AnswerPingPort);
+
         System.out.println("Serveur TCP de réponse au ping du client lancé sur le port "+AnswerPingPort);
         run3.start(12345);
         
@@ -45,10 +45,6 @@ public class OnStart implements ServletContextListener {
         }
          
         //Arrêt du serveur de réponse au ping du client
-         if (run2 != null) {
-            run2.stop();
-            System.out.println("Serveur TCP de réponse au ping du client arrêté");
-        } 
           if (run3 != null) {
             run3.stop();
            System.out.println("Serveur TCP info arrêté");

@@ -26,14 +26,14 @@ public class ListPCStaticInfo extends HttpServlet {
      * Liste les infos statiques d'un PC spécifié<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
-     * String id       &emsp;&emsp;        id de l'ordinateur <br>
+     * Integer id       &emsp;&emsp;        id de l'ordinateur <br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
      * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | none <br>
-     * String id       &emsp;&emsp;        id de la machine <br>
+     * Integer id       &emsp;&emsp;        id de la machine <br>
      * String cpu_model       &emsp;&emsp;        modèle du procésseur <br>
      * Integer cores       &emsp;&emsp;        nombre de coeurs du CPU <br>
      * Integer threads       &emsp;&emsp;        nombre de threads du CPu <br>
@@ -72,7 +72,7 @@ public class ListPCStaticInfo extends HttpServlet {
         JSON.GetJSONInfoPC json = gsonRequest.fromJson(reader, JSON.GetJSONInfoPC.class);
         
         //Données envoyées par la requête
-        String id = json.getId();
+        Integer id = json.getId();
         String token = json.getToken();
         Boolean TestBoolean = Boolean.valueOf(json.getTest());
 

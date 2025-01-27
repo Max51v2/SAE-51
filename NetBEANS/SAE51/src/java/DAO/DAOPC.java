@@ -101,7 +101,7 @@ public class DAOPC {
      * @param rights        droits d'accès ("login1/.../loginN") / ne rien mettre hors test car droits ajoutés par l'admin via web
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void addPC(String id, String IP, String rights, Boolean Test){
+    public void addPC(Integer id, String IP, String rights, Boolean Test){
         String RequeteSQL="INSERT INTO pc (id, ip, droits) VALUES (?, ?, ?)";
         
         //Selection de la BD
@@ -115,7 +115,7 @@ public class DAOPC {
             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
             
             //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
-            preparedStatement.setString(1, id);
+            preparedStatement.setInt(1, id);
             preparedStatement.setString(2, IP);
             preparedStatement.setString(3, rights);
             
@@ -136,7 +136,7 @@ public class DAOPC {
      * @param id     id de la machine
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void deletePC(String id, Boolean Test){
+    public void deletePC(Integer id, Boolean Test){
         String RequeteSQL="DELETE FROM pc WHERE id = ?";
         
         //Selection de la BD
@@ -150,7 +150,7 @@ public class DAOPC {
             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
             
             //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
-            preparedStatement.setString(1, id);
+            preparedStatement.setInt(1, id);
             
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();
@@ -170,7 +170,7 @@ public class DAOPC {
             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
             
             //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
-            preparedStatement.setString(1, id);
+            preparedStatement.setInt(1, id);
             
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();
@@ -194,7 +194,7 @@ public class DAOPC {
     public String getPC(String login, String rights, Boolean Test){
         String RequeteSQL="SELECT * FROM pc ORDER BY id ASC";
         String IP="";
-        String id="";
+        Integer id=null;
         String droits = "";
         String JSONString="";
         
@@ -222,7 +222,7 @@ public class DAOPC {
                     //Vérification des droits de l'utilisateur (login utilisateur compris dans la liste des personnes autorisées ou admin)
                     if(droits.contains(login) | rights.equals("Admin")){
                         IP = resultSet.getString("ip");
-                        id = resultSet.getString("id");
+                        id = resultSet.getInt("id");
 
                         // Ajouter une virgule avant chaque entrée sauf la première
                         if (c > 1) {
@@ -270,7 +270,7 @@ public class DAOPC {
      * @param version   version de l'OS
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void addPCStaticInfo(String id, String cpu_model, Integer cores, Integer threads, String maximum_frequency,
+    public void addPCStaticInfo(Integer id, String cpu_model, Integer cores, Integer threads, String maximum_frequency,
             String ram_quantity, Integer dimm_quantity, String dimm_speed, Integer storage_device_number, String storage_space,
             Integer network_int_number, String network_int_speed, String os, String version, Boolean Test){
         String RequeteSQL="INSERT INTO pc_static_info (id, cpu_model, cores, threads, maximum_frequency, ram_quantity, dimm_quantity, dimm_speed, storage_device_number, storage_space, network_int_number, network_int_speed, os, version) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -286,7 +286,7 @@ public class DAOPC {
             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
             
             //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
-            preparedStatement.setString(1, id);
+            preparedStatement.setInt(1, id);
             preparedStatement.setString(2, cpu_model);
             preparedStatement.setInt(3, cores);
             preparedStatement.setInt(4, threads);
@@ -318,7 +318,7 @@ public class DAOPC {
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
-    public String getPCStaticInfo(String idPC, String login, String rights, Boolean Test){
+    public String getPCStaticInfo(Integer idPC, String login, String rights, Boolean Test){
         
         String JSONString = "" ;
         
@@ -329,7 +329,7 @@ public class DAOPC {
         if(getInfo == true){
             //Récupération des infos statiques du PC
             String RequeteSQL="SELECT * FROM pc_static_info WHERE id = ?";
-            String id = "";
+            Integer id = null;
             String cpu_model = "";
             Integer cores = null;
             Integer threads = null;
@@ -356,13 +356,13 @@ public class DAOPC {
                 PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
                 
                 //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
-                preparedStatement.setString(1, idPC);
+                preparedStatement.setInt(1, idPC);
 
                 // Exécution de la requête
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
                     if (resultSet.next()) {
-                        id = resultSet.getString("id");
+                        id = resultSet.getInt("id");
                         cpu_model = resultSet.getString("cpu_model");
                         cores = resultSet.getInt("cores");
                         threads = resultSet.getInt("threads");
@@ -418,7 +418,7 @@ public class DAOPC {
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
-    public Boolean getUserPCAccess(String idPC, String login, String rights, Boolean Test){
+    public Boolean getUserPCAccess(Integer idPC, String login, String rights, Boolean Test){
         
         //Vérification des droits d'accès au pc
         String RequeteSQL="SELECT droits FROM pc WHERE id = ?";
@@ -437,7 +437,7 @@ public class DAOPC {
             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
             
             //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
-            preparedStatement.setString(1, idPC);
+            preparedStatement.setInt(1, idPC);
             
             // Exécution de la requête
             try (ResultSet resultSet = preparedStatement.executeQuery()) {

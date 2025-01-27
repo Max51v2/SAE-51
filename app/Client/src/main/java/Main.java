@@ -4,6 +4,8 @@ import java.lang.management.OperatingSystemMXBean;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import oshi.SystemInfo;
@@ -16,7 +18,7 @@ import static java.lang.Thread.sleep;
 
 public class Main {
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
-        String[] Info_hardware = new String[7];
+        String[] Info_hardware = new String[9];
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
 
         System.out.println("Nom de l'OS : " + osBean.getName());
@@ -26,7 +28,7 @@ public class Main {
         // Pour Java 10+ pour obtenir la RAM totale disponible
         if (osBean instanceof com.sun.management.OperatingSystemMXBean) {
             com.sun.management.OperatingSystemMXBean sunOSBean = (com.sun.management.OperatingSystemMXBean) osBean;
-            Info_hardware[4] = sunOSBean.getTotalPhysicalMemorySize() / (1024 * 1024) + " Mo";
+            Info_hardware[7] = Long.toString(sunOSBean.getTotalPhysicalMemorySize() / (1024 * 1024));
         }
         SystemInfo systemInfo = new SystemInfo();
 
@@ -38,12 +40,50 @@ public class Main {
         String osVersion = os.getVersionInfo().getVersion(); // Version de l'OS, ex. : "24H2"
         String buildNumber = os.getVersionInfo().getBuildNumber(); // Numéro de build
 
+        for (int i = 0; Info_hardware.length > i; i++) {
+            System.out.println(Info_hardware[i]);
+        }
+        InetAddress local = // adresse de la machine locale
+                InetAddress.getLocalHost();
+        //InetAddress nancy = // adresse principale du domaine
+        //      InetAddress.getByName("plex.madec.ovh");
+        System.out.println("local :\t" + local.getHostAddress());
+// Adresse IP (byte[])
+        //System.out.println("nancy :\t" + nancy.getHostAddress());
+        long maxFreqHz = processor.getMaxFreq();
+        HardwareAbstractionLayer hal = systemInfo.getHardware();
+        Sensors sensors = hal.getSensors();
+        double temps = sensors.getCpuTemperature();
+
+        System.out.println(temps);
+        for (HWDiskStore disk : hal.getDiskStores()) {
+            System.out.println("Nom du disque : " + disk.getName());
+            Info_hardware[8] = Double.toString(disk.getSize() / 1e9);
+            System.out.println("Espace disponible :" + (disk.getReadBytes() / 1e9));
+            System.out.println("Statut SMART : " + disk.getTransferTime());
+
+            // Les données S.M.A.R.T. incluent des attributs qui peuvent indiquer la durée de vie restante
+            System.out.println("Attributs S.M.A.R.T. : " + disk.updateAttributes());
+        }
+
+        String computerName = System.getenv("COMPUTERNAME"); // Windows
+        if (computerName == null) {
+            computerName = System.getenv("HOSTNAME"); // Linux/Mac
+        }
+
+        // Vérification et affichage
+        if (computerName != null) {
+            System.out.println("Nom de l'ordinateur : " + computerName);
+        }
+
         Info_hardware[0] = os.getFamily();
         Info_hardware[1] = os.getVersionInfo().getVersion();
         Info_hardware[2] = os.getVersionInfo().getBuildNumber();
         Info_hardware[3] = processor.getProcessorIdentifier().getName();
+        Info_hardware[4] = Double.toString(processor.getMaxFreq() / 1_000_000_000.0);
         Info_hardware[5] = processor.getLogicalProcessorCount() + "";
         Info_hardware[6] = processor.getPhysicalProcessorCount() + "";
+
         String serverAddress = "localhost"; // Adresse du serveur
         int port = 12345; // Port sécurisé
 
@@ -84,10 +124,11 @@ public class Main {
                 message = scanner.nextLine(); // Lire un message depuis le clavier
 
                 out.println(message); // Envoyer le message au serveur
-                out.println(Info_hardware); // Envoyer le message au serveur
+                out.println("array:" + Arrays.toString(Info_hardware)); // Envoyer le message au serveur
 
                 // Lire et afficher la réponse du serveur
                 String response = in.readLine();
+                response = in.readLine();
                 System.out.println("Serveur : " + response);
 
                 // Si le message est "exit", quitter la boucle
@@ -101,41 +142,7 @@ public class Main {
             System.err.println("Erreur côté client : " + e.getMessage());
             e.printStackTrace();
         }
-        for (int i = 0; Info_hardware.length > i; i++) {
-            System.out.println(Info_hardware[i]);
-        }
-        InetAddress local = // adresse de la machine locale
-                InetAddress.getLocalHost();
-        //InetAddress nancy = // adresse principale du domaine
-          //      InetAddress.getByName("plex.madec.ovh");
-        System.out.println("local :\t" + local.getHostAddress());
-// Adresse IP (byte[])
-        //System.out.println("nancy :\t" + nancy.getHostAddress());
-        long maxFreqHz = processor.getMaxFreq();
-        HardwareAbstractionLayer hal = systemInfo.getHardware();
-        Sensors sensors = hal.getSensors();
-        double temps = sensors.getCpuTemperature();
 
-        System.out.println(temps);
-        for (HWDiskStore disk : hal.getDiskStores()) {
-            System.out.println("Nom du disque : " + disk.getName());
-            System.out.printf("Capacité totale : %.2f Go%n", disk.getSize() / 1e9);
-            System.out.println("Espace disponible :" + (disk.getReadBytes() / 1e9));
-            System.out.println("Statut SMART : " + disk.getTransferTime());
-
-            // Les données S.M.A.R.T. incluent des attributs qui peuvent indiquer la durée de vie restante
-            System.out.println("Attributs S.M.A.R.T. : " + disk.updateAttributes());
-        }
-        String computerName = System.getenv("COMPUTERNAME"); // Windows
-        if (computerName == null) {
-            computerName = System.getenv("HOSTNAME"); // Linux/Mac
-        }
-
-        // Vérification et affichage
-        if (computerName != null) {
-            System.out.println("Nom de l'ordinateur : " + computerName);
-        }
-        // Afficher la fréquence en GHz
         System.out.printf("Fréquence maximale du processeur : %.2f GHz%n", maxFreqHz / 1_000_000_000.0);
         while (true) {// Obtenir les fréquences actuelles par cœur (en Hz)
             long freq = 0;

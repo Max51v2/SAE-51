@@ -8,11 +8,11 @@ package JSON;
  */
 public class GetJSONInfoPC{
         private String Test;
-        private String id;
+        private Integer id;
         private String IP;
         private String token;
         
-        public GetJSONInfoPC(String Test, String IP, String id, String token){
+        public GetJSONInfoPC(String Test, String IP, Integer id, String token){
             this.Test = Test;
             this.IP = IP;
             this.id = id;
@@ -27,11 +27,11 @@ public class GetJSONInfoPC{
             this.Test = Test;
         }
 
-        public String getId() {
+        public Integer getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(Integer id) {
             this.id = id;
         }
 
