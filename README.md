@@ -1,37 +1,93 @@
-Auteur : Maxime VALLET
-Version : 3.1
+﻿Auteur : Maxime VALLET
+Version : 4.0
+
+En cas de problèmes d'affichage, merci d'ouvrir la doc depuis le projet et de séléctionner l'affichage de type "Raw"
 
 I) Présentation
  à faire
 
-II) Comment installer le projet ?
- 1) Installation et configuration des programmes
-  a) Utiliser la VM contenant tous les programmes configurés :
-    - Vous retrouverez les informations utiles dans la section "VM" du document situé ici : "/Serveur/README.txt"
-    - Il est recommandé de procéder dans cet ordre : télécharger la VM > suivre les README donnés à chaque partie de l'installation > lire la partie "VM" du document suivant : "/Serveur/README.txt"
-  b) Installer les programmes manuellement :
-    - Vous retrouverez les informations dans la section "VM" du document situé ici : "/Serveur/README.txt"
-  c) Installer les programmes automatiquement :
-    - Vous retrouverez les informations dans la section "Procédure d'installation automatique Debian 12" du document situé ici : "/Serveur/README.txt"
-  d)  Conteneurs Docker :
-    - Vous retrouverez les informations dans le README situé ici : "/Serveur/Docker/README.txt"
 
- 2) Démarrer le projet (hors Docker)
+II) Comment installer le projet ?
+ 1) Méthodes d'installation
+
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |                                  |     VM V1     |           VM V2            |    Manuel     | AutoInstall.sh | DockerSetup Dev | DockerSetup Deploy |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |           I - Méthode            |               |                            |               |                |                 |                    |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |                VM                |       x       |             x              |               |                |                 |                    |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |              Manuel              |               |                            |       x       |                |                 |                    |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |           Automatique            |               |                            |               |       x        |        x        |                    |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |         II - Propriétés          |               |                            |               |                |                 |                    |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |               GUI                |       x       |                            |       x       |       x        |        x        |         x          |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |               CLI                |               |             x              |       x       |                |        x        |         x          |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |             Env Dev              |       x       |                            |       x       |       x        |     Docker      |                    |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |              Rapide              |               |             x              |               |       x        |        x        |         x          |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |        Env pré-téléchargé        |       x       |             x              |               |                |                 |         x          |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |              Taille              |     10Go      |            7Go             |      1Go      |      1Go       |      1,5Go      |       1,5Go        |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |          III - Objectif          | Dev FullStack | Dev FrontEnd / Déploiement | Dev FullStack | Dev FullStack  |   Dev Docker    |    Déploiement     |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ | IV - Instructions d'installation |       1       |             1              |       1       |       1        |        2        |         2          |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |                                  |               |                            |               |                |                 |                    |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |    1 = /Serveur/README_VM.txt    |               |                            |               |                |                 |                    |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+ |  2 = /Serveur/Docker/README.txt  |               |                            |               |                |                 |                    |
+ +----------------------------------+---------------+----------------------------+---------------+----------------+-----------------+--------------------+
+
+
+ 2) Installation et configuration des programmes
+  -- Tout --
+    Se référencer aux documentations indiquées dans le tableau précédent
+
+ 3) Démarrer le projet
+  -- Si environnement de dev (hors Docker) --
     - Lancez Start.sh puis saisissez "o" pour reconstruire la BD (à faire lors du premier démarrage ou à chaque commit) puis "o" pour lancer NetBeans
     - Lancez le projet Java ouvert dans NetBeans et saisissez les logins+MDP si besoin (voir doc "/Serveur/README.txt")
     - Ouvrir le navigateur de la VM ou le navigateur de l'OS hôte (nécéssite d'ajouter les certificats > voir doc "/Serveur/README.txt")
 
+  -- Autre --
+    Se référencer aux documentations indiquées dans le tableau précédent
+
+
 III) Qui contacter en cas de question ?
- - Serveurs : VM, script d'installation et Docker / Backend : Authentification, info statiques PC, logs et tests unitaires / HTML, CSS et JS pages de login, aide et template : Maxime VALLET
- - HTML et CSS : Gabin PETITCOLAS
- - Client : Erwann MADEC
+ - Maxime VALLET : 
+   - Installation du Backend : VM / Docker / Scripts d'installation
+   - Backend : Authentification et droits utilisateur / info statiques PC / logs / Notifications / Bouttons de Nav / Tests Unitaires des points précédents / AnswerPing (déprécié)
+   - Documentation + Templates
+   - FrontEnd : Login.html / Help.html / Bouttons de Nav / Authentification / Expiration de session
+ 
+ - Gabin PETITCOLAS
+   - FrontEnd : HTML / CSS / JS
+
+ - Erwann MADEC :
+   - Client
+   - Backend : Serveur et Client TCP sécurisés
+
 
 IV) Modification VM
-MODIFICATIONS VM : sudo ufw allow 50000 / ajouter la redirection du port 50000 pour du TCP sur la carte NAT de la VM
+- sudo ufw allow 50000
+- ajouter la redirection du port 50000 pour du TCP sur la carte NAT de la VM
+
 
 V) Avancement du projet
 IMPORTANT : merci de suivre les templates pour le projet SAE51 afin de pouvoir intégrer les features
 
+
+
+
+######################################################################################################
 à faire (liste non exhaustive) :
 Frontend :
   => Ajouter des messages d'erreur (erreurs envoyées par les servlets => voir Javadoc Servlets)
@@ -43,7 +99,6 @@ Frontend :
   => JS pages Web mentionnées précédement
   
 - Backend
-  => Client/serveur TCP chiffré
   => Gestion des droits d'utilisateur par ordinateur : Ajout d'un utilisateur à une machine
   => Récupération info de suivi machines en continu > lancé avec OnStart (récupération en deux parties : statique (1 fois) et dynamique (en continu + mise en buffer))
   => Le servlet viendra recup les informations de la classe précédente et donnera le temps depuis la dernière act
@@ -79,11 +134,14 @@ fait :
     => ajout + suppression + listage données statiques pc
     => Renouvelement de session
     => Système de notifications
+    => Client/serveur TCP chiffré
+    => Bouttons de nav dynamiques
 - Frontend :
     => Page de login + aide + Gestion utilisateurs
     => Génération de la nav bar selon les droits d'accès
     => Templates
     => Vérification de l'éxpiration de la session (+pop up pour la renouveler)
+    => Bouttons de nav dynamiques
 - Client
     => Client TCP non chiffré
     => Récupération ID+IP et envoi au serv
@@ -123,7 +181,7 @@ Organisation du projet :
 
 
 
-#heures (point michaël) :
-- maxime : 95h
+#heures :
+- maxime : 114h
 - erwann : 10h
 - gabin :

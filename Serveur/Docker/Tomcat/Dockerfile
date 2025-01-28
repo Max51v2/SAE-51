@@ -3,9 +3,10 @@ FROM ubuntu:22.04
 
 #Créé et maintenu par Maxime VALLET
 LABEL maintainer="max.vallet@outlook.fr"
+LABEL org.opencontainers.image.source=https://github.com/OWNER/REPO
 
 #Installation des dépendances
-RUN apt-get update && \
+RUN apt-get update &&\
     apt-get install -y wget curl libapr1 libapr1-dev libssl-dev libtcnative-1 postgresql-client postgresql-client-common && \
     apt-get clean && \
 #Changement du fuseau horaire

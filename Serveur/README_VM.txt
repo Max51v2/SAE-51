@@ -1,29 +1,16 @@
-Auteur original : Maxime VALLET (SAE 52)
-Version : 2.0
+﻿Auteur original : Maxime VALLET (SAE 52)
+Version : 3.0
 Modifications : Maxime VALLET
     => Remise en ordre de la procédure et ajout de détails
     => Remplacement Ubuntu par Debian
     => Installation des programmes sans snapd
     => Remplacement Apache par Nginx
-    => Installation/désintallation automatique
+    => Ajout de multiples méthodes d'installation
     => Prérequis
 
 
 
-+--------------------------VM-----------------------------
-|
-|    +-------------------------Général-------------------------  
-|    |
-|    |   Lien VM : https://drive.google.com/drive/folders/1Q-eVKhEwMFV0cG51km6JPJSZJaPCn71p?usp=sharing
-|    |   login : sae-51
-|    |   MDP : leffe
-|    |
-|    |   *Démarrer les daemons + actualiser BD + Web
-|    |   /home/$USER/Bureau/SAE-51/Serveur/Start.sh
-|    |
-|    |   *Le copier-coller est supporté entre la VM et l'hôte et vice-versa
-|    |
-|    +---------------------------------------------------------
++--------------------------VM V1--------------------------
 |
 |    +------------------------Prérequis------------------------
 |    |
@@ -38,6 +25,18 @@ Modifications : Maxime VALLET
 |    |   => RAM : +8Go
 |    |   => Stockage : 20 go
 |    |   => VirtualBox : Version 7.0.14 à 7.0.22 (version 7.1 non fonctionnelle) + VirtualBox Extension Pack
+|    |
+|    +---------------------------------------------------------
+|
+|    +-------------------------Général-------------------------  
+|    |
+|    |   Il est recommandé de procéder dans cet ordre : télécharger la VM > suivre les README donnés à chaque partie de l'installation > lire la partie "VM V1" du document 
+|    |
+|    |   Lien VM : https://drive.google.com/drive/folders/1Md-gqlQa9IrM0RC6pKOCBbbymICGEGV5?usp=sharing
+|    |   login : sae-51
+|    |   MDP : leffe
+|    |
+|    |   *Le copier-coller est supporté entre la VM et l'hôte et vice-versa
 |    |
 |    +---------------------------------------------------------
 |
@@ -98,7 +97,7 @@ Modifications : Maxime VALLET
 |
 |    +-------------------CONCLUSION A LIRE--------------------- 
 |    |
-|    |   Pour lancer les daemons, actualiser les fichiers Web, reconstruire la DB et démarrer NetBeans, lancez Start.sh (cf. section VM > Général)
+|    |   Pour lancer les daemons, actualiser les fichiers Web, reconstruire la DB et démarrer NetBeans, lancez Start.sh (cf. section "VM V1" > Général)
 |    |   => les identifiants et MDP pour NetBEANS sont dispo dans VM > NetNEANS
 |    |
 |    |   Se connecter à GitHub dans VSCode :
@@ -133,6 +132,67 @@ Modifications : Maxime VALLET
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE51/[NomServlet]    (IMPORTANT : pour accès servlet > voir exemple login.html)
 |    |   => Javadoc : https://[@IP VM]/Javadoc/index.html
 |    |   ==> déjà enregistré dans les marques page sur la VM
+|    |
+|    |   *Cartes réseau :
+|    |   => il y'a deux cartes réseau : une en mode bridge et une en mode NAT
+|    |   => dans le cas ou la première fonctionne (enp0s3), les serveurs sont accessibles à partir de l'IP de l'OS hôte (donc accessible au réseau local)
+|    |   => dans le cas ou la deuxième est la seule qui fonctionne (enp0s8), les serveurs sont accessibles à partir de l'IP de la carte virtuelle VirtualBox (donc accessible à l'OS hôte uniquement)
+|    |   => aucune modif requise/ raison : impossible d'utiliser le mode bridge sur eduroam
+|    | 
+|    +---------------------------------------------------------
+|
++---------------------------------------------------------
+
+
+
++--------------------------VM V2--------------------------
+|
+|    +------------------------Prérequis------------------------
+|    |
+|    |   *Minimum
+|    |   => CPU : Mieux qu'un celeron
+|    |   => RAM : +2Go
+|    |   => Stockage : 7 go
+|    |   => VirtualBox : Version 7.0.14 à 7.0.22 (version 7.1 non fonctionnelle) + VirtualBox Extension Pack
+|    |
+|    |   *Recommandé
+|    |   => CPU : Mieux qu'un celeron
+|    |   => RAM : +4Go
+|    |   => Stockage : 10 go
+|    |   => VirtualBox : Version 7.0.14 à 7.0.22 (version 7.1 non fonctionnelle) + VirtualBox Extension Pack
+|    |
+|    +---------------------------------------------------------
+|
+|    +------------------------Général--------------------------
+|    |
+|    |   Lien VM : https://drive.google.com/drive/folders/1eR6_7cUz4dXcGUcmmercmu7xthQqEPQi?usp=sharing
+|    |   login : sae-51
+|    |   MDP : leffe
+|    |
+|    +---------------------------------------------------------
+|
+|    +-------------------------Docker--------------------------  
+|    |
+|    |   Lancement des conteneurs Docker :
+|    |   StartSAE51
+|    |   
+|    |   MAJ des conteneurs Docker :
+|    |   UpdateSAE51
+|    |   
+|    |   Arrêt des conteneurs Docker :
+|    |   StopSAE51
+|    |
+|    +---------------------------------------------------------
+|
+|    +-------------------CONCLUSION A LIRE--------------------- 
+|    |
+|    |   Une fois démarrés, les conteneurs redémarrent tout seul.
+|    |
+|    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM) :
+|    |   => Nginx : https://[@IP VM]/[NomPage]
+|    |   => Tomcat (administration) : http://[@IP VM]:8443
+|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE51/[NomServlet]    (IMPORTANT : pour accès servlet > voir exemple login.html)
+|    |   => Javadoc : https://[@IP VM]/Javadoc/index.html
 |    |
 |    |   *Cartes réseau :
 |    |   => il y'a deux cartes réseau : une en mode bridge et une en mode NAT
@@ -191,7 +251,7 @@ Modifications : Maxime VALLET
 |    |   
 |    |   *Lancez le projet
 |    |   
-|    |   *Merci de vous référer à la section "VM" > "CONCLUSION A LIRE"
+|    |   *Merci de vous référer à la section "VM V1" > "CONCLUSION A LIRE"
 |    |
 |    +-------------------------------------------------------
 |
@@ -245,7 +305,7 @@ Modifications : Maxime VALLET
 |    |   *Script de demarrage des daemons
 |    |   chmod u+x /home/$USER/Bureau/SAE-51/Serveur/Start.sh
 |    |   
-|    |   *Demarrage deamons (une fois l'installation terminée): voir section VM > Général
+|    |   *Demarrage deamons (une fois l'installation terminée): voir section "VM V1" > Général
 |    |
 |    |   !!! Merci de vérifier que les liens de téléchargement des paquets .deb sont toujours d'actualité !!!
 |    |
@@ -308,8 +368,13 @@ Modifications : Maxime VALLET
 |    |
 |    |   !!! En cas d'utilisation en dehors du cadre de ce projet, remplacez les MDP !!!
 |    |
-|    |   Installation (ubuntu):
-|    |   sudo apt install postgresql
+|    |   Installation :
+|    |   sudo apt-get install -y gnupg gnupg1 gnupg2 lsb-release
+|    |   sudo apt-get install -y wget ca-certificates
+|    |   sudo wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+|    |   sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+|    |   sudo apt-get update
+|    |   sudo apt-get install -y postgresql-15
 |    |
 |    |   cd /etc/postgresql/[Version PostgreSQL]/main/
 |    |   sudo nano postgresql.conf

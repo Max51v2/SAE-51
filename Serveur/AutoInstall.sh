@@ -4,10 +4,21 @@
 
 sudo clear
 
+#Vérification du packet manager de la distribution (APT)
+if [ -f "/usr/bin/apt" ]
+then
+    #Rien
+    :
+else
+    echo "Distribution incompatible (nécéssite APT)"
+
+    #Arrêt du script
+    exit 1
+fi
+
 echo "Script d'installation du projet pour Debian 12"
 
 sleep 2
-
 
 optionInstall="undetermined"
 c=0

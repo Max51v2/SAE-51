@@ -110,12 +110,20 @@ public class SetPassword extends HttpServlet {
 
                             //Modification du MDP
                             DAO.setPassword(target, hashedPassword, TestBoolean);
+                            
+                            //JSON renvoyé
+                            jsonString = "{\"erreur\":\"none\"}";
                         }
                         else{
                             //JSON renvoyé
                             jsonString = "{\"erreur\":\"permission refusée\"}";
                         }
                     }
+                    else{
+                        //JSON renvoyé
+                        jsonString = "{\"erreur\":\"Unknown rights\"}";
+                    }
+                    
                 }
                 else{
                     //JSON renvoyé
@@ -129,6 +137,8 @@ public class SetPassword extends HttpServlet {
         loginLog = DAO.getLogin();
         AddLog addLog = new AddLog();
         addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
+        
+        System.out.println(jsonString);
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

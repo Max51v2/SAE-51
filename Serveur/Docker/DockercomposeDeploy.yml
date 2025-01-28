@@ -1,0 +1,21 @@
+services:
+  db:
+    image: ghcr.io/max51v2/psql_sae51
+    container_name: psql_sae51
+    environment:
+      POSTGRES_PASSWORD: leffe
+      POSTGRES_USER: postgres
+    network_mode: "host"
+    restart: unless-stopped
+
+  backend:
+    image: ghcr.io/max51v2/tomcat_sae51
+    container_name: tomcat_sae51
+    network_mode: "host"  
+    restart: unless-stopped
+
+  web:
+    image: ghcr.io/max51v2/nginx_sae51
+    container_name: nginx_sae51
+    network_mode: "host"
+    restart: unless-stopped
