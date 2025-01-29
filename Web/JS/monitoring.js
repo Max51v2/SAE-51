@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Ajouter un PC de test à la liste
     const addTestPcToList = () => {
         const testPc = {
-            id: "test123",
+            id: 1,
             IP: "192.168.0.1",
             status: "En ligne"
         };
