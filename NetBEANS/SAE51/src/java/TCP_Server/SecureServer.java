@@ -18,8 +18,8 @@ public class SecureServer implements Runnable {
 
     @Override
     public void run() {
-        String keystorePath = "/certs/server.keystore"; // Chemin du keystore
-        String keystorePassword = "password";   // Mot de passe du keystore
+        String keystorePath = "/opt/tomcat/conf/tomcat.keystore"; // Chemin du keystore
+        String keystorePassword = "administrateur";   // Mot de passe du keystore
 
         try {
             // Charger le keystore contenant le certificat SSL
