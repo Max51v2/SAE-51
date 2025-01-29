@@ -1,8 +1,3 @@
-<!--
-    Auteur HTML : Gabin PETITCOLAS
-    Version : ?
-    W3C validator (0 erreurs / 0 warnings): ?
--->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,11 +5,7 @@
     <link rel="icon" type="image/webp" href="./images/flavicon.webp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surveillance des Machines - Gestion des Utilisateurs</title>
-
-    <!-- CSS pour la bannière -->
     <link rel="stylesheet" href="./CSS/BannerDiv.css">
-
-    <!-- CSS pour la page -->
     <link rel="stylesheet" href="./CSS/page.css">
 </head>
 <body>
@@ -37,14 +28,13 @@
 
     <div id="container">
         <div id="sideNav">
-            <ul id="navBar">
-                <!-- Bouttons de navigation ajoutés par AddNavButtons.js -->
-            </ul>
+            <ul id="navBar"></ul>
         </div>
 
         <div id="mainContent">
             <section id="users" class="active">
                 <h2>Gestion des Utilisateurs</h2>
+                <button id="addUserButton" class="button-54">Ajouter un utilisateur</button>
                 <table id="userTable">
                     <thead>
                         <tr>
@@ -55,78 +45,38 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="userTableBody">
-                        <!-- Les utilisateurs seront ajoutés dynamiquement ici -->
-                    </tbody>
-                    <tr>
-                        <!-- Contenu ajouté par fetchUser -->
-                    </tr>
+                    <tbody id="userTableBody"></tbody>
                 </table>
-            </section>
-
-            <!-- Additional Table Section -->
-            <section id="productDetails">
-                <h2>Product Details</h2>
-                <table id="productTable">
-                    <thead>
-                        <tr>
-                            <th>CODE</th>
-                            <th>STOCK</th>
-                            <th>CAP</th>
-                            <th>INCH</th>
-                            <th>BOX TYPE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>CES-9000</td>
-                            <td>50mt</td>
-                            <td>9mm</td>
-                            <td>1/2"</td>
-                            <td>Kangal / Coil</td>
-                        </tr>
-                        <tr>
-                            <td>CES-9000</td>
-                            <td>50mt</td>
-                            <td>9mm</td>
-                            <td>1/2"</td>
-                            <td>Kangal / Coil</td>
-                        </tr>
-                        <tr>
-                            <td>CES-9000</td>
-                            <td>50mt</td>
-                            <td>9mm</td>
-                            <td>1/2"</td>
-                            <td>Kangal / Coil</td>
-                        </tr>
-                        <tr>
-                            <td>CES-9000</td>
-                            <td>50mt</td>
-                            <td>9mm</td>
-                            <td>1/2"</td>
-                            <td>Kangal / Coil</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <blockquote>Responsive Table</blockquote>
             </section>
         </div>
     </div>
 
-    
-<!-- ne pas toucher aux 3 scripts ci-dessous SAUF en cas de BUG -->
-<script src="./JS/URL.js" async></script>
-<script src="./JS/TokenCheck.js" async></script>
-<script src="./JS/CheckTokenExpiration.js" async></script>
+    <!-- Modal pour ajouter un utilisateur -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Ajouter un utilisateur</h2>
+            <form id="addUserForm">
+                <label for="nom">Nom :</label>
+                <input type="text" id="nom" name="nom" required>
+                <label for="prenom">Prénom :</label>
+                <input type="text" id="prenom" name="prenom" required>
+                <label for="login">Login :</label>
+                <input type="text" id="login" name="login" required>
+                <label for="droits">Droits :</label>
+                <input type="text" id="droits" name="droits" required>
+                <label for="MDP">Mot de passe :</label>
+                <input type="password" id="MDP" name="MDP" required>
+                <button type="submit" class="button-54">Ajouter</button>
+            </form>
+        </div>
+    </div>
 
-<!-- Boutons de navigation -->
-<script src="./JS/AddNavButtons.js" async></script>
-
-<!-- Script qui remplit la bannière (login + droits) et qui contient les eventListener pour les boutons help et disconnect -->
-<script src="./JS/Banner.js" async></script>
-
-<!-- Script de la page -->
-<script src="./JS/users.js"></script>
-
+    <script src="./JS/URL.js" async></script>
+    <script src="./JS/TokenCheck.js" async></script>
+    <script src="./JS/CheckTokenExpiration.js" async></script>
+    <script src="./JS/AddNavButtons.js" async></script>
+    <script src="./JS/Banner.js" async></script>
+    <script src="./JS/users.js"></script>
 </body>
 </html>

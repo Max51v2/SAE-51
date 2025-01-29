@@ -26,6 +26,8 @@ if(window.ServerIP === ""){
     //Définition d'un dresse par défaut
     window.ServerIP = "192.168.1.31";
 
+    console.log("URL.js => Info : IP par défaut : "+window.ServerIP)
+
     window.localEditing = true;
 }
 else{

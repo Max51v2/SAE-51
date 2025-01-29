@@ -1,0 +1,167 @@
+/* Applique la police et la couleur de fond globale */
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Conteneur principal */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/* Titre */
+h2 {
+    font-size: 26px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Tableau réactif */
+.responsive-table {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.responsive-table li {
+    border-radius: 3px;
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.table-header {
+    background-color: #95A5A6;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: white;
+}
+
+.table-row {
+    background-color: #ffffff;
+    box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* Colonnes */
+.col {
+    flex-basis: 100%;
+    text-align: left;
+}
+
+.col-1 {
+    flex-basis: 10%;
+}
+
+.col-2 {
+    flex-basis: 40%;
+}
+
+.col-3 {
+    flex-basis: 25%;
+}
+
+.col-4 {
+    flex-basis: 25%;
+}
+
+/* Bouton "Supprimer" */
+button.deleteBtn {
+    padding: 8px 15px;
+    background-color: #E74C3C;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.deleteBtn:hover {
+    background-color: #C0392B;
+}
+
+/* Bouton "Voir" (Correction appliquée) */
+.viewBtn.button-25 {
+    all: unset;
+    display: inline-block;
+    background-color: #36A9AE;
+    background-image: linear-gradient(#37ADB2, #329CA0);
+    border: 1px solid #2A8387;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0 1px 1px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px 12px;
+    text-align: center;
+    transition: box-shadow .05s ease-in-out, opacity .05s ease-in-out;
+}
+
+.viewBtn.button-25:hover {
+    box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px inset, rgba(0, 0, 0, 0.4) 0 1px 2px;
+    text-decoration: none;
+    transition-duration: .15s, .15s;
+}
+
+.viewBtn.button-25:active {
+    box-shadow: rgba(0, 0, 0, 0.15) 0 2px 4px inset, rgba(0, 0, 0, 0.4) 0 1px 1px;
+}
+
+.viewBtn.button-25:disabled {
+    cursor: not-allowed;
+    opacity: .6;
+}
+
+.viewBtn.button-25:disabled:active {
+    pointer-events: none;
+}
+
+.viewBtn.button-25:disabled:hover {
+    box-shadow: none;
+}
+
+/* Responsive design */
+@media all and (max-width: 767px) {
+    .table-header {
+        display: none;
+    }
+
+    .table-row {
+        display: block;
+    }
+
+    .col {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+    }
+
+    .col:before {
+        content: attr(data-label);
+        flex-basis: 50%;
+        text-align: right;
+        color: #6C7A89;
+        padding-right: 10px;
+    }
+}
+#staticInfoTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+}
+
+#staticInfoTable th,
+#staticInfoTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#staticInfoTable th {
+    background-color: #95A5A6;
+    color: white;
+    text-align: left;
+}

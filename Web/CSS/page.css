@@ -1,4 +1,4 @@
-/* Réinitialisation de base */
+/* Réinitialisation de base */ 
 * {
     margin: 0;
     padding: 0;
@@ -86,10 +86,9 @@ section.active {
 
 /* Styles des tableaux */
 /* Styles des tableaux de cette page */
-#hardwareConfigTable,
-#realtimePerformanceTable {
+#ControlTable {
     width: 100%;
-    max-width: 1800px; /* Doublez la largeur maximale */
+    max-width: 1800px;
     margin: auto;
     background: #012B39;
     border-radius: 0.25em;
@@ -99,85 +98,99 @@ section.active {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#hardwareConfigTable th,
-#realtimePerformanceTable th {
+#ControlTable th, #ControlTable td {
+    padding: 12px 15px;
+    text-align: center;
+    font-size: 1em;
+}
+
+#ControlTable th {
     border-bottom: 1px solid #364043;
     color: #E2B842;
-    font-size: 1.1em; /* Doublez la taille de la police */
     font-weight: 600;
-    padding: 0.3em 0.8em; /* Doublez les paddings */
-    text-align: left;
 }
 
-#hardwareConfigTable td,
-#realtimePerformanceTable td {
+#ControlTable td {
     color: #E2B842;
     font-weight: 400;
-    padding: 0.8em 1.1em; /* Doublez les paddings */
-    font-size: 1.2em; /* Doublez la taille de la police */
-    text-align: center;
 }
 
-#hardwareConfigTable tbody tr,
-#realtimePerformanceTable tbody tr {
+#ControlTable tbody tr {
     transition: background 0.25s ease;
-    line-height: 1.5; /* Augmentez la hauteur des lignes */
 }
 
-#hardwareConfigTable tbody tr:hover,
-#realtimePerformanceTable tbody tr:hover {
+#ControlTable tbody tr:hover {
     background: #185602;
 }
 
-#hardwareConfigTable .disabled td,
-#realtimePerformanceTable .disabled td {
+#ControlTable .disabled td {
     color: #4F5F64;
+}
+
+/* Styles des boutons de contrôle */
+.button-control {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #4CAF50; /* Green */
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.button-control:hover {
+    background-color: #45a049;
+}
+
+.button-control:active {
+    background-color: #3e8e41;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(2px);
 }
 
 /* Responsive pour mobile */
 @media (max-width: 600px) {
-    #hardwareConfigTable,
-    #realtimePerformanceTable, 
-    #hardwareConfigTable th,
-    #realtimePerformanceTable th, 
-    #hardwareConfigTable td,
-    #realtimePerformanceTable td {
+    #ControlTable, 
+    #ControlTable th, 
+    #ControlTable td {
         display: block;
         width: 100%;
     }
 
-    #hardwareConfigTable thead,
-    #realtimePerformanceTable thead {
+    #ControlTable thead {
         display: none;
     }
 
-    #hardwareConfigTable tbody tr,
-    #realtimePerformanceTable tbody tr {
+    #ControlTable tbody tr {
         display: block;
-        margin-bottom: 13px; /* Doublez l'espace entre les lignes */
+        margin-bottom: 13px;
     }
 
-    #hardwareConfigTable tbody tr td,
-    #realtimePerformanceTable tbody tr td {
+    #ControlTable tbody tr td {
         display: flex;
         justify-content: space-between;
-        padding: 13px; /* Doublez les paddings */
+        padding: 13px;
         position: relative;
         border: none;
         border-bottom: 1px solid #ddd;
-        font-size: 0.7em; /* Ajustez la taille de police pour mobile */
+        font-size: 0.7em;
     }
 
-    #hardwareConfigTable tbody tr td:before,
-    #realtimePerformanceTable tbody tr td:before {
+    #ControlTable tbody tr td:before {
         content: attr(data-label);
         font-weight: bold;
         text-transform: uppercase;
         color: #333;
-        font-size: 0.6em; /* Augmentez légèrement la taille */
+        font-size: 0.6em;
     }
 }
-
 
 /* Styles spécifiques au tableau des produits */
 #productTable {
@@ -285,38 +298,7 @@ section.active {
     background-color: #ddd;
 }
 
-/* Responsive pour User Table */
-@media (max-width: 600px) {
-    #userTable, #userTable thead, #userTable tbody, #userTable th, #userTable td, #userTable tr {
-        display: block;
-    }
-
-    #userTable thead tr {
-        display: none;
-    }
-
-    #userTable tbody tr {
-        margin-bottom: 10px;
-    }
-
-    #userTable tbody tr td {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px;
-        position: relative;
-        border: none;
-        border-bottom: 1px solid #ddd;
-    }
-
-    #userTable tbody tr td:before {
-        content: attr(data-label);
-        font-weight: bold;
-        text-transform: uppercase;
-        color: #333;
-    }
-}
-
-/* Styles généraux des boutons */
+/* Styles des boutons */
 .button-54 {
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
@@ -340,129 +322,70 @@ section.active {
     left: 5px;
 }
 
-@media (min-width: 768px) {}
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
-#ControlTable {
-    text-align: left;
-    overflow: hidden;
-    width: 90%; /* Augmentation de la largeur à 90 % */
-    margin: 0 auto;
-    display: table;
-    padding: 0 0 10em 0; /* Augmentation de l'espace en bas */
+/* Styles pour le modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 60px;
 }
 
-#ControlTable th {
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
     font-weight: bold;
-    font-size: 1.2em; /* Augmentation de la taille de la police */
-    color: #fefcfc;
-    width: 33.33%;
-    text-align: center;
-    padding: 8px 15px; /* Augmentation des paddings */
-    font-size: 16px; /* Taille de police légèrement augmentée */
-    border: 1px solid #ddd;
-}
-
-#ControlTable td {
-    font-weight: normal;
-    font-size: 1.1em; /* Augmentation de la taille de la police */
-    -webkit-box-shadow: 0 3px 3px -2px #4963ab;
-       -moz-box-shadow: 0 3px 3px -2px #1b3272;
-            box-shadow: 0 3px 3px -2px #2053dd;
-    padding: 5px 10px; /* Augmentation des paddings */
-}
-
-/* Background-color of the odd rows */
-#ControlTable tr:nth-child(odd) {
-    background-color: #ffffff;
-}
-
-/* Background-color of the even rows */
-#ControlTable tr:nth-child(even) {
-    background-color: #ffffff;
-}
-
-#ControlTable th {
-    background-color: #0a0a0a;
-}
-
-#ControlTable td:first-child { 
-    color: #0f0101; 
-}
-
-#ControlTable tr:hover {
-    background-color: #f9f8f8;
-    -webkit-box-shadow: 0 8px 8px -6px #0d2975;
-       -moz-box-shadow: 0 8px 8px -6px #172e6f;
-            box-shadow: 0 8px 8px -6px #0b2367;
-}
-
-#ControlTable td:hover {
-    background-color: #757474;
-    color: #feffff;
-    font-weight: bold;
-
-    box-shadow: #979797 -2px 2px, #979797 -3px 3px, #979797 -4px 4px, #979797 -5px 5px, #979797 -6px 6px;
-    transform: translate3d(6px, -6px, 0);
-
-    transition-delay: 0s;
-    transition-duration: 0.4s;
-    transition-property: all;
-    transition-timing-function: linear;
-}
-
-@media (max-width: 800px) {
-    #ControlTable td:nth-child(4),
-    #ControlTable th:nth-child(4) { display: none; }
-}
-
-.button-control {
-    appearance: button;
-    background-color: #000;
-    background-image: none;
-    border: 1px solid #000;
-    border-radius: 3px;
-    box-shadow: #fff 3px 3px 0 0, #000 3px 3px 0 1px;
-    box-sizing: border-box;
-    color: #fff;
     cursor: pointer;
-    display: inline-block;
-    font-family: ITCAvantGardeStd-Bk, Arial, sans-serif;
-    font-size: 12px; /* Augmentation de la taille de police */
-    font-weight: 400;
-    line-height: 18px; /* Hauteur de ligne ajustée */
-    margin: 0 70px 10px 0; /* Marges légèrement augmentées */
-    overflow: visible;
-    padding: 10px 40px; /* Taille du padding augmentée */
-    text-align: center;
-    text-transform: none;
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-    vertical-align: middle;
-    white-space: nowrap;
 }
 
-.button-control:focus {
+.close-button:hover,
+.close-button:focus {
+    color: black;
     text-decoration: none;
 }
 
-.button-control:hover {
-    text-decoration: none;
+#addUserForm label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
 }
 
-.button-control:active {
-    box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset; /* Ombre interne ajustée */
-    outline: 0;
+#addUserForm input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
-.button-control:not([disabled]):active {
-    box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
-    transform: translate(2px, 2px);
-}
+/* Responsive pour le modal */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%;
+    }
 
-@media (min-width: 768px) {
-    .button-control {
-        padding: 10px 50px; /* Taille ajustée pour les écrans larges */
-        margin: 0 10px;
+    .close-button {
+        font-size: 24px;
+    }
+
+    #addUserForm input {
+        padding: 6px;
     }
 }
