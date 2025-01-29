@@ -125,15 +125,34 @@ public class Main {
                 out.println("password");
                 System.out.println(in.readLine());
                 System.out.println("Vous : ");
+                System.out.println("1");
                 message = scanner.nextLine(); // Lire un message depuis le clavier
+                System.out.println("5");
+                out.print(message);
+                System.out.println("7");
+                if (in.ready()) {  // Vérifie si le serveur a envoyé un message
+                    System.out.println("8");
+                    message = in.readLine();
+                    System.out.println("9");
+                    System.out.println("Serveur: " + message);
+                    if (message.equals("action")) {
+                        message = in.readLine();
+                        System.out.println("Serveur: " + message);
+                        if (message.equals("1")) {
+                            System.out.println("caca");
+                        } else if (message.equals("2")) {
+                            System.out.println("ca");
+                        } else if (message.equals("3")) {
+                            System.out.println("cacaca");
+                        }
+                    }
 
-                out.println(message); // Envoyer le message au serveur
-                //out.println("array:" + Arrays.toString(Info_hardware)); // Envoyer le message au serveur
-
-                // Lire et afficher la réponse du serveur
-                String response = in.readLine();
-                //response = in.readLine();
-                System.out.println("Serveur : " + response);
+                }
+                System.out.println("3");
+                message = in.readLine();
+                System.out.println(message);
+                System.out.println("test");
+                sleep(500);
 
                 // Si le message est "exit", quitter la boucle
                 if ("exit".equalsIgnoreCase(message)) {
