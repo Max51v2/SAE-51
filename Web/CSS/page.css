@@ -86,10 +86,9 @@ section.active {
 
 /* Styles des tableaux */
 /* Styles des tableaux de cette page */
-#hardwareConfigTable,
-#realtimePerformanceTable {
+#ControlTable {
     width: 100%;
-    max-width: 1800px; /* Doublez la largeur maximale */
+    max-width: 1800px;
     margin: auto;
     background: #012B39;
     border-radius: 0.25em;
@@ -99,82 +98,97 @@ section.active {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#hardwareConfigTable th,
-#realtimePerformanceTable th {
+#ControlTable th, #ControlTable td {
+    padding: 12px 15px;
+    text-align: center;
+    font-size: 1em;
+}
+
+#ControlTable th {
     border-bottom: 1px solid #364043;
     color: #E2B842;
-    font-size: 1.1em; /* Doublez la taille de la police */
     font-weight: 600;
-    padding: 0.3em 0.8em; /* Doublez les paddings */
-    text-align: left;
 }
 
-#hardwareConfigTable td,
-#realtimePerformanceTable td {
+#ControlTable td {
     color: #E2B842;
     font-weight: 400;
-    padding: 0.8em 1.1em; /* Doublez les paddings */
-    font-size: 1.2em; /* Doublez la taille de la police */
-    text-align: center;
 }
 
-#hardwareConfigTable tbody tr,
-#realtimePerformanceTable tbody tr {
+#ControlTable tbody tr {
     transition: background 0.25s ease;
-    line-height: 1.5; /* Augmentez la hauteur des lignes */
 }
 
-#hardwareConfigTable tbody tr:hover,
-#realtimePerformanceTable tbody tr:hover {
+#ControlTable tbody tr:hover {
     background: #185602;
 }
 
-#hardwareConfigTable .disabled td,
-#realtimePerformanceTable .disabled td {
+#ControlTable .disabled td {
     color: #4F5F64;
+}
+
+/* Styles des boutons de contrôle */
+.button-control {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #4CAF50; /* Green */
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.button-control:hover {
+    background-color: #45a049;
+}
+
+.button-control:active {
+    background-color: #3e8e41;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(2px);
 }
 
 /* Responsive pour mobile */
 @media (max-width: 600px) {
-    #hardwareConfigTable,
-    #realtimePerformanceTable, 
-    #hardwareConfigTable th,
-    #realtimePerformanceTable th, 
-    #hardwareConfigTable td,
-    #realtimePerformanceTable td {
+    #ControlTable, 
+    #ControlTable th, 
+    #ControlTable td {
         display: block;
         width: 100%;
     }
 
-    #hardwareConfigTable thead,
-    #realtimePerformanceTable thead {
+    #ControlTable thead {
         display: none;
     }
 
-    #hardwareConfigTable tbody tr,
-    #realtimePerformanceTable tbody tr {
+    #ControlTable tbody tr {
         display: block;
-        margin-bottom: 13px; /* Doublez l'espace entre les lignes */
+        margin-bottom: 13px;
     }
 
-    #hardwareConfigTable tbody tr td,
-    #realtimePerformanceTable tbody tr td {
+    #ControlTable tbody tr td {
         display: flex;
         justify-content: space-between;
-        padding: 13px; /* Doublez les paddings */
+        padding: 13px;
         position: relative;
         border: none;
         border-bottom: 1px solid #ddd;
-        font-size: 0.7em; /* Ajustez la taille de police pour mobile */
+        font-size: 0.7em;
     }
 
-    #hardwareConfigTable tbody tr td:before,
-    #realtimePerformanceTable tbody tr td:before {
+    #ControlTable tbody tr td:before {
         content: attr(data-label);
         font-weight: bold;
         text-transform: uppercase;
         color: #333;
-        font-size: 0.6em; /* Augmentez légèrement la taille */
+        font-size: 0.6em;
     }
 }
 
