@@ -6,7 +6,8 @@ document.addEventListener("TokenCheckFinished", () => {
     const mainContent = document.getElementById("MainTable");
     const pcDetailsPage = document.getElementById("pcDetailsPage");
     const pcRights = document.getElementById("pcRights");
-    const backToListBtn = document.getElementById("backToList");
+    const backToListBtn1 = document.getElementById("backToList1");
+    const backToListBtn2 = document.getElementById("backToList2");
     const staticInfoTable = document.querySelector("#staticInfoTable");
     const rightsTable = document.querySelector("rightsTable");
     
@@ -48,7 +49,7 @@ document.addEventListener("TokenCheckFinished", () => {
                     <div class="col col-4" data-label="Actions">
                         <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
                         <button class="button-25 viewBtn" data-id="${pc.id}">Voir</button>
-                        <button class="button-25 rightsBtn" data-id="${pc.id}">Droits d'accès</button>
+                        <button class="rightsBtn" data-id="${pc.id}">Droits d'accès</button>
                     </div>
                 `;
                 tableBody.appendChild(row);
@@ -59,6 +60,156 @@ document.addEventListener("TokenCheckFinished", () => {
             console.error("Erreur lors du chargement :", error);
         }
     };
+
+
+    // Fonction ajouter les droits des utilisateurs sur une machine
+    const getRights = async (pcId) => {
+        if (!pcId) {
+            alert("ID du PC non valide.");
+            return;
+        }
+
+        try {
+            console.log(`Chargement des détails pour les droits des PC ID: ${pcId}`);
+            response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListUsersWithAccess`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: pcId, hasAccess: "true", token: token, Test: test })
+            });
+
+            data = await response.json();
+
+            if (data.erreur) {
+                console.error(`Erreur: ${data.erreur}`);
+                alert(`Erreur: ${data.erreur}`);
+                return;
+            }
+
+            // Cache la liste principale et affiche les détails
+            mainContent.style.display = "none";
+            pcDetailsPage.style.display = "none";
+            pcRights.style.display = "block";
+
+            fillRightsTableAllowed(data);
+
+            response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListUsersWithAccess`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: pcId, hasAccess: "false", token: token, Test: test })
+            });
+
+            data = await response.json();
+
+            if (data.erreur) {
+                console.error(`Erreur: ${data.erreur}`);
+                alert(`Erreur: ${data.erreur}`);
+                return;
+            }
+
+            fillRightsTableForbidden(data);
+
+        } catch (error) {
+            console.error("Erreur lors du chargement des infos :", error);
+        }
+    };
+
+
+    // Remplir le tableau avec les infos reçues
+    const fillRightsTableAllowed = (data) => {
+
+        const userTableBody = document.getElementById("allowed");
+
+        if(data !== undefined){
+            userTableBody.innerHTML = ""; // Vide le tableau avant d'ajouter les nouvelles données
+
+            data.forEach(user => {
+                if(user.canBeDeleted === "false"){
+                    userTableBody.innerHTML += `
+                        <button 
+                            style="background: none; 
+                                    border: none; 
+                                    padding: 0; 
+                                    cursor: pointer; 
+                                    display: flex; 
+                                    margin-right: 20px;
+                                    margin-left: 20px;
+                                    padding-top: 8px;
+                                    align-items: center;"">
+                            <span style="background: url('./images/locked.webp') no-repeat center; 
+                                        background-size: contain; 
+                                        width: 25px; 
+                                        height: 25px; 
+                                        display: inline-block;
+                                        margin-right: 10px;"></span>
+                            <span style="font-size: 15px;">${user.user}</span>
+                        </button>
+                        <br>
+                    `;
+                }
+                else{
+                    userTableBody.innerHTML += `
+                        <button 
+                            style="background: none; 
+                                    border: none; 
+                                    padding: 0; 
+                                    cursor: pointer; 
+                                    display: flex; 
+                                    margin-right: 20px;
+                                    margin-left: 20px;
+                                    padding-top: 8px;
+                                    align-items: center;" 
+                            onClick="deleteUser('${user.user}')">
+                            <span style="background: url('./images/trash.webp') no-repeat center; 
+                                        background-size: contain; 
+                                        width: 25px; 
+                                        height: 25px; 
+                                        display: inline-block;
+                                        margin-right: 10px;"></span>
+                            <span style="font-size: 15px;">${user.user}</span>
+                        </button>
+                        <br>
+                    `;
+                }
+            });
+        }
+    };
+
+
+    // Remplir le tableau avec les infos reçues
+    const fillRightsTableForbidden = (data) => {
+
+        const userTableBody = document.getElementById("forbidden");
+
+        if(data !== undefined){
+            userTableBody.innerHTML = ""; // Vide le tableau avant d'ajouter les nouvelles données
+
+            data.forEach(user => {
+                userTableBody.innerHTML += `
+                    <button 
+                        style="background: none; 
+                                border: none; 
+                                padding: 0; 
+                                cursor: pointer; 
+                                display: flex; 
+                                margin-right: 20px;
+                                margin-left: 20px;
+                                padding-top: 8px;
+                                align-items: center;" 
+                        onClick="addUser('${user.user}')">
+                        <span style="background: url('./images/plus.webp') no-repeat center; 
+                                    background-size: contain; 
+                                    width: 25px; 
+                                    height: 25px; 
+                                    display: inline-block;
+                                    margin-right: 10px;"></span>
+                        <span style="font-size: 15px;">${user.user}</span>
+                    </button>
+                    <br>
+                `;
+            });
+        }
+    };
+
 
     // Fonction pour afficher les détails d'un PC
     const showPcDetails = async (pcId) => {
@@ -90,20 +241,6 @@ document.addEventListener("TokenCheckFinished", () => {
         }
     };
 
-    // Remplir le tableau avec les infos reçues
-    const fillStaticInfoTableAllowed = (data) => {
-        rightsTable.innerHTML = `
-            <tr><td>ID</td><td>${data.id}</td></tr>
-            <tr><td>Modèle CPU</td><td>${data.cpu_model}</td></tr>
-        `;
-
-        console.log("Détails du PC chargés et affichés.");
-        
-        // Cache la liste principale et affiche les détails
-        mainContent.style.display = "none";
-        pcDetailsPage.style.display = "none";
-        pcRights.style.display = "block";
-    };
 
     // Remplir le tableau avec les droits des utilisateur
     const fillStaticInfoTable = (data) => {
@@ -133,7 +270,14 @@ document.addEventListener("TokenCheckFinished", () => {
     };
 
     // Fonction pour retourner à la liste principale
-    backToListBtn.addEventListener("click", () => {
+    backToListBtn1.addEventListener("click", () => {
+        mainContent.style.display = "block";
+        pcDetailsPage.style.display = "none";
+        pcRights.style.display = "none";
+    });
+
+    // Fonction pour retourner à la liste principale
+    backToListBtn2.addEventListener("click", () => {
         mainContent.style.display = "block";
         pcDetailsPage.style.display = "none";
         pcRights.style.display = "none";

@@ -209,6 +209,11 @@ INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Adm
 INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Utilisateur', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Aucun', 'false');
 
+--ListUsersWithAccess
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsersWithAccess', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsersWithAccess', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsersWithAccess', 'Aucun', 'false');
+
 
 
 --Table contenant les logs d'utilisation des servlets

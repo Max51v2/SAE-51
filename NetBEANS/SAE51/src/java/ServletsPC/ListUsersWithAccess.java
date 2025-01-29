@@ -16,18 +16,31 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
+ * @version 1.0
  */
 @WebServlet(name = "ListUsersWithAccess", urlPatterns = {"/ListUsersWithAccess"})
 public class ListUsersWithAccess extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Liste les utilisateurs qui ont accès au pc<br><br>
+     * 
+     * Variables à envoyer au servlet (POST)<br>
+     * Integer id       &emsp;&emsp;        id de l'ordinateur <br>
+     * String hasAccess       &emsp;&emsp;        type d'accès (true : Autorisé | false : refusé)
+     * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
+     * 
+     * <br>
+     * Variables renvoyées par le servlet (JSON)<br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | none <br>
+     * OU
+     * Integer user       &emsp;&emsp;        utilisateur qui a accès à la machine <br>
+     * String canBeDeleted       &emsp;&emsp;        retrait de l'utilisateur possible ou non <br>
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,6 +62,7 @@ public class ListUsersWithAccess extends HttpServlet {
         
         //Données envoyées par la requête
         Integer id = json.getId();
+        Boolean hasAccess = Boolean.valueOf(json.getHasAccess());
         String token = json.getToken();
         Boolean TestBoolean = Boolean.valueOf(json.getTest());
 
@@ -58,7 +72,7 @@ public class ListUsersWithAccess extends HttpServlet {
         String loginLog = "Aucun";
         
         //Vérification du contenu envoyé
-        if(token == null | id == null){
+        if(token == null | id == null | hasAccess == null){
             //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
@@ -77,9 +91,8 @@ public class ListUsersWithAccess extends HttpServlet {
                 //Si l'utilisateur a les droits
                 if(access.equals("true")){
 
-                    //Récupération des ordinateurs auquel l'utilisateur a accès
-                    String login = DAO.getLogin();
-                    jsonString = DAO2.getPCStaticInfo(id, login, rights, TestBoolean);
+                    //Récupération des utilisateurs qui ont le droits d'accéder au PC
+                    jsonString = DAO2.getUsersDependingOnPermissions(id, hasAccess, TestBoolean);
                 }
                 else{
                     //JSON renvoyé

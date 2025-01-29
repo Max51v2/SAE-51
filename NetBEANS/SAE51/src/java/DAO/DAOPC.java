@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 /**
  * Classe contenant toutes les intéractions avec la BD partie PC
@@ -323,7 +324,7 @@ public class DAOPC {
         String JSONString = "" ;
         
         //Vérification des droits d'accès au PC
-        Boolean getInfo = getUserPCAccess(idPC, login, rights, Test);
+        Boolean getInfo = getUserPCAccess(idPC, login, Test);
         
         //Si l'utilisateur a les droits d'accès au pc
         if(getInfo == true){
@@ -418,12 +419,14 @@ public class DAOPC {
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
-    public Boolean getUserPCAccess(Integer idPC, String login, String rights, Boolean Test){
+    public Boolean getUserPCAccess(Integer idPC, String login, Boolean Test){
         
         //Vérification des droits d'accès au pc
         String RequeteSQL="SELECT droits FROM pc WHERE id = ?";
         String droits = "";
         Boolean getInfo = false;
+        DAOusers DAO2 = new DAOusers();
+        String rights= DAO2.getUserRightsFromLogin(login, Test);
         
         //Selection de la BD
         changeConnection(Test);
@@ -456,5 +459,82 @@ public class DAOPC {
         }
         
         return getInfo;
+    }
+    
+    /**
+     * Renvoi les utilisateurs qui ont ou non le droit d'accéder à un pc
+     * 
+     * @param idPC      id du pc
+     * @param hasAccess     défini si on renvoi les utilisateurs qui ont accès au pc ou non
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
+     */
+    public String getUsersDependingOnPermissions(Integer idPC,Boolean hasAccess, Boolean Test){
+        
+        //Requête SQL
+        String RequeteSQL="SELECT login FROM users";
+        
+        String JSONString = "" ;
+        String login = "";
+        Boolean getInfo = null;
+        String rights = "";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Integer c = 1;
+                
+                // Ouvrir le tableau JSON
+                JSONString += "[";
+                
+                while (resultSet.next()) {
+                    login = resultSet.getString("login");
+                    
+                    //Vérification des droits d'accès au PC par l'utilisateur actuel
+                    getInfo = getUserPCAccess(idPC, login, Test);
+                    
+                    //Si les droits correspondent au type d'accès souhaité alors on ajoute l'utilisateur au JSON
+                    System.out.println("--"+getInfo+" : "+hasAccess+"--");
+                    if(Objects.equals(getInfo, hasAccess)){
+                        
+                        // Ajouter une virgule avant chaque entrée sauf la première
+                        if (c > 1) {
+                            JSONString += ",";
+                        }
+                        
+                        //Vérification des droits utilisateur
+                        DAOusers DAO2 = new DAOusers();
+                        rights= DAO2.getUserRightsFromLogin(login, Test);
+        
+                        //On dit s'il faut ajouter un bouton (pour éviter le retrait de l'admin car il a les droits par défaut)
+                        if(rights.equals("Admin")){
+                            JSONString += "{\"user\":\""+login+"\", \"canBeDeleted\":\"false\"}";
+                        }
+                        else{
+                            JSONString += "{\"user\":\""+login+"\", \"canBeDeleted\":\"true\"}";
+                        }
+                        
+                        c += 1;
+                    }
+                }
+                
+                // Fermer le tableau JSON
+                JSONString += "]";
+            } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return JSONString;
     }
 }
