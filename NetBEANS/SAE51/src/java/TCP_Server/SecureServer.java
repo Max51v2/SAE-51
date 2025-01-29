@@ -78,7 +78,7 @@ public class SecureServer implements Runnable {
     }
 
     // Méthode pour attribuer un ID unique à un nouveau client
-    private int assignClientId() {
+    private int assignClientId(SSLSocket clientSocket) {
         int clientId = -1;
 
         try (Connection connection = DriverManager.getConnection(DB_URL, UserPostgres, PasswordPostgres);
@@ -102,10 +102,17 @@ public class SecureServer implements Runnable {
             }
 
             // Insérer le nouvel ID dans la table
-            try (PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO pc_static_info (id) VALUES (?);");) {
+            try (PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO pc_static_info (id) VALUES (?);" );) {
                 insertStmt.setInt(1, clientId);
                 insertStmt.executeUpdate();
             }
+            try (PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO pc (id,ip,droits) VALUES (?,?,?);" );) {
+                insertStmt.setInt(1, clientId);
+                insertStmt.setString(2, clientSocket.getInetAddress().getHostAddress());
+                insertStmt.setString(3, "NULL");
+                insertStmt.executeUpdate();
+            }
+            
 
         } catch (Exception e) {
             System.err.println("Erreur lors de l'attribution d'un ID client : " + e.getMessage());
@@ -114,20 +121,13 @@ public class SecureServer implements Runnable {
 
         return clientId;
     }
-    public void sendMessageToClient(int clientId, int action) {
+    public void sendMessageToClient(int clientId, String action) {
         SSLSocket clientSocket = clientMap.get(clientId);
+        System.out.println("tes");
         if (clientSocket != null && !clientSocket.isClosed()) {
             try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
                 out.println("action");
-                if (action == 1) {
-                    out.println("1");
-                } else if (action == 2) {
-                    out.println("2");
-                    
-                } else if (action == 3) {
-                    out.println("3");
-                    
-                }
+                out.println(action);
             } catch (IOException e) {
                 System.err.println("Erreur lors de l'envoi du message au client " + clientId + " : " + e.getMessage());
             }
@@ -150,7 +150,7 @@ public class SecureServer implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)
             ) {
-                int clientId = assignClientId();
+                int clientId = assignClientId(clientSocket);
                 clientMap.put(clientId, clientSocket);
                 out.println("Votre ID client est : " + clientId);
 
@@ -166,10 +166,11 @@ public class SecureServer implements Runnable {
                         out.println("Déconnexion demandée. Au revoir !");
                         break;
                     } else if (message.startsWith("Array :")) {
-                        
-                        out.println("Message reçu : " + message);
+                                        System.out.println("1");
+                        sendMessageToClient(clientId, message);
                     } else {
-                        out.print(message);
+                                        System.out.println("2");
+                        sendMessageToClient(clientId, message);
                     }
                 }
                 } else {
