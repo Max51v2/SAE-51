@@ -4,12 +4,22 @@ import javax.net.ssl.*;
 import java.io.*;
 import java.net.Socket;
 import java.security.KeyStore;
-import java.util.Arrays;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SecureServer implements Runnable {
     private int port;
     private boolean running = true;
     private SSLServerSocket serverSocket;
+    private static final String UserPostgres="postgres";
+    private static final String PasswordPostgres="leffe";
+    private final ConcurrentHashMap<Integer, SSLSocket> clientMap = new ConcurrentHashMap<>();
+
+    private static final String DB_URL = "jdbc:postgresql://localhost:5432/sae_51";
 
     public synchronized void start(int port) {
         this.port = port;
@@ -64,6 +74,120 @@ public class SecureServer implements Runnable {
             }
         } catch (IOException e) {
             System.err.println("Erreur lors de l'arrêt du serveur : " + e.getMessage());
+        }
+    }
+
+    // Méthode pour attribuer un ID unique à un nouveau client
+    private int assignClientId() {
+        int clientId = -1;
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, UserPostgres, PasswordPostgres);
+             Statement statement = connection.createStatement()) {
+
+            // Vérifier s'il existe un ID réutilisable (lacune)
+            ResultSet gaps = statement.executeQuery("SELECT id + 1 AS next_id " +
+                "FROM pc_static_info t1 " +
+                "WHERE NOT EXISTS (SELECT 1 FROM pc_static_info t2 WHERE t2.id = t1.id + 1) " +
+                "AND id < (SELECT MAX(id) FROM pc_static_info) " +
+                "LIMIT 1;");
+
+            if (gaps.next()) {
+                clientId = gaps.getInt("next_id");
+            } else {
+                // Si aucun ID réutilisable, prendre le prochain ID disponible
+                ResultSet maxIdResult = statement.executeQuery("SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM pc_static_info;");
+                if (maxIdResult.next()) {
+                    clientId = maxIdResult.getInt("next_id");
+                }
+            }
+
+            // Insérer le nouvel ID dans la table
+            try (PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO pc_static_info (id) VALUES (?);");) {
+                insertStmt.setInt(1, clientId);
+                insertStmt.executeUpdate();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'attribution d'un ID client : " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return clientId;
+    }
+    public void sendMessageToClient(int clientId, int action) {
+        SSLSocket clientSocket = clientMap.get(clientId);
+        if (clientSocket != null && !clientSocket.isClosed()) {
+            try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
+                out.println("action");
+                if (action == 1) {
+                    out.println("1");
+                } else if (action == 2) {
+                    out.println("2");
+                    
+                } else if (action == 3) {
+                    out.println("3");
+                    
+                }
+            } catch (IOException e) {
+                System.err.println("Erreur lors de l'envoi du message au client " + clientId + " : " + e.getMessage());
+            }
+        } else {
+            System.err.println("Client avec l'ID " + clientId + " introuvable ou déconnecté.");
+        }
+    }
+
+    // Gérer un client
+    private class ClientHandler extends Thread {
+        private SSLSocket clientSocket;
+
+        public ClientHandler(SSLSocket clientSocket) {
+            this.clientSocket = clientSocket;
+        }
+
+        @Override
+        public void run() {
+            try (
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)
+            ) {
+                int clientId = assignClientId();
+                clientMap.put(clientId, clientSocket);
+                out.println("Votre ID client est : " + clientId);
+
+                out.println("Bienvenue sur le serveur sécurisé ! Tapez vos messages ou 'exit' pour quitter.");
+
+                String message = in.readLine();
+                if (message.equalsIgnoreCase("password")) {
+                    out.println("connexion réussi");
+                while ((message = in.readLine()) != null) {
+                    System.out.println("Message reçu de l'ID " + clientId + " : " + message);
+
+                    if ("exit".equalsIgnoreCase(message)) {
+                        out.println("Déconnexion demandée. Au revoir !");
+                        break;
+                    } else if (message.startsWith("Array :")) {
+                        
+                        out.println("Message reçu : " + message);
+                    } else {
+                        out.print(message);
+                    }
+                }
+                } else {
+                    out.print("mot de passe incorect");
+                    clientSocket.close();
+                }
+
+            } catch (IOException e) {
+                System.err.println("Erreur avec le client : " + e.getMessage());
+            } finally {
+                try {
+                    clientMap.values().remove(clientSocket); // Retirer du map des clients
+                    clientSocket.close();
+                    System.out.println("Connexion fermée pour le client.");
+                } catch (IOException e) {
+                    System.err.println("Erreur lors de la fermeture de la connexion : " + e.getMessage());
+                }
+            }
         }
     }
 }

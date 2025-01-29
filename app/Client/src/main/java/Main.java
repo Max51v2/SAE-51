@@ -115,20 +115,24 @@ public class Main {
 
             // Afficher le message de bienvenue du serveur
             System.out.println("Serveur : " + in.readLine());
+            System.out.println(in.readLine());
+
 
             // Envoyer des messages en continu
             Scanner scanner = new Scanner(System.in);
             String message;
             while (true) {
-                System.out.print("Vous : ");
+                out.println("password");
+                System.out.println(in.readLine());
+                System.out.println("Vous : ");
                 message = scanner.nextLine(); // Lire un message depuis le clavier
 
                 out.println(message); // Envoyer le message au serveur
-                out.println("array:" + Arrays.toString(Info_hardware)); // Envoyer le message au serveur
+                //out.println("array:" + Arrays.toString(Info_hardware)); // Envoyer le message au serveur
 
                 // Lire et afficher la réponse du serveur
                 String response = in.readLine();
-                response = in.readLine();
+                //response = in.readLine();
                 System.out.println("Serveur : " + response);
 
                 // Si le message est "exit", quitter la boucle
