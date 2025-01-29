@@ -1,14 +1,14 @@
-//Auteur(s) JS : Gabin PETITCOLAS
-//Version : ?
-
-
-
-
-
 document.addEventListener("TokenCheckFinished", (event) => {
-
     window.deleteUser = deleteUser;
     window.changePassword = changePassword;
+
+    const addUserButton = document.getElementById("addUserButton");
+    const addUserModal = document.getElementById("addUserModal");
+    const closeModal = document.querySelector(".close-button");
+    const addUserForm = document.getElementById("addUserForm");
+
+    //Token utilisateur
+    token = sessionStorage.getItem("token");
 
     // Récupérer la liste des utilisateurs et remplir le tableau
     function fetchUsers() {
@@ -36,17 +36,64 @@ document.addEventListener("TokenCheckFinished", (event) => {
                 `;
                 userTableBody.appendChild(row);
             });
-        })
+        });
     }
+
+    // Afficher le modal
+    addUserButton.addEventListener("click", () => {
+        addUserModal.style.display = "block";
+    });
+
+    // Fermer le modal
+    closeModal.addEventListener("click", () => {
+        addUserModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+        if (event.target === addUserModal) {
+            addUserModal.style.display = "none";
+        }
+    });
+
+    // Soumettre le formulaire pour ajouter un utilisateur
+    addUserForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(addUserForm);
+        const user = {
+            nom: formData.get("nom"),
+            prenom: formData.get("prenom"),
+            login: formData.get("login"),
+            droits: formData.get("droits"),
+            password: formData.get("MDP"),
+            token: token,
+            Test : "false"
+        };
+
+        fetch(`https://${window.ServerIP}:8443/SAE51/AddUser`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(user)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.erreur === "none") {
+                alert("Utilisateur ajouté avec succès !");
+                addUserModal.style.display = "none";
+                fetchUsers(); // Met à jour le tableau
+            } else {
+                alert("Erreur lors de l'ajout de l'utilisateur.");
+                console.error(result);
+            }
+        });
+    });
 
     // Supprimer un utilisateur
     function deleteUser(login) {
-        UserLogin = sessionStorage.getItem('login');
+        const UserLogin = sessionStorage.getItem('login');
 
-        if(UserLogin === login){
-            alert('Vous ne pouvez pas supprimer votre propre compte')
-        }
-        else{
+        if (UserLogin === login) {
+            alert('Vous ne pouvez pas supprimer votre propre compte');
+        } else {
             fetch(`https://${window.ServerIP}:8443/SAE51/DeleteUser`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -59,9 +106,9 @@ document.addEventListener("TokenCheckFinished", (event) => {
                     fetchUsers(); // Rafraîchit la liste des utilisateurs
                 } else {
                     alert("Erreur lors de la suppression de l'utilisateur.");
-                    console.log(result)
+                    console.log(result);
                 }
-            })
+            });
         }
     }
 
@@ -80,18 +127,12 @@ document.addEventListener("TokenCheckFinished", (event) => {
                     alert("Mot de passe modifié avec succès !");
                 } else {
                     alert("Erreur lors de la modification du mot de passe.");
-                    console.log(result)
+                    console.log(result);
                 }
-            })
+            });
         }
     }
 
-    // Initialisation - récupérer le token et charger les utilisateurs
-    function initialize() {
-        fetchUsers(); // Récupère et affiche les utilisateurs
-    }
-
-    // Exécute la fonction d'initialisation au chargement de la page
-    window.onload = initialize();
-
-})
+    // Initialisation
+    fetchUsers();
+});
