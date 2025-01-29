@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="./images/flavicon.webp">
     <title>Surveillance des Machines - Liste des PCs</title>
     <link rel="stylesheet" href="./CSS/BannerDiv.css">
     <link rel="stylesheet" href="./CSS/page.css">
@@ -33,50 +34,68 @@
         </div>
 
         <div id="mainContent">
-            <h2>Liste des Machines</h2>
-            <div class="container">
+            <div id="MainTable">
+                <h2>Liste des Machines</h2>
                 <ul class="responsive-table" id="pcList">
                     <!-- En-tête du tableau -->
                     <li class="table-header">
                         <div class="col col-1">ID</div>
                         <div class="col col-2">IP</div>
-                        <div class="col col-3">Statut</div>
                         <div class="col col-4">Actions</div>
-                    </li>
-                    <!-- Exemple de ligne avec bouton "Voir" -->
-                    <li class="table-row">
-                        <div class="col col-1" data-label="ID">123</div>
-                        <div class="col col-2" data-label="IP">192.168.1.10</div>
-                        <div class="col col-3" data-label="Statut">En ligne</div>
-                        <div class="col col-4" data-label="Actions">
-                            <button class="deleteBtn" data-id="123">Supprimer</button>
-                            <button class="button-25 viewBtn" data-id="123">Voir</button>
-                        </div>
                     </li>
                 </ul>
             </div>
+
+            <!-- Page de détails du PC -->
+            <div id="pcDetailsPage" class="details-page" style="display: none;">
+                <h2>Détails du PC</h2>
+                <table class="rwd-table">
+                    <thead>
+                        <tr>
+                            <th>Attribut</th>
+                            <th>Valeur</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staticInfoTable">
+                        <!-- Contenu ajouté dyn -->
+                    </tbody>
+                </table>
+                <button id="backToList" type="button" class="back-button">Retour à la Liste</button>
+            </div>
+
+            <!-- Page de détails du PC -->
+            <div id="pcRights" class="details-page" style="display: none;">
+                <h2>Droits d'accès</h2>
+                <table class="rwd-table">
+                    <thead>
+                        <tr>
+                            <th>Autorisé</th>
+                            <th>Refusé</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rightsTable">
+                        <!-- Contenu ajouté dyn -->
+                    </tbody>
+                </table>
+                <button id="backToList" type="button" class="back-button">Retour à la Liste</button>
+            </div>
         </div>
     </div>
-    
-    <!-- Page de détails du PC -->
-    <div id="pcDetailsPage" class="details-page" style="display: none;">
-        <h2>Détails du PC</h2>
-        <table id="staticInfoTable" class="rwd-table">
-            <thead>
-                <tr>
-                    <th>Attribut</th>
-                    <th>Valeur</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <button id="backToList" type="button" class="back-button">Retour à la Liste</button>
-    </div>
 
-    <script src="./JS/URL.js" async></script>
-    <script src="./JS/TokenCheck.js" async></script>
-    <script src="./JS/CheckTokenExpiration.js" async></script>
-    <script src="./JS/AddNavButtons.js" async></script>
-    <script src="./JS/monitoring.js" defer></script>
+
+<!-- ne pas toucher aux 3 scripts ci-dessous SAUF en cas de BUG -->
+<script src="./JS/URL.js" async></script>
+<script src="./JS/TokenCheck.js" async></script>
+<script src="./JS/CheckTokenExpiration.js" async></script>
+
+<!-- Boutons de navigation -->
+<script src="./JS/AddNavButtons.js" async></script>
+
+<!-- Script qui remplit la bannière (login + droits) et qui contient les eventListener pour les boutons help et disconnect -->
+<script src="./JS/Banner.js" async></script>
+
+<!-- Script de la page -->
+<script src="./JS/monitoring.js" defer></script>
+
 </body>
 </html>

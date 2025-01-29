@@ -1,21 +1,24 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const token = "userToken"; // Assurez-vous que ce token est valide
-    const test = true;
+document.addEventListener("TokenCheckFinished", () => {
+    let token = sessionStorage.getItem('token');
+    const test = false;
 
     const tableBody = document.querySelector("#pcList");
-    const mainContent = document.getElementById("mainContent");
+    const mainContent = document.getElementById("MainTable");
     const pcDetailsPage = document.getElementById("pcDetailsPage");
+    const pcRights = document.getElementById("pcRights");
     const backToListBtn = document.getElementById("backToList");
-    const staticInfoTable = document.querySelector("#staticInfoTable tbody");
+    const staticInfoTable = document.querySelector("#staticInfoTable");
+    const rightsTable = document.querySelector("rightsTable");
+    
 
     // Fonction principale pour charger la liste des PCs
     const loadPcList = async () => {
         try {
             console.log("Chargement de la liste des PCs...");
-            const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPc`, {
+            const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPC`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token:token, Test: test })
+                body: JSON.stringify({ token: token, Test: test })
             });
 
             const data = await response.json();
@@ -31,16 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <li class="table-header">
                     <div class="col col-1">ID</div>
                     <div class="col col-2">IP</div>
-                    <div class="col col-3">Statut</div>
                     <div class="col col-4">Actions</div>
                 </li>
             `;
-
-            // Vérification si la liste est vide
-            if (data.length === 0) {
-                addTestPcToList();
-                return;
-            }
 
             // Génération des lignes pour chaque PC
             data.forEach(pc => {
@@ -49,10 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 row.innerHTML = `
                     <div class="col col-1" data-label="ID">${pc.id}</div>
                     <div class="col col-2" data-label="IP">${pc.IP}</div>
-                    <div class="col col-3" data-label="Statut">${pc.status || "Inconnu"}</div>
                     <div class="col col-4" data-label="Actions">
                         <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
                         <button class="button-25 viewBtn" data-id="${pc.id}">Voir</button>
+                        <button class="button-25 rightsBtn" data-id="${pc.id}">Droits d'accès</button>
                     </div>
                 `;
                 tableBody.appendChild(row);
@@ -62,28 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("Erreur lors du chargement :", error);
         }
-    };
-
-    // Ajouter un PC de test à la liste
-    const addTestPcToList = () => {
-        const testPc = {
-            id: 1,
-            IP: "192.168.0.1",
-            status: "En ligne"
-        };
-
-        const row = document.createElement("li");
-        row.className = "table-row";
-        row.innerHTML = `
-            <div class="col col-1" data-label="ID">${testPc.id}</div>
-            <div class="col col-2" data-label="IP">${testPc.IP}</div>
-            <div class="col col-3" data-label="Statut">${testPc.status}</div>
-            <div class="col col-4" data-label="Actions">
-                <button class="deleteBtn" data-id="${testPc.id}">Supprimer</button>
-                <button class="button-25 viewBtn" data-id="${testPc.id}">Voir</button>
-            </div>
-        `;
-        tableBody.appendChild(row);
     };
 
     // Fonction pour afficher les détails d'un PC
@@ -98,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStaticInfo`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id: pcId, token:token, Test: test })
+                body: JSON.stringify({ id: pcId, token: token, Test: test })
             });
 
             const data = await response.json();
@@ -117,6 +91,21 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Remplir le tableau avec les infos reçues
+    const fillStaticInfoTableAllowed = (data) => {
+        rightsTable.innerHTML = `
+            <tr><td>ID</td><td>${data.id}</td></tr>
+            <tr><td>Modèle CPU</td><td>${data.cpu_model}</td></tr>
+        `;
+
+        console.log("Détails du PC chargés et affichés.");
+        
+        // Cache la liste principale et affiche les détails
+        mainContent.style.display = "none";
+        pcDetailsPage.style.display = "none";
+        pcRights.style.display = "block";
+    };
+
+    // Remplir le tableau avec les droits des utilisateur
     const fillStaticInfoTable = (data) => {
         staticInfoTable.innerHTML = `
             <tr><td>ID</td><td>${data.id}</td></tr>
@@ -140,12 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Cache la liste principale et affiche les détails
         mainContent.style.display = "none";
         pcDetailsPage.style.display = "block";
+        pcRights.style.display = "none";
     };
 
     // Fonction pour retourner à la liste principale
     backToListBtn.addEventListener("click", () => {
         mainContent.style.display = "block";
         pcDetailsPage.style.display = "none";
+        pcRights.style.display = "none";
     });
 
     // Gestion des événements via délégation
@@ -158,6 +149,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const pcId = event.target.getAttribute("data-id");
             console.log(`Bouton Supprimer cliqué pour le PC ID: ${pcId}`);
             deletePc(pcId);
+        } else if (event.target.classList.contains("rightsBtn")) {
+            const pcId = event.target.getAttribute("data-id");
+            console.log(`Bouton Modif droits pour le PC ID: ${pcId}`);
+            getRights(pcId);
         }
     });
 
