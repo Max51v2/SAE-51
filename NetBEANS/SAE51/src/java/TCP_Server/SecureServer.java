@@ -184,14 +184,15 @@ public class SecureServer implements Runnable {
                         out.println("Déconnexion demandée. Au revoir !");
                         break;
                     } else if (message.startsWith("Array :")) {
-                                        System.out.println("1");
-                        String elements[] = message.split(",\\s*");
-                        System.out.println(elements[1]);
+                        System.out.println("1");
+                        String arrayData = message.substring(9).trim();
+                        String elements[] = arrayData.split(",\\s*");
+                        System.out.println(elements[0]);
                         daoPC.addPCStaticInfo(clientId, elements[3], Integer.valueOf(elements[6].strip()), Integer.valueOf(elements[5].strip()), elements[4], elements[7], 2, "3200", 6543 , elements[8], 1, "12", elements[0], elements[1], false);
                         
                         
                     } else {
-                                        System.out.println("2");
+                        System.out.println("2");
                     }
                 }
                 } else {
