@@ -2,7 +2,6 @@ package TCP_Server;
 
 import javax.net.ssl.*;
 import java.io.*;
-import java.net.Socket;
 import java.security.KeyStore;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,7 +16,7 @@ public class SecureServer implements Runnable {
     private SSLServerSocket serverSocket;
     private static final String UserPostgres="postgres";
     private static final String PasswordPostgres="leffe";
-    private final ConcurrentHashMap<Integer, SSLSocket> clientMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Integer, SSLSocket> clientMap = new ConcurrentHashMap<>();
 
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/sae_51";
 
@@ -54,7 +53,7 @@ public class SecureServer implements Runnable {
 
             while (running) {
                 SSLSocket clientSocket = (SSLSocket) serverSocket.accept();
-                System.out.println("Connexion sécurisée établie avec un client : " + clientSocket.getInetAddress());
+                System.out.println("Connexion sécurisée établie avec un client : " + clientSocket.getInetAddress().getHostAddress());
 
                 // Gérer le client dans un nouveau thread
                 new ClientHandler(clientSocket).start();
@@ -122,19 +121,25 @@ public class SecureServer implements Runnable {
         return clientId;
     }
     public void sendMessageToClient(int clientId, String action) {
-        SSLSocket clientSocket = clientMap.get(clientId);
-        System.out.println("tes");
-        if (clientSocket != null && !clientSocket.isClosed()) {
-            try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
-                out.println("action");
-                out.println(action);
-            } catch (IOException e) {
-                System.err.println("Erreur lors de l'envoi du message au client " + clientId + " : " + e.getMessage());
-            }
-        } else {
-            System.err.println("Client avec l'ID " + clientId + " introuvable ou déconnecté.");
+        SSLSocket client = clientMap.get(clientId);
+        System.out.println("tes" + clientId);
+        
+        if (client != null && !client.isClosed()) {
+        try {
+            OutputStream outputStream = client.getOutputStream();
+            PrintWriter out = new PrintWriter(outputStream, true); // Ne pas utiliser try-with-resources
+            out.println("action");
+            out.println(action);  // Envoyer directement l'action
+
+            System.out.println("Message envoyé avec succès au client " + clientId + " : " + action);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'envoi du message au client " + clientId + " : " + e.getMessage());
         }
+    } else {
+        System.err.println("Client avec l'ID " + clientId + " introuvable ou déconnecté.");
     }
+}
+
 
     // Gérer un client
     private class ClientHandler extends Thread {
@@ -150,15 +155,26 @@ public class SecureServer implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)
             ) {
-                int clientId = assignClientId(clientSocket);
-                clientMap.put(clientId, clientSocket);
-                out.println("Votre ID client est : " + clientId);
+                int clientId = 0;
 
                 out.println("Bienvenue sur le serveur sécurisé ! Tapez vos messages ou 'exit' pour quitter.");
 
                 String message = in.readLine();
-                if (message.equalsIgnoreCase("password")) {
+                if (message.equalsIgnoreCase("leffe")) {
                     out.println("connexion réussi");
+                    message = in.readLine();
+                    System.out.println(message);
+                    if (message.startsWith("ID : ")) {
+                        clientId = Integer.parseInt(message.replace("ID : ", "").trim());
+                        clientMap.put(clientId, clientSocket);
+                        out.println("l'ID : " + clientId + "est connecté");
+                    } else {
+                    
+                    clientId = assignClientId(clientSocket);
+                    clientMap.put(clientId, clientSocket);
+                    out.println("Votre ID client est : " + clientId);
+                    out.println("continue");
+                    }
                 while ((message = in.readLine()) != null) {
                     System.out.println("Message reçu de l'ID " + clientId + " : " + message);
 
@@ -167,15 +183,15 @@ public class SecureServer implements Runnable {
                         break;
                     } else if (message.startsWith("Array :")) {
                                         System.out.println("1");
-                        sendMessageToClient(clientId, message);
+                        
                     } else {
                                         System.out.println("2");
-                        sendMessageToClient(clientId, message);
                     }
                 }
                 } else {
-                    out.print("mot de passe incorect");
-                    clientSocket.close();
+                    out.println("mot de passe incorect");
+                    clientSocket.close();   
+
                 }
 
             } catch (IOException e) {
