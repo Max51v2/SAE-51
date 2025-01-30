@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -417,7 +418,7 @@ public class DAOPC {
      * Renvoi le droit d'accès d'un utilisateur à une machine
      * 
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
+     * @return getInfo       contenu de la table au format JSON (login/prenom/nom/droits)
      */
     public Boolean getUserPCAccess(Integer idPC, String login, Boolean Test){
         
@@ -460,6 +461,9 @@ public class DAOPC {
         
         return getInfo;
     }
+    
+    
+    
     
     /**
      * Renvoi les utilisateurs qui ont ou non le droit d'accéder à un pc
@@ -504,7 +508,6 @@ public class DAOPC {
                     getInfo = getUserPCAccess(idPC, login, Test);
                     
                     //Si les droits correspondent au type d'accès souhaité alors on ajoute l'utilisateur au JSON
-                    System.out.println("--"+getInfo+" : "+hasAccess+"--");
                     if(Objects.equals(getInfo, hasAccess)){
                         
                         // Ajouter une virgule avant chaque entrée sauf la première
@@ -536,5 +539,241 @@ public class DAOPC {
         }
         
         return JSONString;
+    }
+    
+    
+    
+    
+    /**
+     * Ajoute les droits d'accès à un utilisateur pour une machine donnée
+     * 
+     * @param idPC      id du PC
+     * @param login     login de l'utilisateur concerné
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void addUserToPC(Integer idPC, String login, Boolean Test){
+        
+        //Vérification des droits d'accès au pc
+        String RequeteSQL="UPDATE pc SET droits = ? WHERE id = ?";
+        
+        //modification de la liste des droits d'accès
+        String loginList = getUsersWithPCAccess(idPC, Test);
+        loginList = getRefactoredList(loginList, 1, login, Test);
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, loginList);
+            preparedStatement.setInt(2, idPC);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
+    /**
+     * Supprime les droits d'accès à un utilisateur pour une machine donnée
+     * 
+     * @param idPC      id du PC
+     * @param login     login de l'utilisateur concerné
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deleteUserFromPC(Integer idPC, String login, Boolean Test){
+        
+        //Vérification des droits d'accès au pc
+        String RequeteSQL="UPDATE pc SET droits = ? WHERE id = ?";
+        
+        //modification de la liste des droits d'accès
+        String loginList = getUsersWithPCAccess(idPC, Test);
+        loginList = getRefactoredList(loginList, 2, login, Test);
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, loginList);
+            preparedStatement.setInt(2, idPC);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
+    /**
+     * Renvoi le droit d'accès d'un utilisateur à une machine
+     * 
+     * @param idPC      id du PC
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return droits       liste de login d'utilisateurs ayant accès au PC
+     */
+    public String getUsersWithPCAccess(Integer idPC, Boolean Test){
+        
+        //Vérification des droits d'accès au pc
+        String RequeteSQL="SELECT droits FROM pc WHERE id = ?";
+        
+        String droits = "";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, idPC);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                
+                if (resultSet.next()) {
+                    droits = resultSet.getString("droits");
+                }
+            } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return droits;
+    }
+    
+    
+    
+    
+    /**
+     * Renvoi une liste avec un login en plus ou en moins
+     * 
+     * 
+     * @param loginList     liste contenant les utilisateurs ayant accès au PC
+     * @param login     login à retirer/ajouter
+     * @param option        (1 = ajouter le login | 2 = retirer le login)
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return loginList       liste de login d'utilisateurs ayant accès au PC
+     */
+    public String getRefactoredList(String loginList, Integer option, String login, Boolean Test){
+        
+        String refactoredLoginList = "";
+        
+        if(option == 1){
+            //Si le login existe déjà on ne fait rien
+            if(loginList.contains(login)){
+                //Rien
+            }
+            else{
+                if(loginList.equals("")){
+                    refactoredLoginList = login;
+                }
+                else{
+                    refactoredLoginList = loginList+"/"+login;
+                }
+            }
+        }
+        else if(option == 2){
+            //Si le login existe, on le retire
+            if(loginList.contains(login)){
+                if(!loginList.equals("")){
+                    ArrayList<String> loginArraylist = new ArrayList<>();
+                    Integer slashIndex = null;
+                    String extractedLogin = "";
+                    Boolean run = true;
+
+                    if(loginList.equals("")){
+                        run = false;
+                    }
+                    
+                    //On ajoute tous les logins dans l'arraylist
+                    while(run == true){
+                        if(loginList.contains("/")){
+                            slashIndex = loginList.indexOf("/");
+                            
+                            //Récupération d'un login (1er en partant de la gauche)
+                            extractedLogin = loginList.substring(0, slashIndex);
+                            loginList = loginList.substring(slashIndex+1);
+
+                            //Ajout du login à l'arraylist
+                            loginArraylist.add(extractedLogin);
+                        }
+                        else{
+                            //Récupération d'un login (1er en partant de la gauche)
+                            extractedLogin = loginList;
+                            loginList = "";
+
+                            //Ajout du login à l'arraylist
+                            loginArraylist.add(extractedLogin);
+                        }
+
+                        
+                        
+                        if(loginList.equals("")){
+                            run = false;
+                        }
+                    }
+                    
+                    //On reconstruit la liste
+                    Integer c = 0;
+                    Integer loginN = 0;
+                    while (c < loginArraylist.size()){
+                        if(loginArraylist.get(c).contains(login)){
+                            //Rien
+                        }
+                        else{
+                            //Ajout du séparateur si login > 1
+                            if(loginN > 0){
+                                refactoredLoginList += "/";
+                            }
+                            
+                            //Ajout du login
+                            refactoredLoginList += loginArraylist.get(c);
+                            
+                            loginN += 1;
+                        }
+                        
+                        c += 1;
+                    }
+                }
+                else{
+                    refactoredLoginList = "";
+                }
+            }
+            else{
+                //Rien
+            }
+        }
+        
+        System.out.println("RL :"+refactoredLoginList);
+        return refactoredLoginList;
     }
 }

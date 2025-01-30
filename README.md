@@ -104,6 +104,7 @@ Frontend :
   => Le servlet viendra recup les informations de la classe précédente et donnera le temps depuis la dernière act
   => Suivi des métriques renvoyées + log et notif mail si pb détecté
   => Tests unitaires des fonctionnalités mentionnées précédemment (hors chiffrement client/serveur TCP)
+    => ListUsersWithAccess et méthodes utilisées
 
 - Client :
   => Script Pshell lancé au démarrage

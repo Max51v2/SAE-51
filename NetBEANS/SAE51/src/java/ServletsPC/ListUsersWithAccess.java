@@ -26,13 +26,13 @@ public class ListUsersWithAccess extends HttpServlet {
      * 
      * Variables à envoyer au servlet (POST)<br>
      * Integer id       &emsp;&emsp;        id de l'ordinateur <br>
-     * String hasAccess       &emsp;&emsp;        type d'accès (true : Autorisé | false : refusé)
+     * String hasAccess       &emsp;&emsp;        type d'accès (true : Autorisé | false : refusé) <br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | none <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé <br>
      * OU
      * Integer user       &emsp;&emsp;        utilisateur qui a accès à la machine <br>
      * String canBeDeleted       &emsp;&emsp;        retrait de l'utilisateur possible ou non <br>

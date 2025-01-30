@@ -12,13 +12,15 @@ public class GetJSONInfoPC{
         private String IP;
         private String token;
         private String hasAccess;
+        private String login;
         
-        public GetJSONInfoPC(String Test, String IP, Integer id, String hasAccess, String token){
+        public GetJSONInfoPC(String Test, String IP, Integer id, String hasAccess, String login, String token){
             this.Test = Test;
             this.IP = IP;
             this.id = id;
             this.token = token;
             this.hasAccess = hasAccess;
+            this.login = login;
         }
 
         public String getTest() {
@@ -59,5 +61,13 @@ public class GetJSONInfoPC{
 
         public void setHasAccess(String hasAccess) {
             this.hasAccess = hasAccess;
+        }
+        
+        public String getLogin() {
+            return login;
+        }
+
+        public void setLogin(String login) {
+            this.login = login;
         }
     }
