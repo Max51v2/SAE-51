@@ -249,6 +249,21 @@ CREATE TABLE notification (
 
 
 
+--Table contenant le status des PC
+CREATE TABLE pc_status (
+    id integer,
+    status text
+);
+
+
+
+--Table contenant les messages à envoyer aux pc
+CREATE TABLE pc_messages (
+    id integer,
+    message text
+);
+
+
 
 
 --#########################################################
