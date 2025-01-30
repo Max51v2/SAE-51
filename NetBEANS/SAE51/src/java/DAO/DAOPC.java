@@ -276,36 +276,34 @@ public class DAOPC {
     public void addPCStaticInfo(Integer id, String cpu_model, Integer cores, Integer threads, String maximum_frequency,
             String ram_quantity, Integer dimm_quantity, String dimm_speed, Integer storage_device_number, String storage_space,
             Integer network_int_number, String network_int_speed, String os, String version, Boolean Test){
-        String RequeteSQL="INSERT INTO pc_static_info (id, cpu_model, cores, threads, maximum_frequency, ram_quantity, dimm_quantity, dimm_speed, storage_device_number, storage_space, network_int_number, network_int_speed, os, version) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        //Selection de la BD
+        String RequeteSQL = "UPDATE pc_static_info SET cpu_model = ?, cores = ?, threads = ?, maximum_frequency = ?, ram_quantity = ?, dimm_quantity = ?, dimm_speed = ?, storage_device_number = ?, storage_space = ?, network_int_number = ?, network_int_speed = ?, os = ?, version = ? WHERE id = ?";
+    
+        // Sélection de la BD
         changeConnection(Test);
-        
-        //Connection BD en tant que postgres
-        try (Connection connection =
-            DAOPC.getConnectionPostgres();
-                
-            //Requête SQL
+    
+    // Connection à la BD en tant que postgres
+        try (Connection connection = DAOPC.getConnectionPostgres();
             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
-            
-            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, cpu_model);
-            preparedStatement.setInt(3, cores);
-            preparedStatement.setInt(4, threads);
-            preparedStatement.setString(5, maximum_frequency);
-            preparedStatement.setString(6, ram_quantity);
-            preparedStatement.setInt(7, dimm_quantity);
-            preparedStatement.setString(8, dimm_speed);
-            preparedStatement.setInt(9, storage_device_number);
-            preparedStatement.setString(10, storage_space);
-            preparedStatement.setInt(11, network_int_number);
-            preparedStatement.setString(12, network_int_speed);
-            preparedStatement.setString(13, os);
-            preparedStatement.setString(14, version);
-            
+        
+            // Remplacement des "?" par les valeurs d'entrée
+            preparedStatement.setString(1, cpu_model);
+            preparedStatement.setInt(2, cores);
+            preparedStatement.setInt(3, threads);
+            preparedStatement.setString(4, maximum_frequency);
+            preparedStatement.setString(5, ram_quantity);
+            preparedStatement.setInt(6, dimm_quantity);
+            preparedStatement.setString(7, dimm_speed);
+            preparedStatement.setInt(8, storage_device_number);
+            preparedStatement.setString(9, storage_space);
+            preparedStatement.setInt(10, network_int_number);
+            preparedStatement.setString(11, network_int_speed);
+            preparedStatement.setString(12, os);
+            preparedStatement.setString(13, version);
+            preparedStatement.setInt(14, id); // Ajout de l'ID pour la condition WHERE
+
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();
+        
             
         } catch (SQLException e) {
             e.printStackTrace();
