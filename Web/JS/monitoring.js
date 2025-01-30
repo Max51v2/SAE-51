@@ -4,16 +4,16 @@ const test = "false";
 
 
 const tableBody = document.querySelector("#pcList");
-    const mainContent = document.getElementById("MainTable");
-    const pcDetailsPage = document.getElementById("pcDetailsPage");
-    const pcRights = document.getElementById("pcRights");
-    const backToListBtn1 = document.getElementById("backToList1");
-    const backToListBtn2 = document.getElementById("backToList2");
-    const staticInfoTable = document.querySelector("#staticInfoTable");
-    const rightsTable = document.querySelector("rightsTable");
+const mainContent = document.getElementById("MainTable");
+const pcDetailsPage = document.getElementById("pcDetailsPage");
+const pcRights = document.getElementById("pcRights");
+const backToListBtn1 = document.getElementById("backToList1");
+const backToListBtn2 = document.getElementById("backToList2");
+const staticInfoTable = document.querySelector("#staticInfoTable");
+const rightsTable = document.querySelector("rightsTable");
     
 
-    // Fonction principale pour charger la liste des PCs
+// Fonction principale pour charger la liste des PCs
     const loadPcList = async () => {
         try {
             console.log("Chargement de la liste des PCs...");
@@ -181,7 +181,6 @@ const tableBody = document.querySelector("#pcList");
                 console.error(`Erreur: ${result.erreur}`);
                 alert(`Erreur: ${result.erreur}`);
             } else {
-                alert("PC supprimé avec succès");
                 loadPcList();
             }
         } catch (error) {

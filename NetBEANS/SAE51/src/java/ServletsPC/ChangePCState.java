@@ -3,6 +3,7 @@ package ServletsPC;
 import Autre.AddLog;
 import DAO.DAOPC;
 import DAO.DAOusers;
+import TCP_Server.SecureServer;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,13 +17,31 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 0
+ * @Version 1.0
  */
-@WebServlet(name = "IsPCOnline", urlPatterns = {"/IsPCOnline"})
-public class IsPCOnline extends HttpServlet {
+@WebServlet(name = "ChangePCState", urlPatterns = {"/ChangePCState"})
+public class ChangePCState extends HttpServlet {
 
     /**
-     * Pas fait
+     * Liste les utilisateurs qui ont accès au pc<br><br>
+     * 
+     * Variables à envoyer au servlet (POST)<br>
+     * Integer id       &emsp;&emsp;        id de l'ordinateur <br>
+     * Integer action       &emsp;&emsp;        action à effectuer sur le PC (1 : MAJ | 2 : redémarrer | 3 : éteindre) <br>
+     * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
+     * 
+     * <br>
+     * Variables renvoyées par le servlet (JSON)<br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé <br>
+     * OU
+     * Integer user       &emsp;&emsp;        utilisateur qui a accès à la machine <br>
+     * String canBeDeleted       &emsp;&emsp;        retrait de l'utilisateur possible ou non <br>
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -33,7 +52,7 @@ public class IsPCOnline extends HttpServlet {
         DAO.DAOusers DAO = new DAOusers();
 
         //Nom du servlet
-        String servletName = "IsPCOnline";
+        String servletName = "ChangePCState";
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -44,7 +63,7 @@ public class IsPCOnline extends HttpServlet {
         
         //Données envoyées par la requête
         Integer id = json.getId();
-        Boolean hasAccess = Boolean.valueOf(json.getHasAccess());
+        Integer action = json.getAction();
         String token = json.getToken();
         Boolean TestBoolean = Boolean.valueOf(json.getTest());
 
@@ -54,7 +73,7 @@ public class IsPCOnline extends HttpServlet {
         String loginLog = "Aucun";
         
         //Vérification du contenu envoyé
-        if(token == null | id == null | hasAccess == null){
+        if(token == null | id == null | action == null){
             //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
@@ -74,7 +93,8 @@ public class IsPCOnline extends HttpServlet {
                 if(access.equals("true")){
 
                     //Récupération des utilisateurs qui ont le droits d'accéder au PC
-                    jsonString = DAO2.getUsersDependingOnPermissions(id, hasAccess, TestBoolean);
+                    SecureServer Serv = new SecureServer();
+                    Serv.sendMessageToClient(id, String.valueOf(id));
                 }
                 else{
                     //JSON renvoyé
