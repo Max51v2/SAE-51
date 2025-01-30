@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 
 import oshi.SystemInfo;
@@ -56,15 +57,23 @@ public class Main {
         double temps = sensors.getCpuTemperature();
 
         System.out.println(temps);
+
+        Integer c=0;
+        Integer DisksSize = 0;
         for (HWDiskStore disk : hal.getDiskStores()) {
             System.out.println("Nom du disque : " + disk.getName());
-            Info_hardware[8] = Double.toString(disk.getSize() / 1e9);
+
+            DisksSize += Math.toIntExact(Math.round(hal.getDiskStores().get(c).getSize() / 1e9));
+
             System.out.println("Espace disponible :" + (disk.getReadBytes() / 1e9));
             System.out.println("Statut SMART : " + disk.getTransferTime());
 
             // Les données S.M.A.R.T. incluent des attributs qui peuvent indiquer la durée de vie restante
             System.out.println("Attributs S.M.A.R.T. : " + disk.updateAttributes());
+
+            c += 1;
         }
+        Info_hardware[8] = Double.toString(DisksSize);
 
         String computerName = System.getenv("COMPUTERNAME"); // Windows
         if (computerName == null) {
