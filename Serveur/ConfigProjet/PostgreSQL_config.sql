@@ -209,6 +209,21 @@ INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Adm
 INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Utilisateur', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('GetNotifications', 'Aucun', 'false');
 
+--ListUsersWithAccess
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsersWithAccess', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsersWithAccess', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListUsersWithAccess', 'Aucun', 'false');
+
+--AddUserToPC
+INSERT INTO servlet_access (name, role, access) VALUES ('AddUserToPC', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('AddUserToPC', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('AddUserToPC', 'Aucun', 'false');
+
+--DeleteUserFromPC
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUserFromPC', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUserFromPC', 'Utilisateur', 'false');
+INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUserFromPC', 'Aucun', 'false');
+
 
 
 --Table contenant les logs d'utilisation des servlets

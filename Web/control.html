@@ -50,36 +50,13 @@
                 <table id="ControlTable">
                     <thead>
                         <tr>
-                            <th>User</th>
-                            <th>Statut</th>
+                            <th>IP</th>
+                            <th>ID</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Alice</strong></td>
-                            <td>On</td>
-                            <td>
-                                <button class="button-control" role="button">Allumer</button>
-                                <button class="button-control" role="button">Éteindre</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Bob</strong></td>
-                            <td>Off</td>
-                            <td>
-                                <button class="button-control" role="button">Allumer</button>
-                                <button class="button-control" role="button">Éteindre</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Charlie</strong></td>
-                            <td>On</td>
-                            <td>
-                                <button class="button-control" role="button">Allumer</button>
-                                <button class="button-control" role="button">Éteindre</button>
-                            </td>
-                        </tr>
+                    <tbody id="pcTable">
+                        <!-- Contenu ajouté dynamiquement -->
                     </tbody>
                 </table>
             </section>
@@ -99,6 +76,7 @@
 <script src="./JS/Banner.js" async></script>
 
 <!-- Script de la page -->
+<script src="./JS/control.js" async></script>
 
 </body>
 </html>
