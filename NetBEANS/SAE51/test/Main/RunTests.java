@@ -15,6 +15,7 @@ import DAO.DAOusersTest;
 import ServletsPC.DeletePCTest;
 import ServletsPC.ListPCStaticInfoTest;
 import ServletsPC.ListPCTest;
+import ServletsPC.ListUsersWithAccessTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import ServletsUser.AddUserTest;
@@ -53,6 +54,7 @@ import ServletsUser.SetPasswordTest;
     GetAccessiblePagesTest.class,
     DAONotificationsTest.class,
     GetNotificationsTest.class,
+    ListUsersWithAccessTest.class,
     Warning.class //Laisser en dernier
 })
 public class RunTests {}

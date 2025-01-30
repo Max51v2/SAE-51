@@ -12,3 +12,5 @@
 
 #On ignore l'id unique de la machine (Client)
 *.id
+
+*.class

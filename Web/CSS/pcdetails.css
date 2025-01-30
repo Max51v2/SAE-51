@@ -15,71 +15,39 @@
   font-weight: normal;
   letter-spacing: -1px;
   color: #34495E;
-  text-align: center;
 }
 
 /* Style pour le tableau responsive */
 .details-page .rwd-table {
-  margin: 1em 0;
-  min-width: 300px; /* ajustez selon vos besoins */
+  width: auto;
+  border-collapse: collapse;
+  border: 1px solid #444;
+}
+
+.details-page .rwd-table thead {
   background: #34495E;
-  color: #fff;
+  color: white;
   border-radius: .4em;
-  overflow: hidden;
 }
 
-.details-page .rwd-table tr {
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  border-color: lighten(#34495E, 10%);
-}
-
-.details-page .rwd-table th, .details-page .rwd-table td {
-  margin: .5em 1em;
-  text-align: left;
+.details-page .rwd-table th, 
+.details-page .rwd-table td {
+  border: 1px solid #444;
+  padding: 1em;
+  text-align: center;
 }
 
 .details-page .rwd-table th {
-  display: none; /* pour l'accessibilité, utilisez une méthode visuellement cachée */
+  text-align: left;
 }
 
-.details-page .rwd-table td {
-  display: block;
-  padding: .25em .5em;
-
-  &:first-child {
-    padding-top: .5em;
-  }
-  &:last-child {
-    padding-bottom: .5em;
-  }
-
-  &:before {
-    content: attr(data-th) ": ";
-    font-weight: bold;
-    width: 6.5em; /* ajustez selon votre contenu */
-    display: inline-block;
-  }
-
-  @media (min-width: 480px) {
-    display: table-cell;
-    padding: 1em !important;
-
-    &:first-child {
-      padding-left: 0;
-    }
-
-    &:last-child {
-      padding-right: 0;
-    }
-
-    &:before {
-      display: none;
-    }
-  }
+.details-page .rwd-table tbody tr {
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #444;
 }
 
-.details-page .rwd-table th, .details-page .rwd-table td:before {
+.details-page .rwd-table th, 
+.details-page .rwd-table td:before {
   color: #dd5;
 }
 
@@ -88,7 +56,6 @@
   padding: 10px 20px;
   color: #fff;
   background-color: #ffc107;
-  border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -96,4 +63,44 @@
 
 .details-page .back-button:hover {
   background-color: #e0a800;
+}
+
+/* Correction de l'affichage du tbody */
+.details-page .rwd-table tbody {
+  display: table-row-group;
+}
+
+table{
+  padding-bottom: 20px;
+}
+
+#mainContent{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+#MainTable, #pcDetailsPage, #pcRights {
+  width: 80%;
+  margin: 0 auto;
+  display: block;
+}
+
+#mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+table.rwd-table {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.details-page .back-button {
+  margin: 20px auto;
+  display: block;
 }

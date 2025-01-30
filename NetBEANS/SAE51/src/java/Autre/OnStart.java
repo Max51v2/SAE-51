@@ -30,7 +30,6 @@ public class OnStart implements ServletContextListener {
         
         //lancement du serveur de réponse au ping du client
 
-        System.out.println("Serveur TCP de réponse au ping du client lancé sur le port "+AnswerPingPort);
         run3.start(12345);
         
         System.out.println("##########################################");

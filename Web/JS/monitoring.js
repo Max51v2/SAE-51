@@ -1,21 +1,26 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const token = "userToken"; // Assurez-vous que ce token est valide
-    const test = true;
+window.deleteUser = deleteUser;
+window.addUser = addUser;
+const test = "false";
 
-    const tableBody = document.querySelector("#pcList");
-    const mainContent = document.getElementById("mainContent");
-    const pcDetailsPage = document.getElementById("pcDetailsPage");
-    const backToListBtn = document.getElementById("backToList");
-    const staticInfoTable = document.querySelector("#staticInfoTable tbody");
 
-    // Fonction principale pour charger la liste des PCs
+const tableBody = document.querySelector("#pcList");
+const mainContent = document.getElementById("MainTable");
+const pcDetailsPage = document.getElementById("pcDetailsPage");
+const pcRights = document.getElementById("pcRights");
+const backToListBtn1 = document.getElementById("backToList1");
+const backToListBtn2 = document.getElementById("backToList2");
+const staticInfoTable = document.querySelector("#staticInfoTable");
+const rightsTable = document.querySelector("rightsTable");
+    
+
+// Fonction principale pour charger la liste des PCs
     const loadPcList = async () => {
         try {
             console.log("Chargement de la liste des PCs...");
-            const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPc`, {
+            const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPC`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token:token, Test: test })
+                body: JSON.stringify({ token: token, Test: test })
             });
 
             const data = await response.json();
@@ -31,30 +36,38 @@ document.addEventListener("DOMContentLoaded", () => {
                 <li class="table-header">
                     <div class="col col-1">ID</div>
                     <div class="col col-2">IP</div>
-                    <div class="col col-3">Statut</div>
                     <div class="col col-4">Actions</div>
                 </li>
             `;
-
-            // Vérification si la liste est vide
-            if (data.length === 0) {
-                addTestPcToList();
-                return;
-            }
 
             // Génération des lignes pour chaque PC
             data.forEach(pc => {
                 const row = document.createElement("li");
                 row.className = "table-row";
-                row.innerHTML = `
-                    <div class="col col-1" data-label="ID">${pc.id}</div>
-                    <div class="col col-2" data-label="IP">${pc.IP}</div>
-                    <div class="col col-3" data-label="Statut">${pc.status || "Inconnu"}</div>
-                    <div class="col col-4" data-label="Actions">
-                        <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
-                        <button class="button-25 viewBtn" data-id="${pc.id}">Voir</button>
-                    </div>
-                `;
+
+                //On affiche le boutton des droits d'accès que si c'est un admin
+                if(droits === "Admin"){
+                    row.innerHTML = `
+                        <div class="col col-1" data-label="ID">${pc.id}</div>
+                        <div class="col col-2" data-label="IP">${pc.IP}</div>
+                        <div class="col col-4" data-label="Actions">
+                            <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
+                            <button class="button-25 viewBtn" data-id="${pc.id}">Voir</button>
+                            <button class="rightsBtn" data-id="${pc.id}">Droits d'accès</button>
+                        </div>
+                    `;
+                }
+                else{
+                    row.innerHTML = `
+                        <div class="col col-1" data-label="ID">${pc.id}</div>
+                        <div class="col col-2" data-label="IP">${pc.IP}</div>
+                        <div class="col col-4" data-label="Actions">
+                            <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
+                            <button class="button-25 viewBtn" data-id="${pc.id}">Voir</button>
+                        </div>
+                    `;
+                }
+                
                 tableBody.appendChild(row);
             });
 
@@ -64,27 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Ajouter un PC de test à la liste
-    const addTestPcToList = () => {
-        const testPc = {
-            id: 1,
-            IP: "192.168.0.1",
-            status: "En ligne"
-        };
-
-        const row = document.createElement("li");
-        row.className = "table-row";
-        row.innerHTML = `
-            <div class="col col-1" data-label="ID">${testPc.id}</div>
-            <div class="col col-2" data-label="IP">${testPc.IP}</div>
-            <div class="col col-3" data-label="Statut">${testPc.status}</div>
-            <div class="col col-4" data-label="Actions">
-                <button class="deleteBtn" data-id="${testPc.id}">Supprimer</button>
-                <button class="button-25 viewBtn" data-id="${testPc.id}">Voir</button>
-            </div>
-        `;
-        tableBody.appendChild(row);
-    };
 
     // Fonction pour afficher les détails d'un PC
     const showPcDetails = async (pcId) => {
@@ -98,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStaticInfo`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id: pcId, token:token, Test: test })
+                body: JSON.stringify({ id: pcId, token: token, Test: test })
             });
 
             const data = await response.json();
@@ -116,7 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Remplir le tableau avec les infos reçues
+
+    // Remplir le tableau avec les droits des utilisateur
     const fillStaticInfoTable = (data) => {
         staticInfoTable.innerHTML = `
             <tr><td>ID</td><td>${data.id}</td></tr>
@@ -140,12 +133,21 @@ document.addEventListener("DOMContentLoaded", () => {
         // Cache la liste principale et affiche les détails
         mainContent.style.display = "none";
         pcDetailsPage.style.display = "block";
+        pcRights.style.display = "none";
     };
 
     // Fonction pour retourner à la liste principale
-    backToListBtn.addEventListener("click", () => {
+    backToListBtn1.addEventListener("click", () => {
         mainContent.style.display = "block";
         pcDetailsPage.style.display = "none";
+        pcRights.style.display = "none";
+    });
+
+    // Fonction pour retourner à la liste principale
+    backToListBtn2.addEventListener("click", () => {
+        mainContent.style.display = "block";
+        pcDetailsPage.style.display = "none";
+        pcRights.style.display = "none";
     });
 
     // Gestion des événements via délégation
@@ -158,16 +160,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const pcId = event.target.getAttribute("data-id");
             console.log(`Bouton Supprimer cliqué pour le PC ID: ${pcId}`);
             deletePc(pcId);
+        } else if (event.target.classList.contains("rightsBtn")) {
+            const pcId = event.target.getAttribute("data-id");
+            console.log(`Bouton Modif droits pour le PC ID: ${pcId}`);
+            getRights(pcId);
         }
     });
 
     // Fonction pour supprimer un PC
     const deletePc = async (pcId) => {
         try {
-            const response = await fetch(`https://${window.ServerIP}:8443/SAE51/DeletePc`, {
+            const response = await fetch(`https://${window.ServerIP}:8443/SAE51/DeletePC`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token:token, pcId })
+                body: JSON.stringify({ token:token, id: pcId, Test: test })
             });
 
             const result = await response.json();
@@ -175,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error(`Erreur: ${result.erreur}`);
                 alert(`Erreur: ${result.erreur}`);
             } else {
-                alert("PC supprimé avec succès");
                 loadPcList();
             }
         } catch (error) {
@@ -183,5 +188,205 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+
+    // Fonction ajouter les droits des utilisateurs sur une machine
+    const getRights = async (pcId) => {
+        if (!pcId) {
+            alert("ID du PC non valide.");
+            return;
+        }
+
+        try {
+            console.log(`Chargement des détails pour les droits des PC ID: ${pcId}`);
+            response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListUsersWithAccess`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: pcId, hasAccess: "true", token: token, Test: test })
+            });
+
+            data = await response.json();
+
+            if (data.erreur) {
+                console.error(`Erreur: ${data.erreur}`);
+                alert(`Erreur: ${data.erreur}`);
+                return;
+            }
+
+            // Cache la liste principale et affiche les détails
+            mainContent.style.display = "none";
+            pcDetailsPage.style.display = "none";
+            pcRights.style.display = "block";
+
+            fillRightsTableAllowed(data, pcId);
+
+            response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListUsersWithAccess`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: pcId, hasAccess: "false", token: token, Test: test })
+            });
+
+            data = await response.json();
+
+            if (data.erreur) {
+                console.error(`Erreur: ${data.erreur}`);
+                alert(`Erreur: ${data.erreur}`);
+                return;
+            }
+
+            fillRightsTableForbidden(data, pcId);
+
+        } catch (error) {
+            console.error("Erreur lors du chargement des infos :", error);
+        }
+    };
+
+
+    // Remplir le tableau avec les infos reçues
+    const fillRightsTableAllowed = (data, pcId) => {
+
+        const userTableBody = document.getElementById("allowed");
+
+        if(data !== undefined){
+            userTableBody.innerHTML = ""; // Vide le tableau avant d'ajouter les nouvelles données
+
+            data.forEach(user => {
+                if(user.canBeDeleted === "false"){
+                    userTableBody.innerHTML += `
+                        <button 
+                            style="background: none; 
+                                    border: none; 
+                                    padding: 0; 
+                                    cursor: pointer; 
+                                    display: flex; 
+                                    margin-right: 20px;
+                                    margin-left: 20px;
+                                    padding-top: 8px;
+                                    align-items: center;"">
+                            <span style="background: url('./images/locked.webp') no-repeat center; 
+                                        background-size: contain; 
+                                        width: 25px; 
+                                        height: 25px; 
+                                        display: inline-block;
+                                        margin-right: 10px;"></span>
+                            <span style="font-size: 15px;">${user.user}</span>
+                        </button>
+                        <br>
+                    `;
+                }
+                else{
+                    userTableBody.innerHTML += `
+                        <button 
+                            style="background: none; 
+                                    border: none; 
+                                    padding: 0; 
+                                    cursor: pointer; 
+                                    display: flex; 
+                                    margin-right: 20px;
+                                    margin-left: 20px;
+                                    padding-top: 8px;
+                                    align-items: center;" 
+                            onClick="deleteUser('${user.user}', '${pcId}')">
+                            <span style="background: url('./images/trash.webp') no-repeat center; 
+                                        background-size: contain; 
+                                        width: 25px; 
+                                        height: 25px; 
+                                        display: inline-block;
+                                        margin-right: 10px;"></span>
+                            <span style="font-size: 15px;">${user.user}</span>
+                        </button>
+                        <br>
+                    `;
+                }
+            });
+        }
+    };
+
+
+    // Remplir le tableau avec les infos reçues
+    const fillRightsTableForbidden = (data, pcId) => {
+
+        const userTableBody = document.getElementById("forbidden");
+
+        if(data !== undefined){
+            userTableBody.innerHTML = ""; // Vide le tableau avant d'ajouter les nouvelles données
+
+            data.forEach(user => {
+                userTableBody.innerHTML += `
+                    <button 
+                        style="background: none; 
+                                border: none; 
+                                padding: 0; 
+                                cursor: pointer; 
+                                display: flex; 
+                                margin-right: 20px;
+                                margin-left: 20px;
+                                padding-top: 8px;
+                                align-items: center;" 
+                        onClick="addUser('${user.user}', '${pcId}')">
+                        <span style="background: url('./images/plus.webp') no-repeat center; 
+                                    background-size: contain; 
+                                    width: 25px; 
+                                    height: 25px; 
+                                    display: inline-block;
+                                    margin-right: 10px;"></span>
+                        <span style="font-size: 15px;">${user.user}</span>
+                    </button>
+                    <br>
+                `;
+            });
+        }
+    };
+
+
+    //Ajout des droits d'accès au pc pour un utilisateur défini
+    async function addUser(login, idPC){
+        response = await fetch(`https://${window.ServerIP}:8443/SAE51/AddUserToPC`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: idPC, login: login, token: token, Test: test })
+        });
+
+        data = await response.json();
+
+        if (data.erreur !== "none") {
+            console.error(`Erreur: ${data.erreur}`);
+            alert(`Erreur: ${data.erreur}`);
+            return;
+        }
+
+        //Actualisation des droits
+        getRights(idPC);
+    }
+
+
+    //Retrait des droits d'accès au pc pour un utilisateur défini
+    async function deleteUser(login, idPC) {
+        response = await fetch(`https://${window.ServerIP}:8443/SAE51/DeleteUserFromPC`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: idPC, login: login, token: token, Test: test })
+        });
+
+        data = await response.json();
+
+        if (data.erreur !== "none") {
+            console.error(`Erreur: ${data.erreur}`);
+            alert(`Erreur: ${data.erreur}`);
+            return;
+        }
+
+        //Actualisation des droits
+        getRights(idPC);
+    }
+
+
+
+
+document.addEventListener("TokenCheckFinished", () => {
+    //Récupération des infos utilisateur
+    token = sessionStorage.getItem('token');
+    droits = sessionStorage.getItem('droits');
+    
+    //Afichage de la liste des PC
     loadPcList();
 });
