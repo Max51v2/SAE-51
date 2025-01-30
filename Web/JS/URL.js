@@ -23,8 +23,8 @@ if(window.currentPage == ""){
 if(window.ServerIP === ""){
     console.log("URL.js => Info : vous éditez le fichier en local")
 
-    //Définition d'un dresse par défaut
-    window.ServerIP = "localhost";
+    //Définition d'une dresse par défaut (Tomcat)
+    window.ServerIP = "192.168.1.31";
 
     console.log("URL.js => Info : IP par défaut : "+window.ServerIP)
 

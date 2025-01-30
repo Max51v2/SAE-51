@@ -170,10 +170,10 @@ const tableBody = document.querySelector("#pcList");
     // Fonction pour supprimer un PC
     const deletePc = async (pcId) => {
         try {
-            const response = await fetch(`https://${window.ServerIP}:8443/SAE51/DeletePc`, {
+            const response = await fetch(`https://${window.ServerIP}:8443/SAE51/DeletePC`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token:token, pcId })
+                body: JSON.stringify({ token:token, id: pcId, Test: test })
             });
 
             const result = await response.json();

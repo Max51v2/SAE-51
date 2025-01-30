@@ -40,6 +40,7 @@ RUN chmod 755 /conf/Tomcat.sh && \
 
 #Ports
 EXPOSE 8443
+EXPOSE 12345
 
 USER tomcat
 
