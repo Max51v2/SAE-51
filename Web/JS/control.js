@@ -5,6 +5,7 @@ document.addEventListener("TokenCheckFinished", () => {
     //Récupération des infos utilisateur
     token = sessionStorage.getItem('token');
     droits = sessionStorage.getItem('droits');
+    test = "false";
     
     // Fonction principale pour charger la liste des PCs
     const loadPcList = async () => {
@@ -30,12 +31,9 @@ document.addEventListener("TokenCheckFinished", () => {
 
             // Génération des lignes pour chaque PC
             data.forEach(pc => {
-                const row = document.createElement("li");
-                row.className = "table-row";
-
-                row.innerHTML = `
-                    <th class="button-control">${pc.id}</div>
-                    <th class="button-control">${pc.IP}</div>
+                tableBody.innerHTML += `
+                    <th>${pc.id}</th>
+                    <th>${pc.IP}</th>
                     <th>
                         <button class="button-control">Eteindre</button>
                         <button class="button-control">Redémarrer</button>
@@ -51,4 +49,6 @@ document.addEventListener("TokenCheckFinished", () => {
             console.error("Erreur lors du chargement :", error);
         }
     };
+
+    loadPcList();
 });
