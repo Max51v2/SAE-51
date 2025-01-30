@@ -187,8 +187,9 @@ public class SecureServer implements Runnable {
                         System.out.println("1");
                         String arrayData = message.substring(9).trim();
                         String elements[] = arrayData.split(",\\s*");
-                        System.out.println(elements[0]);
-                        daoPC.addPCStaticInfo(clientId, elements[3], Integer.valueOf(elements[6].strip()), Integer.valueOf(elements[5].strip()), elements[4], elements[7], 2, "3200", 6543 , elements[8], 1, "12", elements[0], elements[1], false);
+                        String E8 = String.valueOf(elements[8]);
+                        E8 = E8.substring(0, E8.indexOf("]")-1);
+                        daoPC.addPCStaticInfo(clientId, elements[3], Integer.valueOf(elements[6].strip()), Integer.valueOf(elements[5].strip()), elements[4], elements[7], 2, "3200", 6543 , E8, 1, "12", elements[0], elements[1], false);
                         
                         
                     } else {
