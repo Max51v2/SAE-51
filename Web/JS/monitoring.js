@@ -116,14 +116,14 @@ const rightsTable = document.querySelector("rightsTable");
             <tr><td>Modèle CPU</td><td>${data.cpu_model}</td></tr>
             <tr><td>Nombre de Coeurs</td><td>${data.cores}</td></tr>
             <tr><td>Nombre de Threads</td><td>${data.threads}</td></tr>
-            <tr><td>Fréquence Max CPU</td><td>${data.maximum_frequency}</td></tr>
-            <tr><td>Quantité RAM</td><td>${data.ram_quantity}</td></tr>
+            <tr><td>Fréquence Max CPU</td><td>${data.maximum_frequency} GHz</td></tr>
+            <tr><td>Quantité RAM</td><td>${data.ram_quantity} Mo</td></tr>
             <tr><td>Nombre de Barrettes RAM</td><td>${data.dimm_quantity}</td></tr>
-            <tr><td>Vitesse RAM</td><td>${data.dimm_speed}</td></tr>
+            <tr><td>Vitesse RAM</td><td>${data.dimm_speed} MT/s</td></tr>
             <tr><td>Nombre de Périphériques de Stockage</td><td>${data.storage_device_number}</td></tr>
-            <tr><td>Capacité de Stockage</td><td>${data.storage_space}</td></tr>
+            <tr><td>Capacité de Stockage</td><td>${data.storage_space} Go</td></tr>
             <tr><td>Nombre d'Interfaces Réseau</td><td>${data.network_int_number}</td></tr>
-            <tr><td>Vitesse des Interfaces Réseau</td><td>${data.network_int_speed}</td></tr>
+            <tr><td>Vitesse des Interfaces Réseau</td><td>${data.network_int_speed} Mo/s</td></tr>
             <tr><td>Système d'Exploitation</td><td>${data.os}</td></tr>
             <tr><td>Version OS</td><td>${data.version}</td></tr>
         `;
