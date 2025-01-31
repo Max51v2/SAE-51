@@ -110,10 +110,10 @@ public class DAOClient {
                     
                     //Si le socket est null alors le pc est hors ligne
                     if(ClientMap.get(id) == null){
-                        addPCToPCStatus(id, "Hors ligne", Test);
+                        addPCToPCStatus(id, "Hors Ligne", Test);
                     }
                     else{
-                        addPCToPCStatus(id, "En ligne", Test);
+                        addPCToPCStatus(id, "En Ligne", Test);
                     }
                 }
             }
@@ -149,10 +149,8 @@ public class DAOClient {
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, status);
             
-            System.out.println("re : "+ RequeteSQL);
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();
-            System.out.println("AR :"+affectedRows);
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -167,9 +165,16 @@ public class DAOClient {
      * @param id     id utilisateur
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public Boolean doIDExist(Integer id, Boolean Test){
+    public Boolean doIDExist(Integer id, String option, Boolean Test){
         //Requête SQL
-        String RequeteSQL="SELECT id FROM pc";
+        String RequeteSQL ="";
+        if(option.equals("1")){
+            RequeteSQL="SELECT id FROM pc";
+        }
+        else{
+            RequeteSQL="SELECT id FROM pc_static_info";
+        }
+        
         
         Boolean idExist = false;
         Integer idDB = null;
@@ -208,7 +213,7 @@ public class DAOClient {
     
     
     /**
-     * Ajout du status des PC
+     * Ajout id
      * 
      * @param id     id du PC
      * @param IP        IP machine
@@ -232,6 +237,38 @@ public class DAOClient {
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, IP);
             preparedStatement.setString(3, "");
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    /**
+     * Ajout id
+     * 
+     * @param id     id du PC
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void addPCToPCSI(Integer id, Boolean Test){
+        //Requête SQL
+        String RequeteSQL="INSERT INTO pc_static_info (id) VALUES (?)";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOClient.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
             
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();

@@ -186,12 +186,16 @@ public class SecureServer implements Runnable {
                         clientMap.put(clientId, clientSocket);
                         
                         //Actualisation des clients connectés
-                        //DAOclient.addPCs(clientMap, false);
+                        DAOclient.addPCs(clientMap, false);
 
-                        //On vérifie si l'id est déjà dans la base (zebi ça ma cassé la tête j'ai réglé le pb)
-                        Boolean idExist = DAOclient.doIDExist(clientId, false);
+                        //On vérifie si l'id est déjà dans la base (zebi ça ma cassé la tête)
+                        Boolean idExist = DAOclient.doIDExist(clientId, "1", false);
                         if(idExist == false){
                             DAOclient.addPCToPC(clientId, clientSocket.getInetAddress().getHostAddress(), false);
+                        }
+                        idExist = DAOclient.doIDExist(clientId, "2", false);
+                        if(idExist == false){
+                            DAOclient.addPCToPCSI(clientId, false);
                         }
                         
                         out.println("l'ID : " + clientId + "est connecté");
@@ -201,7 +205,7 @@ public class SecureServer implements Runnable {
                     clientMap.put(clientId, clientSocket);
                     
                     //Actualisation des clients connectés
-                    //DAOclient.addPCs(clientMap, false);
+                    DAOclient.addPCs(clientMap, false);
                     
                     out.println("Votre ID client est : " + clientId);
                     out.println("continue");
