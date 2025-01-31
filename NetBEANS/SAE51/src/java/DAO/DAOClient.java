@@ -165,7 +165,9 @@ public class DAOClient {
      * Ajout du status des PC
      * 
      * @param id     id utilisateur
+     * @param option        "1" BD pc | "2" BD pc_static_info
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return doIDExist        Boolean : existance de l'id ou non
      */
     public Boolean doIDExist(Integer id, String option, Boolean Test){
         //Requête SQL
@@ -287,7 +289,7 @@ public class DAOClient {
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
     public String getOnlinePC(String login, Boolean Test){
-        String RequeteSQL="SELECT id, status FROM pc_status";
+        String RequeteSQL="SELECT id, status FROM pc_status ORDER BY id ASC";
         Integer id=null;
         String JSONString="";
         String status = "";
@@ -330,13 +332,10 @@ public class DAOClient {
                         c += 1;
                     }
                 }
-
+                
                 // Fermer le tableau JSON
                 JSONString += "]";
-
             }
-            
-            
         } catch (SQLException e) {
             e.printStackTrace();
         }

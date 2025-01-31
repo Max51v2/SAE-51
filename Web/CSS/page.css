@@ -129,18 +129,17 @@ section.active {
 
 /* Styles des boutons de contrôle */
 .button-control {
-    font-family: "Open Sans", sans-serif;
-    font-size: 14px;
+    height: 40px;
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border: 1px solid gray;
+    border-radius: 4px;
+    cursor: pointer;
     letter-spacing: 1px;
     text-decoration: none;
     text-transform: uppercase;
-    color: #fff;
-    background-color: #4CAF50; /* Green */
-    cursor: pointer;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease;
 }
@@ -388,4 +387,14 @@ section.active {
     #addUserForm input {
         padding: 6px;
     }
+}
+
+.buttonForbidden {
+    height: 40px;
+    padding: 8px 15px;
+    background-color: #737879;
+    color: white;
+    border: none;
+    border: 1px solid gray;
+    border-radius: 4px;
 }

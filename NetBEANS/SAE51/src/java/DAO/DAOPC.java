@@ -316,6 +316,9 @@ public class DAOPC {
     /**
      * Renvoi les info statiques d'un pc contenu dans la BD
      * 
+     * @param idPC      id du pc
+     * @param login     login de l'utilisateur qui aura accès à ces données
+     * @param rights        droits de l'utilisateur en question
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */

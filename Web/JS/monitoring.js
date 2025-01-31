@@ -53,11 +53,7 @@ const rightsTable = document.querySelector("rightsTable");
                         <div class="col col-1" data-label="ID">${pc.id}</div>
                         <div class="col col-2" data-label="IP">${pc.IP}</div>
                         <div class="col col-2" data-label="IP" id="Status${c}"></div>
-                        <div class="col col-4" data-label="Actions">
-                            <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
-                            <button class="button-25 viewBtn" data-id="${pc.id}">Voir</button>
-                            <button class="rightsBtn" data-id="${pc.id}">Droits d'accès</button>
-                        </div>
+                        <div class="col col-4" data-label="Actions" id="ActionsA${c}"></div>
                     `;
                 }
                 else{
@@ -65,9 +61,9 @@ const rightsTable = document.querySelector("rightsTable");
                         <div class="col col-1" data-label="ID">${pc.id}</div>
                         <div class="col col-2" data-label="IP">${pc.IP}</div>
                         <div class="col col-2" data-label="IP" id="Status${c}"></div>
-                        <div class="col col-4" data-label="Actions">
-                            <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
-                            <button class="button-25 viewBtn" data-id="${pc.id}">Voir</button>
+                        <div class="col col-4" data-label="Actions" id="ActionsU${c}">
+                            <button class="button-25 viewBtn" data-id="${pc.id}">Infos statiques</button>
+                            <button class="button-25 viewDynBtn" data-id="${pc.id}">Infos dynamiques</button>
                         </div>
                     `;
                 }
@@ -162,8 +158,13 @@ const rightsTable = document.querySelector("rightsTable");
     document.addEventListener("click", (event) => {
         if (event.target.classList.contains("viewBtn")) {
             const pcId = event.target.getAttribute("data-id");
-            console.log(`Bouton Voir cliqué pour le PC ID: ${pcId}`);
+            console.log(`Bouton Voir info statiques cliqué pour le PC ID: ${pcId}`);
             showPcDetails(pcId);
+        }
+        else if (event.target.classList.contains("viewDynBtn")) {
+            const pcId = event.target.getAttribute("data-id");
+            console.log(`Bouton Voir info dynamiques cliqué pour le PC ID: ${pcId}`);
+            //Rien
         } else if (event.target.classList.contains("deleteBtn")) {
             const pcId = event.target.getAttribute("data-id");
             console.log(`Bouton Supprimer cliqué pour le PC ID: ${pcId}`);
@@ -195,6 +196,78 @@ const rightsTable = document.querySelector("rightsTable");
             console.error("Erreur lors de la suppression :", error);
         }
     };
+
+
+    //Ajout du status des PC
+    async function loadPCStatus(){
+        response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStatus`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: token, Test: test })
+        });
+
+        data = await response.json();
+
+        if (data.erreur) {
+            console.error(`Erreur: ${data.erreur}`);
+            alert(`Erreur: ${data.erreur}`);
+            return;
+        }
+
+        c=0;
+        //Pas besoin de check l'ordre des id car les servlets ListPC et ListPCStatus renvoient leurs info triées par id ASC
+        data.forEach(pc => {
+            StatusID = document.getElementById("Status"+c);
+
+            StatusID.innerHTML = `${pc.status}`
+
+
+            //Remplissage des bouttons pour un Admin
+            if(document.getElementById("ActionsA"+c)){
+
+                ActionsID = document.getElementById("ActionsA"+c);
+
+                if(pc.status === "En Ligne"){
+                    ActionsID.innerHTML = `
+                        <button class="button-25 viewBtn" data-id="${pc.id}">Infos statiques</button>
+                        <button class="button-25 viewDynBtn" data-id="${pc.id}">Infos dynamiques</button>
+                        <button class="rightsBtn" data-id="${pc.id}">Droits d'accès</button>
+                        <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
+                    `;
+                }
+                else{
+                    ActionsID.innerHTML = `
+                        <button class="button-25 viewBtn" data-id="${pc.id}">Infos statiques</button>
+                        <button class="buttonForbidden" data-id="${pc.id}">Infos dynamiques</button>
+                        <button class="rightsBtn" data-id="${pc.id}">Droits d'accès</button>
+                        <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
+                    `;
+                }
+            }
+            else{
+                ActionsID = document.getElementById("ActionsU"+c);
+
+                if(pc.status === "En Ligne"){
+                    ActionsID.innerHTML = `
+                        <button class="button-25 viewBtn" data-id="${pc.id}">Infos statiques</button>
+                        <button class="button-25 viewDynBtn" data-id="${pc.id}">Infos dynamiques</button>
+                    `;
+                }
+                else{
+                    ActionsID.innerHTML = `
+                        <button class="button-25 viewBtn" data-id="${pc.id}">Infos statiques</button>
+                        <button class="buttonForbidden" data-id="${pc.id}">Infos dynamiques</button>
+                    `;
+                }
+            }
+
+            
+
+            c = c+1;
+        });
+
+        
+    }
 
 
     // Fonction ajouter les droits des utilisateurs sur une machine
@@ -387,23 +460,6 @@ const rightsTable = document.querySelector("rightsTable");
         getRights(idPC);
     }
 
-
-    //Pas fini
-    async function loadPCStatus(){
-        response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStatus`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: idPC, login: login, token: token, Test: test })
-        });
-
-        data = await response.json();
-
-        if (data.erreur !== "none") {
-            console.error(`Erreur: ${data.erreur}`);
-            alert(`Erreur: ${data.erreur}`);
-            return;
-        }
-    }
 
 
 document.addEventListener("TokenCheckFinished", () => {

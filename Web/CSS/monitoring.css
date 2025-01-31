@@ -36,23 +36,33 @@ h2 {
 /* Colonnes */
 .col {
     flex-basis: 100%;
-    text-align: left;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.col button {
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .col-1 {
-    flex-basis: 10%;
+    flex-basis: 20px;
 }
 
 .col-2 {
-    flex-basis: 40%;
+    flex-basis: 100px;
 }
 
 .col-3 {
-    flex-basis: 25%;
+    flex-basis: 90px;
 }
 
 .col-4 {
-    flex-basis: 25%;
+    flex-basis: 80%;
 }
 
 /* Bouton "Supprimer" */
@@ -72,7 +82,7 @@ button.deleteBtn:hover {
 }
 
 /* Bouton "Voir" (Correction appliquée) */
-.viewBtn.button-25 {
+.button-25 {
     height: 40px;
     padding: 8px 15px;
     background-color: #37ADB2;
@@ -83,7 +93,7 @@ button.deleteBtn:hover {
     cursor: pointer;
 }
 
-.viewBtn.button-25:hover {
+.button-25:hover {
     background-color: #24a2a7;
 }
 

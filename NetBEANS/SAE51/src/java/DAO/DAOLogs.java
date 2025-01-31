@@ -55,6 +55,7 @@ public class DAOLogs {
      * @param ip     adresse IP de l'utilisateur
      * @param login     login de l'utilisateur
      * @param droits     droits de l'utilisateur
+     * @param error     erreur renvoyée par le servlet
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
     public void addLog(String servlet, String ip, String login, String droits, String error, Boolean Test){
@@ -95,6 +96,9 @@ public class DAOLogs {
     /**
      * Renvoi les logs contenu dans la BD
      * 
+     * @param beginDate     date de début
+     * @param endDate       date de fin
+     * @param logLevelReq       niveau de loggage : "ErrorsOnly" | "All"
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */

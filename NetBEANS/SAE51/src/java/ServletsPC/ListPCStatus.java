@@ -23,7 +23,23 @@ import javax.servlet.http.HttpServletResponse;
 public class ListPCStatus extends HttpServlet {
 
     /**
-     * Pas fait
+     * Liste les infos statiques d'un PC spécifié<br><br>
+     * 
+     * Variables à envoyer au servlet (POST)<br>
+     * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
+     * 
+     * <br>
+     * Variables renvoyées par le servlet (JSON)<br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé <br>
+     * OU
+     * Integer id       &emsp;&emsp;        id de la machine <br>
+     * String status       &emsp;&emsp;        état de la machine ("En Ligne" | "Hors Ligne") <br>
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,8 +61,6 @@ public class ListPCStatus extends HttpServlet {
         JSON.GetJSONInfoPC json = gsonRequest.fromJson(reader, JSON.GetJSONInfoPC.class);
         
         //Données envoyées par la requête
-        Integer id = json.getId();
-        Boolean hasAccess = Boolean.valueOf(json.getHasAccess());
         String token = json.getToken();
         Boolean TestBoolean = Boolean.valueOf(json.getTest());
 
@@ -56,12 +70,12 @@ public class ListPCStatus extends HttpServlet {
         String loginLog = "Aucun";
         
         //Vérification du contenu envoyé
-        if(token == null | id == null | hasAccess == null){
+        if(token == null){
             //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
-            if(token.equals("") | id.equals("")){
+            if(token.equals("")){
                 //JSON renvoyé
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }

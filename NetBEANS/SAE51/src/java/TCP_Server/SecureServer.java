@@ -85,6 +85,12 @@ public class SecureServer implements Runnable {
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
+                
+                clientMap.values().clear(); // Retirer du map des clients
+                
+                //Actualisation des clients connectés
+                DAOclient.addPCs(clientMap, false);
+                        
                 System.out.println("Serveur arrêté proprement.");
             }
         } catch (IOException e) {
@@ -184,9 +190,6 @@ public class SecureServer implements Runnable {
                     if (message.startsWith("ID : ")) {
                         clientId = Integer.parseInt(message.replace("ID : ", "").trim());
                         clientMap.put(clientId, clientSocket);
-                        
-                        //Actualisation des clients connectés
-                        DAOclient.addPCs(clientMap, false);
 
                         //On vérifie si l'id est déjà dans la base (zebi ça ma cassé la tête)
                         Boolean idExist = DAOclient.doIDExist(clientId, "1", false);
@@ -204,12 +207,13 @@ public class SecureServer implements Runnable {
                     clientId = assignClientId(clientSocket);
                     clientMap.put(clientId, clientSocket);
                     
-                    //Actualisation des clients connectés
-                    DAOclient.addPCs(clientMap, false);
-                    
                     out.println("Votre ID client est : " + clientId);
                     out.println("continue");
                     }
+                    
+                    //Actualisation des clients connectés
+                    DAOclient.addPCs(clientMap, false);
+                    
                     while ((message = in.readLine()) != null) {
                         System.out.println("Message reçu de l'ID " + clientId + " : " + message);
 
@@ -234,19 +238,33 @@ public class SecureServer implements Runnable {
 
                 }
 
-            } catch (IOException e) {
-                System.err.println("Erreur avec le client : " + e.getMessage());
-            } finally {
+            } 
+            catch (IOException e) {
+                System.err.println("Erreur avec le client (IGNOREZ java.sql.SQLException) : " + e.getMessage());
+                
+                clientMap.values().remove(clientSocket); // Retirer du map des clients
+                    
+                //Actualisation des clients connectés
+                DAOclient.addPCs(clientMap, false);
+            } 
+            finally {
                 try {
                     clientMap.values().remove(clientSocket); // Retirer du map des clients
-                    clientSocket.close();
                     
-                    //Actualisation des clients connectés
-                    DAOclient.addPCs(clientMap, false);
+                    clientSocket.close();
                     
                     System.out.println("Connexion fermée pour le client.");
                 } catch (IOException e) {
                     System.err.println("Erreur lors de la fermeture de la connexion : " + e.getMessage());
+                    
+                    clientMap.values().remove(clientSocket); // Retirer du map des clients
+                }
+                
+                try{
+                    //Actualisation des clients connectés
+                    DAOclient.addPCs(clientMap, false);
+                }catch (Exception e){
+                    System.err.println("Erreur addPCs : " + e.getMessage());
                 }
             }
         }

@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @Version 1.0
+ * @version 1.0
  */
 @WebServlet(name = "ChangePCState", urlPatterns = {"/ChangePCState"})
 public class ChangePCState extends HttpServlet {
