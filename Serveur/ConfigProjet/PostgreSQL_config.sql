@@ -224,6 +224,10 @@ INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUserFromPC', 'Adm
 INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUserFromPC', 'Utilisateur', 'false');
 INSERT INTO servlet_access (name, role, access) VALUES ('DeleteUserFromPC', 'Aucun', 'false');
 
+--ListPCStatus
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStatus', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStatus', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStatus', 'Aucun', 'false');
 
 
 --Table contenant les logs d'utilisation des servlets

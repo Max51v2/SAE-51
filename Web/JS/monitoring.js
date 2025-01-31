@@ -36,11 +36,13 @@ const rightsTable = document.querySelector("rightsTable");
                 <li class="table-header">
                     <div class="col col-1">ID</div>
                     <div class="col col-2">IP</div>
+                    <div class="col col-2">Status</div>
                     <div class="col col-4">Actions</div>
                 </li>
             `;
 
             // Génération des lignes pour chaque PC
+            c=0;
             data.forEach(pc => {
                 const row = document.createElement("li");
                 row.className = "table-row";
@@ -50,6 +52,7 @@ const rightsTable = document.querySelector("rightsTable");
                     row.innerHTML = `
                         <div class="col col-1" data-label="ID">${pc.id}</div>
                         <div class="col col-2" data-label="IP">${pc.IP}</div>
+                        <div class="col col-2" data-label="IP" id="Status${c}"></div>
                         <div class="col col-4" data-label="Actions">
                             <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
                             <button class="button-25 viewBtn" data-id="${pc.id}">Voir</button>
@@ -61,6 +64,7 @@ const rightsTable = document.querySelector("rightsTable");
                     row.innerHTML = `
                         <div class="col col-1" data-label="ID">${pc.id}</div>
                         <div class="col col-2" data-label="IP">${pc.IP}</div>
+                        <div class="col col-2" data-label="IP" id="Status${c}"></div>
                         <div class="col col-4" data-label="Actions">
                             <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
                             <button class="button-25 viewBtn" data-id="${pc.id}">Voir</button>
@@ -69,7 +73,11 @@ const rightsTable = document.querySelector("rightsTable");
                 }
                 
                 tableBody.appendChild(row);
+
+                c = c+1;
             });
+
+            loadPCStatus();
 
             console.log("Liste des PCs chargée.");
         } catch (error) {
@@ -380,6 +388,22 @@ const rightsTable = document.querySelector("rightsTable");
     }
 
 
+    //Pas fini
+    async function loadPCStatus(){
+        response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStatus`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: idPC, login: login, token: token, Test: test })
+        });
+
+        data = await response.json();
+
+        if (data.erreur !== "none") {
+            console.error(`Erreur: ${data.erreur}`);
+            alert(`Erreur: ${data.erreur}`);
+            return;
+        }
+    }
 
 
 document.addEventListener("TokenCheckFinished", () => {

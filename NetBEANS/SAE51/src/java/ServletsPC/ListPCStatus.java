@@ -1,6 +1,7 @@
 package ServletsPC;
 
 import Autre.AddLog;
+import DAO.DAOClient;
 import DAO.DAOPC;
 import DAO.DAOusers;
 import com.google.gson.Gson;
@@ -16,10 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 0
+ * @version 1.0
  */
-@WebServlet(name = "IsPCOnline", urlPatterns = {"/IsPCOnline"})
-public class IsPCOnline extends HttpServlet {
+@WebServlet(name = "ListPCStatus", urlPatterns = {"/ListPCStatus"})
+public class ListPCStatus extends HttpServlet {
 
     /**
      * Pas fait
@@ -31,9 +32,10 @@ public class IsPCOnline extends HttpServlet {
         
         DAO.DAOPC DAO2 = new DAOPC();
         DAO.DAOusers DAO = new DAOusers();
+        DAO.DAOClient DAO3 = new DAOClient();
 
         //Nom du servlet
-        String servletName = "IsPCOnline";
+        String servletName = "ListPCStatus";
         
         //Récuperation du JSON envoyé
         BufferedReader reader = request.getReader();
@@ -74,7 +76,8 @@ public class IsPCOnline extends HttpServlet {
                 if(access.equals("true")){
 
                     //Récupération des utilisateurs qui ont le droits d'accéder au PC
-                    jsonString = DAO2.getUsersDependingOnPermissions(id, hasAccess, TestBoolean);
+                    String login = DAO.getLogin();
+                    jsonString = DAO3.getOnlinePC(login, TestBoolean);
                 }
                 else{
                     //JSON renvoyé
