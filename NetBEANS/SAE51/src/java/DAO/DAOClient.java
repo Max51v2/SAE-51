@@ -1,6 +1,7 @@
 package DAO;
 
 import Autre.ProjectConfig;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.net.ssl.SSLSocket;
 
 /**
  * 
@@ -84,7 +86,7 @@ public class DAOClient {
      * @param ClientMap     liste des sockets des clients connectés
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void addPCs(ConcurrentHashMap ClientMap, Boolean Test){
+    public void addPCs(ConcurrentHashMap<Integer, SSLSocket> ClientMap, Boolean Test){
         //Requête SQL
         String RequeteSQL="SELECT id FROM pc";
         
@@ -178,9 +180,6 @@ public class DAOClient {
         
         Boolean idExist = false;
         Integer idDB = null;
-        
-        //Suppression des entrées précédentes
-        deletePCStatus(Test);
         
         //Selection de la BD
         changeConnection(Test);

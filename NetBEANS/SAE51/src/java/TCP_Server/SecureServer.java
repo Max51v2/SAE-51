@@ -242,7 +242,7 @@ public class SecureServer implements Runnable {
                     clientSocket.close();
                     
                     //Actualisation des clients connectés
-                    //DAOclient.addPCs(clientMap, false);
+                    DAOclient.addPCs(clientMap, false);
                     
                     System.out.println("Connexion fermée pour le client.");
                 } catch (IOException e) {
