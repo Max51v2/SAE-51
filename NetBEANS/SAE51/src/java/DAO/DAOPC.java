@@ -771,8 +771,6 @@ public class DAOPC {
                 //Rien
             }
         }
-        
-        System.out.println("RL :"+refactoredLoginList);
         return refactoredLoginList;
     }
 }

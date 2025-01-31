@@ -20,7 +20,6 @@ public class OnStart implements ServletContextListener {
   public void contextInitialized(ServletContextEvent sce) {
         //Récupération des données dans le fichier de conf
         Integer CheckIntervall = conf.getIntValue("CheckIntervall");
-        Integer AnswerPingPort = conf.getIntValue("AnswerPingPort");
         
         System.out.println("##########################################");
         

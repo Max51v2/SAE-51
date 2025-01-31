@@ -1,5 +1,7 @@
 package TCP_Server;
 
+import DAO.DAOClient;
+import DAO.DAOPC;
 import javax.net.ssl.*;
 import java.io.*;
 import java.security.KeyStore;
@@ -8,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SecureServer implements Runnable {
@@ -18,8 +19,22 @@ public class SecureServer implements Runnable {
     private static final String UserPostgres="postgres";
     private static final String PasswordPostgres="leffe";
     private ConcurrentHashMap<Integer, SSLSocket> clientMap = new ConcurrentHashMap<>();
+    DAOClient DAOclient = new DAOClient();
+    DAOPC daoPC = new DAOPC();
 
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/sae_51";
+    
+    //Demarrage du driver postgresql
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            // Si le driver PostgreSQL n'est pas trouvé dans le classpath
+            e.printStackTrace();
+        }
+    }
+    
+    
 
     public synchronized void start(int port) {
         this.port = port;
@@ -109,10 +124,9 @@ public class SecureServer implements Runnable {
             try (PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO pc (id,ip,droits) VALUES (?,?,?);" );) {
                 insertStmt.setInt(1, clientId);
                 insertStmt.setString(2, clientSocket.getInetAddress().getHostAddress());
-                insertStmt.setString(3, "NULL");
+                insertStmt.setString(3, "");
                 insertStmt.executeUpdate();
             }
-            
 
         } catch (Exception e) {
             System.err.println("Erreur lors de l'attribution d'un ID client : " + e.getMessage());
@@ -121,6 +135,8 @@ public class SecureServer implements Runnable {
 
         return clientId;
     }
+    
+    
     public void sendMessageToClient(int clientId, String action) {
         SSLSocket client = clientMap.get(clientId);
         System.out.println("tes" + clientId);
@@ -145,7 +161,6 @@ public class SecureServer implements Runnable {
     // Gérer un client
     private class ClientHandler extends Thread {
         private SSLSocket clientSocket;
-        private  DAO.DAOPC daoPC = new DAO.DAOPC();
 
         public ClientHandler(SSLSocket clientSocket) {
             this.clientSocket = clientSocket;
@@ -169,33 +184,46 @@ public class SecureServer implements Runnable {
                     if (message.startsWith("ID : ")) {
                         clientId = Integer.parseInt(message.replace("ID : ", "").trim());
                         clientMap.put(clientId, clientSocket);
+                        
+                        //Actualisation des clients connectés
+                        //DAOclient.addPCs(clientMap, false);
+
+                        //On vérifie si l'id est déjà dans la base (zebi ça ma cassé la tête j'ai réglé le pb)
+                        Boolean idExist = DAOclient.doIDExist(clientId, false);
+                        if(idExist == false){
+                            DAOclient.addPCToPC(clientId, clientSocket.getInetAddress().getHostAddress(), false);
+                        }
+                        
                         out.println("l'ID : " + clientId + "est connecté");
                     } else {
                     
                     clientId = assignClientId(clientSocket);
                     clientMap.put(clientId, clientSocket);
+                    
+                    //Actualisation des clients connectés
+                    //DAOclient.addPCs(clientMap, false);
+                    
                     out.println("Votre ID client est : " + clientId);
                     out.println("continue");
                     }
-                while ((message = in.readLine()) != null) {
-                    System.out.println("Message reçu de l'ID " + clientId + " : " + message);
+                    while ((message = in.readLine()) != null) {
+                        System.out.println("Message reçu de l'ID " + clientId + " : " + message);
 
-                    if ("exit".equalsIgnoreCase(message)) {
-                        out.println("Déconnexion demandée. Au revoir !");
-                        break;
-                    } else if (message.startsWith("Array :")) {
-                        System.out.println("1");
-                        String arrayData = message.substring(9).trim();
-                        String elements[] = arrayData.split(",\\s*");
-                        String E8 = String.valueOf(elements[8]);
-                        E8 = E8.substring(0, E8.indexOf("]")-1);
-                        daoPC.addPCStaticInfo(clientId, elements[3], Integer.valueOf(elements[6].strip()), Integer.valueOf(elements[5].strip()), elements[4], elements[7], 2, "3200", 6543 , E8, 1, "12", elements[0], elements[1], false);
-                        
-                        
-                    } else {
-                        System.out.println("2");
+                        if ("exit".equalsIgnoreCase(message)) {
+                            out.println("Déconnexion demandée. Au revoir !");
+                            break;
+                        } else if (message.startsWith("Array :")) {
+                            System.out.println("1");
+                            String arrayData = message.substring(9).trim();
+                            String elements[] = arrayData.split(",\\s*");
+                            String E8 = String.valueOf(elements[8]);
+                            E8 = E8.substring(0, E8.indexOf("]")-1);
+                            daoPC.addPCStaticInfo(clientId, elements[3], Integer.valueOf(elements[6].strip()), Integer.valueOf(elements[5].strip()), elements[4], elements[7], 2, "3200", 6543 , E8, 1, "12", elements[0], elements[1], false);
+
+                        } else {
+                            System.out.println("2");
+                        }
                     }
-                }
                 } else {
                     out.println("mot de passe incorect");
                     clientSocket.close();   
@@ -208,6 +236,10 @@ public class SecureServer implements Runnable {
                 try {
                     clientMap.values().remove(clientSocket); // Retirer du map des clients
                     clientSocket.close();
+                    
+                    //Actualisation des clients connectés
+                    //DAOclient.addPCs(clientMap, false);
+                    
                     System.out.println("Connexion fermée pour le client.");
                 } catch (IOException e) {
                     System.err.println("Erreur lors de la fermeture de la connexion : " + e.getMessage());

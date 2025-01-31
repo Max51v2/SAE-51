@@ -96,7 +96,7 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('help.html', 'Aucu
 --Table contenant les pc à monitorer
 --Les droits sont stockés de la façon suivant : "login1/.../loginN"
 CREATE TABLE pc (
-    id SERIAL PRIMARY KEY,
+    id integer PRIMARY KEY,
     ip text,
     droits text
 );
@@ -105,7 +105,7 @@ CREATE TABLE pc (
 
 --Table contenant les pc à monitorer
 CREATE TABLE pc_static_info (
-    id SERIAL PRIMARY KEY,
+    id integer PRIMARY KEY,
     cpu_model text,
     cores integer,
     threads integer,
@@ -303,7 +303,7 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('accueil.html', 'A
 
 --Table contenant les pc à monitorer
 CREATE TABLE pc (
-    id SERIAL PRIMARY KEY,
+    id integer PRIMARY KEY,
     ip text,
     droits text
 );
@@ -415,7 +415,7 @@ INSERT INTO logs (servlet, ip, login, droits, error, date) VALUES ('Test2', '2.2
 
 --Table contenant les pc à monitorer
 CREATE TABLE pc_static_info (
-    id SERIAL PRIMARY KEY,
+    id integer PRIMARY KEY,
     cpu_model text,
     cores integer,
     threads integer,
