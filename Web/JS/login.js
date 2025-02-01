@@ -1,7 +1,64 @@
 //Auteur JS : Maxime VALLET
 //Version : 1.0
 
-//Code ici
+
+ScriptIndex=1;
+
+//Sert à relancer le test Tomcat et l'authentification quand Tomcat ne répond pas
+function reloadScript(scriptName) {
+    //Retrait des anciens scripts si applicable
+    const existingScript = document.querySelector(`script[src="JS/${scriptName}.js?t=${ScriptIndex-1}"]`);
+    if (existingScript) {
+        existingScript.remove();
+    }
+
+    //Ajout des scripts
+    let script = document.createElement("script");
+    script.src = "JS/" + scriptName + ".js?t="+ScriptIndex;
+    script.async = true;
+    document.body.appendChild(script);
+
+    ScriptIndex = ScriptIndex+1;
+}
+
+async function Refresh(){
+    //délais entre 2 requêtes
+    await Wait(5000);
+
+    //clear console car sinon les erreurs et logs s'accumulent
+    console.clear()
+
+    //Rechargement des scripts
+    console.log("login => Event : TomcatTestFinished => Reload TokenCheck.js et URL.js");
+    reloadScript("TokenCheck");
+    reloadScript("URL");
+}
+
+function Wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+document.addEventListener("TomcatTestFinished", (event) => {
+
+    //Si le test du serveur Tomcat a échoué
+    if (window.TomcatOK == false) {
+        //Afichage de la bannière
+        document.getElementById("helpBan").style.visibility = "visible";
+        
+        //Ajout du texte de la bannière
+        document.getElementById('helpP').innerHTML = `Impossible d'accéder au serveur Tomcat. <br>Merci de vérifier qu'il est allumé et que la clé SSL est validée : <a href="https://${window.ServerIP}:8443">https://${window.ServerIP}:8443</a>`;
+
+        //Rechargement des scripts
+        Refresh();
+    }
+    else{
+        //Retrait de la bannière
+        document.getElementById("helpBan").style.visibility = "hidden";
+    }
+});
+
+
 document.addEventListener("TokenCheckFinished", (event) => {
     
     //Vérification du MDP

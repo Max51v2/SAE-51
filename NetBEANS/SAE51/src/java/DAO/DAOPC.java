@@ -1,6 +1,5 @@
 package DAO;
 
-import TCP_Server.SecureServer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Classe contenant toutes les intéractions avec la BD partie PC
@@ -56,9 +57,9 @@ public class DAOPC {
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @return loginExist       éxsitance du login (booléen)
      */
-    public Boolean doIDExist(String id, Boolean Test){
+    public Boolean doIDExist(Integer id, Boolean Test){
         String RequeteSQL="SELECT id FROM pc WHERE id = ?";
-        String idDB="";
+        
         Boolean idExist = false;
         
         //Selection de la BD
@@ -72,18 +73,13 @@ public class DAOPC {
             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
             
             //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
-            preparedStatement.setString(1, id);
+            preparedStatement.setInt(1, id);
             
             // Exécution de la requête
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    idDB = resultSet.getString("id");
+                    idExist = true;
                 }
-            }
-            
-            //Vérification du login renvoyé
-            if(id.equals(idDB)){
-                idExist = true;
             }
             
         } catch (SQLException e) {
@@ -420,7 +416,7 @@ public class DAOPC {
      * Renvoi le droit d'accès d'un utilisateur à une machine
      * 
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @return getInfo       contenu de la table au format JSON (login/prenom/nom/droits)
+     * @return getInfo       droits d'accès
      */
     public Boolean getUserPCAccess(Integer idPC, String login, Boolean Test){
         
@@ -775,5 +771,200 @@ public class DAOPC {
             }
         }
         return refactoredLoginList;
+    }
+    
+    
+    
+    
+    /**
+     * Vérifie l'existance de l'ID dans la base de données pc_messages
+     * 
+     * @param id     id de la machine
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return loginExist       éxsitance du login (booléen)
+     */
+    public Boolean doIDExistMessages(Integer id, Boolean Test){
+        String RequeteSQL="SELECT id FROM pc_messages WHERE id = ?";
+        
+        Boolean idExist = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    idExist = true;
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return idExist;
+    }
+    
+    
+    
+    
+    
+    /**
+     * Ajout d'un ordinateur dans la BD
+     * 
+     * @param id     id de la machine
+     * @param action        restart | shutdown | update
+     * @param login     login de l'utilisateur qui fait la demande
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void addStatusChange(Integer id, String action, String login, Boolean Test){
+        String RequeteSQL="INSERT INTO pc_messages (id, message) VALUES (?, ?)";
+        
+        //Récupération des droits d'accès de l'utilisateur
+        Boolean access = getUserPCAccess(id, login, Test);
+        
+        //Verif des droits
+        if(access == true){
+            
+            //Vérification de l'existance d'un message (il ne peut pas y avoir plus d'un changement à la fois => au cas où l'utilisateur spam)
+            Boolean exist = doIDExistMessages(id, Test);
+            
+            if(exist == false){
+                //Selection de la BD
+                changeConnection(Test);
+
+                //Connection BD en tant que postgres
+                try (Connection connection =
+                    DAOPC.getConnectionPostgres();
+
+                    //Requête SQL
+                    PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+
+                    //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.setString(2, action);
+
+                    // Exécution de la requête
+                    int affectedRows = preparedStatement.executeUpdate();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                //Rien
+            }
+        }
+    }
+    
+    
+    
+    /**
+     * Vérifie que le status a bien été changé en regardant si le message est toujour présent
+     * 
+     * @param id     id de la machine
+     * @param pause     pause en ms
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return executed     status de l'execution de la commande
+     */
+    public boolean checkStatusChange(Integer id, long pause, boolean Test) {
+        try {
+            //Pause
+            Thread.sleep(pause);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt(); // Bonne pratique : réinterrompre le thread
+            Logger.getLogger(DAOPC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // Vérification de la présence de l'id dans pc_messages
+        return !doIDExistMessages(id, Test);
+    }
+    
+    
+    
+     /**
+     * Renvoi un message destiné à un pc
+     * 
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return list       String Arraylist qui contient : 0 => id (ici -1 si pas de message)  et 1 => message
+     */
+    public ArrayList<String> getMessage(Boolean Test){
+        String RequeteSQL="SELECT id, message FROM pc_messages ORDER BY id ASC";
+        String message = "";
+        Integer id= -1; //Par défaut, renvoyé si table vide
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                
+                //On prend le résultat de la 1ere itération si elle existe
+                if (resultSet.next()) {
+                    //Récupération des info souhaitées
+                    id = resultSet.getInt("id");
+                    message = resultSet.getString("message");
+                }
+            } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        //Remplissage de l'arraylist renvoyée
+        ArrayList<String> list = new ArrayList<>();
+        list.add(String.valueOf(id));
+        list.add(message);
+        
+        return list;
+    }
+    
+    
+    
+    /**
+     * Suppression d'un ordinateur dans la BD
+     * 
+     * @param id     id de la machine
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deleteMessage(Integer id, Boolean Test){
+        String RequeteSQL="DELETE FROM pc_messages WHERE id = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

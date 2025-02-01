@@ -229,6 +229,13 @@ INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStatus', 'Admin',
 INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStatus', 'Utilisateur', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('ListPCStatus', 'Aucun', 'false');
 
+--ChangePCState
+INSERT INTO servlet_access (name, role, access) VALUES ('ChangePCState', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ChangePCState', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ChangePCState', 'Aucun', 'false');
+
+
+
 
 --Table contenant les logs d'utilisation des servlets
 CREATE TABLE logs (

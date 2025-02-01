@@ -114,3 +114,26 @@ margin-left: 25px;
 .social i{
 margin-right: 4px;
 }
+#loginText{
+    margin-top: 30px;
+    margin-bottom: -15px;
+}
+#helpBan{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 75px;
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    background-color: rgba(255,255,255,0.1);
+}
+#helpP{
+    text-align: center;
+    color: #ffffff;
+    font-size: 18px;
+}
+#helpP a{
+    color: aquamarine;
+}

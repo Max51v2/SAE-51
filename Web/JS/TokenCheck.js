@@ -3,7 +3,8 @@
 
 
 //Token
-let token = sessionStorage.getItem('token');
+token = sessionStorage.getItem('token');
+
 
 // Attend que le test de Tomcat soit terminé
 document.addEventListener("TomcatTestFinished", function() {
@@ -27,6 +28,9 @@ document.addEventListener("TomcatTestFinished", function() {
         else{
             console.log("TokenCheck.js => Info : l'authentification et la redirection sont désactivés")
         }
+        
+        //Arrêt de l'évènement
+        document.removeEventListener("TomcatTestFinished", arguments.callee);
     }
 });
 

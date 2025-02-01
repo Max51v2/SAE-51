@@ -219,9 +219,13 @@ const rightsTable = document.querySelector("rightsTable");
         data.forEach(pc => {
             StatusID = document.getElementById("Status"+c);
 
-            StatusID.innerHTML = `${pc.status}`
-
-
+            if(pc.status === "En Ligne"){
+                StatusID.innerHTML = `🟢 ${pc.status}`;
+            }
+            else{
+                StatusID.innerHTML = `🔴 ${pc.status}`;
+            }
+            
             //Remplissage des bouttons pour un Admin
             if(document.getElementById("ActionsA"+c)){
 
@@ -238,7 +242,9 @@ const rightsTable = document.querySelector("rightsTable");
                 else{
                     ActionsID.innerHTML = `
                         <button class="button-25 viewBtn" data-id="${pc.id}">Infos statiques</button>
-                        <button class="buttonForbidden" data-id="${pc.id}">Infos dynamiques</button>
+                        <span title="PC Hors Ligne">
+                            <button class="buttonForbidden" data-id="${pc.id}">Infos dynamiques</button>
+                        </span>
                         <button class="rightsBtn" data-id="${pc.id}">Droits d'accès</button>
                         <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
                     `;
@@ -256,7 +262,9 @@ const rightsTable = document.querySelector("rightsTable");
                 else{
                     ActionsID.innerHTML = `
                         <button class="button-25 viewBtn" data-id="${pc.id}">Infos statiques</button>
-                        <button class="buttonForbidden" data-id="${pc.id}">Infos dynamiques</button>
+                        <span title="PC Hors Ligne">
+                            <button class="buttonForbidden" data-id="${pc.id}">Infos dynamiques</button>
+                        </span>
                     `;
                 }
             }
@@ -333,11 +341,11 @@ const rightsTable = document.querySelector("rightsTable");
             data.forEach(user => {
                 if(user.canBeDeleted === "false"){
                     userTableBody.innerHTML += `
+                    <span title="Le rôle Admin donne accès à tous les PC">
                         <button 
                             style="background: none; 
                                     border: none; 
                                     padding: 0; 
-                                    cursor: pointer; 
                                     display: flex; 
                                     margin-right: 20px;
                                     margin-left: 20px;
@@ -351,6 +359,7 @@ const rightsTable = document.querySelector("rightsTable");
                                         margin-right: 10px;"></span>
                             <span style="font-size: 15px;">${user.user}</span>
                         </button>
+                    </span>
                         <br>
                     `;
                 }

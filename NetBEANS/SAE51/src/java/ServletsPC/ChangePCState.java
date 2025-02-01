@@ -3,11 +3,11 @@ package ServletsPC;
 import Autre.AddLog;
 import DAO.DAOPC;
 import DAO.DAOusers;
-import TCP_Server.SecureServer;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,16 +27,13 @@ public class ChangePCState extends HttpServlet {
      * 
      * Variables à envoyer au servlet (POST)<br>
      * Integer id       &emsp;&emsp;        id de l'ordinateur <br>
-     * Integer action       &emsp;&emsp;        action à effectuer sur le PC (1 : MAJ | 2 : redémarrer | 3 : éteindre) <br>
+     * Integer message       &emsp;&emsp;        action à effectuer sur le PC (shutdown | restart | update) <br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé <br>
-     * OU
-     * Integer user       &emsp;&emsp;        utilisateur qui a accès à la machine <br>
-     * String canBeDeleted       &emsp;&emsp;        retrait de l'utilisateur possible ou non <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | SecureServer failure | none <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -63,22 +60,22 @@ public class ChangePCState extends HttpServlet {
         
         //Données envoyées par la requête
         Integer id = json.getId();
-        Integer action = json.getAction();
+        String message = json.getMessage();
         String token = json.getToken();
         Boolean TestBoolean = Boolean.valueOf(json.getTest());
 
         //Données
         String rights = "Aucun";
-        String jsonString = "";
+        String jsonString = "{\"erreur\":\"SecureServer failure\"}";
         String loginLog = "Aucun";
         
         //Vérification du contenu envoyé
-        if(token == null | id == null | action == null){
+        if(token == null | id == null | message == null){
             //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
         else{
-            if(token.equals("") | id.equals("")){
+            if(token.equals("") | message.equals("")){
                 //JSON renvoyé
                 jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
             }
@@ -92,9 +89,33 @@ public class ChangePCState extends HttpServlet {
                 //Si l'utilisateur a les droits
                 if(access.equals("true")){
 
-                    //Récupération des utilisateurs qui ont le droits d'accéder au PC
-                    SecureServer Serv = new SecureServer();
-                    Serv.sendMessageToClient(id, String.valueOf(id));
+                    //Ajout du message qui sera exécuté par l'instance de SecureServer situé dans OnStart.java
+                    String login = DAO.getLogin();
+                    DAO2.addStatusChange(id, message, login, TestBoolean);
+                    
+                    //Vérification que la commande s'est bien effectuée
+                    Integer timeout = 10;
+                    long pause = 500;
+                    Integer c = 0;
+                    Boolean executed = null;
+                    
+                    //On effectue le vérification plusieurs fois pour prendre en compte la latence du serveur
+                    while(c < timeout){
+                        executed = DAO2.checkStatusChange(id, pause, TestBoolean);
+                        
+                        if(executed == true){
+                            jsonString = "{\"erreur\":\"none\"}";
+                            
+                            break;
+                        }
+                        
+                        c += 1;
+                    }
+                    
+                    //suppression du message si il n'est pas exécuté
+                    if(executed == false){
+                        DAO2.deleteMessage(id, TestBoolean);
+                    }
                 }
                 else{
                     //JSON renvoyé

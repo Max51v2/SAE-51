@@ -1,11 +1,144 @@
 //Auteur : Maxime VALLET
 
 
+// Récupération des infos utilisateur
+token = sessionStorage.getItem('token');
+droits = sessionStorage.getItem('droits');
+test = "false";
+window.doAction = doAction;
+
+
+//Map pour suivre l'état des spinners par ligne
+let runningMap = new Map();
+
+// Modification de l'état d'une machine
+async function doAction(message, id, line) {
+    //Animation : on démarre le spinner pour cette ligne
+    runningMap.set(line, true);
+    spinner(line);
+
+    //Attente de la réponse du serveur
+    let response = await fetch(`https://${window.ServerIP}:8443/SAE51/ChangePCState`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: token, id: id, message: message, Test: test })
+    });
+
+    let data = await response.json();
+
+    //Fin animation  + délais act serveur
+    await Wait(1000);
+    runningMap.set(line, false);
+
+    //Act status
+    loadPCStatus();
+
+    if (data.erreur !== "none") {
+        console.error(`Erreur: ${data.erreur}`);
+        alert(`Erreur: ${data.erreur}`);
+        return;
+    }
+}
+
+
+//Animation
+async function spinner(line) {
+    //Désactivation des bouttons
+    ActionsID = document.getElementById("Actions"+line);
+        
+    ActionsID.innerHTML = `
+        <button class="buttonForbidden">Éteindre</button>
+        <button class="buttonForbidden">Redémarrer</button>
+        <button class="buttonForbidden">MAJ</button>
+    `;
+    
+    //Remplacement du status par le spinner
+    let statusElement = document.getElementById("Status" + line);
+
+    let charList = ["⠇", "⠋", "⠙", "⠸", "⠴", "⠦"];
+    let c = 0;
+
+    while (runningMap.get(line)) {
+        statusElement.innerHTML = `${charList[c]} Chargement`;
+
+        await Wait(200);
+
+        c = (c + 1) % charList.length;
+    }
+
+    //Activation des bouttons
+    ActionsID.innerHTML = `
+        <button class="button-control" onclick="doAction('shutdown', ${pc.id}, ${c})">Éteindre</button>
+        <button class="button-control" onclick="doAction('restart', ${pc.id}, ${c})">Redémarrer</button>
+        <button class="button-control" onclick="doAction('update', ${pc.id}, ${c})">MAJ</button>
+    `;
+}
+
+
+//Fonction sleep
+function Wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+//Ajout du status des PC
+async function loadPCStatus(){
+    response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStatus`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: token, Test: test })
+    });
+
+    data = await response.json();
+
+    if (data.erreur) {
+        console.error(`Erreur: ${data.erreur}`);
+        alert(`Erreur: ${data.erreur}`);
+        return;
+    }
+
+    c=0;
+    //Pas besoin de check l'ordre des id car les servlets ListPC et ListPCStatus renvoient leurs info triées par id ASC
+    data.forEach(pc => {
+        StatusID = document.getElementById("Status"+c);
+
+        if(pc.status === "En Ligne"){
+            StatusID.innerHTML = `🟢 ${pc.status}`;
+        }
+        else{
+            StatusID.innerHTML = `🔴 ${pc.status}`;
+        }
+
+        ActionsID = document.getElementById("Actions"+c);
+
+        if(pc.status === "En Ligne"){
+            ActionsID.innerHTML = `
+                <button class="button-control" onclick="doAction('shutdown', ${pc.id}, ${c})">Éteindre</button>
+                <button class="button-control" onclick="doAction('restart', ${pc.id}, ${c})">Redémarrer</button>
+                <button class="button-control" onclick="doAction('update', ${pc.id}, ${c})">MAJ</button>
+            `;
+        }
+        else{
+            ActionsID.innerHTML = `
+                <span title="PC Hors Ligne">
+                    <button class="buttonForbidden">Éteindre</button>
+                </span>
+                <span title="PC Hors Ligne">
+                    <button class="buttonForbidden">Redémarrer</button>
+                </span>
+                <span title="PC Hors Ligne">
+                    <button class="buttonForbidden">MAJ</button>
+                </span>
+            `;
+        }
+
+        c = c+1;
+    });
+}
+
+
+
 document.addEventListener("TokenCheckFinished", () => {
-    //Récupération des infos utilisateur
-    token = sessionStorage.getItem('token');
-    droits = sessionStorage.getItem('droits');
-    test = "false";
     
     // Fonction principale pour charger la liste des PCs
     const loadPcList = async () => {
@@ -49,55 +182,7 @@ document.addEventListener("TokenCheckFinished", () => {
             console.error("Erreur lors du chargement :", error);
         }
     };
-
-
-
-    //Ajout du status des PC
-    async function loadPCStatus(){
-        response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStatus`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token: token, Test: test })
-        });
-
-        data = await response.json();
-
-        if (data.erreur) {
-            console.error(`Erreur: ${data.erreur}`);
-            alert(`Erreur: ${data.erreur}`);
-            return;
-        }
-
-        c=0;
-        //Pas besoin de check l'ordre des id car les servlets ListPC et ListPCStatus renvoient leurs info triées par id ASC
-        data.forEach(pc => {
-            StatusID = document.getElementById("Status"+c);
-
-            StatusID.innerHTML = `${pc.status}`;
-
-            ActionsID = document.getElementById("Actions"+c);
-
-            if(pc.status === "En Ligne"){
-                ActionsID.innerHTML = `
-                    <button class="button-control" onclick="">Éteindre</button>
-                    <button class="button-control" onclick="">Redémarrer</button>
-                    <button class="button-control" onclick="">MAJ</button>
-                `;
-            }
-            else{
-                ActionsID.innerHTML = `
-                    <button class="buttonForbidden">Éteindre</button>
-                    <button class="buttonForbidden">Redémarrer</button>
-                    <button class="buttonForbidden">MAJ</button>
-                `;
-            }
-
-            c = c+1;
-        });
-
-        
-    }
-
+    
 
     loadPcList();
 });

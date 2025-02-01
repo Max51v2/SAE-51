@@ -1,17 +1,16 @@
 #bannerDiv {
+    display: flex;
+    flex-direction: row;
     width: 100%;
     height: 50px;
-    display: flex;
     justify-content: space-between;
     background-color: #000000;
     color: #fefafa;
-    padding: 10px;
-    align-items: center;
-    border-bottom: 2px solid white;
+    padding: 10px; 
 }
 #user{
-    height: 50px;
-    width: 450px;
+    height: 30px;
+    width: auto;
     padding-left: 15px;
     display: flex;
     flex-direction: row;
@@ -29,9 +28,8 @@
     padding-right: 10px;
 }
 #disconnect {
-    height: 50px;
-    width: 450px;
-    padding-right: 10px;
+    height: 30px;
+    width: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,4 +59,10 @@
     height: 20px;
     padding-right: 10px;
     align-items: center;
+}
+#pageName{
+    height: 30px;
+    width: auto;
+    padding-left: auto;
+    padding-right: auto;
 }
