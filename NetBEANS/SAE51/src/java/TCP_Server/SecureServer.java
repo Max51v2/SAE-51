@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SecureServer implements Runnable {
     private int port;
@@ -39,8 +41,34 @@ public class SecureServer implements Runnable {
     public synchronized void start(int port) {
         this.port = port;
         new Thread(this).start();
+        
+        
+        //Vérifie les messages ajoutés dans la BD en arrière plan
+        Thread threadMessages = new Thread(){
+            public void run(){
+                long pause = 500;
+
+                //Tant que le la classe tourne, le thread tourne
+                while(running){
+                    try {
+                        Thread.sleep(pause);
+
+                        //Get last req
+
+                        //Del req
+                    } 
+                    catch (InterruptedException ex) {
+                        Logger.getLogger(SecureServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+
+      threadMessages.start();
     }
 
+    
+    
     @Override
     public void run() {
         String keystorePath = "/opt/tomcat/conf/tomcat.keystore"; // Chemin du keystore
@@ -80,6 +108,8 @@ public class SecureServer implements Runnable {
         }
     }
 
+    
+    
     public synchronized void stop() {
         this.running = false;
         try {
@@ -97,7 +127,9 @@ public class SecureServer implements Runnable {
             System.err.println("Erreur lors de l'arrêt du serveur : " + e.getMessage());
         }
     }
+    
 
+    
     // Méthode pour attribuer un ID unique à un nouveau client
     private int assignClientId(SSLSocket clientSocket) {
         int clientId = -1;
@@ -143,6 +175,7 @@ public class SecureServer implements Runnable {
     }
     
     
+    
     public void sendMessageToClient(int clientId, String action) {
         SSLSocket client = clientMap.get(clientId);
         System.out.println("tes" + clientId);
@@ -163,6 +196,7 @@ public class SecureServer implements Runnable {
     }
 }
 
+    
 
     // Gérer un client
     private class ClientHandler extends Thread {

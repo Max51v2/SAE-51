@@ -1,11 +1,29 @@
 //Auteur : Maxime VALLET
 
 
+//Récupération des infos utilisateur
+token = sessionStorage.getItem('token');
+droits = sessionStorage.getItem('droits');
+test = "false";
+window.doAction = doAction;
+
+async function doAction(message, id){
+    response = await fetch(`https://${window.ServerIP}:8443/SAE51/ChangePCState`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: token, id: id, message: message, Test: test })
+    });
+
+    data = await response.json();
+
+    if (data.erreur !== "none") {
+        console.error(`Erreur: ${data.erreur}`);
+        alert(`Erreur: ${data.erreur}`);
+        return;
+    }
+}
+
 document.addEventListener("TokenCheckFinished", () => {
-    //Récupération des infos utilisateur
-    token = sessionStorage.getItem('token');
-    droits = sessionStorage.getItem('droits');
-    test = "false";
     
     // Fonction principale pour charger la liste des PCs
     const loadPcList = async () => {
@@ -79,9 +97,9 @@ document.addEventListener("TokenCheckFinished", () => {
 
             if(pc.status === "En Ligne"){
                 ActionsID.innerHTML = `
-                    <button class="button-control" onclick="">Éteindre</button>
-                    <button class="button-control" onclick="">Redémarrer</button>
-                    <button class="button-control" onclick="">MAJ</button>
+                    <button class="button-control" onclick="doAction('shutdown', ${pc.id})">Éteindre</button>
+                    <button class="button-control" onclick="doAction('restart', ${pc.id})">Redémarrer</button>
+                    <button class="button-control" onclick="doAction('update', ${pc.id})">MAJ</button>
                 `;
             }
             else{
@@ -94,10 +112,9 @@ document.addEventListener("TokenCheckFinished", () => {
 
             c = c+1;
         });
-
-        
     }
 
+    
 
     loadPcList();
 });

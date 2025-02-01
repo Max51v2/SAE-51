@@ -14,8 +14,9 @@ public class GetJSONInfoPC{
         private String hasAccess;
         private String login;
         private Integer action;
+        private String message;
         
-        public GetJSONInfoPC(String Test, String IP, Integer id, String hasAccess, String login, Integer action, String token){
+        public GetJSONInfoPC(String Test, String IP, Integer id, String hasAccess, String login, Integer action, String message, String token){
             this.Test = Test;
             this.IP = IP;
             this.id = id;
@@ -23,6 +24,7 @@ public class GetJSONInfoPC{
             this.hasAccess = hasAccess;
             this.login = login;
             this.action = action;
+            this.message = message;
         }
 
         public String getTest() {
@@ -31,6 +33,14 @@ public class GetJSONInfoPC{
 
         public void setTest(String Test) {
             this.Test = Test;
+        }
+        
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
         }
 
         public Integer getId() {
