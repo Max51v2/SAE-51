@@ -1,5 +1,5 @@
 /* Titre */
-h2 {
+.h2P{
     font-size: 26px;
     text-align: center;
     margin: 20px 0;
@@ -54,7 +54,7 @@ h2 {
 }
 
 .col-2 {
-    flex-basis: 100px;
+    flex-basis: 120px;
 }
 
 .col-3 {
@@ -62,7 +62,7 @@ h2 {
 }
 
 .col-4 {
-    flex-basis: 80%;
+    flex-basis: 85%;
 }
 
 /* Bouton "Supprimer" */

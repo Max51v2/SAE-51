@@ -41,19 +41,18 @@ TomcatTest();
 //Test de l'accès à Tomcat
 async function TomcatTest() {
     try {
+        //Timeout plus faible car c'est juste un ping
         await fetch(`https://${window.ServerIP}:8443/SAE51/TestTomcat`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({})
-        })
+        }, { signal: AbortSignal.timeout(800) })
         .then(response => response.json())
         .then(TestTomcatResult)
-        .catch(error => {
-            console.log("URL.js => TomcatTest() => Erreur : le serveur Tomcat ne répond pas");
-            window.TomcatOK = false;
-        });
+        
     } catch (error) {
-        //Rien
+        console.log("URL.js => TomcatTest() => Erreur : le serveur Tomcat ne répond pas => "+error);
+        window.TomcatOK = false;
     } finally {
         //Déclenche un événement personnalisé pour notifier que le test est terminé
         document.dispatchEvent(new Event("TomcatTestFinished"));

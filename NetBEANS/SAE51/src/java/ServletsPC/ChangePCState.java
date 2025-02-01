@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -109,6 +110,11 @@ public class ChangePCState extends HttpServlet {
                         }
                         
                         c += 1;
+                    }
+                    
+                    //suppression du message si il n'est pas exécuté
+                    if(executed == false){
+                        DAO2.deleteMessage(id, TestBoolean);
                     }
                 }
                 else{

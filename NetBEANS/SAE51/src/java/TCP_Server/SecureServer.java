@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ public class SecureServer implements Runnable {
     private ConcurrentHashMap<Integer, SSLSocket> clientMap = new ConcurrentHashMap<>();
     DAOClient DAOclient = new DAOClient();
     DAOPC daoPC = new DAOPC();
+    private final Boolean Test = false;
 
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/sae_51";
     
@@ -47,15 +49,37 @@ public class SecureServer implements Runnable {
         Thread threadMessages = new Thread(){
             public void run(){
                 long pause = 500;
-
+                ArrayList<String> list;
+                String message = "0";
+                
                 //Tant que le la classe tourne, le thread tourne
                 while(running){
                     try {
                         Thread.sleep(pause);
 
-                        //Get last req
-
-                        //Del req
+                        //Récupération d'un message
+                        list = daoPC.getMessage(Test);
+                        
+                        //S'il n'y a pas de message
+                        if(list.get(0).equals("-1")){
+                            //Rien
+                        }
+                        else{
+                            //Envoi du message au client
+                            System.out.println("Envoi du message \""+list.get(1)+"\" au PC "+list.get(0));
+                            
+                            //Numéro action
+                            if(list.get(1).equals("shutdown")){message = "3";}
+                            if(list.get(1).equals("restart")){message = "2";}
+                            if(list.get(1).equals("update")){message = "1";}
+                            
+                            //Suppression du message dans la BD
+                            daoPC.deleteMessage(Integer.valueOf(list.get(0)), Test);
+                            
+                            //Envoi du message
+                            sendMessageToClient(Integer.valueOf(list.get(0)), message);
+                        }
+                        
                     } 
                     catch (InterruptedException ex) {
                         Logger.getLogger(SecureServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -119,7 +143,7 @@ public class SecureServer implements Runnable {
                 clientMap.values().clear(); // Retirer du map des clients
                 
                 //Actualisation des clients connectés
-                DAOclient.addPCs(clientMap, false);
+                DAOclient.addPCs(clientMap, Test);
                         
                 System.out.println("Serveur arrêté proprement.");
             }
@@ -226,13 +250,13 @@ public class SecureServer implements Runnable {
                         clientMap.put(clientId, clientSocket);
 
                         //On vérifie si l'id est déjà dans la base (zebi ça ma cassé la tête)
-                        Boolean idExist = DAOclient.doIDExist(clientId, "1", false);
+                        Boolean idExist = DAOclient.doIDExist(clientId, "1", Test);
                         if(idExist == false){
-                            DAOclient.addPCToPC(clientId, clientSocket.getInetAddress().getHostAddress(), false);
+                            DAOclient.addPCToPC(clientId, clientSocket.getInetAddress().getHostAddress(), Test);
                         }
-                        idExist = DAOclient.doIDExist(clientId, "2", false);
+                        idExist = DAOclient.doIDExist(clientId, "2", Test);
                         if(idExist == false){
-                            DAOclient.addPCToPCSI(clientId, false);
+                            DAOclient.addPCToPCSI(clientId, Test);
                         }
                         
                         out.println("l'ID : " + clientId + "est connecté");
@@ -246,7 +270,7 @@ public class SecureServer implements Runnable {
                     }
                     
                     //Actualisation des clients connectés
-                    DAOclient.addPCs(clientMap, false);
+                    DAOclient.addPCs(clientMap, Test);
                     
                     while ((message = in.readLine()) != null) {
                         System.out.println("Message reçu de l'ID " + clientId + " : " + message);
@@ -260,7 +284,7 @@ public class SecureServer implements Runnable {
                             String elements[] = arrayData.split(",\\s*");
                             String E8 = String.valueOf(elements[8]);
                             E8 = E8.substring(0, E8.indexOf("]")-1);
-                            daoPC.addPCStaticInfo(clientId, elements[3], Integer.valueOf(elements[6].strip()), Integer.valueOf(elements[5].strip()), elements[4], elements[7], 2, "3200", 6543 , E8, 1, "12", elements[0], elements[1], false);
+                            daoPC.addPCStaticInfo(clientId, elements[3], Integer.valueOf(elements[6].strip()), Integer.valueOf(elements[5].strip()), elements[4], elements[7], 2, "3200", 6543 , E8, 1, "12", elements[0], elements[1], Test);
 
                         } else {
                             System.out.println("2");
@@ -279,7 +303,7 @@ public class SecureServer implements Runnable {
                 clientMap.values().remove(clientSocket); // Retirer du map des clients
                     
                 //Actualisation des clients connectés
-                DAOclient.addPCs(clientMap, false);
+                DAOclient.addPCs(clientMap, Test);
             } 
             finally {
                 try {
@@ -296,7 +320,7 @@ public class SecureServer implements Runnable {
                 
                 try{
                     //Actualisation des clients connectés
-                    DAOclient.addPCs(clientMap, false);
+                    DAOclient.addPCs(clientMap, Test);
                 }catch (Exception e){
                     System.err.println("Erreur addPCs : " + e.getMessage());
                 }

@@ -889,4 +889,82 @@ public class DAOPC {
         // Vérification de la présence de l'id dans pc_messages
         return !doIDExistMessages(id, Test);
     }
+    
+    
+    
+     /**
+     * Renvoi un message destiné à un pc
+     * 
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return list       String Arraylist qui contient : 0 => id (ici -1 si pas de message)  et 1 => message
+     */
+    public ArrayList<String> getMessage(Boolean Test){
+        String RequeteSQL="SELECT id, message FROM pc_messages ORDER BY id ASC";
+        String message = "";
+        Integer id= -1; //Par défaut, renvoyé si table vide
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                
+                //On prend le résultat de la 1ere itération si elle existe
+                if (resultSet.next()) {
+                    //Récupération des info souhaitées
+                    id = resultSet.getInt("id");
+                    message = resultSet.getString("message");
+                }
+            } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        //Remplissage de l'arraylist renvoyée
+        ArrayList<String> list = new ArrayList<>();
+        list.add(String.valueOf(id));
+        list.add(message);
+        
+        return list;
+    }
+    
+    
+    
+    /**
+     * Suppression d'un ordinateur dans la BD
+     * 
+     * @param id     id de la machine
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deleteMessage(Integer id, Boolean Test){
+        String RequeteSQL="DELETE FROM pc_messages WHERE id = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
