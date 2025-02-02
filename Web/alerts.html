@@ -1,21 +1,16 @@
-<!--
-    Auteur HTML : Gabin PETITCOLAS
-    Version : ?
-    W3C validator (0 erreurs / 0 warnings): ?
---> 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/webp" href="./images/flavicon.webp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surveillance des Machines - Configuration des Alertes</title>
+    <title>Surveillance des Machines - Notifications</title>
 
     <!-- CSS pour la bannière -->
     <link rel="stylesheet" href="./CSS/BannerDiv.css">
-
     <!-- CSS pour la page -->
     <link rel="stylesheet" href="./CSS/page.css">
+    <!-- Ajout d'un CSS spécifique aux notifications -->
 </head>
 <body>
     <div id="bannerDiv">
@@ -26,7 +21,7 @@
             <p id="Rights"></p>
         </div>
         <div id="pageName">
-            <h2>Alertes et seuils</h2>
+            <h2>Notifications</h2>
         </div>
         <div id="disconnect">
             <button id="submitDisconnect" type="button">
@@ -38,31 +33,28 @@
     <div id="container">
         <div id="sideNav">
             <ul id="navBar">
-                <!-- Bouttons de navigation ajoutés par AddNavButtons.js -->
+                <!-- Boutons de navigation ajoutés dynamiquement -->
             </ul>
         </div>
 
         <div id="mainContent">
-            <section id="alerts" class="active">
-                <h2>Configuration des Alertes</h2>
-                <button class="button">Configurer les seuils</button>
+            <section id="notifications" class="active">
+                <h2>Vos Notifications</h2>
+                <div id="notificationList">
+                    <!-- Les notifications dynamiques seront affichées ici -->
+                </div>
             </section>
         </div>
     </div>
 
-    
-<!-- ne pas toucher aux 3 scripts ci-dessous SAUF en cas de BUG -->
-<script src="./JS/URL.js" async></script>
-<script src="./JS/TokenCheck.js" async></script>
-<script src="./JS/CheckTokenExpiration.js" async></script>
+    <!-- Scripts nécessaires -->
+    <script src="./JS/URL.js" async></script>
+    <script src="./JS/TokenCheck.js" async></script>
+    <script src="./JS/CheckTokenExpiration.js" async></script>
+    <script src="./JS/AddNavButtons.js" async></script>
+    <script src="./JS/Banner.js" async></script>
 
-<!-- Boutons de navigation -->
-<script src="./JS/AddNavButtons.js" async></script>
-
-<!-- Script qui remplit la bannière (login + droits) et qui contient les eventListener pour les boutons help et disconnect -->
-<script src="./JS/Banner.js" async></script>
-
-<!-- Script de la page -->
-
+    <!-- Script spécifique à cette page -->
+    <script src="./JS/alert.js" defer></script>
 </body>
 </html>
