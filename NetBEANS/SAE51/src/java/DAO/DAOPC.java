@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -949,6 +951,202 @@ public class DAOPC {
         
         //Selection de la BD
         changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    /**
+     * Ajout des informations dynamiques d'un ordinateur dans la BD
+     * 
+     * @param id        id du PC
+     * @param CPUUtilization        utilisation du CPU %
+     * @param CPUTemp       température du CPU en °C
+     * @param CPUConsumption        consommation du CPU en W
+     * @param RAMUtilization        utilisation de la RAM en %
+     * @param storageName       nom de l'appareil => format : "{Nom1/.../NomN}"
+     * @param storageLoad       taux d'écritures des appareils en % => format : "{Pourcentage1/.../PourcentageN}"
+     * @param storageLeft       capacité de stockage restante en Go => format : "{Capacité1/.../CapacitéN}"
+     * @param storageTemp       température du périphérique en °C => format : "{Température1/.../TempératureN}"
+     * @param storageErrors     nombre d'erreurs du périphérique Int => format : "{Nb1/.../NbN}"
+     * @param networkName       nom du NIC str => format : "{Nom1/.../NomN}"
+     * @param networkLatency        latence du NIC (avec google par ex) en ms => format : "{Nb1/.../NbN}"
+     * @param networkBandwith       taux utilisation débit sortant NIC en % => format : "{Pourcentage1/.../PourcentageN}"
+     * @param fanSpeed      taux de vitesse de rotation en % => format : "{Pourcentage1/.../PourcentageN}"
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void addPCDynamicInfo(Integer id, Integer CPUUtilization, Integer CPUTemp, Integer CPUConsumption, 
+            Integer RAMUtilization, String storageName, String storageLoad, String storageLeft, String storageTemp, String storageErrors, 
+            String networkName, String networkLatency, String networkBandwith, String fanSpeed, Boolean Test){
+        
+        String RequeteSQL="INSERT INTO pc_dynamic_info (id, date, time, cpu_utilization, cpu_temp, cpu_consumption, ram_utilization, storage_name, storage_load, storage_left, storage_temp, storage_errors, network_name, network_latency, network_bandwith, fan_speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        //Suppression de l'ancienne entrée si elle existe
+        deleteDuplicateDynInfo(id, Test);
+        
+        //Date dernière act (utilisé par IsDynamicInfoUpToDate
+        String date = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+        String time = new SimpleDateFormat("HHmmss").format(Calendar.getInstance().getTime());
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, date);
+            preparedStatement.setString(3, time);
+            preparedStatement.setInt(4, CPUUtilization);
+            preparedStatement.setInt(5, CPUTemp);
+            preparedStatement.setInt(6, CPUConsumption);
+            preparedStatement.setInt(7, CPUConsumption);
+            preparedStatement.setInt(8, RAMUtilization);
+            preparedStatement.setString(9, storageName);
+            preparedStatement.setString(10, storageLoad);
+            preparedStatement.setString(11, storageLeft);
+            preparedStatement.setString(12, storageTemp);
+            preparedStatement.setString(13, storageErrors);
+            preparedStatement.setString(14, networkName);
+            preparedStatement.setString(15, networkLatency);
+            preparedStatement.setString(16, fanSpeed);
+            
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    /**
+     * Renvoi le droit d'accès d'un utilisateur à une machine
+     * 
+     * @param idPC      id du PC
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return upToDate       true | false
+     */
+    public String isDynamicInfoUpToDate(Integer idPC, Boolean Test){
+        
+        //Vérification des droits d'accès au pc
+        String RequeteSQL="SELECT date, time FROM pc_dynamic_info WHERE id = ?";
+        
+        //S'il n'y a rien dans la DB on renvoi upToDate à true (car vide)
+        String timeDB = "000000";
+        String dateDB = "00000000";
+        
+        //Date Act
+        String dateAct = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+        String timeAct = new SimpleDateFormat("HHmmss").format(Calendar.getInstance().getTime());
+        
+        String upToDate = "true";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, idPC);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                
+                if (resultSet.next()) {
+                    dateDB = resultSet.getString("date");
+                    timeDB = resultSet.getString("time");
+                    
+                    //Si la date Act est supérieure à celle où les infos ont étés enregistrées
+                    if(Integer.valueOf(dateAct) >= Integer.valueOf(dateDB) && Integer.valueOf(timeAct) > Integer.valueOf(timeDB)){
+                        upToDate = "false";
+                    }
+                }
+            } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return upToDate;
+    }
+    
+    
+    
+    /**
+     * Vérifie l'existance de l'ID dans la base de données pc_dynamic_info et suppr si il existe
+     * 
+     * @param id     id de la machine
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deleteDuplicateDynInfo(Integer id, Boolean Test){
+        String RequeteSQL="SELECT id FROM pc_dynamic_info WHERE id = ?";
+        
+        Boolean idExist = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    //Suppression des données précédentes
+                    deleteDynInfo(id, Test);
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    /**
+     * Supprime les données d'une machine dans la base de données pc_dynamic_info
+     * 
+     * @param id     id de la machine
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    private void deleteDynInfo(Integer id, Boolean Test){
+        String RequeteSQL="DELETE FROM pc_dynamic_info WHERE id = ?";
         
         //Connection BD en tant que postgres
         try (Connection connection =
