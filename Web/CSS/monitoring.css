@@ -158,3 +158,28 @@ button.rightsBtn {
 button.rightsBtn:hover {
     background-color: #d4ac26;
 }
+
+#pcDynPage{
+    width: 90%;
+}
+
+#refreshDiv{
+    font-size: 8px;
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
+}
+
+#RefreshText{
+    text-align: left;
+    width: 275px;
+}
+
+#placeholder{
+    width: calc(100% - 275px - 155px);
+}
+
+#RefreshCount{
+    text-align: right;
+    width: 155px;
+}

@@ -21,12 +21,23 @@ import javax.servlet.http.HttpServletResponse;
 public class ListPCDynInfo extends HttpServlet {
 
     /**
-     * PAS FINI
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Renvoi les infos dynamiques d'un PC spécifié<br><br>
+     * 
+     * Variables à envoyer au servlet (POST)<br>
+     * Integer id       &emsp;&emsp;        id de l'ordinateur <br>
+     * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
+     * 
+     * <br>
+     * Variables renvoyées par le servlet (JSON)<br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | none <br>
+     * String date       &emsp;&emsp;        date au format "yyyymmjj" <br>
+     * String time       &emsp;&emsp;        temps au format "hhmmss" <br>
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

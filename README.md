@@ -183,6 +183,6 @@ Organisation du projet :
 
 
 #heures :
-- maxime : 114h
+- maxime : 130h
 - erwann : 10h
 - gabin :

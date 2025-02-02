@@ -205,6 +205,17 @@ const rightsTable = document.querySelector("rightsTable");
         pcDetailsPage.style.display = "none";
         pcDynPage.style.display = "block";
         pcRights.style.display = "none";
+
+        //Ajout de la date de dernier rafraichissement
+        date = "20250202"; //palceholder
+        time = "143100"; //placeholder
+        jour = date.substring(6,8);
+        mois = date.substring(4,6);
+        annee = date.substring(0,4);
+        heure = time.substring(0,2);
+        minute = time.substring(2,4);
+        seconde = time.substring(4,6);
+        document.getElementById('RefreshText').innerHTML=`Enregistré à ${heure}:${minute}:${seconde} le ${jour}/${mois}/${annee}`;
     };
 
     //Vérifie s'il faut actualiser les données dynamiques
@@ -217,6 +228,7 @@ const rightsTable = document.querySelector("rightsTable");
 
             while(c2 < refreshIntervall && DynRefreshMap.get(1)){
                 //DOM refresh txt
+                document.getElementById('RefreshCount').innerHTML=`Rafraîchis dans ${refreshIntervall - c2}s`;
 
                 await Wait(1000);
 
@@ -225,6 +237,8 @@ const rightsTable = document.querySelector("rightsTable");
 
             if(DynRefreshMap.get(1)){
                 console.log(`Refresh infos dyn (ID : ${pcId})`);
+
+                document.getElementById('RefreshCount').innerHTML=`Rafraîchissement`;
 
                 //On vérifie si le serveur a de nouvelles infos à distribuer
                 const response = await fetch(`https://${window.ServerIP}:8443/SAE51/IsDynamicInfoUpToDate`, {
