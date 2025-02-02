@@ -1,14 +1,21 @@
+//Auteurs : Gabin PETITCOLAS et Maxime VALLET
+
+
+//Map pour rafraichir les données dyn
+let DynRefreshMap = new Map();
+
+//Données
 window.deleteUser = deleteUser;
 window.addUser = addUser;
 const test = "false";
-
-
 const tableBody = document.querySelector("#pcList");
 const mainContent = document.getElementById("MainTable");
 const pcDetailsPage = document.getElementById("pcDetailsPage");
+const pcDynPage = document.getElementById("pcDynPage");
 const pcRights = document.getElementById("pcRights");
 const backToListBtn1 = document.getElementById("backToList1");
 const backToListBtn2 = document.getElementById("backToList2");
+const backToListBtn3 = document.getElementById("backToList3");
 const staticInfoTable = document.querySelector("#staticInfoTable");
 const rightsTable = document.querySelector("rightsTable");
     
@@ -29,6 +36,9 @@ const rightsTable = document.querySelector("rightsTable");
                 console.error(`Erreur: ${data.erreur}`);
                 alert(`Erreur: ${data.erreur}`);
                 return;
+            }
+            else{
+                console.log("Liste des chargée");
             }
 
             // Nettoyer la table et afficher l'en-tête
@@ -74,8 +84,6 @@ const rightsTable = document.querySelector("rightsTable");
             });
 
             loadPCStatus();
-
-            console.log("Liste des PCs chargée.");
         } catch (error) {
             console.error("Erreur lors du chargement :", error);
         }
@@ -90,7 +98,7 @@ const rightsTable = document.querySelector("rightsTable");
         }
 
         try {
-            console.log(`Chargement des détails pour le PC ID: ${pcId}`);
+            console.log(`Chargement des infos statiques (ID : ${pcId})`);
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStaticInfo`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -103,6 +111,9 @@ const rightsTable = document.querySelector("rightsTable");
                 console.error(`Erreur: ${data.erreur}`);
                 alert(`Erreur: ${data.erreur}`);
                 return;
+            }
+            else{
+                console.log(`Infos statiques chargées`);
             }
 
             fillStaticInfoTable(data);
@@ -131,19 +142,126 @@ const rightsTable = document.querySelector("rightsTable");
             <tr><td>Système d'Exploitation</td><td>${data.os}</td></tr>
             <tr><td>Version OS</td><td>${data.version}</td></tr>
         `;
-
-        console.log("Détails du PC chargés et affichés.");
         
         // Cache la liste principale et affiche les détails
         mainContent.style.display = "none";
         pcDetailsPage.style.display = "block";
+        pcDynPage.style.display = "none";
         pcRights.style.display = "none";
     };
+
+    // Fonction pour afficher les détails d'un PC
+    const showPcDyn = async (pcId) => {
+        if (!pcId) {
+            alert("ID du PC non valide.");
+            return;
+        }
+
+        try {
+            await getDynInfo(pcId);
+
+            //Lancement du rafraichissement des données en arrière plan
+            DynRefreshMap.set(1, true);
+            checkDynInfoRefresh(pcId);
+
+        } catch (error) {
+            console.error("Erreur lors du chargement des infos :", error);
+        }
+    };
+
+    //récupère les infos dyn
+    async function getDynInfo(pcId){
+
+        console.log(`Chargement des infos dyn (ID : ${pcId})`);
+        const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCDynInfo`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: pcId, token: token, Test: test })
+        });
+
+        const data = await response.json();
+
+        if (data.erreur && data.erreur !== "none") {
+            console.error(`Erreur: ${data.erreur}`);
+            alert(`Erreur: ${data.erreur}`);
+            return;
+        }
+        else{
+            console.log(`Infos dyn chargées`);
+        }
+
+        //Remplissage intial du tableau
+        fillDynInfoTable(data);
+    }
+
+    // Remplir le tableau avec les droits des utilisateur
+    const fillDynInfoTable = (data) => {
+        DynInfoTable.innerHTML = `
+            <tr><td>Coucou</td><td>salut</td></tr>
+        `;
+        
+        // Cache la liste principale et affiche les détails
+        mainContent.style.display = "none";
+        pcDetailsPage.style.display = "none";
+        pcDynPage.style.display = "block";
+        pcRights.style.display = "none";
+    };
+
+    //Vérifie s'il faut actualiser les données dynamiques
+    async function checkDynInfoRefresh(pcId){
+        refreshIntervall = 10;
+
+        //Tant que le tableau dyn est affiché
+        while (DynRefreshMap.get(1)){
+            c2=0;
+
+            while(c2 < refreshIntervall && DynRefreshMap.get(1)){
+                //DOM refresh txt
+
+                await Wait(1000);
+
+                c2 = c2+1;
+            }
+
+            if(DynRefreshMap.get(1)){
+                console.log(`Refresh infos dyn (ID : ${pcId})`);
+
+                //On vérifie si le serveur a de nouvelles infos à distribuer
+                const response = await fetch(`https://${window.ServerIP}:8443/SAE51/IsDynamicInfoUpToDate`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id: pcId, token: token, Test: test })
+                });
+
+                const data = await response.json();
+
+                if (data.erreur && data.erreur !== "none") {
+                    console.error(`Erreur: ${data.erreur}`);
+                    alert(`Erreur: ${data.erreur}`);
+                }
+                else{
+                    //S'il y'a de nouvelles infos, on les récupèrrent => tableau
+                    if(data.isUpToDate === "false"){
+                        await getDynInfo(pcId);
+                    }
+                    else{
+                        console.log(`Infos dyn déjà à jour (ID : ${pcId})`);
+                    }
+                }
+            }
+        }
+    }
+
+    //Fonction sleep
+    function Wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     // Fonction pour retourner à la liste principale
     backToListBtn1.addEventListener("click", () => {
         mainContent.style.display = "block";
         pcDetailsPage.style.display = "none";
+        pcDynPage.style.display = "none";
         pcRights.style.display = "none";
     });
 
@@ -151,6 +269,18 @@ const rightsTable = document.querySelector("rightsTable");
     backToListBtn2.addEventListener("click", () => {
         mainContent.style.display = "block";
         pcDetailsPage.style.display = "none";
+        pcDynPage.style.display = "none";
+        pcRights.style.display = "none";
+    });
+
+    // Fonction pour retourner à la liste principale
+    backToListBtn3.addEventListener("click", () => {
+        //Arrêt de l'act des données dyn en arrière plan
+        DynRefreshMap.set(1, false);
+
+        mainContent.style.display = "block";
+        pcDetailsPage.style.display = "none";
+        pcDynPage.style.display = "none";
         pcRights.style.display = "none";
     });
 
@@ -158,20 +288,20 @@ const rightsTable = document.querySelector("rightsTable");
     document.addEventListener("click", (event) => {
         if (event.target.classList.contains("viewBtn")) {
             const pcId = event.target.getAttribute("data-id");
-            console.log(`Bouton Voir info statiques cliqué pour le PC ID: ${pcId}`);
+            console.log(`Bouton infos statiques cliqué (ID : ${pcId})`);
             showPcDetails(pcId);
         }
         else if (event.target.classList.contains("viewDynBtn")) {
             const pcId = event.target.getAttribute("data-id");
-            console.log(`Bouton Voir info dynamiques cliqué pour le PC ID: ${pcId}`);
-            //Rien
+            console.log(`Bouton infos dynamiques cliqué (ID: ${pcId})`);
+            showPcDyn(pcId);
         } else if (event.target.classList.contains("deleteBtn")) {
             const pcId = event.target.getAttribute("data-id");
-            console.log(`Bouton Supprimer cliqué pour le PC ID: ${pcId}`);
+            console.log(`Bouton Supprimer cliqué (ID: ${pcId})`);
             deletePc(pcId);
         } else if (event.target.classList.contains("rightsBtn")) {
             const pcId = event.target.getAttribute("data-id");
-            console.log(`Bouton Modif droits pour le PC ID: ${pcId}`);
+            console.log(`Bouton Modif droits (ID: ${pcId})`);
             getRights(pcId);
         }
     });
@@ -191,6 +321,8 @@ const rightsTable = document.querySelector("rightsTable");
                 alert(`Erreur: ${result.erreur}`);
             } else {
                 loadPcList();
+
+                console.log(`PC supprimé (ID : ${pcId})`);
             }
         } catch (error) {
             console.error("Erreur lors de la suppression :", error);
@@ -200,6 +332,8 @@ const rightsTable = document.querySelector("rightsTable");
 
     //Ajout du status des PC
     async function loadPCStatus(){
+        console.log(`Chargement du status des PC`);
+
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStatus`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -212,6 +346,9 @@ const rightsTable = document.querySelector("rightsTable");
             console.error(`Erreur: ${data.erreur}`);
             alert(`Erreur: ${data.erreur}`);
             return;
+        }
+        else{
+            console.log(`Liste chargée`);
         }
 
         c=0;
@@ -286,7 +423,7 @@ const rightsTable = document.querySelector("rightsTable");
         }
 
         try {
-            console.log(`Chargement des détails pour les droits des PC ID: ${pcId}`);
+            console.log(`Chargement des utilisateurs possédant les droits (ID : ${pcId})`);
             response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListUsersWithAccess`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -300,6 +437,9 @@ const rightsTable = document.querySelector("rightsTable");
                 alert(`Erreur: ${data.erreur}`);
                 return;
             }
+            else{
+                console.log(`Utilisateurs possédant les droits chargé`);
+            }
 
             // Cache la liste principale et affiche les détails
             mainContent.style.display = "none";
@@ -308,6 +448,7 @@ const rightsTable = document.querySelector("rightsTable");
 
             fillRightsTableAllowed(data, pcId);
 
+            console.log(`Chargement des utilisateurs ne possédant pas les droits (ID : ${pcId})`);
             response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListUsersWithAccess`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -320,6 +461,9 @@ const rightsTable = document.querySelector("rightsTable");
                 console.error(`Erreur: ${data.erreur}`);
                 alert(`Erreur: ${data.erreur}`);
                 return;
+            }
+            else{
+                console.log(`Utilisateurs ne possédant pas les droits chargé`);
             }
 
             fillRightsTableForbidden(data, pcId);
@@ -430,6 +574,8 @@ const rightsTable = document.querySelector("rightsTable");
 
     //Ajout des droits d'accès au pc pour un utilisateur défini
     async function addUser(login, idPC){
+        console.log(`Ajout des droits à \"${login}\" (ID : ${idPC})`);
+
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/AddUserToPC`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -443,6 +589,9 @@ const rightsTable = document.querySelector("rightsTable");
             alert(`Erreur: ${data.erreur}`);
             return;
         }
+        else{
+            console.log(`Droits ajoutés à \"${login}\"`);
+        }
 
         //Actualisation des droits
         getRights(idPC);
@@ -451,6 +600,7 @@ const rightsTable = document.querySelector("rightsTable");
 
     //Retrait des droits d'accès au pc pour un utilisateur défini
     async function deleteUser(login, idPC) {
+        console.log(`Retrait des droits à \"${login}\" (ID : ${idPC})`);
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/DeleteUserFromPC`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -463,6 +613,9 @@ const rightsTable = document.querySelector("rightsTable");
             console.error(`Erreur: ${data.erreur}`);
             alert(`Erreur: ${data.erreur}`);
             return;
+        }
+        else{
+            console.log(`Droits retirés à \"${login}\"`);
         }
 
         //Actualisation des droits

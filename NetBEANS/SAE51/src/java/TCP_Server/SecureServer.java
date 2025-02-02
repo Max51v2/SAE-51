@@ -44,6 +44,9 @@ public class SecureServer implements Runnable {
         this.port = port;
         new Thread(this).start();
         
+        //Actualisation des clients (sinon cela se fait uniquement quand il y'a un changement lol)
+        DAOclient.addPCs(clientMap, Test);
+  
         
         //Vérifie les messages ajoutés dans la BD en arrière plan
         Thread threadMessages = new Thread(){

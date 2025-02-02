@@ -56,14 +56,14 @@ async function spinner(line) {
     let statusElement = document.getElementById("Status" + line);
 
     let charList = ["⠇", "⠋", "⠙", "⠸", "⠴", "⠦"];
-    let c = 0;
+    let c2 = 0;
 
     while (runningMap.get(line)) {
-        statusElement.innerHTML = `${charList[c]} Chargement`;
+        statusElement.innerHTML = `${charList[c2]} Chargement`;
 
         await Wait(200);
 
-        c = (c + 1) % charList.length;
+        c2 = (c2 + 1) % charList.length;
     }
 
     //Activation des bouttons

@@ -234,6 +234,15 @@ INSERT INTO servlet_access (name, role, access) VALUES ('ChangePCState', 'Admin'
 INSERT INTO servlet_access (name, role, access) VALUES ('ChangePCState', 'Utilisateur', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('ChangePCState', 'Aucun', 'false');
 
+--IsDynamicInfoUpToDate
+INSERT INTO servlet_access (name, role, access) VALUES ('IsDynamicInfoUpToDate', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('IsDynamicInfoUpToDate', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('IsDynamicInfoUpToDate', 'Aucun', 'false');
+
+--ListPCDynInfo
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCDynInfo', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCDynInfo', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('ListPCDynInfo', 'Aucun', 'false');
 
 
 
@@ -272,6 +281,14 @@ CREATE TABLE pc_status (
 CREATE TABLE pc_messages (
     id integer,
     message text
+);
+
+
+
+CREATE TABLE pc_dynamic_info (
+    id integer PRIMARY KEY,
+    date text,
+    time text
 );
 
 
@@ -450,6 +467,15 @@ CREATE TABLE notification (
     users text,
     date text
 );
+
+
+CREATE TABLE pc_dynamic_info (
+    id integer PRIMARY KEY,
+    date text,
+    time text
+);
+
+
 
 
 -- fin contenu de la BD sae_51
