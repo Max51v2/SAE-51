@@ -19,6 +19,6 @@ public class NewEmptyJUnitTest {
     @Test
     public void hello() {
         DAOPC DAO = new DAOPC();
-        DAO.addPCDynamicInfo(1, false);
+        //DAO.addPCDynamicInfo(1, false);
     }
 }

@@ -973,13 +973,29 @@ public class DAOPC {
     
     
     /**
-     * Ajout d'un ordinateur dans la BD
+     * Ajout des informations dynamiques d'un ordinateur dans la BD
      * 
      * @param id        id du PC
+     * @param CPUUtilization        utilisation du CPU %
+     * @param CPUTemp       température du CPU en °C
+     * @param CPUConsumption        consommation du CPU en W
+     * @param RAMUtilization        utilisation de la RAM en %
+     * @param storageName       nom de l'appareil => format : "{Nom1/.../NomN}"
+     * @param storageLoad       taux d'écritures des appareils en % => format : "{Pourcentage1/.../PourcentageN}"
+     * @param storageLeft       capacité de stockage restante en Go => format : "{Capacité1/.../CapacitéN}"
+     * @param storageTemp       température du périphérique en °C => format : "{Température1/.../TempératureN}"
+     * @param storageErrors     nombre d'erreurs du périphérique Int => format : "{Nb1/.../NbN}"
+     * @param networkName       nom du NIC str => format : "{Nom1/.../NomN}"
+     * @param networkLatency        latence du NIC (avec google par ex) en ms => format : "{Nb1/.../NbN}"
+     * @param networkBandwith       taux utilisation débit sortant NIC en % => format : "{Pourcentage1/.../PourcentageN}"
+     * @param fanSpeed      taux de vitesse de rotation en % => format : "{Pourcentage1/.../PourcentageN}"
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void addPCDynamicInfo(Integer id, Boolean Test){
-        String RequeteSQL="INSERT INTO pc_dynamic_info (id, date, time) VALUES (?, ?, ?)";
+    public void addPCDynamicInfo(Integer id, Integer CPUUtilization, Integer CPUTemp, Integer CPUConsumption, 
+            Integer RAMUtilization, String storageName, String storageLoad, String storageLeft, String storageTemp, String storageErrors, 
+            String networkName, String networkLatency, String networkBandwith, String fanSpeed, Boolean Test){
+        
+        String RequeteSQL="INSERT INTO pc_dynamic_info (id, date, time, cpu_utilization, cpu_temp, cpu_consumption, ram_utilization, storage_name, storage_load, storage_left, storage_temp, storage_errors, network_name, network_latency, network_bandwith, fan_speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         //Suppression de l'ancienne entrée si elle existe
         deleteDuplicateDynInfo(id, Test);
@@ -1002,6 +1018,20 @@ public class DAOPC {
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, date);
             preparedStatement.setString(3, time);
+            preparedStatement.setInt(4, CPUUtilization);
+            preparedStatement.setInt(5, CPUTemp);
+            preparedStatement.setInt(6, CPUConsumption);
+            preparedStatement.setInt(7, CPUConsumption);
+            preparedStatement.setInt(8, RAMUtilization);
+            preparedStatement.setString(9, storageName);
+            preparedStatement.setString(10, storageLoad);
+            preparedStatement.setString(11, storageLeft);
+            preparedStatement.setString(12, storageTemp);
+            preparedStatement.setString(13, storageErrors);
+            preparedStatement.setString(14, networkName);
+            preparedStatement.setString(15, networkLatency);
+            preparedStatement.setString(16, fanSpeed);
+            
             
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();

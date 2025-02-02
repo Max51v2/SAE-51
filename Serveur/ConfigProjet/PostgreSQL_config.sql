@@ -284,11 +284,24 @@ CREATE TABLE pc_messages (
 );
 
 
-
+--ATTENTION : les données qui peuvent être sous forme de liste sont au format texte (ex : stockage)
 CREATE TABLE pc_dynamic_info (
     id integer PRIMARY KEY,
     date text,
-    time text
+    time text,
+    cpu_utilization integer,
+    cpu_temp integer,
+    cpu_consumption integer,
+    ram_utilization integer,
+    storage_name text,
+    storage_load text,
+    storage_left text,
+    storage_temp text,
+    storage_errors text,
+    network_name text,
+    network_latency text,
+    network_bandwith text,
+    fan_speed text
 );
 
 
