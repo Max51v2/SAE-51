@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 1.2
+ * @version 1.3
  */
 @WebServlet(name = "ListPCStaticInfo", urlPatterns = {"/ListPCStaticInfo"})
 public class ListPCStaticInfo extends HttpServlet {
@@ -32,7 +32,7 @@ public class ListPCStaticInfo extends HttpServlet {
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | none <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | Pas d'informations dans la table | none <br>
      * Integer id       &emsp;&emsp;        id de la machine <br>
      * String cpu_model       &emsp;&emsp;        modèle du procésseur <br>
      * Integer cores       &emsp;&emsp;        nombre de coeurs du CPU <br>
@@ -104,6 +104,11 @@ public class ListPCStaticInfo extends HttpServlet {
                     //Récupération des ordinateurs auquel l'utilisateur a accès
                     String login = DAO.getLogin();
                     jsonString = DAO2.getPCStaticInfo(id, login, rights, TestBoolean);
+                    
+                    //Vérification du contenu renvoyé
+                    if(jsonString.equals("")){
+                        jsonString = "{\"erreur\":\"Pas d'informations dans la table\"}";
+                    }
                 }
                 else{
                     //JSON renvoyé
@@ -111,7 +116,6 @@ public class ListPCStaticInfo extends HttpServlet {
                 }
             }
         }
-        
 
         //Log
         loginLog = DAO.getLogin();
