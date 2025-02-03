@@ -52,6 +52,7 @@ clear
 echo "Ajout des règles du pare-feu :"
 sudo ufw allow 443 >> /tmp/DockerSetupLogs.txt
 sudo ufw allow 8443 >> /tmp/DockerSetupLogs.txt
+sudo ufw allow 12345 >> /tmp/DockerSetupLogs.txt
 
 clear
 
