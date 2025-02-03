@@ -1435,7 +1435,7 @@ public class DAOPC {
             
             JSON += "{";
             
-            JSON += "\"storageName\":\""+fanSpeedList.get(c)+"\"";
+            JSON += "\"fanSpeed\":\""+fanSpeedList.get(c)+"\"";
             
             JSON += "}";
             
