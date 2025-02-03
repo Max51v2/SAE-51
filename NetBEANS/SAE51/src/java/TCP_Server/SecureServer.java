@@ -288,6 +288,26 @@ public class SecureServer implements Runnable {
                             String E8 = String.valueOf(elements[8]);
                             E8 = E8.substring(0, E8.indexOf("]")-1);
                             daoPC.addPCStaticInfo(clientId, elements[3], Integer.valueOf(elements[6].strip()), Integer.valueOf(elements[5].strip()), elements[4], elements[7], 2, "3200", 6543 , E8, 1, "12", elements[0], elements[1], Test);
+                            
+                            //TEST//
+                            //Données à envoyer
+                            Integer id = 1;
+                            Integer CPUUtilization = 10;
+                            Integer CPUTemp = 50;
+                            Integer CPUConsumption = 60;
+                            Integer RAMUtilization = 70;
+                            String storageName = "Stockage1/Stockage2/Stockage3";
+                            String storageLoad = "39/48/20";
+                            String storageLeft = "2048/231/1024";
+                            String storageTemp = "45/55/50";
+                            String storageErrors = "2/0/1";
+                            String networkName = "NIC1/NIC2";
+                            String networkLatency = "20/10";
+                            String networkBandwith = "10/60";
+                            String fanSpeed = "0/90/100/80";
+                            Boolean Test = false;
+
+                            daoPC.addPCDynamicInfo(id, CPUUtilization, CPUTemp, CPUConsumption, RAMUtilization, storageName, storageLoad, storageLeft, storageTemp, storageErrors, networkName, networkLatency, networkBandwith, fanSpeed, Test);
 
                         } else {
                             System.out.println("2");

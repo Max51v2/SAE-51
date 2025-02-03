@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="./CSS/BannerDiv.css">
     <!-- CSS pour la page -->
     <link rel="stylesheet" href="./CSS/page.css">
-    <!-- Ajout d'un CSS spécifique aux notifications -->
 </head>
 <body>
     <div id="bannerDiv">
@@ -21,7 +20,7 @@
             <p id="Rights"></p>
         </div>
         <div id="pageName">
-            <h2>Notifications</h2>
+            <h2>Alertes et Seuils</h2>
         </div>
         <div id="disconnect">
             <button id="submitDisconnect" type="button">
@@ -33,17 +32,12 @@
     <div id="container">
         <div id="sideNav">
             <ul id="navBar">
-                <!-- Boutons de navigation ajoutés dynamiquement -->
+                <!-- Bouttons de navigation ajoutés par AddNavButtons.js -->
             </ul>
         </div>
 
         <div id="mainContent">
-            <section id="notifications" class="active">
-                <h2>Vos Notifications</h2>
-                <div id="notificationList">
-                    <!-- Les notifications dynamiques seront affichées ici -->
-                </div>
-            </section>
+            <!-- Content -->
         </div>
     </div>
 
@@ -55,6 +49,6 @@
     <script src="./JS/Banner.js" async></script>
 
     <!-- Script spécifique à cette page -->
-    <script src="./JS/alert.js" defer></script>
+    
 </body>
 </html>

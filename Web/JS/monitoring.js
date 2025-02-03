@@ -18,6 +18,8 @@ const backToListBtn2 = document.getElementById("backToList2");
 const backToListBtn3 = document.getElementById("backToList3");
 const staticInfoTable = document.querySelector("#staticInfoTable");
 const rightsTable = document.querySelector("rightsTable");
+date = "00000000"; //palceholder
+time = "000000"; //placeholder
     
 
 // Fonction principale pour charger la liste des PCs
@@ -188,6 +190,10 @@ const rightsTable = document.querySelector("rightsTable");
         }
         else{
             console.log(`Infos dyn chargées`);
+
+            //Enregistrement du timestamp
+            date = data.date;
+            time = data.time;
         }
 
         //Remplissage intial du tableau
@@ -207,8 +213,6 @@ const rightsTable = document.querySelector("rightsTable");
         pcRights.style.display = "none";
 
         //Ajout de la date de dernier rafraichissement
-        date = "20250202"; //palceholder
-        time = "143100"; //placeholder
         jour = date.substring(6,8);
         mois = date.substring(4,6);
         annee = date.substring(0,4);
@@ -238,13 +242,13 @@ const rightsTable = document.querySelector("rightsTable");
             if(DynRefreshMap.get(1)){
                 console.log(`Refresh infos dyn (ID : ${pcId})`);
 
-                document.getElementById('RefreshCount').innerHTML=`Rafraîchissement`;
+                document.getElementById('RefreshCount').innerHTML=`Rafraîchissement...`;
 
                 //On vérifie si le serveur a de nouvelles infos à distribuer
                 const response = await fetch(`https://${window.ServerIP}:8443/SAE51/IsDynamicInfoUpToDate`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ id: pcId, token: token, Test: test })
+                    body: JSON.stringify({ id: pcId, date: date, time: time, token: token, Test: test })
                 });
 
                 const data = await response.json();
@@ -257,9 +261,17 @@ const rightsTable = document.querySelector("rightsTable");
                     //S'il y'a de nouvelles infos, on les récupèrrent => tableau
                     if(data.isUpToDate === "false"){
                         await getDynInfo(pcId);
+
+                        document.getElementById('RefreshCount').innerHTML=`Récupération des données...`;
+
+                        await Wait(2000);
                     }
                     else{
                         console.log(`Infos dyn déjà à jour (ID : ${pcId})`);
+
+                        document.getElementById('RefreshCount').innerHTML=`À jour`;
+
+                        await Wait(2000);
                     }
                 }
             }

@@ -980,15 +980,15 @@ public class DAOPC {
      * @param CPUTemp       température du CPU en °C
      * @param CPUConsumption        consommation du CPU en W
      * @param RAMUtilization        utilisation de la RAM en %
-     * @param storageName       nom de l'appareil => format : "{Nom1/.../NomN}"
-     * @param storageLoad       taux d'écritures des appareils en % => format : "{Pourcentage1/.../PourcentageN}"
-     * @param storageLeft       capacité de stockage restante en Go => format : "{Capacité1/.../CapacitéN}"
-     * @param storageTemp       température du périphérique en °C => format : "{Température1/.../TempératureN}"
-     * @param storageErrors     nombre d'erreurs du périphérique Int => format : "{Nb1/.../NbN}"
-     * @param networkName       nom du NIC str => format : "{Nom1/.../NomN}"
-     * @param networkLatency        latence du NIC (avec google par ex) en ms => format : "{Nb1/.../NbN}"
-     * @param networkBandwith       taux utilisation débit sortant NIC en % => format : "{Pourcentage1/.../PourcentageN}"
-     * @param fanSpeed      taux de vitesse de rotation en % => format : "{Pourcentage1/.../PourcentageN}"
+     * @param storageName       nom de l'appareil => format : "Nom1/.../NomN"
+     * @param storageLoad       taux d'écritures des appareils en % => format : "Pourcentage1/.../PourcentageN"
+     * @param storageLeft       capacité de stockage restante en Go => format : "Capacité1/.../CapacitéN"
+     * @param storageTemp       température du périphérique en °C => format : "Température1/.../TempératureN"
+     * @param storageErrors     nombre d'erreurs du périphérique Int => format : "Nb1/.../NbN"
+     * @param networkName       nom du NIC str => format : "Nom1/.../NomN}"
+     * @param networkLatency        latence du NIC (avec google par ex) en ms => format : "Nb1/.../NbN"
+     * @param networkBandwith       taux utilisation débit sortant NIC en % => format : "Pourcentage1/.../PourcentageN"
+     * @param fanSpeed      taux de vitesse de rotation en % => format : "Pourcentage1/.../PourcentageN"
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
     public void addPCDynamicInfo(Integer id, Integer CPUUtilization, Integer CPUTemp, Integer CPUConsumption, 
@@ -1021,15 +1021,15 @@ public class DAOPC {
             preparedStatement.setInt(4, CPUUtilization);
             preparedStatement.setInt(5, CPUTemp);
             preparedStatement.setInt(6, CPUConsumption);
-            preparedStatement.setInt(7, CPUConsumption);
-            preparedStatement.setInt(8, RAMUtilization);
-            preparedStatement.setString(9, storageName);
-            preparedStatement.setString(10, storageLoad);
-            preparedStatement.setString(11, storageLeft);
-            preparedStatement.setString(12, storageTemp);
-            preparedStatement.setString(13, storageErrors);
-            preparedStatement.setString(14, networkName);
-            preparedStatement.setString(15, networkLatency);
+            preparedStatement.setInt(7, RAMUtilization);
+            preparedStatement.setString(8, storageName);
+            preparedStatement.setString(9, storageLoad);
+            preparedStatement.setString(10, storageLeft);
+            preparedStatement.setString(11, storageTemp);
+            preparedStatement.setString(12, storageErrors);
+            preparedStatement.setString(13, networkName);
+            preparedStatement.setString(14, networkLatency);
+            preparedStatement.setString(15, networkBandwith);
             preparedStatement.setString(16, fanSpeed);
             
             
@@ -1047,10 +1047,12 @@ public class DAOPC {
      * Renvoi le droit d'accès d'un utilisateur à une machine
      * 
      * @param idPC      id du PC
+     * @param dateReq       date de la dernière act de l'utilisateur ("yyyyddmm")
+     * @param timeReq       date de la dernière act de l'utilisateur ("hhmmss")
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @return upToDate       true | false
      */
-    public String isDynamicInfoUpToDate(Integer idPC, Boolean Test){
+    public String isDynamicInfoUpToDate(Integer idPC, String timeReq, String dateReq, Boolean Test){
         
         //Vérification des droits d'accès au pc
         String RequeteSQL="SELECT date, time FROM pc_dynamic_info WHERE id = ?";
@@ -1087,7 +1089,7 @@ public class DAOPC {
                     timeDB = resultSet.getString("time");
                     
                     //Si la date Act est supérieure à celle où les infos ont étés enregistrées
-                    if(Integer.valueOf(dateAct) >= Integer.valueOf(dateDB) && Integer.valueOf(timeAct) > Integer.valueOf(timeDB)){
+                    if(Integer.valueOf(dateDB) >= Integer.valueOf(dateReq) && Integer.valueOf(timeDB) > Integer.valueOf(timeReq)){
                         upToDate = "false";
                     }
                 }
@@ -1164,5 +1166,257 @@ public class DAOPC {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    
+    
+    
+    /**
+     * Renvoi les info dynamiques d'un pc contenu dans la BD
+     * 
+     * @param idPC      id du pc
+     * @param login     login de l'utilisateur qui aura accès à ces données
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
+     */
+    public String getPCDynInfo(Integer idPC, String login, Boolean Test){
+        
+        //Par défaut
+        String JSONString = "{\"erreur\":\"Pas d'informations dans la table\"}" ;
+        
+        //Vérification de la présence d'une entrée
+        Boolean idExist = doIDExistDynInfo(idPC, Test);
+        if(idExist == false){
+            return JSONString;
+        }
+        
+        //Vérification des droits d'accès au PC
+        Boolean getInfo = getUserPCAccess(idPC, login, Test);
+        
+        //Si l'utilisateur a les droits d'accès au pc
+        if(getInfo == true){
+            //Récupération des infos statiques du PC
+            String RequeteSQL="SELECT * FROM pc_dynamic_info WHERE id = ?";
+            Integer id = 1;
+            Integer CPUUtilization = 10;
+            Integer CPUTemp = 50;
+            Integer CPUConsumption = 60;
+            Integer RAMUtilization = 70;
+            String storageName = "Stockage1/Stockage2/Stockage3";
+            String storageLoad = "39/48/20";
+            String storageLeft = "2048/231/1024";
+            String storageTemp = "45/55/50";
+            String storageErrors = "2/0/1";
+            String networkName = "NIC1/NIC2";
+            String networkLatency = "20/10";
+            String networkBandwith = "10/60";
+            String fanSpeed = "0/90/100/80";
+
+            //Selection de la BD
+            changeConnection(Test);
+
+
+            //Connection BD en tant que postgres
+            try (Connection connection =
+                DAOPC.getConnectionPostgres();
+
+                //Requête SQL
+                PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+                
+                //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+                preparedStatement.setInt(1, idPC);
+
+                // Exécution de la requête
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                    if (resultSet.next()) {
+                        //Récupération des données dans la BD
+                        id = resultSet.getInt("id");
+                        String date = resultSet.getString("date");
+                        String time = resultSet.getString("time");
+                        CPUUtilization = resultSet.getInt("cpu_utilization");
+                        CPUTemp = resultSet.getInt("cpu_temp");
+                        CPUConsumption = resultSet.getInt("cpu_consumption");
+                        RAMUtilization = resultSet.getInt("ram_utilization");
+                        storageName = resultSet.getString("storage_name");
+                        storageLoad = resultSet.getString("storage_load");
+                        storageLeft = resultSet.getString("storage_left");
+                        storageTemp = resultSet.getString("storage_temp");
+                        storageErrors = resultSet.getString("storage_errors");
+                        networkName = resultSet.getString("network_name");
+                        networkLatency = resultSet.getString("network_latency");
+                        networkBandwith = resultSet.getString("network_bandwith");
+                        fanSpeed = resultSet.getString("fan_speed");
+
+                        //Traitement des listes
+                        ArrayList storageNameList = getArrayList(storageName);
+                        ArrayList storageLoadList = getArrayList(storageLoad);
+                        ArrayList storageTempList = getArrayList(storageTemp);
+                        ArrayList storageErrorsList = getArrayList(storageErrors);
+                        ArrayList networkNameList = getArrayList(networkName);
+                        ArrayList networkBandwithList = getArrayList(networkBandwith);
+                        ArrayList fanSpeedList = getArrayList(fanSpeed);
+                        
+                        String JSONCPU = "{}";
+                        String JSONNetwork = "{}";
+                        String JSONRAM = "{}";
+                        String JSONStorage = getStorageJSON(storageNameList, storageLoadList, storageTempList, storageErrorsList);
+                        String JSONfanSpeed = "{}";
+
+                        // Ajouter l'objet JSON
+                        JSONString = "{"
+                                + "\"erreur\":\"none\","
+                                + "\"date\":\""+date+"\","
+                                + "\"time\":\""+time+"\","
+                                + "\"CPU\": ["
+                                + ""+JSONCPU+""
+                                + "],"
+                                + "\"RAM\": ["
+                                + ""+JSONRAM+""
+                                + "],"
+                                + "\"Network\": ["
+                                + ""+JSONNetwork+""
+                                + "],"
+                                + "\"Storage\": ["
+                                + ""+JSONStorage+""
+                                + "],"
+                                + "\"Fans\": ["
+                                + ""+JSONfanSpeed+""
+                                + "]"
+                                + "}";
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            JSONString = "{\"erreur\":\"accès refusé\"}";
+        }
+        
+        return JSONString;
+    }
+    
+    
+    
+    
+    /**
+     * Vérifie l'existance de l'ID dans la base de données
+     * 
+     * @param id     id de la machine
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return loginExist       éxsitance du login (booléen)
+     */
+    public Boolean doIDExistDynInfo(Integer id, Boolean Test){
+        String RequeteSQL="SELECT id FROM pc_dynamic_info WHERE id = ?";
+        
+        Boolean idExist = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    idExist = true;
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return idExist;
+    }
+    
+    
+    
+    
+    //Un poil overkill mais on sera si le client foire mdr
+    public ArrayList<String> getArrayList(String str){
+        
+        ArrayList<String> list = new ArrayList<>();
+        
+        //Si str vide
+        if(str.equals("")){
+            //Rien
+        }
+                
+        //Si str ne contient pas de séparateur
+        if(!str.contains("/")){
+            list.add(str);
+        }
+        else{
+            //S'il y'a un ou plusieurs séparateurs ou qu'il y'a du contenu
+            while(str.contains("/") || (!str.equals(""))){
+                //S'il y'a un double séparateur
+                if(str.substring(0, 1).equals("/")){
+                    //Ajout du champ à la liste
+                    list.add("non défini");
+                    
+                    //Retrait du champ à la chaîne originale
+                    str = str.substring(1);
+                }
+                
+                //Dernier ne contient pas de séparateur
+                if(!str.contains("/")){
+                    //Ajout du champ à la liste
+                    list.add(str);
+                    
+                    break;
+                }
+                else{
+                    //Ajout du champ à la liste
+                    list.add(str.substring(0, (str.indexOf("/"))));
+                    
+                    //Cas particulier => séparateur en fin
+                    if(str.substring(str.indexOf("/")).equals("/")){
+                        //Ajout du champ à la liste
+                        list.add("non défini");
+
+                        break;
+                    }
+                    else{
+                        //Retrait du champ à la chaîne originale
+                        str = str.substring(str.indexOf("/")+1);
+                    }
+                }
+            }
+        }
+        
+        return list;
+    }
+    
+    
+    
+    private String getStorageJSON(ArrayList<String> storageNameList, ArrayList<String> storageLoadList, ArrayList<String> storageTempList, ArrayList<String> storageErrorsList){
+        Integer c = 0;
+        String JSON = "";
+        
+        while(c < storageNameList.size()){
+            if(!(c == 0)){
+                JSON += ",";
+            }
+            
+            JSON += "{";
+            
+            JSON += "\"storageName\":\""+storageNameList.get(c)+"\","+"\"storageLoad\":\""+storageLoadList.get(c)+"\","+"\"storageTemp\":\""+storageTempList.get(c)+"\","+"\"storageErrors\":\""+storageErrorsList.get(c)+"\"";
+            
+            JSON += "}";
+            
+            c += 1;
+        }
+        
+        return JSON;
     }
 }

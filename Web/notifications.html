@@ -38,12 +38,17 @@
     <div id="container">
         <div id="sideNav">
             <ul id="navBar">
-                <!-- Bouttons de navigation ajoutés par AddNavButtons.js -->
+                <!-- Boutons de navigation ajoutés dynamiquement -->
             </ul>
         </div>
 
         <div id="mainContent">
-            <!-- Content -->
+            <section id="notifications" class="active">
+                <h2>Vos Notifications</h2>
+                <div id="notificationList">
+                    <!-- Les notifications dynamiques seront affichées ici -->
+                </div>
+            </section>
         </div>
     </div>
 
@@ -60,6 +65,7 @@
 <script src="./JS/Banner.js" async></script>
 
 <!-- Script de la page -->
+<script src="./JS/notifications.js" defer></script>
 
 </body>
 </html>

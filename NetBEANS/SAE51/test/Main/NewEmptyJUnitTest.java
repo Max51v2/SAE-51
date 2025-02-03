@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package Main;
 
 import DAO.DAOPC;
 import org.junit.Test;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,6 +16,8 @@ public class NewEmptyJUnitTest {
     @Test
     public void hello() {
         DAOPC DAO = new DAOPC();
-        //DAO.addPCDynamicInfo(1, false);
+        
+        System.out.println(DAO.getArrayList("/a/bb//ccc/dddd/").toString());
+        
     }
 }

@@ -30,9 +30,8 @@ public class ListPCDynInfo extends HttpServlet {
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | none <br>
-     * String date       &emsp;&emsp;        date au format "yyyymmjj" <br>
-     * String time       &emsp;&emsp;        temps au format "hhmmss" <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | Pas d'informations dans la table | none <br>
+     * PAS FINI
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -88,7 +87,9 @@ public class ListPCDynInfo extends HttpServlet {
                 if(access.equals("true")){
 
                     //Code servlet
-                    jsonString = "{\"erreur\":\"none\"}";
+                    String login = DAO.getLogin();
+                    jsonString = DAO2.getPCDynInfo(id, login, TestBoolean);
+                    System.out.println("JSON : "+jsonString);
                 }
                 else{
                     //JSON renvoyé
