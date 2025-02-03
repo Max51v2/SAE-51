@@ -307,6 +307,24 @@ CREATE TABLE pc_dynamic_info (
 
 
 
+CREATE TABLE pc_thresholds (
+    id integer PRIMARY KEY,
+    cpu_utilization integer,
+    cpu_temp integer,
+    cpu_consumption integer,
+    ram_utilization integer,
+    storage_load integer,
+    storage_left integer,
+    storage_temp integer,
+    storage_errors integer,
+    network_latency integer,
+    network_bandwith integer,
+    fan_speed integer
+);
+
+
+
+
 --#########################################################
 --######################## BD test ########################
 DROP DATABASE test;

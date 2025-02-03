@@ -103,10 +103,10 @@ async function loadPCStatus(){
         StatusID = document.getElementById("Status"+c);
 
         if(pc.status === "En Ligne"){
-            StatusID.innerHTML = `🟢 ${pc.status}`;
+            StatusID.innerHTML = `🟢 On`;
         }
         else{
-            StatusID.innerHTML = `🔴 ${pc.status}`;
+            StatusID.innerHTML = `🔴 Off`;
         }
 
         ActionsID = document.getElementById("Actions"+c);

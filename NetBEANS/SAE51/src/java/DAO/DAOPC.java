@@ -1197,20 +1197,20 @@ public class DAOPC {
         if(getInfo == true){
             //Récupération des infos statiques du PC
             String RequeteSQL="SELECT * FROM pc_dynamic_info WHERE id = ?";
-            Integer id = 1;
-            Integer CPUUtilization = 10;
-            Integer CPUTemp = 50;
-            Integer CPUConsumption = 60;
-            Integer RAMUtilization = 70;
-            String storageName = "Stockage1/Stockage2/Stockage3";
-            String storageLoad = "39/48/20";
-            String storageLeft = "2048/231/1024";
-            String storageTemp = "45/55/50";
-            String storageErrors = "2/0/1";
-            String networkName = "NIC1/NIC2";
-            String networkLatency = "20/10";
-            String networkBandwith = "10/60";
-            String fanSpeed = "0/90/100/80";
+            Integer id = null;
+            Integer CPUUtilization = null;
+            Integer CPUTemp = null;
+            Integer CPUConsumption = null;
+            Integer RAMUtilization = null;
+            String storageName = "";
+            String storageLoad = "";
+            String storageLeft = "";
+            String storageTemp = "";
+            String storageErrors = "";
+            String networkName = "";
+            String networkLatency = "";
+            String networkBandwith = "";
+            String fanSpeed = "";
 
             //Selection de la BD
             changeConnection(Test);
@@ -1251,17 +1251,19 @@ public class DAOPC {
                         //Traitement des listes
                         ArrayList storageNameList = getArrayList(storageName);
                         ArrayList storageLoadList = getArrayList(storageLoad);
+                        ArrayList storageLeftList = getArrayList(storageLeft);
                         ArrayList storageTempList = getArrayList(storageTemp);
                         ArrayList storageErrorsList = getArrayList(storageErrors);
                         ArrayList networkNameList = getArrayList(networkName);
+                        ArrayList networkLatencyList = getArrayList(networkLatency);
                         ArrayList networkBandwithList = getArrayList(networkBandwith);
                         ArrayList fanSpeedList = getArrayList(fanSpeed);
                         
-                        String JSONCPU = "{}";
-                        String JSONNetwork = "{}";
-                        String JSONRAM = "{}";
-                        String JSONStorage = getStorageJSON(storageNameList, storageLoadList, storageTempList, storageErrorsList);
-                        String JSONfanSpeed = "{}";
+                        String JSONCPU = "{\"CPUUtilization\":\""+CPUUtilization+"\",\"CPUTemp\":\""+CPUTemp+"\",\"CPUConsumption\":\""+CPUConsumption+"\"}";
+                        String JSONNetwork = getNetworkJSON(networkNameList, networkLatencyList, networkBandwithList);
+                        String JSONRAM = "{\"RAMUtilization\":\""+RAMUtilization+"\"}";
+                        String JSONStorage = getStorageJSON(storageNameList, storageLoadList, storageLeftList, storageTempList, storageErrorsList);
+                        String JSONfanSpeed = getFanJSON(fanSpeedList);
 
                         // Ajouter l'objet JSON
                         JSONString = "{"
@@ -1399,7 +1401,7 @@ public class DAOPC {
     
     
     
-    private String getStorageJSON(ArrayList<String> storageNameList, ArrayList<String> storageLoadList, ArrayList<String> storageTempList, ArrayList<String> storageErrorsList){
+    private String getStorageJSON(ArrayList<String> storageNameList, ArrayList<String> storageLoadList, ArrayList<String> storageLeftList,ArrayList<String> storageTempList, ArrayList<String> storageErrorsList){
         Integer c = 0;
         String JSON = "";
         
@@ -1410,7 +1412,7 @@ public class DAOPC {
             
             JSON += "{";
             
-            JSON += "\"storageName\":\""+storageNameList.get(c)+"\","+"\"storageLoad\":\""+storageLoadList.get(c)+"\","+"\"storageTemp\":\""+storageTempList.get(c)+"\","+"\"storageErrors\":\""+storageErrorsList.get(c)+"\"";
+            JSON += "\"storageName\":\""+storageNameList.get(c)+"\","+"\"storageLoad\":\""+storageLoadList.get(c)+"\","+"\"storageLeft\":\""+storageLeftList.get(c)+"\","+"\"storageTemp\":\""+storageTempList.get(c)+"\","+"\"storageErrors\":\""+storageErrorsList.get(c)+"\"";
             
             JSON += "}";
             
@@ -1418,5 +1420,253 @@ public class DAOPC {
         }
         
         return JSON;
+    }
+    
+    
+    
+    private String getFanJSON(ArrayList<String> fanSpeedList){
+        Integer c = 0;
+        String JSON = "";
+        
+        while(c < fanSpeedList.size()){
+            if(!(c == 0)){
+                JSON += ",";
+            }
+            
+            JSON += "{";
+            
+            JSON += "\"storageName\":\""+fanSpeedList.get(c)+"\"";
+            
+            JSON += "}";
+            
+            c += 1;
+        }
+        
+        return JSON;
+    }
+    
+    
+    
+    private String getNetworkJSON(ArrayList<String> networkNameList, ArrayList<String> networkLatencyList, ArrayList<String> networkBandwithList){                
+        Integer c = 0;
+        String JSON = "";
+        
+        while(c < networkNameList.size()){
+            if(!(c == 0)){
+                JSON += ",";
+            }
+            
+            JSON += "{";
+            
+            JSON += "\"networkName\":\""+networkNameList.get(c)+"\","+"\"networkLatency\":\""+networkLatencyList.get(c)+"\","+"\"networkBandwidth\":\""+networkBandwithList.get(c)+"\"";
+            
+            JSON += "}";
+            
+            c += 1;
+        }
+        
+        return JSON;
+    }
+    
+    
+    
+    /**
+     * Récupération des seuils d'un PC
+     * 
+     * @param id        id du PC
+     * @param CPUUtilization        utilisation du CPU %
+     * @param CPUTemp       température du CPU en °C
+     * @param CPUConsumption        consommation du CPU en W
+     * @param RAMUtilization        utilisation de la RAM en %
+     * @param storageLoad       taux d'écritures des appareils en %
+     * @param storageLeft       capacité de stockage restante en Go
+     * @param storageTemp       température du périphérique en °C
+     * @param storageErrors     nombre d'erreurs du périphérique Int
+     * @param networkLatency        latence du NIC (avec google par ex) en ms
+     * @param networkBandwith       taux utilisation débit sortant NIC en %
+     * @param fanSpeed      taux de vitesse de rotation en %
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void addThresholds(Integer id, Integer CPUUtilization, Integer CPUTemp, Integer CPUConsumption, 
+            Integer RAMUtilization, Integer storageLoad, Integer storageLeft, Integer storageTemp, Integer storageErrors, 
+            Integer networkLatency, Integer networkBandwith, Integer fanSpeed, Boolean Test){
+        
+        String RequeteSQL="INSERT INTO pc_thresholds (id, cpu_utilization, cpu_temp, cpu_consumption, ram_utilization, storage_load, storage_left, storage_temp, storage_errors, network_latency, network_bandwith, fan_speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        //Suppression de l'ancienne entrée si elle existe
+        deleteDuplicateDynInfo(id, Test);
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, CPUUtilization);
+            preparedStatement.setInt(3, CPUTemp);
+            preparedStatement.setInt(4, CPUConsumption);
+            preparedStatement.setInt(5, RAMUtilization);
+            preparedStatement.setInt(6, storageLoad);
+            preparedStatement.setInt(7, storageLeft);
+            preparedStatement.setInt(8, storageTemp);
+            preparedStatement.setInt(9, storageErrors);
+            preparedStatement.setInt(10, networkLatency);
+            preparedStatement.setInt(11, networkBandwith);
+            preparedStatement.setInt(12, fanSpeed);
+            
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
+    /**
+     * Renvoi les seuils d'un pc contenu dans la BD
+     * 
+     * @param idPC      id du pc
+     * @param login     login de l'utilisateur qui aura accès à ces données
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
+     */
+    public String getThresholds(Integer idPC, String login, Boolean Test){
+        
+        //Par défaut
+        String JSONString = "{\"erreur\":\"Pas d'informations dans la table\"}" ;
+        
+        //Vérification de la présence d'une entrée
+        Boolean idExist = doIDExistThresholds(idPC, Test);
+        if(idExist == false){
+            return JSONString;
+        }
+        
+        //Vérification des droits d'accès au PC
+        Boolean getInfo = getUserPCAccess(idPC, login, Test);
+        
+        //Si l'utilisateur a les droits d'accès au pc
+        if(getInfo == true){
+            //Récupération des infos statiques du PC
+            String RequeteSQL="SELECT * FROM pc_thresholds WHERE id = ?";
+            Integer id = null;
+            Integer CPUUtilization = null;
+            Integer CPUTemp = null;
+            Integer CPUConsumption = null;
+            Integer RAMUtilization = null;
+            String storageName = "";
+            String storageLoad = "";
+            String storageLeft = "";
+            String storageTemp = "";
+            String storageErrors = "";
+            String networkName = "";
+            String networkLatency = "";
+            String networkBandwith = "";
+            String fanSpeed = "";
+
+            //Selection de la BD
+            changeConnection(Test);
+
+
+            //Connection BD en tant que postgres
+            try (Connection connection =
+                DAOPC.getConnectionPostgres();
+
+                //Requête SQL
+                PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+                
+                //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+                preparedStatement.setInt(1, idPC);
+
+                // Exécution de la requête
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                    if (resultSet.next()) {
+                        //Récupération des données dans la BD
+                        id = resultSet.getInt("id");
+                        String date = resultSet.getString("date");
+                        String time = resultSet.getString("time");
+                        CPUUtilization = resultSet.getInt("cpu_utilization");
+                        CPUTemp = resultSet.getInt("cpu_temp");
+                        CPUConsumption = resultSet.getInt("cpu_consumption");
+                        RAMUtilization = resultSet.getInt("ram_utilization");
+                        storageName = resultSet.getString("storage_name");
+                        storageLoad = resultSet.getString("storage_load");
+                        storageLeft = resultSet.getString("storage_left");
+                        storageTemp = resultSet.getString("storage_temp");
+                        storageErrors = resultSet.getString("storage_errors");
+                        networkName = resultSet.getString("network_name");
+                        networkLatency = resultSet.getString("network_latency");
+                        networkBandwith = resultSet.getString("network_bandwith");
+                        fanSpeed = resultSet.getString("fan_speed");
+
+                        
+
+                        // Ajouter l'objet JSON
+                        JSONString = "{"
+                                + "\"erreur\":\"none\","
+                                
+                                + "}";
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            JSONString = "{\"erreur\":\"accès refusé\"}";
+        }
+        
+        return JSONString;
+    }
+    
+    
+    
+    /**
+     * Vérifie l'existance de l'ID dans la base de données
+     * 
+     * @param id     id de la machine
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return loginExist       éxsitance du login (booléen)
+     */
+    public Boolean doIDExistThresholds(Integer id, Boolean Test){
+        String RequeteSQL="SELECT id FROM pc_thresholds WHERE id = ?";
+        
+        Boolean idExist = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    idExist = true;
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return idExist;
     }
 }

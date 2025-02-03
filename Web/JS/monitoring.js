@@ -232,7 +232,7 @@ time = "000000"; //placeholder
 
             while(c2 < refreshIntervall && DynRefreshMap.get(1)){
                 //DOM refresh txt
-                document.getElementById('RefreshCount').innerHTML=`Rafraîchis dans ${refreshIntervall - c2}s`;
+                document.getElementById('RefreshCount').innerHTML=`Rafraîchissement dans ${refreshIntervall - c2}s`;
 
                 await Wait(1000);
 
@@ -383,10 +383,10 @@ time = "000000"; //placeholder
             StatusID = document.getElementById("Status"+c);
 
             if(pc.status === "En Ligne"){
-                StatusID.innerHTML = `🟢 ${pc.status}`;
+                StatusID.innerHTML = `🟢 On`;
             }
             else{
-                StatusID.innerHTML = `🔴 ${pc.status}`;
+                StatusID.innerHTML = `🔴 Off`;
             }
             
             //Remplissage des bouttons pour un Admin
