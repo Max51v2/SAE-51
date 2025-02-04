@@ -89,7 +89,8 @@ public class SetThresholds extends HttpServlet {
         String loginLog = "Aucun";
         
         //Vérification du contenu envoyé
-        if(token == null || id == null){
+        if(token == null || id == null || CPUUtilization == null || CPUTemp == null || CPUConsumption == null || RAMUtilization == null || storageLoad == null || storageLeft == null || 
+                storageTemp == null || storageErrors == null || networkLatency == null || networkBandwith == null || fanSpeed == null){
             //JSON renvoyé
             jsonString = "{\"erreur\":\"champ(s) manquant (req)\"}";
         }
