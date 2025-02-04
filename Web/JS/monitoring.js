@@ -18,10 +18,13 @@ const backToListBtn1 = document.getElementById("backToList1");
 const backToListBtn2 = document.getElementById("backToList2");
 const backToListBtn3 = document.getElementById("backToList3");
 const backToListBtn4 = document.getElementById("backToList4");
+const refreshTresholds = document.getElementById("refreshTresholds");
+const sendTresholds = document.getElementById("sendTresholds");
 const staticInfoTable = document.querySelector("#staticInfoTable");
 const rightsTable = document.querySelector("rightsTable");
 date = "00000000"; //palceholder
 time = "000000"; //placeholder
+idPc = 0;
 
 
 // SLIDERS ET INPUT SEUILS //
@@ -45,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //storageLoad
     var storageLoadSlider = document.getElementById("storageLoadSlider");
-    var RAMUtilizationVal = document.getElementById("storageLoadVal");
+    var storageLoadVal = document.getElementById("storageLoadVal");
     storageLoadSlider.oninput = function() {
         storageLoadVal.innerHTML = `${this.value}%`;
     }
@@ -424,6 +427,18 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 
+    // Fonction pour retourner à la liste principale
+    refreshTresholds.addEventListener("click", () => {
+        refreshTresholds(idPc)
+    });
+
+
+    // Fonction pour retourner à la liste principale
+    sendTresholds.addEventListener("click", () => {
+        setThreshold(idPc)
+    });
+
+
     // Gestion des événements via délégation
     document.addEventListener("click", (event) => {
         if (event.target.classList.contains("viewBtn")) {
@@ -721,13 +736,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     //Ajout des droits d'accès au pc pour un utilisateur défini
-    async function addUser(login, idPC){
-        console.log(`Ajout des droits à \"${login}\" (ID : ${idPC})`);
+    async function addUser(login, idPc){
+        console.log(`Ajout des droits à \"${login}\" (ID : ${idPc})`);
 
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/AddUserToPC`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ id: idPC, login: login, token: token, Test: test })
+            body: JSON.stringify({ id: idPc, login: login, token: token, Test: test })
         });
 
         data = await response.json();
@@ -742,17 +757,17 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         //Actualisation des droits
-        getRights(idPC);
+        getRights(idPc);
     }
 
 
     //Retrait des droits d'accès au pc pour un utilisateur défini
-    async function deleteUser(login, idPC) {
-        console.log(`Retrait des droits à \"${login}\" (ID : ${idPC})`);
+    async function deleteUser(login, idPc) {
+        console.log(`Retrait des droits à \"${login}\" (ID : ${idPc})`);
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/DeleteUserFromPC`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: idPC, login: login, token: token, Test: test })
+            body: JSON.stringify({ id: idPc, login: login, token: token, Test: test })
         });
 
         data = await response.json();
@@ -767,7 +782,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         //Actualisation des droits
-        getRights(idPC);
+        getRights(idPc);
     }
 
 
@@ -800,7 +815,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     async function fetchTresholds(idPc){
-        console.log(`Retrait des droits à \"${login}\" (ID : ${idPc})`);
+        console.log(`Récupération des seuils (ID : ${idPc})`);
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/GetPCThresholds`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -835,10 +850,52 @@ document.addEventListener("DOMContentLoaded", function() {
         networkLatencyText.value = data.networkLatency;
     }
 
+
+    async function setThreshold(idPc){
+        //Récupération des valeurs des Sliders
+        CPUUtilization = CPUUtilizationSlider.value;
+        RAMUtilization = RAMUtilizationSlider.value;
+        storageLoad = storageLoadSlider.value;
+        networkBandwidth = networkBandwidthSlider.value;
+        fanSpeed = fanSpeedSlider.value;
+        
+        //Récupération des valeurs des inputs
+        CPUTemp = CPUTempText.value;
+        CPUConsumption = CPUConsumptionText.value;
+        storageLeft = storageLeftText.value;
+        storageTemp = storageTempText.value;
+        storageErrors = storageErrorsText.value;
+        networkLatency = networkLatencyText.value;
+
+        console.log(`Envoi des seuils (ID : ${idPc})`);
+        response = await fetch(`https://${window.ServerIP}:8443/SAE51/SetThresholds`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ CPUUtilization: CPUUtilization, RAMUtilization: RAMUtilization,
+                storageLoad: storageLoad, networkBandwith: networkBandwidth, 
+                fanSpeed: fanSpeed, CPUTemp: CPUTemp, CPUConsumption: CPUConsumption, storageLeft: storageLeft, 
+                storageTemp: storageTemp, storageErrors: storageErrors, networkLatency: networkLatency, id: idPc, token: token, Test: test })
+        });
+
+        data = await response.json();
+
+        if (data.erreur !== "none") {
+            console.error(`Erreur: ${data.erreur}`);
+            alert(`Erreur: ${data.erreur}`);
+            return;
+        }
+    }
+
 document.addEventListener("TokenCheckFinished", () => {
     //Récupération des infos utilisateur
     token = sessionStorage.getItem('token');
     droits = sessionStorage.getItem('droits');
+
+    document.getElementById('pcThresholds2').innerHTML=`
+        <button id="refreshTresholds" type="button" class="back-button">Reset</button>
+        <button id="sendTresholds" type="button" class="back-button">Envoyer</button>
+        <button id="backToList4" type="button" class="back-button">Retour à la Liste</button>
+    `;
     
     //Afichage de la liste des PC
     loadPcList();
