@@ -269,7 +269,8 @@ CREATE TABLE notification (
     description text,
     content text,
     users text,
-    date text
+    date text,
+    idpc integer
 );
 
 
@@ -501,7 +502,8 @@ CREATE TABLE notification (
     description text,
     content text,
     users text,
-    date text
+    date text,
+    idpc integer
 );
 
 

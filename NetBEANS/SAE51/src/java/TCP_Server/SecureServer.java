@@ -291,7 +291,7 @@ public class SecureServer implements Runnable {
                             
                             //TEST//
                             //Données à envoyer
-                            Integer id = 1;
+                            Integer id = clientId;
                             Integer CPUUtilization = 10;
                             Integer CPUTemp = 50;
                             Integer CPUConsumption = 60;

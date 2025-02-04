@@ -16,22 +16,16 @@ public class NewEmptyJUnitTest {
     @Test
     public void hello() {
         DAOPC DAO = new DAOPC();
-        //Données à envoyer
-                            Integer id = 1;
-                            Integer CPUUtilization = 2;
-                            Integer CPUTemp = 3;
-                            Integer CPUConsumption = 4;
-                            Integer RAMUtilization = 5;
-                            Integer storageLoad = 6;
-                            Integer storageLeft = 7;
-                            Integer storageTemp = 8;
-                            Integer storageErrors = 9;
-                            Integer networkLatency = 10;
-                            Integer networkBandwith = 11;
-                            Integer fanSpeed = 14;
-                            Boolean Test = false;
-
-                            DAO.addThresholds(id, CPUUtilization, CPUTemp, CPUConsumption, RAMUtilization, storageLoad, storageLeft, storageTemp, storageErrors, networkLatency, networkBandwith, fanSpeed, Test);
+        ArrayList<String> messages = new ArrayList<>();
         
+        
+        messages = DAO.checkThresholds(1, false);
+        
+        Integer c=0;
+        while(c < messages.size()){
+            System.out.println("M"+c+" : "+messages.get(c));
+            
+            c += 1;
+        }
     }
 }

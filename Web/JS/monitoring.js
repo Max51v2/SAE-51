@@ -852,7 +852,7 @@ document.addEventListener("DOMContentLoaded", function() {
         CPUUtilizationSlider.value = data.CPUUtilization;
         RAMUtilizationSlider.value = data.RAMUtilization;
         storageLoadSlider.value = data.storageLoad;
-        networkBandwidthSlider.value = data.networkBandwidth;
+        networkBandwidthSlider.value = data.networkBandwith;
         fanSpeedSlider.value = data.fanSpeed;
         
         //Ajout des valeurs des inputs
