@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var fanSpeedSlider = document.getElementById("fanSpeedSlider");
     var fanSpeedVal = document.getElementById("fanSpeedVal");
     fanSpeedSlider.oninput = function() {
-        fanSpeedVal.innerHTML = `${this.value}%`;
+        fanSpeedVal.innerHTML = `>${this.value}%`;
     }
 
 
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var storageLeftText = document.getElementById("storageLeftText");
     var storageLeftVal = document.getElementById("storageLeftVal");
     storageLeftText.oninput = function() {
-        storageLeftVal.innerHTML = `${this.value}W`;
+        storageLeftVal.innerHTML = `${this.value}Go`;
     }
 
     //storageTemp
@@ -418,25 +418,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     // Fonction pour retourner à la liste principale
-    backToListBtn4.addEventListener("click", () => {
+    function backToList4(){
         mainContent.style.display = "block";
         pcDetailsPage.style.display = "none";
         pcDynPage.style.display = "none";
         pcRights.style.display = "none";
         pcThresholds.style.display = "none";
-    });
-
-
-    // Fonction pour retourner à la liste principale
-    refreshTresholds.addEventListener("click", () => {
-        refreshTresholds(idPc)
-    });
-
-
-    // Fonction pour retourner à la liste principale
-    sendTresholds.addEventListener("click", () => {
-        setThreshold(idPc)
-    });
+    }
+        
+    
 
 
     // Gestion des événements via délégation
@@ -461,6 +451,11 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (event.target.classList.contains("tresholdBtn")) {
             const pcId = event.target.getAttribute("data-id");
             console.log(`Bouton Modif seuils (ID: ${pcId})`);
+            document.getElementById('pcThresholds2').innerHTML=`
+                <button id="refreshTresholds" type="button" class="back-button" onClick="getTresholds('${pcId}')">Reset</button>
+                <button id="sendTresholds" type="button" class="back-button" onClick="setThreshold('${pcId}')">Envoyer</button>
+                <button id="backToList4" type="button" class="back-button" onClick="backToList4()">Retour à la Liste</button>
+            `;
             getTresholds(pcId);
         }
     });
@@ -795,7 +790,7 @@ document.addEventListener("DOMContentLoaded", function() {
         RAMUtilizationVal.innerHTML = `${RAMUtilizationSlider.value}%`;
         storageLoadVal.innerHTML = `${storageLoadSlider.value}%`;
         networkBandwidthVal.innerHTML = `${networkBandwidthSlider.value}%`;
-        fanSpeedVal.innerHTML = `${fanSpeedSlider.value}%`;
+        fanSpeedVal.innerHTML = `>${fanSpeedSlider.value}%`;
         
         //Ajout des valeurs des inputs
         CPUTempVal.innerHTML = `${CPUTempText.value}°C`;
@@ -891,12 +886,6 @@ document.addEventListener("TokenCheckFinished", () => {
     token = sessionStorage.getItem('token');
     droits = sessionStorage.getItem('droits');
 
-    document.getElementById('pcThresholds2').innerHTML=`
-        <button id="refreshTresholds" type="button" class="back-button">Reset</button>
-        <button id="sendTresholds" type="button" class="back-button">Envoyer</button>
-        <button id="backToList4" type="button" class="back-button">Retour à la Liste</button>
-    `;
-    
     //Afichage de la liste des PC
     loadPcList();
 });
