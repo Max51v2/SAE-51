@@ -1931,6 +1931,8 @@ public class DAOPC {
         messages = checkListThreshold(messages, TnetworkBandwith, networkBandwithList, networkNameList, "networkBandwith", idPC);
         messages = checkListThreshold(messages, TfanSpeed, fanSpeedList, fanSpeedList, "fanSpeed", idPC);
         
+        DAON.cleanNotifications(idPC, messages, Test);
+        
         Integer c=0;
         String users = getUsersWithPCAccess(idPC, Test);
         while(c < messages.size()){
