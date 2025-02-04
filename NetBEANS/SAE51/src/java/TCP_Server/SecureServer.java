@@ -308,6 +308,7 @@ public class SecureServer implements Runnable {
                             Boolean Test = false;
 
                             daoPC.addPCDynamicInfo(id, CPUUtilization, CPUTemp, CPUConsumption, RAMUtilization, storageName, storageLoad, storageLeft, storageTemp, storageErrors, networkName, networkLatency, networkBandwith, fanSpeed, Test);
+                            daoPC.checkThresholds(clientId, Test);
 
                         } else {
                             System.out.println("2");
