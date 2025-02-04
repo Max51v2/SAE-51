@@ -133,7 +133,7 @@ public class DAONotifications {
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
     public String getNotifications(String userLogin, Boolean BypassAuth, Boolean Test){
-        String RequeteSQL="SELECT description, content, users, date FROM notification";
+        String RequeteSQL="SELECT description, content, users, date FROM notification ORDER BY idmsg ASC";
         String content="";
         String description="";
         String users="";
@@ -230,7 +230,7 @@ public class DAONotifications {
     
     
     public void cleanNotifications(Integer idPC, ArrayList<String> messages, Boolean Test){
-        String RequeteSQL="SELECT id, message FROM notification WHERE idpc = ?";
+        String RequeteSQL="SELECT idmsg, content FROM notification WHERE idpc = ?";
         Integer idMsg = -1; //Par défaut, renvoyé si table vide
         Integer c = 0;
         Boolean DeleteNotification = false;

@@ -1945,7 +1945,7 @@ public class DAOPC {
     
     private ArrayList<String> checkSimpleThreshold(ArrayList<String> messages, Integer threshold, Integer value, String metric, Integer id){
         if(value >= threshold){
-            messages.add("Métrique <"+metric+"> dépassée pour le PC n°"+id+" => valeur : "+value+" | seuil : "+threshold);
+            messages.add("Métrique ("+metric+") dépassée pour le PC n°"+id+" => valeur : "+value+" | seuil : "+threshold);
         }
         
         return messages;
@@ -1956,11 +1956,11 @@ public class DAOPC {
         
         while(c < values.size()){
             if(Integer.valueOf(values.get(c)) >= threshold){
-                if(metric.equals("fanSpeedList")){
-                    messages.add("Métrique <"+metric+"> de l'item nommé <ventilateur n°"+c+"> dépassée pour le PC n°"+id+" => valeur : "+values.get(c)+" | seuil : "+threshold);
+                if(metric.equals("fanSpeed")){
+                    messages.add("Métrique ("+metric+") de l'item nommé (ventilateur n°"+c+") dépassée pour le PC n°"+id+" => valeur : "+values.get(c)+" | seuil : "+threshold);
                 }
                 else{
-                    messages.add("Métrique <"+metric+"> de l'item nommé <"+nameList.get(c)+"> dépassée pour le PC n°"+id+" => valeur : "+values.get(c)+" | seuil : "+threshold);
+                    messages.add("Métrique ("+metric+") de l'item nommé ("+nameList.get(c)+") dépassée pour le PC n°"+id+" => valeur : "+values.get(c)+" | seuil : "+threshold);
                 }
             }
             
