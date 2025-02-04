@@ -26,6 +26,7 @@ public class GetNotifications extends HttpServlet {
      * Renvoi les notifications d'un utilisateur<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
+     * String token       &emsp;&emsp;        token utilisateur <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>

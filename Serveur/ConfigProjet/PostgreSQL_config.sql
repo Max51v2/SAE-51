@@ -270,7 +270,8 @@ CREATE TABLE notification (
     content text,
     users text,
     date text,
-    idpc integer
+    idpc integer,
+    idmsg SERIAL
 );
 
 
@@ -503,7 +504,8 @@ CREATE TABLE notification (
     content text,
     users text,
     date text,
-    idpc integer
+    idpc integer,
+    idmsg SERIAL
 );
 
 

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("TokenCheckFinished", function() {
     const logTableBody = document.querySelector("#logTable tbody");
     const filterBtn = document.getElementById("filterBtn");
     const errorMsg = document.getElementById("errorMsg");

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -53,10 +54,17 @@ public class DAONotifications {
      * @param description     Description courte du type de notif
      * @param content       contenu de la notification
      * @param users     utilisateurs qui ont accès à la notif (même format que pour l'accès aux pc "login1/.../loginN")
+     * @param idPC      id du pc
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void addNotification(String description, String content, String users, Boolean Test){
-        String RequeteSQL="INSERT INTO notification (description, content, users, date) VALUES (?, ?, ?, ?)";
+    public void addNotification(String description, String content, String users, Integer idPC, Boolean Test){
+        String RequeteSQL="INSERT INTO notification (description, content, users, date, idpc) VALUES (?, ?, ?, ?, ?)";
+        
+        Boolean exist = doNotifExist(content, Test);
+        
+        if(exist == true){
+            return;
+        }
         
         //Selection de la BD
         changeConnection(Test);
@@ -76,6 +84,7 @@ public class DAONotifications {
             preparedStatement.setString(2, content);
             preparedStatement.setString(3, users);
             preparedStatement.setString(4, date);
+            preparedStatement.setInt(5, idPC);
             
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();
@@ -215,5 +224,126 @@ public class DAONotifications {
         }
         
         return JSONString;
+    }
+    
+    
+    
+    
+    public void cleanNotifications(Integer idPC, ArrayList<String> messages, Boolean Test){
+        String RequeteSQL="SELECT id, message FROM notification WHERE idpc = ?";
+        Integer idMsg = -1; //Par défaut, renvoyé si table vide
+        Integer c = 0;
+        Boolean DeleteNotification = false;
+        String message = "";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAONotifications.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, idPC);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                
+                //On prend le résultat de la 1ere itération si elle existe
+                while (resultSet.next()) {
+                    //Récupération des info souhaitées
+                    idMsg = resultSet.getInt("idmsg");
+                    message = resultSet.getString("content");
+                    
+                    c=0;
+                    DeleteNotification = true;
+                    while(c < messages.size()){
+                        if(messages.get(c).equals(message)){
+                            DeleteNotification = false;
+                        }
+                        
+                        c += 1;
+                    }
+                    
+                    if(DeleteNotification == true){
+                        deleteNotif(idMsg, Test);
+                    }
+                }
+            } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    /**
+     * Suppression d'une notif dans la BD
+     * 
+     * @param idMsg     id msg
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deleteNotif(Integer idMsg, Boolean Test){
+        String RequeteSQL="DELETE FROM notification WHERE idmsg = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAONotifications.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, idMsg);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
+    
+    public Boolean doNotifExist(String content, Boolean Test){
+        String RequeteSQL="SELECT content FROM notification WHERE content = ?";
+        
+        Boolean idExist = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAONotifications.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, content);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    idExist = true;
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return idExist;
     }
 }

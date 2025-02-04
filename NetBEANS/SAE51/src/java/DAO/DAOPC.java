@@ -1788,6 +1788,16 @@ public class DAOPC {
         String networkLatency = "";
         String networkBandwith = "";
         String fanSpeed = "";
+        ArrayList storageNameList = new ArrayList();
+        ArrayList storageLoadList = new ArrayList();
+        ArrayList storageLeftList = new ArrayList();
+        ArrayList storageTempList = new ArrayList();
+        ArrayList storageErrorsList = new ArrayList();
+        ArrayList networkNameList = new ArrayList();
+        ArrayList networkLatencyList = new ArrayList();
+        ArrayList networkBandwithList = new ArrayList();
+        ArrayList fanSpeedList = new ArrayList();
+        DAONotifications DAON = new DAONotifications();
         
         ArrayList<String> messages = new ArrayList<>();
         
@@ -1881,15 +1891,15 @@ public class DAOPC {
                         fanSpeed = resultSet.getString("fan_speed");
 
                         //Données à check
-                        ArrayList storageNameList = getArrayList(storageName);
-                        ArrayList storageLoadList = getArrayList(storageLoad);
-                        ArrayList storageLeftList = getArrayList(storageLeft);
-                        ArrayList storageTempList = getArrayList(storageTemp);
-                        ArrayList storageErrorsList = getArrayList(storageErrors);
-                        ArrayList networkNameList = getArrayList(networkName);
-                        ArrayList networkLatencyList = getArrayList(networkLatency);
-                        ArrayList networkBandwithList = getArrayList(networkBandwith);
-                        ArrayList fanSpeedList = getArrayList(fanSpeed);
+                        storageNameList = getArrayList(storageName);
+                        storageLoadList = getArrayList(storageLoad);
+                        storageLeftList = getArrayList(storageLeft);
+                        storageTempList = getArrayList(storageTemp);
+                        storageErrorsList = getArrayList(storageErrors);
+                        networkNameList = getArrayList(networkName);
+                        networkLatencyList = getArrayList(networkLatency);
+                        networkBandwithList = getArrayList(networkBandwith);
+                        fanSpeedList = getArrayList(fanSpeed);
                         CPUUtilization = resultSet.getInt("cpu_utilization");
                         CPUTemp = resultSet.getInt("cpu_temp");
                         CPUConsumption = resultSet.getInt("cpu_consumption");
@@ -1906,22 +1916,36 @@ public class DAOPC {
         //Liste qui contient les messages de dépassement des seuils précédents
         //Tout ce qui n'est pas dedans sera retiré de la BD et ce qui est déjà dans la BD ne bouge pas (comme ça on a les dépassements en cours avec un timestamp)
         
+        //Simples
         messages = checkSimpleThreshold(messages, TCPUUtilization, CPUUtilization, "CPUUtilization", idPC);
         messages = checkSimpleThreshold(messages, TCPUTemp, CPUTemp, "CPUTemp", idPC);
         messages = checkSimpleThreshold(messages, TCPUConsumption, CPUConsumption, "CPUConsumption", idPC);
         messages = checkSimpleThreshold(messages, TRAMUtilization, RAMUtilization, "RAMUtilization", idPC);
         
+        //Listes
+        messages = checkListThreshold(messages, TstorageLoad, storageLoadList, storageNameList, "storageLoad", idPC);
+        messages = checkListThreshold(messages, TstorageLeft, storageLeftList, storageNameList, "storageLeft", idPC);
+        messages = checkListThreshold(messages, TstorageTemp, storageTempList, storageNameList, "storageTemp", idPC);
+        messages = checkListThreshold(messages, TstorageErrors, storageErrorsList, storageNameList, "storageErrors", idPC);
+        messages = checkListThreshold(messages, TnetworkLatency, networkLatencyList, networkNameList, "networkLatency", idPC);
+        messages = checkListThreshold(messages, TnetworkBandwith, networkBandwithList, networkNameList, "networkBandwith", idPC);
+        messages = checkListThreshold(messages, TfanSpeed, fanSpeedList, fanSpeedList, "fanSpeed", idPC);
         
-        
-        
-        
+        Integer c=0;
+        String users = getUsersWithPCAccess(idPC, Test);
+        while(c < messages.size()){
+            
+            DAON.addNotification("Alert", messages.get(c), users, idPC, Test);
+            
+            c += 1;
+        }
         return messages;
     }
     
     
     private ArrayList<String> checkSimpleThreshold(ArrayList<String> messages, Integer threshold, Integer value, String metric, Integer id){
         if(value >= threshold){
-            messages.add("Métrique \""+metric+"\" dépassée pour le PC n°"+id+" => valeur : "+value+" | seuil : "+threshold);
+            messages.add("Métrique <"+metric+"> dépassée pour le PC n°"+id+" => valeur : "+value+" | seuil : "+threshold);
         }
         
         return messages;
@@ -1930,11 +1954,17 @@ public class DAOPC {
     private ArrayList<String> checkListThreshold(ArrayList<String> messages, Integer threshold, ArrayList<String> values, ArrayList<String> nameList, String metric, Integer id){
         Integer c = 0;
         
-        if(c < values.size()){
+        while(c < values.size()){
             if(Integer.valueOf(values.get(c)) >= threshold){
-                messages.add("Métrique \""+metric+"\" dépassée pour le PC n°"+id+" => valeur :  | seuil : "+threshold);
+                if(metric.equals("fanSpeedList")){
+                    messages.add("Métrique <"+metric+"> de l'item nommé <ventilateur n°"+c+"> dépassée pour le PC n°"+id+" => valeur : "+values.get(c)+" | seuil : "+threshold);
+                }
+                else{
+                    messages.add("Métrique <"+metric+"> de l'item nommé <"+nameList.get(c)+"> dépassée pour le PC n°"+id+" => valeur : "+values.get(c)+" | seuil : "+threshold);
+                }
             }
             
+            c += 1;
         }
         
         return messages;
