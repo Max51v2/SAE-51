@@ -17,8 +17,21 @@ public class GetJSONInfoPC{
         private String message;
         private String date;
         private String time;
+        private Integer CPUUtilization;
+        private Integer CPUTemp;
+        private Integer CPUConsumption;
+        private Integer RAMUtilization;
+        private Integer storageLoad;
+        private Integer storageLeft;
+        private Integer storageTemp;
+        private Integer storageErrors;
+        private Integer networkLatency;
+        private Integer networkBandwith;
+        private Integer fanSpeed;
         
-        public GetJSONInfoPC(String Test, String IP, Integer id, String hasAccess, String login, Integer action, String message, String date, String time, String token){
+        public GetJSONInfoPC(String Test, String IP, Integer id, String hasAccess, String login, Integer action, String message, String date, String time, 
+                String tokenInteger, Integer CPUUtilization, Integer CPUTemp, Integer CPUConsumption, Integer RAMUtilization, Integer storageLoad, 
+                Integer storageLeft, Integer storageTemp, Integer storageErrors, Integer networkLatency, Integer networkBandwith, Integer fanSpeed, String token){
             this.Test = Test;
             this.IP = IP;
             this.id = id;
@@ -29,85 +42,186 @@ public class GetJSONInfoPC{
             this.message = message;
             this.date = date;
             this.time = time;
+            this.CPUUtilization = CPUUtilization;
+            this.CPUTemp = CPUTemp;
+            this.CPUConsumption = CPUConsumption;
+            this.RAMUtilization = RAMUtilization;
+            this.storageLoad = storageLoad;
+            this.storageLeft = storageLeft;
+            this.storageTemp = storageTemp;
+            this.storageErrors = storageErrors;
+            this.networkLatency = networkLatency;
+            this.networkBandwith = networkBandwith;
+            this.fanSpeed = fanSpeed;
         }
 
-        public String getTest() {
-            return Test;
-        }
+    public String getTest() {
+        return Test;
+    }
 
-        public void setTest(String Test) {
-            this.Test = Test;
-        }
+    public void setTest(String Test) {
+        this.Test = Test;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getIP() {
+        return IP;
+    }
+
+    public void setIP(String IP) {
+        this.IP = IP;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getHasAccess() {
+        return hasAccess;
+    }
+
+    public void setHasAccess(String hasAccess) {
+        this.hasAccess = hasAccess;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public Integer getAction() {
+        return action;
+    }
+
+    public void setAction(Integer action) {
+        this.action = action;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public Integer getCPUUtilization() {
+        return CPUUtilization;
+    }
+
+    public void setCPUUtilization(Integer CPUUtilization) {
+        this.CPUUtilization = CPUUtilization;
+    }
+
+    public Integer getCPUTemp() {
+        return CPUTemp;
+    }
+
+    public void setCPUTemp(Integer CPUTemp) {
+        this.CPUTemp = CPUTemp;
+    }
+
+    public Integer getCPUConsumption() {
+        return CPUConsumption;
+    }
+
+    public void setCPUConsumption(Integer CPUConsumption) {
+        this.CPUConsumption = CPUConsumption;
+    }
+
+    public Integer getRAMUtilization() {
+        return RAMUtilization;
+    }
+
+    public void setRAMUtilization(Integer RAMUtilization) {
+        this.RAMUtilization = RAMUtilization;
+    }
+
+    public Integer getStorageLoad() {
+        return storageLoad;
+    }
+
+    public void setStorageLoad(Integer storageLoad) {
+        this.storageLoad = storageLoad;
+    }
+
+    public Integer getStorageLeft() {
+        return storageLeft;
+    }
+
+    public void setStorageLeft(Integer storageLeft) {
+        this.storageLeft = storageLeft;
+    }
+
+    public Integer getStorageTemp() {
+        return storageTemp;
+    }
+
+    public void setStorageTemp(Integer storageTemp) {
+        this.storageTemp = storageTemp;
+    }
+
+    public Integer getStorageErrors() {
+        return storageErrors;
+    }
+
+    public void setStorageErrors(Integer storageErrors) {
+        this.storageErrors = storageErrors;
+    }
+
+    public Integer getNetworkLatency() {
+        return networkLatency;
+    }
+
+    public void setNetworkLatency(Integer networkLatency) {
+        this.networkLatency = networkLatency;
+    }
+
+    public Integer getNetworkBandwith() {
+        return networkBandwith;
+    }
+
+    public void setNetworkBandwith(Integer networkBandwith) {
+        this.networkBandwith = networkBandwith;
+    }
+
+    public Integer getFanSpeed() {
+        return fanSpeed;
+    }
+
+    public void setFanSpeed(Integer fanSpeed) {
+        this.fanSpeed = fanSpeed;
+    }
+
         
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public String getIP() {
-            return IP;
-        }
-
-        public void setIP(String IP) {
-            this.IP = IP;
-        }
-        
-        public String getToken() {
-            return token;
-        }
-
-        public void setToken(String token) {
-            this.token = token;
-        }
-        
-        public String getHasAccess() {
-            return hasAccess;
-        }
-
-        public void setHasAccess(String hasAccess) {
-            this.hasAccess = hasAccess;
-        }
-        
-        public String getLogin() {
-            return login;
-        }
-
-        public void setLogin(String login) {
-            this.login = login;
-        }
-        
-        public Integer getAction() {
-            return action;
-        }
-
-        public void setAction(Integer action) {
-            this.action = action;
-        }
-        
-        public String getDate() {
-            return date;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
-        }
-        
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
     }

@@ -13,13 +13,103 @@ const mainContent = document.getElementById("MainTable");
 const pcDetailsPage = document.getElementById("pcDetailsPage");
 const pcDynPage = document.getElementById("pcDynPage");
 const pcRights = document.getElementById("pcRights");
+const pcThresholds = document.getElementById("pcThresholds");
 const backToListBtn1 = document.getElementById("backToList1");
 const backToListBtn2 = document.getElementById("backToList2");
 const backToListBtn3 = document.getElementById("backToList3");
+const backToListBtn4 = document.getElementById("backToList4");
 const staticInfoTable = document.querySelector("#staticInfoTable");
 const rightsTable = document.querySelector("rightsTable");
 date = "00000000"; //palceholder
 time = "000000"; //placeholder
+
+
+// SLIDERS ET INPUT SEUILS //
+document.addEventListener("DOMContentLoaded", function() {
+
+    //////// SLIDERS ////////
+
+    //CPUUtilization
+    var CPUUtilizationSlider = document.getElementById("CPUUtilizationSlider");
+    var CPUUtilizationVal = document.getElementById("CPUUtilizationVal");
+    CPUUtilizationSlider.oninput = function() {
+        CPUUtilizationVal.innerHTML = `${this.value}%`;
+    }
+
+    //RAMUtilization
+    var RAMUtilizationSlider = document.getElementById("RAMUtilizationSlider");
+    var RAMUtilizationVal = document.getElementById("RAMUtilizationVal");
+    RAMUtilizationSlider.oninput = function() {
+        RAMUtilizationVal.innerHTML = `${this.value}%`;
+    }
+
+    //storageLoad
+    var storageLoadSlider = document.getElementById("storageLoadSlider");
+    var RAMUtilizationVal = document.getElementById("storageLoadVal");
+    storageLoadSlider.oninput = function() {
+        storageLoadVal.innerHTML = `${this.value}%`;
+    }
+
+    //networkBandwidth
+    var networkBandwidthSlider = document.getElementById("networkBandwidthSlider");
+    var networkBandwidthVal = document.getElementById("networkBandwidthVal");
+    networkBandwidthSlider.oninput = function() {
+        networkBandwidthVal.innerHTML = `${this.value}%`;
+    }
+
+    //fanSpeed
+    var fanSpeedSlider = document.getElementById("fanSpeedSlider");
+    var fanSpeedVal = document.getElementById("fanSpeedVal");
+    fanSpeedSlider.oninput = function() {
+        fanSpeedVal.innerHTML = `${this.value}%`;
+    }
+
+
+    //////// INPUT ////////
+
+    //CPUTemp
+    var CPUTempText = document.getElementById("CPUTempText");
+    var CPUTempVal = document.getElementById("CPUTempVal");
+    CPUTempText.oninput = function() {
+        CPUTempVal.innerHTML = `${this.value}°C`;
+    }
+
+    //CPUConsumption
+    var CPUConsumptionText = document.getElementById("CPUConsumptionText");
+    var CPUConsumptionVal = document.getElementById("CPUConsumptionVal");
+    CPUConsumptionText.oninput = function() {
+        CPUConsumptionVal.innerHTML = `${this.value}W`;
+    }
+
+    //storageLeft
+    var storageLeftText = document.getElementById("storageLeftText");
+    var storageLeftVal = document.getElementById("storageLeftVal");
+    storageLeftText.oninput = function() {
+        storageLeftVal.innerHTML = `${this.value}W`;
+    }
+
+    //storageTemp
+    var storageTempText = document.getElementById("storageTempText");
+    var storageTempVal = document.getElementById("storageTempVal");
+    storageTempText.oninput = function() {
+        storageTempVal.innerHTML = `${this.value}°C`;
+    }
+
+    //storageErrors
+    var storageErrorsText = document.getElementById("storageErrorsText");
+    var storageErrorsVal = document.getElementById("storageErrorsVal");
+    storageErrorsText.oninput = function() {
+        storageErrorsVal.innerHTML = `${this.value} Erreurs`;
+    }
+
+    //networkLatency
+    var networkLatencyText = document.getElementById("networkLatencyText");
+    var networkLatencyVal = document.getElementById("networkLatencyVal");
+    networkLatencyText.oninput = function() {
+        networkLatencyVal.innerHTML = `${this.value}ms`;
+    }
+});
+///////////////////
     
 
 // Fonction principale pour charger la liste des PCs
@@ -28,7 +118,7 @@ time = "000000"; //placeholder
             console.log("Chargement de la liste des PCs...");
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPC`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ token: token, Test: test })
             });
 
@@ -48,7 +138,7 @@ time = "000000"; //placeholder
                 <li class="table-header">
                     <div class="col col-1">ID</div>
                     <div class="col col-2">IP</div>
-                    <div class="col col-2">Status</div>
+                    <div class="col col-3">Status</div>
                     <div class="col col-4">Actions</div>
                 </li>
             `;
@@ -64,7 +154,7 @@ time = "000000"; //placeholder
                     row.innerHTML = `
                         <div class="col col-1" data-label="ID">${pc.id}</div>
                         <div class="col col-2" data-label="IP">${pc.IP}</div>
-                        <div class="col col-2" data-label="IP" id="Status${c}"></div>
+                        <div class="col col-3" data-label="IP" id="Status${c}"></div>
                         <div class="col col-4" data-label="Actions" id="ActionsA${c}"></div>
                     `;
                 }
@@ -72,7 +162,7 @@ time = "000000"; //placeholder
                     row.innerHTML = `
                         <div class="col col-1" data-label="ID">${pc.id}</div>
                         <div class="col col-2" data-label="IP">${pc.IP}</div>
-                        <div class="col col-2" data-label="IP" id="Status${c}"></div>
+                        <div class="col col-3" data-label="IP" id="Status${c}"></div>
                         <div class="col col-4" data-label="Actions" id="ActionsU${c}">
                             <button class="button-25 viewBtn" data-id="${pc.id}">Infos statiques</button>
                             <button class="button-25 viewDynBtn" data-id="${pc.id}">Infos dynamiques</button>
@@ -103,7 +193,7 @@ time = "000000"; //placeholder
             console.log(`Chargement des infos statiques (ID : ${pcId})`);
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStaticInfo`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ id: pcId, token: token, Test: test })
             });
 
@@ -150,7 +240,9 @@ time = "000000"; //placeholder
         pcDetailsPage.style.display = "block";
         pcDynPage.style.display = "none";
         pcRights.style.display = "none";
+        pcThresholds.style.display = "none";
     };
+
 
     // Fonction pour afficher les détails d'un PC
     const showPcDyn = async (pcId) => {
@@ -171,13 +263,14 @@ time = "000000"; //placeholder
         }
     };
 
+
     //récupère les infos dyn
     async function getDynInfo(pcId){
 
         console.log(`Chargement des infos dyn (ID : ${pcId})`);
         const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCDynInfo`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({ id: pcId, token: token, Test: test })
         });
 
@@ -200,6 +293,7 @@ time = "000000"; //placeholder
         fillDynInfoTable(data);
     }
 
+
     // Remplir le tableau avec les droits des utilisateur
     const fillDynInfoTable = (data) => {
         DynInfoTable.innerHTML = `
@@ -211,6 +305,7 @@ time = "000000"; //placeholder
         pcDetailsPage.style.display = "none";
         pcDynPage.style.display = "block";
         pcRights.style.display = "none";
+        pcThresholds.style.display = "none";
 
         //Ajout de la date de dernier rafraichissement
         jour = date.substring(6,8);
@@ -221,6 +316,7 @@ time = "000000"; //placeholder
         seconde = time.substring(4,6);
         document.getElementById('RefreshText').innerHTML=`Enregistré à ${heure}:${minute}:${seconde} le ${jour}/${mois}/${annee}`;
     };
+
 
     //Vérifie s'il faut actualiser les données dynamiques
     async function checkDynInfoRefresh(pcId){
@@ -247,7 +343,7 @@ time = "000000"; //placeholder
                 //On vérifie si le serveur a de nouvelles infos à distribuer
                 const response = await fetch(`https://${window.ServerIP}:8443/SAE51/IsDynamicInfoUpToDate`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json; charset=UTF-8" },
                     body: JSON.stringify({ id: pcId, date: date, time: time, token: token, Test: test })
                 });
 
@@ -278,10 +374,12 @@ time = "000000"; //placeholder
         }
     }
 
+
     //Fonction sleep
     function Wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+
 
     // Fonction pour retourner à la liste principale
     backToListBtn1.addEventListener("click", () => {
@@ -289,7 +387,9 @@ time = "000000"; //placeholder
         pcDetailsPage.style.display = "none";
         pcDynPage.style.display = "none";
         pcRights.style.display = "none";
+        pcThresholds.style.display = "none";
     });
+
 
     // Fonction pour retourner à la liste principale
     backToListBtn2.addEventListener("click", () => {
@@ -297,7 +397,9 @@ time = "000000"; //placeholder
         pcDetailsPage.style.display = "none";
         pcDynPage.style.display = "none";
         pcRights.style.display = "none";
+        pcThresholds.style.display = "none";
     });
+
 
     // Fonction pour retourner à la liste principale
     backToListBtn3.addEventListener("click", () => {
@@ -308,7 +410,19 @@ time = "000000"; //placeholder
         pcDetailsPage.style.display = "none";
         pcDynPage.style.display = "none";
         pcRights.style.display = "none";
+        pcThresholds.style.display = "none";
     });
+
+
+    // Fonction pour retourner à la liste principale
+    backToListBtn4.addEventListener("click", () => {
+        mainContent.style.display = "block";
+        pcDetailsPage.style.display = "none";
+        pcDynPage.style.display = "none";
+        pcRights.style.display = "none";
+        pcThresholds.style.display = "none";
+    });
+
 
     // Gestion des événements via délégation
     document.addEventListener("click", (event) => {
@@ -329,15 +443,20 @@ time = "000000"; //placeholder
             const pcId = event.target.getAttribute("data-id");
             console.log(`Bouton Modif droits (ID: ${pcId})`);
             getRights(pcId);
+        } else if (event.target.classList.contains("tresholdBtn")) {
+            const pcId = event.target.getAttribute("data-id");
+            console.log(`Bouton Modif seuils (ID: ${pcId})`);
+            getTresholds(pcId);
         }
     });
+
 
     // Fonction pour supprimer un PC
     const deletePc = async (pcId) => {
         try {
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/DeletePC`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ token:token, id: pcId, Test: test })
             });
 
@@ -362,7 +481,7 @@ time = "000000"; //placeholder
 
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStatus`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({ token: token, Test: test })
         });
 
@@ -399,6 +518,7 @@ time = "000000"; //placeholder
                         <button class="button-25 viewBtn" data-id="${pc.id}">Infos statiques</button>
                         <button class="button-25 viewDynBtn" data-id="${pc.id}">Infos dynamiques</button>
                         <button class="rightsBtn" data-id="${pc.id}">Droits d'accès</button>
+                        <button class="tresholdBtn" data-id="${pc.id}">Seuils</button>
                         <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
                     `;
                 }
@@ -409,6 +529,7 @@ time = "000000"; //placeholder
                             <button class="buttonForbidden" data-id="${pc.id}">Infos dynamiques</button>
                         </span>
                         <button class="rightsBtn" data-id="${pc.id}">Droits d'accès</button>
+                        <button class="tresholdBtn" data-id="${pc.id}">Seuils</button>
                         <button class="deleteBtn" data-id="${pc.id}">Supprimer</button>
                     `;
                 }
@@ -452,7 +573,7 @@ time = "000000"; //placeholder
             console.log(`Chargement des utilisateurs possédant les droits (ID : ${pcId})`);
             response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListUsersWithAccess`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ id: pcId, hasAccess: "true", token: token, Test: test })
             });
 
@@ -471,13 +592,14 @@ time = "000000"; //placeholder
             mainContent.style.display = "none";
             pcDetailsPage.style.display = "none";
             pcRights.style.display = "block";
+            pcThresholds.style.display = "none";
 
             fillRightsTableAllowed(data, pcId);
 
             console.log(`Chargement des utilisateurs ne possédant pas les droits (ID : ${pcId})`);
             response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListUsersWithAccess`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ id: pcId, hasAccess: "false", token: token, Test: test })
             });
 
@@ -604,7 +726,7 @@ time = "000000"; //placeholder
 
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/AddUserToPC`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({ id: idPC, login: login, token: token, Test: test })
         });
 
@@ -649,6 +771,69 @@ time = "000000"; //placeholder
     }
 
 
+    //Récupère les seuils
+    async function getTresholds(idPc){
+        await fetchTresholds(idPc);
+
+        //Ajout des valeurs des Sliders
+        CPUUtilizationVal.innerHTML = `${CPUUtilizationSlider.value}%`;
+        RAMUtilizationVal.innerHTML = `${RAMUtilizationSlider.value}%`;
+        storageLoadVal.innerHTML = `${storageLoadSlider.value}%`;
+        networkBandwidthVal.innerHTML = `${networkBandwidthSlider.value}%`;
+        fanSpeedVal.innerHTML = `${fanSpeedSlider.value}%`;
+        
+        //Ajout des valeurs des inputs
+        CPUTempVal.innerHTML = `${CPUTempText.value}°C`;
+        CPUConsumptionVal.innerHTML = `${CPUConsumptionText.value}W`;
+        storageLeftVal.innerHTML = `${storageLeftText.value}Go`;
+        storageTempVal.innerHTML = `${storageTempText.value}°C`;
+        storageErrorsVal.innerHTML = `${storageErrorsText.value} Erreurs`;
+        networkLatencyVal.innerHTML = `${networkLatencyText.value}ms`;
+
+        //Affichage du tableau
+        mainContent.style.display = "none";
+        pcDetailsPage.style.display = "none";
+        pcDynPage.style.display = "none";
+        pcRights.style.display = "none";
+        pcThresholds.style.display = "block";
+    }
+
+
+    async function fetchTresholds(idPc){
+        console.log(`Retrait des droits à \"${login}\" (ID : ${idPc})`);
+        response = await fetch(`https://${window.ServerIP}:8443/SAE51/GetPCThresholds`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: idPc, token: token, Test: test })
+        });
+
+        data = await response.json();
+
+        if(data.erreur === "Pas d'informations dans la table"){
+            //On laise les valeurs par défaut dans la page
+            return
+        }
+        else if (data.erreur !== "none") {
+            console.error(`Erreur: ${data.erreur}`);
+            alert(`Erreur: ${data.erreur}`);
+            return;
+        }
+
+        //Ajout des valeurs des Sliders
+        CPUUtilizationSlider.value = data.CPUUtilization;
+        RAMUtilizationSlider.value = data.RAMUtilization;
+        storageLoadSlider.value = data.storageLoad;
+        networkBandwidthSlider.value = data.networkBandwidth;
+        fanSpeedSlider.value = data.fanSpeed;
+        
+        //Ajout des valeurs des inputs
+        CPUTempText.value = data.CPUTemp;
+        CPUConsumptionText.value = data.CPUConsumption;
+        storageLeftText.value = data.storageLeft;
+        storageTempText.value = data.storageTemp;
+        storageErrorsText.value = data.storageErrors;
+        networkLatencyText.value = data.networkLatency;
+    }
 
 document.addEventListener("TokenCheckFinished", () => {
     //Récupération des infos utilisateur

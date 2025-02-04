@@ -20,7 +20,7 @@ async function doAction(message, id, line) {
     //Attente de la réponse du serveur
     let response = await fetch(`https://${window.ServerIP}:8443/SAE51/ChangePCState`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({ token: token, id: id, message: message, Test: test })
     });
 
@@ -85,7 +85,7 @@ function Wait(ms) {
 async function loadPCStatus(){
     response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStatus`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({ token: token, Test: test })
     });
 
@@ -146,7 +146,7 @@ document.addEventListener("TokenCheckFinished", () => {
             console.log("Chargement de la liste des PCs...");
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPC`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ token: token, Test: test })
             });
 

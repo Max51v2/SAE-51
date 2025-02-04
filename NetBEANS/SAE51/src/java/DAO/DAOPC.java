@@ -163,6 +163,9 @@ public class DAOPC {
         //Suppression de la table contenant les infos statiques
         RequeteSQL="DELETE FROM pc_static_info WHERE id = ?";
         
+        //Selection de la BD
+        changeConnection(Test);
+            
         //Connection BD en tant que postgres
         try (Connection connection =
             DAOPC.getConnectionPostgres();
@@ -1150,6 +1153,9 @@ public class DAOPC {
     private void deleteDynInfo(Integer id, Boolean Test){
         String RequeteSQL="DELETE FROM pc_dynamic_info WHERE id = ?";
         
+        //Selection de la BD
+        changeConnection(Test);
+        
         //Connection BD en tant que postgres
         try (Connection connection =
             DAOPC.getConnectionPostgres();
@@ -1494,7 +1500,7 @@ public class DAOPC {
         String RequeteSQL="INSERT INTO pc_thresholds (id, cpu_utilization, cpu_temp, cpu_consumption, ram_utilization, storage_load, storage_left, storage_temp, storage_errors, network_latency, network_bandwith, fan_speed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         //Suppression de l'ancienne entrée si elle existe
-        deleteDuplicateDynInfo(id, Test);
+        deleteDuplicateThresholds(id, Test);
         
         //Selection de la BD
         changeConnection(Test);
@@ -1520,6 +1526,77 @@ public class DAOPC {
             preparedStatement.setInt(11, networkBandwith);
             preparedStatement.setInt(12, fanSpeed);
             
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    /**
+     * Vérifie l'existance de l'ID dans la base de données pc_thresholds et suppr si il existe
+     * 
+     * @param id     id de la machine
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deleteDuplicateThresholds(Integer id, Boolean Test){
+        String RequeteSQL="SELECT id FROM pc_thresholds WHERE id = ?";
+        
+        Boolean idExist = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    //Suppression des données précédentes
+                    deleteThreshold(id, Test);
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    /**
+     * Supprime les données d'une machine dans la base de données pc_thresholds
+     * 
+     * @param id     id de la machine
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    private void deleteThreshold(Integer id, Boolean Test){
+        String RequeteSQL="DELETE FROM pc_thresholds WHERE id = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
+            
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, id);
             
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();
@@ -1563,15 +1640,13 @@ public class DAOPC {
             Integer CPUTemp = null;
             Integer CPUConsumption = null;
             Integer RAMUtilization = null;
-            String storageName = "";
-            String storageLoad = "";
-            String storageLeft = "";
-            String storageTemp = "";
-            String storageErrors = "";
-            String networkName = "";
-            String networkLatency = "";
-            String networkBandwith = "";
-            String fanSpeed = "";
+            Integer storageLoad = null;
+            Integer storageLeft = null;
+            Integer storageTemp = null;
+            Integer storageErrors = null;
+            Integer networkLatency = null;
+            Integer networkBandwith = null;
+            Integer fanSpeed = null;
 
             //Selection de la BD
             changeConnection(Test);
@@ -1593,28 +1668,34 @@ public class DAOPC {
                     if (resultSet.next()) {
                         //Récupération des données dans la BD
                         id = resultSet.getInt("id");
-                        String date = resultSet.getString("date");
-                        String time = resultSet.getString("time");
                         CPUUtilization = resultSet.getInt("cpu_utilization");
                         CPUTemp = resultSet.getInt("cpu_temp");
                         CPUConsumption = resultSet.getInt("cpu_consumption");
                         RAMUtilization = resultSet.getInt("ram_utilization");
-                        storageName = resultSet.getString("storage_name");
-                        storageLoad = resultSet.getString("storage_load");
-                        storageLeft = resultSet.getString("storage_left");
-                        storageTemp = resultSet.getString("storage_temp");
-                        storageErrors = resultSet.getString("storage_errors");
-                        networkName = resultSet.getString("network_name");
-                        networkLatency = resultSet.getString("network_latency");
-                        networkBandwith = resultSet.getString("network_bandwith");
-                        fanSpeed = resultSet.getString("fan_speed");
+                        storageLoad = resultSet.getInt("storage_load");
+                        storageLeft = resultSet.getInt("storage_left");
+                        storageTemp = resultSet.getInt("storage_temp");
+                        storageErrors = resultSet.getInt("storage_errors");
+                        networkLatency = resultSet.getInt("network_latency");
+                        networkBandwith = resultSet.getInt("network_bandwith");
+                        fanSpeed = resultSet.getInt("fan_speed");
 
                         
 
                         // Ajouter l'objet JSON
                         JSONString = "{"
                                 + "\"erreur\":\"none\","
-                                
+                                + "\"CPUUtilization\":\""+CPUUtilization+"\","
+                                + "\"CPUTemp\":\""+CPUTemp+"\","
+                                + "\"CPUConsumption\":\""+CPUConsumption+"\","
+                                + "\"RAMUtilization\":\""+RAMUtilization+"\","
+                                + "\"storageLoad\":\""+storageLoad+"\","
+                                + "\"storageLeft\":\""+storageLeft+"\","
+                                + "\"storageTemp\":\""+storageTemp+"\","
+                                + "\"storageErrors\":\""+storageErrors+"\","
+                                + "\"networkLatency\":\""+networkLatency+"\","
+                                + "\"networkBandwith\":\""+networkBandwith+"\","
+                                + "\"fanSpeed\":\""+fanSpeed+"\""
                                 + "}";
                     }
                 }
@@ -1636,7 +1717,7 @@ public class DAOPC {
      * 
      * @param id     id de la machine
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @return loginExist       éxsitance du login (booléen)
+     * @return idExist      éxsitance de l'id (booléen)
      */
     public Boolean doIDExistThresholds(Integer id, Boolean Test){
         String RequeteSQL="SELECT id FROM pc_thresholds WHERE id = ?";

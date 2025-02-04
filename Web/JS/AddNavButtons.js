@@ -4,7 +4,6 @@
 
 //Dictionnaire contenant les bouttons à ajouter selon le nom des pages renvoyés par le servlet
 var ButtonDict = {
-    "alerts.html": '<a href="./alerts.html"><i>🚨</i> Alertes & Seuils</a>',
     "ChangePassword.html": '<a href="./ChangePassword.html"><i>🔑</i> Modification du MDP</a>',
     "control.html": '<a href="./control.html"><i>⚙️</i> Allumage & Extinction</a>',
     "help.html": '<a href="./help.html"><i>❓</i> Page d\'aide</a>',

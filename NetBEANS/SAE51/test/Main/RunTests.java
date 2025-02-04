@@ -13,6 +13,7 @@ import Autre.Warning;
 import DAO.DAONotificationsTest;
 import DAO.DAOusersTest;
 import ServletsPC.DeletePCTest;
+import ServletsPC.GetPCThresholdsTest;
 import ServletsPC.ListPCStaticInfoTest;
 import ServletsPC.ListPCTest;
 import ServletsPC.ListUsersWithAccessTest;
@@ -55,6 +56,7 @@ import ServletsUser.SetPasswordTest;
     DAONotificationsTest.class,
     GetNotificationsTest.class,
     ListUsersWithAccessTest.class,
+    GetPCThresholdsTest.class,
     Warning.class //Laisser en dernier
 })
 public class RunTests {}

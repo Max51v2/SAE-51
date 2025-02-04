@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         try {
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/GetNotifications`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ token: token, Test: false })
             });
 

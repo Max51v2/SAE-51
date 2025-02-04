@@ -47,24 +47,19 @@ CREATE TABLE web_pages_access (
 -- !!! METTRE DANS L'ORDRE DANS LEQUEL LES PAGES APPARAISSENT DANS LA BARRE LATTERALLE (bouttons changement de page) !!!
 
 -- login.html
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Admin', 'alerts.html');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Utilisateur', 'alerts.html');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Admin', 'monitoring.html');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Utilisateur', 'monitoring.html');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('login.html', 'Aucun', 'none');
-
--- alerts.html
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('alerts.html', 'Admin', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('alerts.html', 'Utilisateur', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('alerts.html', 'Aucun', 'login.html');
-
--- control.html
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Admin', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Utilisateur', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Aucun', 'login.html');
 
 -- monitoring.html
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('monitoring.html', 'Admin', 'none');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('monitoring.html', 'Utilisateur', 'none');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('monitoring.html', 'Aucun', 'login.html');
+
+-- control.html
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Admin', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Utilisateur', 'none');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('control.html', 'Aucun', 'login.html');
 
 -- users.html
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('users.html', 'Admin', 'none');
@@ -78,7 +73,7 @@ INSERT INTO web_pages_access (name, droits, redirect) VALUES ('ChangePassword.ht
 
 -- logs.html
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Admin', 'none');
-INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Utilisateur', 'alerts.html');
+INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Utilisateur', 'monitoring.html');
 INSERT INTO web_pages_access (name, droits, redirect) VALUES ('logs.html', 'Aucun', 'login.html');
 
 -- notifications.html
@@ -243,6 +238,16 @@ INSERT INTO servlet_access (name, role, access) VALUES ('IsDynamicInfoUpToDate',
 INSERT INTO servlet_access (name, role, access) VALUES ('ListPCDynInfo', 'Admin', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('ListPCDynInfo', 'Utilisateur', 'true');
 INSERT INTO servlet_access (name, role, access) VALUES ('ListPCDynInfo', 'Aucun', 'false');
+
+--GetPCThresholds
+INSERT INTO servlet_access (name, role, access) VALUES ('GetPCThresholds', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetPCThresholds', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('GetPCThresholds', 'Aucun', 'false');
+
+--SetThresholds
+INSERT INTO servlet_access (name, role, access) VALUES ('SetThresholds', 'Admin', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('SetThresholds', 'Utilisateur', 'true');
+INSERT INTO servlet_access (name, role, access) VALUES ('SetThresholds', 'Aucun', 'false');
 
 
 
@@ -507,7 +512,20 @@ CREATE TABLE pc_dynamic_info (
 );
 
 
-
+CREATE TABLE pc_thresholds (
+    id integer PRIMARY KEY,
+    cpu_utilization integer,
+    cpu_temp integer,
+    cpu_consumption integer,
+    ram_utilization integer,
+    storage_load integer,
+    storage_left integer,
+    storage_temp integer,
+    storage_errors integer,
+    network_latency integer,
+    network_bandwith integer,
+    fan_speed integer
+);
 
 -- fin contenu de la BD sae_51
 

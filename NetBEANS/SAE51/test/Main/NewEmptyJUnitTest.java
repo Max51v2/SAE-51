@@ -28,7 +28,7 @@ public class NewEmptyJUnitTest {
                             Integer storageErrors = 9;
                             Integer networkLatency = 10;
                             Integer networkBandwith = 11;
-                            Integer fanSpeed = 12;
+                            Integer fanSpeed = 14;
                             Boolean Test = false;
 
                             DAO.addThresholds(id, CPUUtilization, CPUTemp, CPUConsumption, RAMUtilization, storageLoad, storageLeft, storageTemp, storageErrors, networkLatency, networkBandwith, fanSpeed, Test);
