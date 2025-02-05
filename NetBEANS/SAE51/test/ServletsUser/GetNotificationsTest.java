@@ -24,8 +24,8 @@ public class GetNotificationsTest {
         DAONotifications.deleteNotifications(true);
         
         //Ajout de notifications
-        DAONotifications.addNotification("test1", "test content 1", "Hell Wallker/Admin1", true);
-        DAONotifications.addNotification("test2", "test content 2", "Hell Wallker", true);
+        DAONotifications.addNotification("test1", "test content 1", "Hell Wallker/Admin1",1, true);
+        DAONotifications.addNotification("test2", "test content 2", "Hell Wallker",1, true);
     }
     
     @After

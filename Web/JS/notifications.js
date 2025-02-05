@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("TokenCheckFinished", async function () {
     console.log("alert.js chargé !");
     const notificationList = document.getElementById("notificationList");
 
@@ -17,19 +17,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Fonction pour charger les notifications
     async function loadNotifications() {
         try {
-            const response = await fetch(`https://${window.ServerIP}:8443/SAE51/GetNotifications`, {
+            response = await fetch(`https://${window.ServerIP}:8443/SAE51/GetNotifications`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ token: token, Test: false })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: token, Test: "false" })
             });
 
-            console.log("Réponse du serveur reçue :", response);
+            console.log("Réponse du serveur reçue");
             if (!response.ok) {
                 throw new Error(`Erreur HTTP : ${response.status}`);
             }
 
             const data = await response.json();
-            console.log("Données JSON reçues :", data);
+            console.log("Données JSON reçues");
 
             notificationList.innerHTML = ""; // Nettoie les notifications précédentes
 
@@ -62,7 +62,7 @@ function displayNotification(notification) {
         return;
     }
 
-    const notifElement = document.createElement("div");
+    const notifElement = document.createElement("div"); 
     notifElement.classList.add("notification");
     notifElement.innerHTML = `
         <h3>${notification.description}</h3>

@@ -112,6 +112,7 @@ public class SetThresholds extends HttpServlet {
                     //Récupération des ordinateurs auquel l'utilisateur a accès
                     String login = DAO.getLogin();
                     DAO2.addThresholds(id, CPUUtilization, CPUTemp, CPUConsumption, RAMUtilization, storageLoad, storageLeft, storageTemp, storageErrors, networkLatency, networkBandwith, fanSpeed, TestBoolean);
+                    DAO2.checkThresholds(id, TestBoolean);
                     
                     //JSON renvoyé
                 jsonString = "{\"erreur\":\"none\"}";
