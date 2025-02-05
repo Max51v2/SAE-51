@@ -253,7 +253,86 @@ document.addEventListener("DOMContentLoaded", function() {
     const showPcDyn = async (pcId) => {
         if (!pcId) {
             alert("ID du PC non valide.");
-            return;
+            async function getDynInfo(pcId) {
+                console.log(`Chargement des infos dyn (ID : ${pcId})`);
+            
+                try {
+                    const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCDynInfo`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json; charset=UTF-8" },
+                        body: JSON.stringify({ id: pcId, token: token, Test: test })
+                    });
+            
+                    if (!response.ok) {
+                        throw new Error(`Erreur HTTP ${response.status}`);
+                    }
+            
+                    const data = await response.json();
+                    console.log("Données reçues :", data);
+            
+                    if (data.erreur && data.erreur !== "none") {
+                        console.error(`Erreur: ${data.erreur}`);
+                        alert(`Erreur: ${data.erreur}`);
+                        return;
+                    }
+            
+                    console.log(`Infos dyn chargées`);
+            
+                    // Enregistrement du timestamp
+                    const { date, time } = data;
+            
+                    // Remplissage du tableau avec les nouvelles données
+                    fillDynInfoTable(data, date, time);
+            
+                } catch (error) {
+                    console.error("Erreur lors du chargement des infos dynamiques :", error);
+                    alert("Impossible de récupérer les informations dynamiques.");
+                }
+            }
+            
+            const fillDynInfoTable = (data, date, time) => {
+                DynInfoTable.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Attribut</th>
+                            <th>Valeur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Utilisation CPU</td><td>${data.CPU.CPUUtilization}%</td></tr>
+                        <tr><td>Température CPU</td><td>${data.CPU.CPUTemp}°C</td></tr>
+                        <tr><td>Consommation CPU</td><td>${data.CPU.CPUConsumption}W</td></tr>
+                        <tr><td>Utilisation RAM</td><td>${data.RAM.RAMUtilization}%</td></tr>
+                        <tr><td>Nom du réseau</td><td>${data.Network.networkName}</td></tr>
+                        <tr><td>Latence Réseau</td><td>${data.Network.networkLatency}ms</td></tr>
+                        <tr><td>Bande Passante Réseau</td><td>${data.Network.networkBandwidth}%</td></tr>
+                        <tr><td>Nom du Stockage</td><td>${data.Storage.storageName}</td></tr>
+                        <tr><td>Utilisation Stockage</td><td>${data.Storage.storageLoad}%</td></tr>
+                        <tr><td>Espace Restant</td><td>${data.Storage.storageLeft}Go</td></tr>
+                        <tr><td>Température Stockage</td><td>${data.Storage.storageTemp}°C</td></tr>
+                        <tr><td>Erreurs Stockage</td><td>${data.Storage.storageErrors} Erreurs</td></tr>
+                        <tr><td>Vitesse Ventilateurs</td><td>${data.Fans.fanSpeed}%</td></tr>
+                    </tbody>
+                `;
+            
+                // Cache la liste principale et affiche les détails dynamiques
+                mainContent.style.display = "none";
+                pcDetailsPage.style.display = "none";
+                pcDynPage.style.display = "block";
+                pcRights.style.display = "none";
+                pcThresholds.style.display = "none";
+            
+                // Ajout de la date de dernier rafraîchissement
+                const jour = date.substring(6, 8);
+                const mois = date.substring(4, 6);
+                const annee = date.substring(0, 4);
+                const heure = time.substring(0, 2);
+                const minute = time.substring(2, 4);
+                const seconde = time.substring(4, 6);
+                
+                document.getElementById('RefreshText').innerHTML = `Enregistré à ${heure}:${minute}:${seconde} le ${jour}/${mois}/${annee}`;
+            };
+             return;
         }
 
         try {
@@ -271,35 +350,43 @@ document.addEventListener("DOMContentLoaded", function() {
 
     async function getDynInfo(pcId) {
         console.log(`Chargement des infos dyn (ID : ${pcId})`);
-        const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCDynInfo`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ id: pcId, token: token, Test: test })
-        });
     
-        const data = await response.json();
-        console.log("Données reçues :", data); // <-- Ajout du log
+        try {
+            const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCDynInfo`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
+                body: JSON.stringify({ id: pcId, token: token, Test: test })
+            });
     
-        if (data.erreur && data.erreur !== "none") {
-            console.error(`Erreur: ${data.erreur}`);
-            alert(`Erreur: ${data.erreur}`);
-            return;
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log("Données reçues :", data);
+    
+            if (data.erreur && data.erreur !== "none") {
+                console.error(`Erreur: ${data.erreur}`);
+                alert(`Erreur: ${data.erreur}`);
+                return;
+            }
+    
+            console.log(`Infos dyn chargées`);
+    
+            // Enregistrement du timestamp
+            const { date, time } = data;
+    
+            // Remplissage du tableau avec les nouvelles données
+            fillDynInfoTable(data, date, time);
+    
+        } catch (error) {
+            console.error("Erreur lors du chargement des infos dynamiques :", error);
+            alert("Impossible de récupérer les informations dynamiques.");
         }
-    
-        console.log(`Infos dyn chargées`);
-    
-        // Enregistrement du timestamp
-        date = data.date;
-        time = data.time;
-    
-        // Remplissage du tableau
-        fillDynInfoTable(data);
     }
     
-
-
-    const fillDynInfoTable = (data) => {
-        DynInfoTable.innerHTML = `
+    const fillDynInfoTable = (data, date, time) => {
+        let tableContent = `
             <thead>
                 <tr>
                     <th>Attribut</th>
@@ -307,36 +394,79 @@ document.addEventListener("DOMContentLoaded", function() {
                 </tr>
             </thead>
             <tbody>
-                <tr><td>Utilisation CPU</td><td>${data.cpu_usage}%</td></tr>
-                <tr><td>Température CPU</td><td>${data.cpu_temp}°C</td></tr>
-                <tr><td>Consommation CPU</td><td>${data.cpu_consumption}W</td></tr>
-                <tr><td>Utilisation RAM</td><td>${data.ram_usage}%</td></tr>
-                <tr><td>Utilisation Stockage</td><td>${data.storage_usage}%</td></tr>
-                <tr><td>Espace Restant</td><td>${data.storage_left}Go</td></tr>
-                <tr><td>Température Stockage</td><td>${data.storage_temp}°C</td></tr>
-                <tr><td>Erreurs Stockage</td><td>${data.storage_errors} Erreurs</td></tr>
-                <tr><td>Latence Réseau</td><td>${data.network_latency}ms</td></tr>
-                <tr><td>Bande Passante Réseau</td><td>${data.network_bandwidth}%</td></tr>
-                <tr><td>Vitesse Ventilateurs</td><td>${data.fan_speed}%</td></tr>
-            </tbody>
         `;
-        
-        // Cache la liste principale et affiche les détails dynamiques
+    
+        // Section CPU
+        if (data.CPU && data.CPU.length > 0) {
+            const cpu = data.CPU[0];
+            tableContent += `
+                <tr><td>Utilisation CPU</td><td>${cpu.CPUUtilization || "N/A"}%</td></tr>
+                <tr><td>Température CPU</td><td>${cpu.CPUTemp || "N/A"}°C</td></tr>
+                <tr><td>Consommation CPU</td><td>${cpu.CPUConsumption || "N/A"}W</td></tr>
+            `;
+        }
+    
+        // Section RAM
+        if (data.RAM && data.RAM.length > 0) {
+            const ram = data.RAM[0];
+            tableContent += `<tr><td>Utilisation RAM</td><td>${ram.RAMUtilization || "N/A"}%</td></tr>`;
+        }
+    
+        // Section Network
+        if (data.Network && data.Network.length > 0) {
+            data.Network.forEach((network) => {
+                tableContent += `
+                    <tr><td>Nom Réseau</td><td>${network.networkName || "N/A"}</td></tr>
+                    <tr><td>Latence Réseau</td><td>${network.networkLatency || "N/A"} ms</td></tr>
+                    <tr><td>Bande Passante Réseau</td><td>${network.networkBandwidth || "N/A"}%</td></tr>
+                `;
+            });
+        }
+    
+        // Section Storage
+        if (data.Storage && data.Storage.length > 0) {
+            data.Storage.forEach((storage) => {
+                tableContent += `
+                    <tr><td>Nom Stockage</td><td>${storage.storageName || "N/A"}</td></tr>
+                    <tr><td>Utilisation Stockage</td><td>${storage.storageLoad || "N/A"}%</td></tr>
+                    <tr><td>Espace Restant</td><td>${storage.storageLeft || "N/A"} Go</td></tr>
+                    <tr><td>Température Stockage</td><td>${storage.storageTemp || "N/A"}°C</td></tr>
+                    <tr><td>Erreurs Stockage</td><td>${storage.storageErrors || "N/A"} Erreurs</td></tr>
+                `;
+            });
+        }
+    
+        // Section Fans
+        if (data.Fans && data.Fans.length > 0) {
+            data.Fans.forEach((fan, index) => {
+                tableContent += `<tr><td>Vitesse Ventilateur ${index + 1}</td><td>${fan.fanSpeed || "N/A"}%</td></tr>`;
+            });
+        }
+    
+        tableContent += '</tbody>';
+        DynInfoTable.innerHTML = tableContent;
+    
+        // Gestion de l'affichage des sections
         mainContent.style.display = "none";
         pcDetailsPage.style.display = "none";
         pcDynPage.style.display = "block";
         pcRights.style.display = "none";
         pcThresholds.style.display = "none";
-        
+    
         // Ajout de la date de dernier rafraîchissement
-        let jour = date.substring(6,8);
-        let mois = date.substring(4,6);
-        let annee = date.substring(0,4);
-        let heure = time.substring(0,2);
-        let minute = time.substring(2,4);
-        let seconde = time.substring(4,6);
-        document.getElementById('RefreshText').innerHTML = `Enregistré à ${heure}:${minute}:${seconde} le ${jour}/${mois}/${annee}`;
-    }
+        if (date.length === 8 && time.length === 6) {
+            const jour = date.substring(6, 8);
+            const mois = date.substring(4, 6);
+            const annee = date.substring(0, 4);
+            const heure = time.substring(0, 2);
+            const minute = time.substring(2, 4);
+            const seconde = time.substring(4, 6);
+    
+            document.getElementById('RefreshText').innerHTML = `Enregistré à ${heure}:${minute}:${seconde} le ${jour}/${mois}/${annee}`;
+        } else {
+            document.getElementById('RefreshText').innerHTML = "Données de date/heure incorrectes";
+        }
+    };
     
 
 
