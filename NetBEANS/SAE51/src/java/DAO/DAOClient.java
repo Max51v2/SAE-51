@@ -347,7 +347,7 @@ public class DAOClient {
     
     
     // Méthode pour attribuer un ID unique à un nouveau client
-    private int assignClientId(SSLSocket clientSocket) {
+    public int assignClientId(SSLSocket clientSocket) {
         int clientId = -1;
 
         try (Connection connection = DriverManager.getConnection(UrlBD, UserPostgres, PasswordPostgres);

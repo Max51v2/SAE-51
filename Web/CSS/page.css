@@ -425,7 +425,6 @@ section.active {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    border: 2px solid red;
     min-height: 50px;
 }
 

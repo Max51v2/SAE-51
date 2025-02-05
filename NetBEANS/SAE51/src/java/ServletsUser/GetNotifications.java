@@ -3,6 +3,7 @@ package ServletsUser;
 import Autre.AddLog;
 import DAO.DAOLogs;
 import DAO.DAONotifications;
+import DAO.DAOPC;
 import DAO.DAOusers;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -27,6 +28,7 @@ public class GetNotifications extends HttpServlet {
      * 
      * Variables à envoyer au servlet (POST)<br>
      * String token       &emsp;&emsp;        token utilisateur <br>
+     * Integer id       &emsp;&emsp;        id du PC <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
      * 
      * <br>
@@ -51,6 +53,7 @@ public class GetNotifications extends HttpServlet {
         String servletName = "GetNotifications";
         
         DAO.DAOusers DAO = new DAOusers();
+        DAOPC daoPC = new DAOPC();
         DAOLogs log = new DAOLogs();
         DAONotifications DAONotifications = new DAONotifications();
         

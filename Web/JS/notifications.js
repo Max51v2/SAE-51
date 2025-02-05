@@ -23,13 +23,13 @@ document.addEventListener("TokenCheckFinished", async function () {
                 body: JSON.stringify({ token: token, Test: "false" })
             });
 
-            console.log("Réponse du serveur reçue :", response);
+            console.log("Réponse du serveur reçue");
             if (!response.ok) {
                 throw new Error(`Erreur HTTP : ${response.status}`);
             }
 
             const data = await response.json();
-            console.log("Données JSON reçues :", data);
+            console.log("Données JSON reçues");
 
             notificationList.innerHTML = ""; // Nettoie les notifications précédentes
 
@@ -62,7 +62,7 @@ function displayNotification(notification) {
         return;
     }
 
-    const notifElement = document.createElement("div");
+    const notifElement = document.createElement("div"); 
     notifElement.classList.add("notification");
     notifElement.innerHTML = `
         <h3>${notification.description}</h3>

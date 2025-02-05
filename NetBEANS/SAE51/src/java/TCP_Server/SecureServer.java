@@ -18,18 +18,6 @@ public class SecureServer implements Runnable {
     DAOClient DAOclient = new DAOClient();
     DAOPC daoPC = new DAOPC();
     private final Boolean Test = false;
-
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/sae_51";
-    
-    //Demarrage du driver postgresql
-    static {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            // Si le driver PostgreSQL n'est pas trouvé dans le classpath
-            e.printStackTrace();
-        }
-    }
     
     
 

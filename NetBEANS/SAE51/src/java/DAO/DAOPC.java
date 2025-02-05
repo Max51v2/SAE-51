@@ -1798,12 +1798,15 @@ public class DAOPC {
         ArrayList networkBandwithList = new ArrayList();
         ArrayList fanSpeedList = new ArrayList();
         DAONotifications DAON = new DAONotifications();
+        String users = getUsersWithPCAccess(idPC, Test);
         
         ArrayList<String> messages = new ArrayList<>();
         
         //Vérification de la présence d'une entrée
         Boolean idExist = doIDExistThresholds(idPC, Test);
         if(idExist == false){
+            DAON.addNotification("Info PC N°"+idPC, "Les seuils ne sont pas définis", users, idPC, Test);
+            
             return messages;
         }
 
@@ -1934,10 +1937,9 @@ public class DAOPC {
         DAON.cleanNotifications(idPC, messages, Test);
         
         Integer c=0;
-        String users = getUsersWithPCAccess(idPC, Test);
         while(c < messages.size()){
             
-            DAON.addNotification("Alert", messages.get(c), users, idPC, Test);
+            DAON.addNotification("Alerte PC N°"+idPC, messages.get(c), users, idPC, Test);
             
             c += 1;
         }
@@ -1947,7 +1949,7 @@ public class DAOPC {
     
     private ArrayList<String> checkSimpleThreshold(ArrayList<String> messages, Integer threshold, Integer value, String metric, Integer id){
         if(value >= threshold){
-            messages.add("Métrique ("+metric+") dépassée pour le PC n°"+id+" => valeur : "+value+" | seuil : "+threshold);
+            messages.add("Métrique ("+metric+") dépassée => valeur : "+value+" | seuil : "+threshold);
         }
         
         return messages;
@@ -1959,10 +1961,10 @@ public class DAOPC {
         while(c < values.size()){
             if(Integer.valueOf(values.get(c)) >= threshold){
                 if(metric.equals("fanSpeed")){
-                    messages.add("Métrique ("+metric+") de l'item nommé (ventilateur n°"+c+") dépassée pour le PC n°"+id+" => valeur : "+values.get(c)+" | seuil : "+threshold);
+                    messages.add("Métrique ("+metric+") de l'item nommé ventilateur n°"+c+") dépassée => valeur : "+values.get(c)+" | seuil : "+threshold);
                 }
                 else{
-                    messages.add("Métrique ("+metric+") de l'item nommé ("+nameList.get(c)+") dépassée pour le PC n°"+id+" => valeur : "+values.get(c)+" | seuil : "+threshold);
+                    messages.add("Métrique ("+metric+") de l'item nommé "+nameList.get(c)+" dépassée => valeur : "+values.get(c)+" | seuil : "+threshold);
                 }
             }
             
