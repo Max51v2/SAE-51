@@ -5,11 +5,6 @@ import DAO.DAOPC;
 import javax.net.ssl.*;
 import java.io.*;
 import java.security.KeyStore;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -19,8 +14,6 @@ public class SecureServer implements Runnable {
     private int port;
     private boolean running = true;
     private SSLServerSocket serverSocket;
-    private static final String UserPostgres="postgres";
-    private static final String PasswordPostgres="leffe";
     private ConcurrentHashMap<Integer, SSLSocket> clientMap = new ConcurrentHashMap<>();
     DAOClient DAOclient = new DAOClient();
     DAOPC daoPC = new DAOPC();
@@ -159,45 +152,8 @@ public class SecureServer implements Runnable {
     
     // Méthode pour attribuer un ID unique à un nouveau client
     private int assignClientId(SSLSocket clientSocket) {
-        int clientId = -1;
-
-        try (Connection connection = DriverManager.getConnection(DB_URL, UserPostgres, PasswordPostgres);
-             Statement statement = connection.createStatement()) {
-
-            // Vérifier s'il existe un ID réutilisable (lacune)
-            ResultSet gaps = statement.executeQuery("SELECT id + 1 AS next_id " +
-                "FROM pc_static_info t1 " +
-                "WHERE NOT EXISTS (SELECT 1 FROM pc_static_info t2 WHERE t2.id = t1.id + 1) " +
-                "AND id < (SELECT MAX(id) FROM pc_static_info) " +
-                "LIMIT 1;");
-
-            if (gaps.next()) {
-                clientId = gaps.getInt("next_id");
-            } else {
-                // Si aucun ID réutilisable, prendre le prochain ID disponible
-                ResultSet maxIdResult = statement.executeQuery("SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM pc_static_info;");
-                if (maxIdResult.next()) {
-                    clientId = maxIdResult.getInt("next_id");
-                }
-            }
-
-            // Insérer le nouvel ID dans la table
-            try (PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO pc_static_info (id) VALUES (?);" );) {
-                insertStmt.setInt(1, clientId);
-                insertStmt.executeUpdate();
-            }
-            try (PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO pc (id,ip,droits) VALUES (?,?,?);" );) {
-                insertStmt.setInt(1, clientId);
-                insertStmt.setString(2, clientSocket.getInetAddress().getHostAddress());
-                insertStmt.setString(3, "");
-                insertStmt.executeUpdate();
-            }
-
-        } catch (Exception e) {
-            System.err.println("Erreur lors de l'attribution d'un ID client : " + e.getMessage());
-            e.printStackTrace();
-        }
-
+        int clientId = DAOclient.assignClientId(clientSocket);
+        
         return clientId;
     }
     

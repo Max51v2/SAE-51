@@ -1561,7 +1561,7 @@ public class DAOPC {
             //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
             preparedStatement.setInt(1, id);
             
-            // Exécution de la requête
+            //Exécution de la requête
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     //Suppression des données précédentes
