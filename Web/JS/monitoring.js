@@ -22,10 +22,12 @@ const refreshTresholds = document.getElementById("refreshTresholds");
 const sendTresholds = document.getElementById("sendTresholds");
 const staticInfoTable = document.querySelector("#staticInfoTable");
 const rightsTable = document.querySelector("rightsTable");
+const DynInfoTable = document.getElementById("DynInfoTable");
 date = "00000000"; //palceholder
 time = "000000"; //placeholder
 idPc = 0;
-
+let token = sessionStorage.getItem('token');
+let droits = sessionStorage.getItem('droits');
 
 // SLIDERS ET INPUT SEUILS //
 document.addEventListener("DOMContentLoaded", function() {
@@ -64,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var fanSpeedSlider = document.getElementById("fanSpeedSlider");
     var fanSpeedVal = document.getElementById("fanSpeedVal");
     fanSpeedSlider.oninput = function() {
-        fanSpeedVal.innerHTML = `${this.value}%`;
+        fanSpeedVal.innerHTML = `>${this.value}%`;
     }
 
 
@@ -88,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var storageLeftText = document.getElementById("storageLeftText");
     var storageLeftVal = document.getElementById("storageLeftVal");
     storageLeftText.oninput = function() {
-        storageLeftVal.innerHTML = `${this.value}W`;
+        storageLeftVal.innerHTML = `${this.value}Go`;
     }
 
     //storageTemp
@@ -267,58 +269,75 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
 
-    //récupère les infos dyn
-    async function getDynInfo(pcId){
-
+    async function getDynInfo(pcId) {
         console.log(`Chargement des infos dyn (ID : ${pcId})`);
         const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCDynInfo`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({ id: pcId, token: token, Test: test })
         });
-
+    
         const data = await response.json();
-
+        console.log("Données reçues :", data); // <-- Ajout du log
+    
         if (data.erreur && data.erreur !== "none") {
             console.error(`Erreur: ${data.erreur}`);
             alert(`Erreur: ${data.erreur}`);
             return;
         }
-        else{
-            console.log(`Infos dyn chargées`);
-
-            //Enregistrement du timestamp
-            date = data.date;
-            time = data.time;
-        }
-
-        //Remplissage intial du tableau
+    
+        console.log(`Infos dyn chargées`);
+    
+        // Enregistrement du timestamp
+        date = data.date;
+        time = data.time;
+    
+        // Remplissage du tableau
         fillDynInfoTable(data);
     }
+    
 
 
-    // Remplir le tableau avec les droits des utilisateur
     const fillDynInfoTable = (data) => {
         DynInfoTable.innerHTML = `
-            <tr><td>Coucou</td><td>salut</td></tr>
+            <thead>
+                <tr>
+                    <th>Attribut</th>
+                    <th>Valeur</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Utilisation CPU</td><td>${data.cpu_usage}%</td></tr>
+                <tr><td>Température CPU</td><td>${data.cpu_temp}°C</td></tr>
+                <tr><td>Consommation CPU</td><td>${data.cpu_consumption}W</td></tr>
+                <tr><td>Utilisation RAM</td><td>${data.ram_usage}%</td></tr>
+                <tr><td>Utilisation Stockage</td><td>${data.storage_usage}%</td></tr>
+                <tr><td>Espace Restant</td><td>${data.storage_left}Go</td></tr>
+                <tr><td>Température Stockage</td><td>${data.storage_temp}°C</td></tr>
+                <tr><td>Erreurs Stockage</td><td>${data.storage_errors} Erreurs</td></tr>
+                <tr><td>Latence Réseau</td><td>${data.network_latency}ms</td></tr>
+                <tr><td>Bande Passante Réseau</td><td>${data.network_bandwidth}%</td></tr>
+                <tr><td>Vitesse Ventilateurs</td><td>${data.fan_speed}%</td></tr>
+            </tbody>
         `;
         
-        // Cache la liste principale et affiche les détails
+        // Cache la liste principale et affiche les détails dynamiques
         mainContent.style.display = "none";
         pcDetailsPage.style.display = "none";
         pcDynPage.style.display = "block";
         pcRights.style.display = "none";
         pcThresholds.style.display = "none";
-
-        //Ajout de la date de dernier rafraichissement
-        jour = date.substring(6,8);
-        mois = date.substring(4,6);
-        annee = date.substring(0,4);
-        heure = time.substring(0,2);
-        minute = time.substring(2,4);
-        seconde = time.substring(4,6);
-        document.getElementById('RefreshText').innerHTML=`Enregistré à ${heure}:${minute}:${seconde} le ${jour}/${mois}/${annee}`;
-    };
+        
+        // Ajout de la date de dernier rafraîchissement
+        let jour = date.substring(6,8);
+        let mois = date.substring(4,6);
+        let annee = date.substring(0,4);
+        let heure = time.substring(0,2);
+        let minute = time.substring(2,4);
+        let seconde = time.substring(4,6);
+        document.getElementById('RefreshText').innerHTML = `Enregistré à ${heure}:${minute}:${seconde} le ${jour}/${mois}/${annee}`;
+    }
+    
 
 
     //Vérifie s'il faut actualiser les données dynamiques
@@ -418,25 +437,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     // Fonction pour retourner à la liste principale
-    backToListBtn4.addEventListener("click", () => {
+    function backToList4(){
         mainContent.style.display = "block";
         pcDetailsPage.style.display = "none";
         pcDynPage.style.display = "none";
         pcRights.style.display = "none";
         pcThresholds.style.display = "none";
-    });
-
-
-    // Fonction pour retourner à la liste principale
-    refreshTresholds.addEventListener("click", () => {
-        refreshTresholds(idPc)
-    });
-
-
-    // Fonction pour retourner à la liste principale
-    sendTresholds.addEventListener("click", () => {
-        setThreshold(idPc)
-    });
+    }
+        
+    
 
 
     // Gestion des événements via délégation
@@ -461,6 +470,11 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (event.target.classList.contains("tresholdBtn")) {
             const pcId = event.target.getAttribute("data-id");
             console.log(`Bouton Modif seuils (ID: ${pcId})`);
+            document.getElementById('pcThresholds2').innerHTML=`
+                <button id="refreshTresholds" type="button" class="back-button" onClick="getTresholds('${pcId}')">Reset</button>
+                <button id="sendTresholds" type="button" class="back-button" onClick="setThreshold('${pcId}')">Envoyer</button>
+                <button id="backToList4" type="button" class="back-button" onClick="backToList4()">Retour à la Liste</button>
+            `;
             getTresholds(pcId);
         }
     });
@@ -795,7 +809,7 @@ document.addEventListener("DOMContentLoaded", function() {
         RAMUtilizationVal.innerHTML = `${RAMUtilizationSlider.value}%`;
         storageLoadVal.innerHTML = `${storageLoadSlider.value}%`;
         networkBandwidthVal.innerHTML = `${networkBandwidthSlider.value}%`;
-        fanSpeedVal.innerHTML = `${fanSpeedSlider.value}%`;
+        fanSpeedVal.innerHTML = `>${fanSpeedSlider.value}%`;
         
         //Ajout des valeurs des inputs
         CPUTempVal.innerHTML = `${CPUTempText.value}°C`;
@@ -838,7 +852,7 @@ document.addEventListener("DOMContentLoaded", function() {
         CPUUtilizationSlider.value = data.CPUUtilization;
         RAMUtilizationSlider.value = data.RAMUtilization;
         storageLoadSlider.value = data.storageLoad;
-        networkBandwidthSlider.value = data.networkBandwidth;
+        networkBandwidthSlider.value = data.networkBandwith;
         fanSpeedSlider.value = data.fanSpeed;
         
         //Ajout des valeurs des inputs
@@ -891,12 +905,6 @@ document.addEventListener("TokenCheckFinished", () => {
     token = sessionStorage.getItem('token');
     droits = sessionStorage.getItem('droits');
 
-    document.getElementById('pcThresholds2').innerHTML=`
-        <button id="refreshTresholds" type="button" class="back-button">Reset</button>
-        <button id="sendTresholds" type="button" class="back-button">Envoyer</button>
-        <button id="backToList4" type="button" class="back-button">Retour à la Liste</button>
-    `;
-    
     //Afichage de la liste des PC
     loadPcList();
 });

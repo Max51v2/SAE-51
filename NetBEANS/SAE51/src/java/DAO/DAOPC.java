@@ -1750,4 +1750,225 @@ public class DAOPC {
         
         return idExist;
     }
+    
+    
+    
+    
+    /**
+     * Vérifie que les seuils sont respectés, dans le cas échéant une notif est envoyée
+     * 
+     * @param idPC      id du pc
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public ArrayList<String> checkThresholds(Integer idPC, Boolean Test){
+        
+        //Données
+        Integer Tid = null;
+        Integer TCPUUtilization = null;
+        Integer TCPUTemp = null;
+        Integer TCPUConsumption = null;
+        Integer TRAMUtilization = null;
+        Integer TstorageLoad = null;
+        Integer TstorageLeft = null;
+        Integer TstorageTemp = null;
+        Integer TstorageErrors = null;
+        Integer TnetworkLatency = null;
+        Integer TnetworkBandwith = null;
+        Integer TfanSpeed = null;
+        Integer CPUUtilization = null;
+        Integer CPUTemp = null;
+        Integer CPUConsumption = null;
+        Integer RAMUtilization = null;
+        String storageName = "";
+        String storageLoad = "";
+        String storageLeft = "";
+        String storageTemp = "";
+        String storageErrors = "";
+        String networkName = "";
+        String networkLatency = "";
+        String networkBandwith = "";
+        String fanSpeed = "";
+        ArrayList storageNameList = new ArrayList();
+        ArrayList storageLoadList = new ArrayList();
+        ArrayList storageLeftList = new ArrayList();
+        ArrayList storageTempList = new ArrayList();
+        ArrayList storageErrorsList = new ArrayList();
+        ArrayList networkNameList = new ArrayList();
+        ArrayList networkLatencyList = new ArrayList();
+        ArrayList networkBandwithList = new ArrayList();
+        ArrayList fanSpeedList = new ArrayList();
+        DAONotifications DAON = new DAONotifications();
+        
+        ArrayList<String> messages = new ArrayList<>();
+        
+        //Vérification de la présence d'une entrée
+        Boolean idExist = doIDExistThresholds(idPC, Test);
+        if(idExist == false){
+            return messages;
+        }
+
+        //Récupération des infos statiques du PC
+        String RequeteSQL="SELECT * FROM pc_thresholds WHERE id = ?";
+
+        //Selection de la BD
+        changeConnection(Test);
+
+
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOPC.getConnectionPostgres();
+
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+                
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setInt(1, idPC);
+
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                if (resultSet.next()) {
+                    //Récupération des données dans la BD
+                    Tid = resultSet.getInt("id");
+                    TCPUUtilization = resultSet.getInt("cpu_utilization");
+                    TCPUTemp = resultSet.getInt("cpu_temp");
+                    TCPUConsumption = resultSet.getInt("cpu_consumption");
+                    TRAMUtilization = resultSet.getInt("ram_utilization");
+                    TstorageLoad = resultSet.getInt("storage_load");
+                    TstorageLeft = resultSet.getInt("storage_left");
+                    TstorageTemp = resultSet.getInt("storage_temp");
+                    TstorageErrors = resultSet.getInt("storage_errors");
+                    TnetworkLatency = resultSet.getInt("network_latency");
+                    TnetworkBandwith = resultSet.getInt("network_bandwith");
+                    TfanSpeed = resultSet.getInt("fan_speed");
+
+                }
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        
+        
+        
+        //Récupération des données à vérifier (plus simple de tout faire ici)//
+        
+        //Vérification de la présence d'une entrée
+        idExist = doIDExistDynInfo(idPC, Test);
+        if(idExist == false){
+            return messages;
+        }
+        
+        //Vérification des droits d'accès au PC
+        Boolean getInfo = true ;//flemme de changer l'indentation
+        
+        //Si l'utilisateur a les droits d'accès au pc
+        if(getInfo == true){
+            //Récupération des infos statiques du PC
+            RequeteSQL="SELECT * FROM pc_dynamic_info WHERE id = ?";
+
+            //Connection BD en tant que postgres
+            try (Connection connection =
+                DAOPC.getConnectionPostgres();
+
+                //Requête SQL
+                PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+                
+                //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+                preparedStatement.setInt(1, idPC);
+
+                // Exécution de la requête
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                    if (resultSet.next()) {
+                        storageName = resultSet.getString("storage_name");
+                        storageLoad = resultSet.getString("storage_load");
+                        storageLeft = resultSet.getString("storage_left");
+                        storageTemp = resultSet.getString("storage_temp");
+                        storageErrors = resultSet.getString("storage_errors");
+                        networkName = resultSet.getString("network_name");
+                        networkLatency = resultSet.getString("network_latency");
+                        networkBandwith = resultSet.getString("network_bandwith");
+                        fanSpeed = resultSet.getString("fan_speed");
+
+                        //Données à check
+                        storageNameList = getArrayList(storageName);
+                        storageLoadList = getArrayList(storageLoad);
+                        storageLeftList = getArrayList(storageLeft);
+                        storageTempList = getArrayList(storageTemp);
+                        storageErrorsList = getArrayList(storageErrors);
+                        networkNameList = getArrayList(networkName);
+                        networkLatencyList = getArrayList(networkLatency);
+                        networkBandwithList = getArrayList(networkBandwith);
+                        fanSpeedList = getArrayList(fanSpeed);
+                        CPUUtilization = resultSet.getInt("cpu_utilization");
+                        CPUTemp = resultSet.getInt("cpu_temp");
+                        CPUConsumption = resultSet.getInt("cpu_consumption");
+                        RAMUtilization = resultSet.getInt("ram_utilization");
+                    }
+                }
+                
+            }catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        //Vérification des informations//
+        //Liste qui contient les messages de dépassement des seuils précédents
+        //Tout ce qui n'est pas dedans sera retiré de la BD et ce qui est déjà dans la BD ne bouge pas (comme ça on a les dépassements en cours avec un timestamp)
+        
+        //Simples
+        messages = checkSimpleThreshold(messages, TCPUUtilization, CPUUtilization, "CPUUtilization", idPC);
+        messages = checkSimpleThreshold(messages, TCPUTemp, CPUTemp, "CPUTemp", idPC);
+        messages = checkSimpleThreshold(messages, TCPUConsumption, CPUConsumption, "CPUConsumption", idPC);
+        messages = checkSimpleThreshold(messages, TRAMUtilization, RAMUtilization, "RAMUtilization", idPC);
+        
+        //Listes
+        messages = checkListThreshold(messages, TstorageLoad, storageLoadList, storageNameList, "storageLoad", idPC);
+        messages = checkListThreshold(messages, TstorageLeft, storageLeftList, storageNameList, "storageLeft", idPC);
+        messages = checkListThreshold(messages, TstorageTemp, storageTempList, storageNameList, "storageTemp", idPC);
+        messages = checkListThreshold(messages, TstorageErrors, storageErrorsList, storageNameList, "storageErrors", idPC);
+        messages = checkListThreshold(messages, TnetworkLatency, networkLatencyList, networkNameList, "networkLatency", idPC);
+        messages = checkListThreshold(messages, TnetworkBandwith, networkBandwithList, networkNameList, "networkBandwith", idPC);
+        messages = checkListThreshold(messages, TfanSpeed, fanSpeedList, fanSpeedList, "fanSpeed", idPC);
+        
+        DAON.cleanNotifications(idPC, messages, Test);
+        
+        Integer c=0;
+        String users = getUsersWithPCAccess(idPC, Test);
+        while(c < messages.size()){
+            
+            DAON.addNotification("Alert", messages.get(c), users, idPC, Test);
+            
+            c += 1;
+        }
+        return messages;
+    }
+    
+    
+    private ArrayList<String> checkSimpleThreshold(ArrayList<String> messages, Integer threshold, Integer value, String metric, Integer id){
+        if(value >= threshold){
+            messages.add("Métrique ("+metric+") dépassée pour le PC n°"+id+" => valeur : "+value+" | seuil : "+threshold);
+        }
+        
+        return messages;
+    }
+    
+    private ArrayList<String> checkListThreshold(ArrayList<String> messages, Integer threshold, ArrayList<String> values, ArrayList<String> nameList, String metric, Integer id){
+        Integer c = 0;
+        
+        while(c < values.size()){
+            if(Integer.valueOf(values.get(c)) >= threshold){
+                if(metric.equals("fanSpeed")){
+                    messages.add("Métrique ("+metric+") de l'item nommé (ventilateur n°"+c+") dépassée pour le PC n°"+id+" => valeur : "+values.get(c)+" | seuil : "+threshold);
+                }
+                else{
+                    messages.add("Métrique ("+metric+") de l'item nommé ("+nameList.get(c)+") dépassée pour le PC n°"+id+" => valeur : "+values.get(c)+" | seuil : "+threshold);
+                }
+            }
+            
+            c += 1;
+        }
+        
+        return messages;
+    }
 }
