@@ -14,7 +14,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
     function fetchUsers() {
         fetch(`https://${window.ServerIP}:8443/SAE51/ListUsers`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({ token: token, Test: false })
         })
         .then(response => response.json())
@@ -71,7 +71,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
 
         fetch(`https://${window.ServerIP}:8443/SAE51/AddUser`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify(user)
         })
         .then(response => response.json())
@@ -96,7 +96,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
         } else {
             fetch(`https://${window.ServerIP}:8443/SAE51/DeleteUser`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ login: login, token: token, Test: false })
             })
             .then(response => response.json())
@@ -118,7 +118,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
         if (newPassword) {
             fetch(`https://${window.ServerIP}:8443/SAE51/SetPassword`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ target: login, password: newPassword, token: token, Test: false })
             })
             .then(response => response.json())

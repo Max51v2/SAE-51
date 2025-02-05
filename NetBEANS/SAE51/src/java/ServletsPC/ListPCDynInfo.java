@@ -30,9 +30,27 @@ public class ListPCDynInfo extends HttpServlet {
      * 
      * <br>
      * Variables renvoyées par le servlet (JSON)<br>
-     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | none <br>
-     * String date       &emsp;&emsp;        date au format "yyyymmjj" <br>
-     * String time       &emsp;&emsp;        temps au format "hhmmss" <br>
+     * String erreur       &emsp;&emsp;        types d'erreur : champ(s) manquant (req) | accès refusé | Pas d'informations dans la table | none <br>
+     * String date       &emsp;&emsp;        date : "yyyymmjj" <br>
+     * String time       &emsp;&emsp;        temps : "hhmmss" <br>
+     * String CPU       &emsp;&emsp;        contient la liste à taille fixe (1) ci-dessous <br>
+     *      => String CPUUtilization       &emsp;&emsp;        utilisation du CPU en % <br>
+     *      => String CPUTemp       &emsp;&emsp;        température du CPU en °C <br>
+     *      => String CPUConsumption       &emsp;&emsp;        consommation du CPU en W <br>
+     * String RAM       &emsp;&emsp;        contient la liste à taille fixe (1) ci-dessous <br>
+     *      => String RAMUtilization       &emsp;&emsp;        utilisation de la RAM en % <br>
+     * String Network      &emsp;&emsp;        contient la liste à taille variable ci-dessous <br>
+     *      => String networkName       &emsp;&emsp;        nom de la carte réseau <br>
+     *      => String networkLatency       &emsp;&emsp;        latence de la carte réseau en ms <br>
+     *      => String networkBandwith       &emsp;&emsp;        bande passante utilisée de la carte en % <br>
+     * String Storage      &emsp;&emsp;        contient la liste à taille variable ci-dessous <br>
+     *      => String storageName       &emsp;&emsp;        nom du périphérique de stockage <br>
+     *      => String storageLoad       &emsp;&emsp;        utilisation du périph en % <br>
+     *      => String storageLeft       &emsp;&emsp;        stockage restant en Go <br>
+     *      => String storageTemp       &emsp;&emsp;        température du stockage en °C <br>
+     *      => String storageErrors       &emsp;&emsp;        erreurs périph <br>
+     * String Fans      &emsp;&emsp;        contient la liste à taille variable ci-dessous <br>
+     *      => String fanSpeed       &emsp;&emsp;        taux de rotation en % <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -88,7 +106,9 @@ public class ListPCDynInfo extends HttpServlet {
                 if(access.equals("true")){
 
                     //Code servlet
-                    jsonString = "{\"erreur\":\"none\"}";
+                    String login = DAO.getLogin();
+                    jsonString = DAO2.getPCDynInfo(id, login, TestBoolean);
+                    System.out.println("JSON : "+jsonString);
                 }
                 else{
                     //JSON renvoyé

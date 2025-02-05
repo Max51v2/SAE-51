@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Maxime VALLET
- * @version 1.0
+ * @version 1.2
  */
 @WebServlet(name = "IsDynamicInfoUpToDate", urlPatterns = {"/IsDynamicInfoUpToDate"})
 public class IsDynamicInfoUpToDate extends HttpServlet {
@@ -25,6 +25,8 @@ public class IsDynamicInfoUpToDate extends HttpServlet {
      * Liste les utilisateurs qui ont accès au pc<br><br>
      * 
      * Variables à envoyer au servlet (POST)<br>
+     * String date       &emsp;&emsp;        date du de la remontée des dernières infos dyn depuis BD (format : "yyyymmdd") <br>
+     * String time       &emsp;&emsp;        date du de la remontée des dernières infos dyn depuis BD (format : "hhmmss") <br>
      * Integer id       &emsp;&emsp;        id de l'ordinateur <br>
      * String token       &emsp;&emsp;        token de l'utilisateur qui fait la demande <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_51) <br>
@@ -59,6 +61,8 @@ public class IsDynamicInfoUpToDate extends HttpServlet {
         
         //Données envoyées par la requête
         Integer id = json.getId();
+        String date = json.getDate();
+        String time = json.getTime();
         String token = json.getToken();
         Boolean TestBoolean = Boolean.valueOf(json.getTest());
 
@@ -88,7 +92,7 @@ public class IsDynamicInfoUpToDate extends HttpServlet {
                 if(access.equals("true")){
 
                     //Récupération des utilisateurs qui ont le droits d'accéder au PC
-                    String upToDate = DAO2.isDynamicInfoUpToDate(id, TestBoolean);
+                    String upToDate = DAO2.isDynamicInfoUpToDate(id, time, date, TestBoolean);
                     
                     //JSON renvoyé
                     jsonString = "{\"erreur\":\"none\", \"isUpToDate\":\""+upToDate+"\"}";

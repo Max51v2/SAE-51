@@ -1,7 +1,7 @@
 <!--
     Auteur HTML : Gabin PETITCOLAS
-    Version : ?
-    W3C validator (0 erreurs / 0 warnings): ?
+    Version : 1.0
+    W3C validator (0 erreurs / 0 warnings)
 --> 
 <!DOCTYPE html>
 <html lang="fr">
@@ -16,6 +16,9 @@
 
     <!-- CSS pour la page -->
     <link rel="stylesheet" href="./CSS/page.css">
+
+    <!-- CSS pour les logs -->
+    <link rel="stylesheet" href="./CSS/logs.css">
 </head>
 <body>
     <div id="bannerDiv">
@@ -38,28 +41,60 @@
     <div id="container">
         <div id="sideNav">
             <ul id="navBar">
-                <!-- Bouttons de navigation ajoutés par AddNavButtons.js -->
+                <!-- Boutons de navigation ajoutés par AddNavButtons.js -->
             </ul>
         </div>
 
         <div id="mainContent">
-            <!-- Content -->
+            <div id="logContainer">
+                <h2>Journal des Logs</h2>
+
+                <div id="filters">
+                    <label for="beginDate">Début :</label>
+                    <input type="datetime-local" id="beginDate" class="logFilter">
+
+                    <label for="endDate">Fin :</label>
+                    <input type="datetime-local" id="endDate" class="logFilter">
+
+                    <label for="logLevel">Type :</label>
+                    <select id="logLevel" class="logFilter">
+                        <option value="All">Tous</option>
+                        <option value="ErrorsOnly">Erreurs uniquement</option>
+                    </select>
+
+                    <button id="filterBtn">Filtrer</button>
+                </div>
+
+                <p id="errorMsg"></p>
+
+                <table id="logTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Utilisateur</th>
+                            <th>IP</th>
+                            <th>Action</th>
+                            <th>Erreur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Les logs seront insérés ici dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    
-<!-- ne pas toucher aux 3 scripts ci-dessous SAUF en cas de BUG -->
-<script src="./JS/URL.js" async></script>
-<script src="./JS/TokenCheck.js" async></script>
-<script src="./JS/CheckTokenExpiration.js" async></script>
+    <!-- Scripts -->
+    <script src="./JS/URL.js" async></script>
+    <script src="./JS/TokenCheck.js" async></script>
+    <script src="./JS/CheckTokenExpiration.js" async></script>
+    <script src="./JS/AddNavButtons.js" async></script>
+    <script src="./JS/Banner.js" async></script>
 
-<!-- Boutons de navigation -->
-<script src="./JS/AddNavButtons.js" async></script>
-
-<!-- Script qui remplit la bannière (login + droits) et qui contient les eventListener pour les boutons help et disconnect -->
-<script src="./JS/Banner.js" async></script>
-
-<!-- Script de la page -->
+    <!-- Script pour charger les logs -->
+    <script src="./JS/logs.js" async></script>
 
 </body>
 </html>

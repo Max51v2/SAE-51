@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.net.ssl.SSLSocket;
@@ -341,5 +342,51 @@ public class DAOClient {
         }
         
         return JSONString;
+    }
+    
+    
+    
+    // Méthode pour attribuer un ID unique à un nouveau client
+    public int assignClientId(SSLSocket clientSocket) {
+        int clientId = -1;
+
+        try (Connection connection = DriverManager.getConnection(UrlBD, UserPostgres, PasswordPostgres);
+             Statement statement = connection.createStatement()) {
+
+            // Vérifier s'il existe un ID réutilisable (lacune)
+            ResultSet gaps = statement.executeQuery("SELECT id + 1 AS next_id " +
+                "FROM pc_static_info t1 " +
+                "WHERE NOT EXISTS (SELECT 1 FROM pc_static_info t2 WHERE t2.id = t1.id + 1) " +
+                "AND id < (SELECT MAX(id) FROM pc_static_info) " +
+                "LIMIT 1;");
+
+            if (gaps.next()) {
+                clientId = gaps.getInt("next_id");
+            } else {
+                // Si aucun ID réutilisable, prendre le prochain ID disponible
+                ResultSet maxIdResult = statement.executeQuery("SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM pc_static_info;");
+                if (maxIdResult.next()) {
+                    clientId = maxIdResult.getInt("next_id");
+                }
+            }
+
+            // Insérer le nouvel ID dans la table
+            try (PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO pc_static_info (id) VALUES (?);" );) {
+                insertStmt.setInt(1, clientId);
+                insertStmt.executeUpdate();
+            }
+            try (PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO pc (id,ip,droits) VALUES (?,?,?);" );) {
+                insertStmt.setInt(1, clientId);
+                insertStmt.setString(2, clientSocket.getInetAddress().getHostAddress());
+                insertStmt.setString(3, "");
+                insertStmt.executeUpdate();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'attribution d'un ID client : " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return clientId;
     }
 }

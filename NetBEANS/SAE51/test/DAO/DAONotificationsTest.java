@@ -36,8 +36,8 @@ public class DAONotificationsTest {
         DAO2.deleteNotifications(Test);
         
         //Ajout de notifications
-        DAO2.addNotification("test1", "test content 1", "Hell Wallker/Admin1", Test);
-        DAO2.addNotification("test2", "test content 2", "Hell Wallker", Test);
+        DAO2.addNotification("test1", "test content 1", "Hell Wallker/Admin1",1, Test);
+        DAO2.addNotification("test2", "test content 2", "Hell Wallker",1, Test);
         
         //Récupération des notifications
         String result = DAO2.getNotifications(login, false, Test);
@@ -78,8 +78,8 @@ public class DAONotificationsTest {
         DAO2.deleteNotifications(Test);
         
         //Ajout de notifications
-        DAO2.addNotification("test1", "test content 1", "Hell Wallker/Admin1", Test);
-        DAO2.addNotification("test2", "test content 2", "Hell Wallker", Test);
+        DAO2.addNotification("test1", "test content 1", "Hell Wallker/Admin1",1, Test);
+        DAO2.addNotification("test2", "test content 2", "Hell Wallker",1, Test);
         
         //Récupération des notifications
         String result = DAO2.getNotifications(login, true, Test);
@@ -120,8 +120,8 @@ public class DAONotificationsTest {
         DAO2.deleteNotifications(Test);
         
         //Ajout de notifications
-        DAO2.addNotification("test1", "test content 1", "Hell Wallker", Test);
-        DAO2.addNotification("test2", "test content 2", "Hell Wallker", Test);
+        DAO2.addNotification("test1", "test content 1", "Hell Wallker",1, Test);
+        DAO2.addNotification("test2", "test content 2", "Hell Wallker",1, Test);
         
         //Récupération des notifications
         String result = DAO2.getNotifications(login, false, Test);
