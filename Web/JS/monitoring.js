@@ -22,7 +22,7 @@ const refreshTresholds = document.getElementById("refreshTresholds");
 const sendTresholds = document.getElementById("sendTresholds");
 const staticInfoTable = document.querySelector("#staticInfoTable");
 const rightsTable = document.querySelector("rightsTable");
-const DynInfoTable = document.getElementById("DynInfoTable");
+const DynInfoTable2 = document.getElementById("DynInfoTable2");
 date = "00000000"; //palceholder
 time = "000000"; //placeholder
 idPc = 0;
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var fanSpeedSlider = document.getElementById("fanSpeedSlider");
     var fanSpeedVal = document.getElementById("fanSpeedVal");
     fanSpeedSlider.oninput = function() {
-        fanSpeedVal.innerHTML = `>${this.value}%`;
+        fanSpeedVal.innerHTML = `>${this.value}RPM`;
     }
 
 
@@ -289,52 +289,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     alert("Impossible de récupérer les informations dynamiques.");
                 }
             }
-            
-            const fillDynInfoTable = (data, date, time) => {
-                DynInfoTable.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th>Attribut</th>
-                            <th>Valeur</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Utilisation CPU</td><td>${data.CPU.CPUUtilization}%</td></tr>
-                        <tr><td>Température CPU</td><td>${data.CPU.CPUTemp}°C</td></tr>
-                        <tr><td>Consommation CPU</td><td>${data.CPU.CPUConsumption}W</td></tr>
-                        <tr><td>Utilisation RAM</td><td>${data.RAM.RAMUtilization}%</td></tr>
-                        <tr><td>Nom du réseau</td><td>${data.Network.networkName}</td></tr>
-                        <tr><td>Latence Réseau</td><td>${data.Network.networkLatency}ms</td></tr>
-                        <tr><td>Bande Passante Réseau</td><td>${data.Network.networkBandwidth}%</td></tr>
-                        <tr><td>Nom du Stockage</td><td>${data.Storage.storageName}</td></tr>
-                        <tr><td>Utilisation Stockage</td><td>${data.Storage.storageLoad}%</td></tr>
-                        <tr><td>Espace Restant</td><td>${data.Storage.storageLeft}Go</td></tr>
-                        <tr><td>Température Stockage</td><td>${data.Storage.storageTemp}°C</td></tr>
-                        <tr><td>Erreurs Stockage</td><td>${data.Storage.storageErrors} Erreurs</td></tr>
-                        <tr><td>Vitesse Ventilateurs</td><td>${data.Fans.fanSpeed}%</td></tr>
-                    </tbody>
-                `;
-            
-                // Cache la liste principale et affiche les détails dynamiques
-                mainContent.style.display = "none";
-                pcDetailsPage.style.display = "none";
-                pcDynPage.style.display = "block";
-                pcRights.style.display = "none";
-                pcThresholds.style.display = "none";
-            
-                // Ajout de la date de dernier rafraîchissement
-                const jour = date.substring(6, 8);
-                const mois = date.substring(4, 6);
-                const annee = date.substring(0, 4);
-                const heure = time.substring(0, 2);
-                const minute = time.substring(2, 4);
-                const seconde = time.substring(4, 6);
-                
-                document.getElementById('RefreshText').innerHTML = `Enregistré à ${heure}:${minute}:${seconde} le ${jour}/${mois}/${annee}`;
-            };
-             return;
-        }
-
+            }
         try {
             await getDynInfo(pcId);
 
@@ -386,20 +341,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     const fillDynInfoTable = (data, date, time) => {
-        let tableContent = `
-            <thead>
-                <tr>
-                    <th>Attribut</th>
-                    <th>Valeur</th>
-                </tr>
-            </thead>
-            <tbody>
-        `;
+        let tableContent = ``;
     
         // Section CPU
         if (data.CPU && data.CPU.length > 0) {
             const cpu = data.CPU[0];
             tableContent += `
+                <tr><td colspan="2"><b>CPU</b></td></tr>
                 <tr><td>Utilisation CPU</td><td>${cpu.CPUUtilization || "N/A"}%</td></tr>
                 <tr><td>Température CPU</td><td>${cpu.CPUTemp || "N/A"}°C</td></tr>
                 <tr><td>Consommation CPU</td><td>${cpu.CPUConsumption || "N/A"}W</td></tr>
@@ -409,14 +357,17 @@ document.addEventListener("DOMContentLoaded", function() {
         // Section RAM
         if (data.RAM && data.RAM.length > 0) {
             const ram = data.RAM[0];
-            tableContent += `<tr><td>Utilisation RAM</td><td>${ram.RAMUtilization || "N/A"}%</td></tr>`;
+            tableContent += `
+                <tr><td colspan="2"><b>RAM</b></td></tr>
+                <tr><td>Utilisation RAM</td><td>${ram.RAMUtilization || "N/A"}%</td></tr>
+            `;
         }
     
         // Section Network
         if (data.Network && data.Network.length > 0) {
             data.Network.forEach((network) => {
                 tableContent += `
-                    <tr><td>Nom Réseau</td><td>${network.networkName || "N/A"}</td></tr>
+                    <tr><td colspan="2"><b>${network.networkName || "N/A"}</b></td></tr>
                     <tr><td>Latence Réseau</td><td>${network.networkLatency || "N/A"} ms</td></tr>
                     <tr><td>Bande Passante Réseau</td><td>${network.networkBandwidth || "N/A"}%</td></tr>
                 `;
@@ -427,7 +378,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (data.Storage && data.Storage.length > 0) {
             data.Storage.forEach((storage) => {
                 tableContent += `
-                    <tr><td>Nom Stockage</td><td>${storage.storageName || "N/A"}</td></tr>
+                    <tr><td colspan="2"><b>${storage.storageName || "N/A"}</b></td></tr>
                     <tr><td>Utilisation Stockage</td><td>${storage.storageLoad || "N/A"}%</td></tr>
                     <tr><td>Espace Restant</td><td>${storage.storageLeft || "N/A"} Go</td></tr>
                     <tr><td>Température Stockage</td><td>${storage.storageTemp || "N/A"}°C</td></tr>
@@ -437,14 +388,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     
         // Section Fans
+        tableContent += `<tr><td colspan="2"><b>Ventilateurs</b></td></tr>`;
         if (data.Fans && data.Fans.length > 0) {
             data.Fans.forEach((fan, index) => {
-                tableContent += `<tr><td>Vitesse Ventilateur ${index + 1}</td><td>${fan.fanSpeed || "N/A"}%</td></tr>`;
+                tableContent += `<tr><td>Vitesse Ventilateur ${index + 1}</td><td>${fan.fanSpeed || "N/A"}RPM</td></tr>`;
             });
         }
     
-        tableContent += '</tbody>';
-        DynInfoTable.innerHTML = tableContent;
+        DynInfoTable2.innerHTML = tableContent;
     
         // Gestion de l'affichage des sections
         mainContent.style.display = "none";
@@ -472,7 +423,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //Vérifie s'il faut actualiser les données dynamiques
     async function checkDynInfoRefresh(pcId){
-        refreshIntervall = 10;
+        refreshIntervall = 5;
 
         //Tant que le tableau dyn est affiché
         while (DynRefreshMap.get(1)){
@@ -939,7 +890,7 @@ document.addEventListener("DOMContentLoaded", function() {
         RAMUtilizationVal.innerHTML = `${RAMUtilizationSlider.value}%`;
         storageLoadVal.innerHTML = `${storageLoadSlider.value}%`;
         networkBandwidthVal.innerHTML = `${networkBandwidthSlider.value}%`;
-        fanSpeedVal.innerHTML = `>${fanSpeedSlider.value}%`;
+        fanSpeedVal.innerHTML = `>${fanSpeedSlider.value}RPM`;
         
         //Ajout des valeurs des inputs
         CPUTempVal.innerHTML = `${CPUTempText.value}°C`;

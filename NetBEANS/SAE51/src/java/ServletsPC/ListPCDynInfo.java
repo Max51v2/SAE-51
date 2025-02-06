@@ -108,7 +108,6 @@ public class ListPCDynInfo extends HttpServlet {
                     //Code servlet
                     String login = DAO.getLogin();
                     jsonString = DAO2.getPCDynInfo(id, login, TestBoolean);
-                    System.out.println("JSON : "+jsonString);
                 }
                 else{
                     //JSON renvoyé

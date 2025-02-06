@@ -2,6 +2,7 @@ package TCP_Server;
 
 import DAO.DAOClient;
 import DAO.DAOPC;
+import com.google.gson.Gson;
 import javax.net.ssl.*;
 import java.io.*;
 import java.security.KeyStore;
@@ -179,6 +180,8 @@ public class SecureServer implements Runnable {
 
         @Override
         public void run() {
+            long pauseAct = 10000;
+            
             try (
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)
@@ -220,7 +223,6 @@ public class SecureServer implements Runnable {
                     DAOclient.addPCs(clientMap, Test);
                     
                     while ((message = in.readLine()) != null) {
-                        System.out.println("Message reçu de l'ID " + clientId + " : " + message);
 
                         if ("exit".equalsIgnoreCase(message)) {
                             out.println("Déconnexion demandée. Au revoir !");
@@ -230,38 +232,63 @@ public class SecureServer implements Runnable {
                             String arrayData = message.substring(9).trim();
                             String elements[] = arrayData.split(",\\s*");
                             String E8 = String.valueOf(elements[8]);
-                            E8 = E8.substring(0, E8.indexOf("]")-1);
-                            daoPC.addPCStaticInfo(clientId, elements[3], Integer.valueOf(elements[6].strip()), Integer.valueOf(elements[5].strip()), elements[4], elements[7], 2, "3200", 6543 , E8, 1, "12", elements[0], elements[1], Test);
+                            E8 = E8.substring(0, E8.indexOf("]"));
+                            daoPC.addPCStaticInfo(clientId, elements[3], Integer.valueOf(elements[6].strip()), Integer.valueOf(elements[5].strip()), elements[4], elements[7], -1, "-1", -1 , E8, -1, "-1", elements[0], elements[1], Test);
                             
-                            //TEST//
+                            //Données dyn
+                            System.out.println("Act données dyn ID:"+clientId);
+                            sendMessageToClient(clientId, "4");
+
+                        }else if (message.startsWith("keep alive")){
+                            
+                            //Données dyn
+                            System.out.println("Act données dyn ID:"+clientId);
+                            sendMessageToClient(clientId, "4");
+                            
+                        }else if (message.contains("coucou")) {
+                            
+                            System.out.println("Ajout données dyn ID:"+clientId);
+                                
+                            //Récuperation du JSON envoyé
+                            String JSONString = message.substring(message.indexOf(":")+1);
+                            StringReader stringReader = new StringReader(JSONString);
+
+                            Gson gsonRequest = new Gson();
+                            
+                            //Convertion des données du JSON dans un objet Java
+                            JSON.GetJSONInfoPC2 json = gsonRequest.fromJson(stringReader, JSON.GetJSONInfoPC2.class);
+        
                             //Données à envoyer
                             Integer id = clientId;
-                            Integer CPUUtilization = 10;
-                            Integer CPUTemp = 50;
-                            Integer CPUConsumption = 60;
-                            Integer RAMUtilization = 70;
-                            String storageName = "Stockage1/Stockage2/Stockage3";
-                            String storageLoad = "39/48/20";
-                            String storageLeft = "2048/231/1024";
-                            String storageTemp = "45/55/50";
-                            String storageErrors = "2/0/1";
-                            String networkName = "NIC1/NIC2";
-                            String networkLatency = "20/10";
-                            String networkBandwith = "10/60";
-                            String fanSpeed = "0/90/100/80";
+                            Integer CPUUtilization = json.getCPUUtilization();
+                            Integer CPUTemp = json.getCPUTemp();
+                            Integer CPUConsumption = json.getCPUConsumption();
+                            Integer RAMUtilization = json.getRAMUtilization();
+                            String storageName = json.getStorageName();
+                            String storageLoad = json.getStorageLoad();
+                            String storageLeft = json.getStorageLeft();
+                            String storageTemp = json.getStorageTemp();
+                            String storageErrors = json.getStorageErrors();
+                            String networkName = json.getNetworkName();
+                            String networkLatency = json.getNetworkLatency();
+                            String networkBandwith = json.getNetworkBandwith();
+                            String fanSpeed = json.getFanSpeed();
                             Boolean Test = false;
 
                             daoPC.addPCDynamicInfo(id, CPUUtilization, CPUTemp, CPUConsumption, RAMUtilization, storageName, storageLoad, storageLeft, storageTemp, storageErrors, networkName, networkLatency, networkBandwith, fanSpeed, Test);
                             daoPC.checkThresholds(clientId, Test);
-
-                        } else {
+                            
+                            Thread.sleep(pauseAct);
+                            
+                        }
+                        else{
                             System.out.println("2");
                         }
                     }
-                } else {
+                }
+                else {
                     out.println("mot de passe incorect");
-                    clientSocket.close();   
-
+                    clientSocket.close();
                 }
 
             } 
@@ -272,6 +299,8 @@ public class SecureServer implements Runnable {
                     
                 //Actualisation des clients connectés
                 DAOclient.addPCs(clientMap, Test);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SecureServer.class.getName()).log(Level.SEVERE, null, ex);
             } 
             finally {
                 try {

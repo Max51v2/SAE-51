@@ -1202,7 +1202,7 @@ public class DAOPC {
         //Si l'utilisateur a les droits d'accès au pc
         if(getInfo == true){
             //Récupération des infos statiques du PC
-            String RequeteSQL="SELECT * FROM pc_dynamic_info WHERE id = ?";
+            String RequeteSQL="SELECT * FROM pc_dynamic_info WHERE id = ? ORDER BY storage_name ASC, network_name ASC";
             Integer id = null;
             Integer CPUUtilization = null;
             Integer CPUTemp = null;
@@ -1948,7 +1948,7 @@ public class DAOPC {
     
     
     private ArrayList<String> checkSimpleThreshold(ArrayList<String> messages, Integer threshold, Integer value, String metric, Integer id){
-        if(value >= threshold){
+        if(value >= threshold && value != 1){
             messages.add("Métrique ("+metric+") dépassée => valeur : "+value+" | seuil : "+threshold);
         }
         
@@ -1959,7 +1959,7 @@ public class DAOPC {
         Integer c = 0;
         
         while(c < values.size()){
-            if(Integer.valueOf(values.get(c)) >= threshold){
+            if(Integer.valueOf(values.get(c)) >= threshold && Integer.valueOf(values.get(c)) != 1){
                 if(metric.equals("fanSpeed")){
                     messages.add("Métrique ("+metric+") de l'item nommé ventilateur n°"+c+") dépassée => valeur : "+values.get(c)+" | seuil : "+threshold);
                 }
