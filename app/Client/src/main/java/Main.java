@@ -6,12 +6,15 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 import oshi.SystemInfo;
 import oshi.hardware.*;
+import oshi.software.os.OSFileStore;
 import oshi.software.os.OperatingSystem;
+import oshi.util.Util;
 
 import javax.net.ssl.*;
 
@@ -73,7 +76,7 @@ public class Main {
 
             c += 1;
         }
-        Info_hardware[8] = Double.toString(DisksSize);
+        Info_hardware[8] = ((int) DisksSize)+"";
 
         String computerName = System.getenv("COMPUTERNAME"); // Windows
         if (computerName == null) {
@@ -93,7 +96,7 @@ public class Main {
         Info_hardware[5] = processor.getLogicalProcessorCount() + "";
         Info_hardware[6] = processor.getPhysicalProcessorCount() + "";
 
-        String serverAddress = "127.0.0.1"; // Adresse du serveur
+        String serverAddress = "192.168.56.1"; // Adresse du serveur
         int port = 12345; // Port sécurisé
 
         try {
@@ -153,28 +156,207 @@ public class Main {
                             System.out.println("Serveur: " + action);
                             if ("1".equals(action)) {
                                 if (Info_hardware[0].equals("Windows")) {
+                                    out.println("ok");
                                     Process process = Runtime.getRuntime().exec("cmd /c start powershell.exe -Command \"Install-WindowsUpdate -AcceptAll -AutoReboot\"");
                                     process.waitFor();
                                 } else {
+                                    out.println("ok");
                                     Process process = Runtime.getRuntime().exec("apt update && sudo apt upgrade -y");
                                     process.waitFor();
                                 }
                             } else if ("2".equals(action)) {
                                 if (Info_hardware[0].equals("Windows")) {
+                                    out.println("ok");
                                     Process process = Runtime.getRuntime().exec("shutdown -r -t 0");
                                     process.waitFor();
                                 } else {
+                                    out.println("ok");
                                     Process process = Runtime.getRuntime().exec("reboot");
                                     process.waitFor();
                                 }
                             } else if ("3".equals(action)) {
                                 if (Info_hardware[0].equals("Windows")) {
+                                    out.println("ok");
                                     Process process = Runtime.getRuntime().exec("shutdown -s -t 0");
                                     process.waitFor();
                                 } else {
+                                    out.println("ok");
                                     Process process = Runtime.getRuntime().exec("poweroff");
                                     process.waitFor();
                                 }
+                            } else if ("4".equals(action)) {
+                                List<HWDiskStore> storage = systemInfo.getHardware().getDiskStores();
+                                List<NetworkIF> network = systemInfo.getHardware().getNetworkIFs();
+
+
+                                //données
+                                CentralProcessor cpu = systemInfo.getHardware().getProcessor();
+                                GlobalMemory ram = systemInfo.getHardware().getMemory();
+
+                                double CPUUtilizationRaw = cpu.getSystemCpuLoad(400);
+                                int CPUUtilization = (int) Math.ceil(CPUUtilizationRaw * 100);
+
+                                int CPUTemp = (int) sensors.getCpuTemperature();
+                                if(CPUTemp == 0){
+                                    CPUTemp = -1;
+                                }
+
+                                int CPUConsumption = -1;
+
+                                long RAMAvailable = ram.getAvailable();
+                                long RAMTot = ram.getTotal();
+                                long RAMUtilizationRaw = ((RAMTot - RAMAvailable) * 100) / RAMTot;
+                                int RAMUtilization = (int) (RAMUtilizationRaw);
+
+                                c=0;
+                                String storageName = "";
+                                String storageLoad = "";
+                                String storageLeft = "";
+                                String storageTemp = "";
+                                String storageErrors = "";
+                                List<OSFileStore> FS = systemInfo.getOperatingSystem().getFileSystem().getFileStores();
+                                while(c < storage.size()){
+
+                                    if(c > 0){
+                                        storageName += "/";
+                                        storageLoad += "/";
+                                        storageLeft += "/";
+                                        storageTemp += "/";
+                                        storageErrors += "/";
+                                    }
+
+                                    HWDiskStore target = storage.get(c);
+
+                                    storageName += storage.get(c).getName();
+
+                                    //Estimation de la charge
+                                    target.updateAttributes();
+                                    long initTransferTime = target.getTransferTime();
+                                    long initTimeStamp = target.getTimeStamp();
+                                    Util.sleep(500);
+                                    target.updateAttributes();
+                                    long transferTime = target.getTransferTime();
+                                    long timeStamp = target.getTimeStamp();
+                                    double deltaTransferTime = transferTime - initTransferTime;
+                                    double deltaTimeStamp = timeStamp - initTimeStamp;
+                                    double utilization = Math.round((deltaTransferTime * 100.0) / deltaTimeStamp);
+                                    if(utilization > 100){
+                                        utilization = 100;
+                                    }
+                                    storageLoad += (int) utilization;
+
+                                    storageLeft += (int) Math.sqrt(Math.pow(FS.get(c).getFreeSpace()/(1e8*8),2));
+
+                                    storageTemp += -1;
+
+                                    storageErrors += -1;
+
+                                    c += 1;
+                                }
+
+                                c=0;
+                                String networkName = "";
+                                String networkLatency = "";
+                                String networkBandwith = "";
+                                while(c < storage.size()){
+
+                                    if(c > 0){
+                                        networkName += "/";
+                                        networkLatency += "/";
+                                        networkBandwith += "/";
+                                    }
+
+                                    NetworkIF target2 = network.get(c);
+                                    target2.updateAttributes();
+
+                                    networkName += target2.getDisplayName();
+
+                                    long timeElapsed = 0;
+                                    try{
+                                        InetAddress InetAddress = null;
+                                        InetAddress address = InetAddress.getByName("google.fr");
+
+                                        long start = System.currentTimeMillis();
+                                        boolean reachable = address.isReachable(1000);
+                                        long finish = System.currentTimeMillis();
+
+                                        if(reachable){
+                                            timeElapsed = finish - start;
+                                        }
+                                        else{
+                                            timeElapsed = -1;
+                                        }
+
+                                    } catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                    networkLatency += timeElapsed;
+
+                                    target2.updateAttributes();
+                                    long initRx = target2.getBytesRecv();
+                                    long initTx = target2.getBytesSent();
+                                    Thread.sleep(200);
+                                    target2.updateAttributes();
+                                    long finalRx = target2.getBytesRecv();
+                                    long finalTx = target2.getBytesSent();
+                                    long speed = target2.getSpeed();
+                                    double rxRate = 0;
+                                    double txRate = 0;
+                                    if (finalRx > initRx) {
+                                        rxRate = (((double) (finalRx - initRx)) * 800) / (speed * 0.2);
+                                    }
+                                    if (finalTx > initTx) {
+                                        txRate = (((double) (finalTx - initTx)) * 800) / (speed * 0.2);
+                                    }
+
+                                    double bandwidth = 0;
+                                    if (rxRate > txRate) {
+                                        bandwidth = rxRate;
+                                    } else {
+                                        bandwidth = txRate;
+                                    }
+
+                                    networkBandwith += (int) bandwidth;
+
+                                    c += 1;
+                                }
+
+                                int[] fans = sensors.getFanSpeeds();
+                                String fanSpeed = "-1";
+
+                                c=0;
+                                while(c < fans.length){
+                                    if(c > 0){
+                                        fanSpeed += "/";
+                                    }
+
+                                    fanSpeed += fans[c];
+
+                                    c += 1;
+                                }
+
+                                String JSONString = "coucou:{"
+                                        + "\"CPUUtilization\":\""+CPUUtilization+"\","
+                                        + "\"CPUTemp\":\""+CPUTemp+"\","
+                                        + "\"CPUConsumption\":\""+CPUConsumption+"\","
+                                        + "\"RAMUtilization\":\""+RAMUtilization+"\","
+                                        + "\"storageName\":\""+storageName+"\","
+                                        + "\"storageLoad\":\""+storageLoad+"\","
+                                        + "\"storageLeft\":\""+storageLeft+"\","
+                                        + "\"storageTemp\":\""+storageTemp+"\","
+                                        + "\"storageErrors\":\""+storageErrors+"\","
+                                        + "\"networkName\":\""+networkName+"\","
+                                        + "\"networkLatency\":\""+networkLatency+"\","
+                                        + "\"networkBandwith\":\""+networkBandwith+"\","
+                                        + "\"fanSpeed\":\""+fanSpeed+"\""
+                                        + "}";
+
+                                JSONString = JSONString.replaceAll("\\\\", "")
+                                        .replaceAll("\\.", "");
+
+                                out.println(JSONString);
+
+                                out.println("keep alive");
                             }
                         }
                     }
