@@ -1,5 +1,4 @@
 server {
-
     listen 443;
 
     root /var/www/sae-51;
