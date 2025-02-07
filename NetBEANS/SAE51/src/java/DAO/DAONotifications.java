@@ -60,7 +60,7 @@ public class DAONotifications {
     public void addNotification(String description, String content, String users, Integer idPC, Boolean Test){
         String RequeteSQL="INSERT INTO notification (description, content, users, date, idpc) VALUES (?, ?, ?, ?, ?)";
         
-        Boolean exist = doNotifExist(content, Test);
+        Boolean exist = doNotifExist(content, idPC, Test);
         
         if(exist == true){
             return;
@@ -315,8 +315,8 @@ public class DAONotifications {
     
     
     
-    public Boolean doNotifExist(String content, Boolean Test){
-        String RequeteSQL="SELECT content FROM notification WHERE content = ?";
+    public Boolean doNotifExist(String content, Integer idPC, Boolean Test){
+        String RequeteSQL="SELECT content FROM notification WHERE content = ? AND idpc = ?";
         
         Boolean idExist = false;
         
@@ -332,6 +332,8 @@ public class DAONotifications {
             
             //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
             preparedStatement.setString(1, content);
+            preparedStatement.setInt(2, idPC);
+            
             
             // Exécution de la requête
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
