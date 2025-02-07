@@ -172,7 +172,7 @@ public class DAOLogs {
                             }
 
                             // Ajouter l'objet JSON
-                            JSONString += "{\"id\":\""+id+"\", \"servlet\":\""+servlet+"\", \"ip\":\""+ip+"\", \"login\":\""+login+"\", \"droits\":\""+droits+"\", \"date\":\""+Date+"\"}";
+                            JSONString += "{\"id\":\""+id+"\", \"servlet\":\""+servlet+"\", \"ip\":\""+ip+"\", \"login\":\""+login+"\", \"droits\":\""+droits+"\", \"date\":\""+Date+"\", \"erreur\":\""+error+"\"}";
 
                             c += 1;
                         }

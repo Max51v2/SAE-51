@@ -61,7 +61,7 @@ document.addEventListener("TokenCheckFinished", function() {
                     <td>${log.login}</td>
                     <td>${log.ip}</td>
                     <td>${log.servlet}</td>
-                    <td class="${log.error !== "none" ? "log-error" : "log-info"}">${log.error}</td>
+                    <td class="${log.erreur !== "none" ? "log-error" : "log-info"}">${log.erreur}</td>
                 </tr>`;
                 logTableBody.innerHTML += row;
             });
