@@ -261,7 +261,7 @@ public class Main {
                                 String networkName = "";
                                 String networkLatency = "";
                                 String networkBandwith = "";
-                                while(c < storage.size()){
+                                while(c < network.size()){
 
                                     if(c > 0){
                                         networkName += "/";
@@ -270,66 +270,64 @@ public class Main {
                                     }
 
                                     try{
-                                        NetworkIF target2 = network.get(c);
-                                        target2.updateAttributes();
 
-                                        name = target2.getDisplayName();
-                                        String output = name.replace("/", "");
-                                        networkName += output;
-
-                                        long timeElapsed = 0;
-                                        try{
-                                            InetAddress InetAddress = null;
-                                            InetAddress address = InetAddress.getByName("google.fr");
-
-                                            long start = System.currentTimeMillis();
-                                            boolean reachable = address.isReachable(1000);
-                                            long finish = System.currentTimeMillis();
-
-                                            if(reachable){
-                                                timeElapsed = finish - start;
-                                            }
-                                            else{
-                                                timeElapsed = -1;
-                                            }
-
-                                        } catch (Exception e){
-                                            e.printStackTrace();
-                                        }
-                                        networkLatency += timeElapsed;
-
-                                        target2.updateAttributes();
-                                        long initRx = target2.getBytesRecv();
-                                        long initTx = target2.getBytesSent();
-                                        Thread.sleep(200);
-                                        target2.updateAttributes();
-                                        long finalRx = target2.getBytesRecv();
-                                        long finalTx = target2.getBytesSent();
-                                        long speed = target2.getSpeed();
-                                        double rxRate = 0;
-                                        double txRate = 0;
-                                        if (finalRx > initRx) {
-                                            rxRate = (((double) (finalRx - initRx)) * 800) / (speed * 0.2);
-                                        }
-                                        if (finalTx > initTx) {
-                                            txRate = (((double) (finalTx - initTx)) * 800) / (speed * 0.2);
-                                        }
-
-                                        double bandwidth = 0;
-                                        if (rxRate > txRate) {
-                                            bandwidth = rxRate;
-                                        } else {
-                                            bandwidth = txRate;
-                                        }
-
-                                        networkBandwith += (int) bandwidth;
                                     }
                                     catch(Exception e){
-                                        System.out.println(e);
-                                        networkName += "-1";
-                                        networkLatency += "-1";
-                                        networkBandwith += "-1";
+
                                     }
+                                    NetworkIF target2 = network.get(c);
+                                    target2.updateAttributes();
+
+                                    name = target2.getDisplayName();
+                                    String output = name.replace("/", "");
+                                    networkName += output;
+
+                                    long timeElapsed = 0;
+                                    try{
+                                        InetAddress InetAddress = null;
+                                        InetAddress address = InetAddress.getByName("google.fr");
+
+                                        long start = System.currentTimeMillis();
+                                        boolean reachable = address.isReachable(1000);
+                                        long finish = System.currentTimeMillis();
+
+                                        if(reachable){
+                                            timeElapsed = finish - start;
+                                        }
+                                        else{
+                                            timeElapsed = -1;
+                                        }
+
+                                    } catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                    networkLatency += timeElapsed;
+
+                                    target2.updateAttributes();
+                                    long initRx = target2.getBytesRecv();
+                                    long initTx = target2.getBytesSent();
+                                    Thread.sleep(200);
+                                    target2.updateAttributes();
+                                    long finalRx = target2.getBytesRecv();
+                                    long finalTx = target2.getBytesSent();
+                                    long speed = target2.getSpeed();
+                                    double rxRate = 0;
+                                    double txRate = 0;
+                                    if (finalRx > initRx) {
+                                        rxRate = (((double) (finalRx - initRx)) * 800) / (speed * 0.2);
+                                    }
+                                    if (finalTx > initTx) {
+                                        txRate = (((double) (finalTx - initTx)) * 800) / (speed * 0.2);
+                                    }
+
+                                    double bandwidth = 0;
+                                    if (rxRate > txRate) {
+                                        bandwidth = rxRate;
+                                    } else {
+                                        bandwidth = txRate;
+                                    }
+
+                                    networkBandwith += (int) bandwidth;
 
                                     c += 1;
                                 }
