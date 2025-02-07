@@ -96,7 +96,7 @@ public class Main {
         Info_hardware[5] = processor.getLogicalProcessorCount() + "";
         Info_hardware[6] = processor.getPhysicalProcessorCount() + "";
 
-        String serverAddress = "localhost"; // Adresse du serveur
+        String serverAddress = "sae51.madec.ovh"; // Adresse du serveur
         int port = 12345; // Port sécurisé
 
         try {
