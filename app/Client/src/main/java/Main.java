@@ -96,7 +96,7 @@ public class Main {
         Info_hardware[5] = processor.getLogicalProcessorCount() + "";
         Info_hardware[6] = processor.getPhysicalProcessorCount() + "";
 
-        String serverAddress = "192.168.56.1"; // Adresse du serveur
+        String serverAddress = "localhost"; // Adresse du serveur
         int port = 12345; // Port sécurisé
 
         try {
@@ -214,6 +214,7 @@ public class Main {
                                 String storageLeft = "";
                                 String storageTemp = "";
                                 String storageErrors = "";
+                                String name = "";
                                 List<OSFileStore> FS = systemInfo.getOperatingSystem().getFileSystem().getFileStores();
                                 while(c < storage.size()){
 
@@ -227,7 +228,9 @@ public class Main {
 
                                     HWDiskStore target = storage.get(c);
 
-                                    storageName += storage.get(c).getName();
+                                    name = storage.get(c).getName();
+                                    String output = name.replace("/", "");
+                                    storageName += output;
 
                                     //Estimation de la charge
                                     target.updateAttributes();
@@ -269,7 +272,9 @@ public class Main {
                                     NetworkIF target2 = network.get(c);
                                     target2.updateAttributes();
 
-                                    networkName += target2.getDisplayName();
+                                    name = target2.getDisplayName();
+                                    String output = name.replace("/", "");
+                                    networkName += output;
 
                                     long timeElapsed = 0;
                                     try{
@@ -354,6 +359,7 @@ public class Main {
                                 JSONString = JSONString.replaceAll("\\\\", "")
                                         .replaceAll("\\.", "");
 
+                                System.out.println("JSON : "+JSONString);
                                 out.println(JSONString);
 
                                 out.println("keep alive");

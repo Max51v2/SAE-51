@@ -1457,7 +1457,7 @@ public class DAOPC {
         Integer c = 0;
         String JSON = "";
         
-        while(c < networkNameList.size()){
+        while(c < networkNameList.size() && !networkNameList.isEmpty()){
             if(!(c == 0)){
                 JSON += ",";
             }
