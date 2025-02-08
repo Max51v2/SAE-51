@@ -24,7 +24,7 @@ if(window.ServerIP === ""){
     console.log("URL.js => Info : vous éditez le fichier en local")
 
     //Définition d'une dresse par défaut (Tomcat)
-    window.ServerIP = "sae51.madec.ovh";
+    window.ServerIP = "localhost";
 
     console.log("URL.js => Info : IP par défaut : "+window.ServerIP)
 
@@ -34,12 +34,12 @@ else{
     //Rien
 }
 
-//Test Tomcat
-TomcatTest();
+//test Tomcat
+Tomcattest();
 
 
-//Test de l'accès à Tomcat
-async function TomcatTest() {
+//test de l'accès à Tomcat
+async function Tomcattest() {
     try {
         //Timeout plus faible car c'est juste un ping
         await fetch(`https://${window.ServerIP}:8443/SAE51/TestTomcat`, {
@@ -48,22 +48,22 @@ async function TomcatTest() {
             body: JSON.stringify({})
         }, { signal: AbortSignal.timeout(800) })
         .then(response => response.json())
-        .then(TestTomcatResult)
+        .then(testTomcatResult)
         
     } catch (error) {
-        console.log("URL.js => TomcatTest() => Erreur : le serveur Tomcat ne répond pas => "+error);
+        console.log("URL.js => Tomcattest() => Erreur : le serveur Tomcat ne répond pas => "+error);
         window.TomcatOK = false;
     } finally {
         //Déclenche un événement personnalisé pour notifier que le test est terminé
-        document.dispatchEvent(new Event("TomcatTestFinished"));
+        document.dispatchEvent(new Event("TomcattestFinished"));
     }
 }
 
 
 //Vérification du résultat fourni par le servlet
-function TestTomcatResult(response){
+function testTomcatResult(response){
     if(response.erreur === "none"){
-        console.log("URL.js => TestTomcatResult() => Info : Tomcat OK")
+        console.log("URL.js => testTomcatResult() => Info : Tomcat OK")
         window.TomcatOK = true;
     }
 }

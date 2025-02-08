@@ -21,7 +21,7 @@ async function doAction(message, id, line) {
     let response = await fetch(`https://${window.ServerIP}:8443/SAE51/ChangePCState`, {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=UTF-8" },
-        body: JSON.stringify({ token: token, id: id, message: message, Test: test })
+        body: JSON.stringify({ token: token, id: id, message: message, test: test })
     });
 
     let data = await response.json();
@@ -86,7 +86,7 @@ async function loadPCStatus(){
     response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStatus`, {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=UTF-8" },
-        body: JSON.stringify({ token: token, Test: test })
+        body: JSON.stringify({ token: token, test: test })
     });
 
     data = await response.json();
@@ -147,15 +147,20 @@ document.addEventListener("TokenCheckFinished", () => {
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPC`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ token: token, Test: test })
+                body: JSON.stringify({ token: token, test: test })
             });
 
             const data = await response.json();
 
             if (data.erreur) {
-                console.error(`Erreur: ${data.erreur}`);
-                alert(`Erreur: ${data.erreur}`);
-                return;
+                if(data.erreur === "Pas de PC dans la BD"){
+                    return;
+                }
+                else{
+                    console.error(`Erreur: ${data.erreur}`);
+                    alert(`Erreur: ${data.erreur}`);
+                    return;
+                }
             }
 
             // Nettoyer la table et afficher l'en-tête

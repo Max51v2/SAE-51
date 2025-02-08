@@ -39,7 +39,7 @@ public class GetLogsTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"beginDate\":\"00000000_000000\", \"endDate\":\"99999999_235959\", \"logLevelReq\":\"All\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"beginDate\":\"00000000_000000\", \"endDate\":\"99999999_235959\", \"logLevelReq\":\"All\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetLogs", jsonPayload);
@@ -48,7 +48,7 @@ public class GetLogsTest {
         DAO2.deleteUser(login, true);
         
         //Résultat attendu
-        String ExpResult = "[{\"id\":\"1\", \"servlet\":\"Test\", \"ip\":\"1.1.1.1\", \"login\":\"Hell walker\", \"droits\":\"Admin\", \"date\":\"10/12/1993 | 00:00:01\"},{\"id\":\"2\", \"servlet\":\"Test2\", \"ip\":\"2.2.2.2\", \"login\":\"Maxime\", \"droits\":\"Admin\", \"date\":\"24/11/2024 | 01:29:00\"}]";
+        String ExpResult = "[{\"id\":\"2\", \"servlet\":\"Test2\", \"ip\":\"2.2.2.2\", \"login\":\"Maxime\", \"droits\":\"Admin\", \"date\":\"24/11/2024 | 01:29:00\", \"erreur\":\"erreur\"},{\"id\":\"1\", \"servlet\":\"Test\", \"ip\":\"1.1.1.1\", \"login\":\"Hell walker\", \"droits\":\"Admin\", \"date\":\"10/12/1993 | 00:00:01\", \"erreur\":\"none\"}]";
         
         //Résultat
         System.out.println("resultat testGetLogs1 : "+result+" | exp : "+ExpResult);
@@ -85,7 +85,7 @@ public class GetLogsTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"endDate\":\"99999999_235959\", \"logLevelReq\":\"All\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"endDate\":\"99999999_235959\", \"logLevelReq\":\"All\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetLogs", jsonPayload);
@@ -131,7 +131,7 @@ public class GetLogsTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"beginDate\":\"99999999_235959\", \"endDate\":\"00000000_000000\", \"logLevelReq\":\"All\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"beginDate\":\"99999999_235959\", \"endDate\":\"00000000_000000\", \"logLevelReq\":\"All\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetLogs", jsonPayload);
@@ -177,7 +177,7 @@ public class GetLogsTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"beginDate\":\"00000000_000000\", \"endDate\":\"99999999_235959\", \"logLevelReq\":\"All\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"beginDate\":\"00000000_000000\", \"endDate\":\"99999999_235959\", \"logLevelReq\":\"All\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetLogs", jsonPayload);
@@ -223,7 +223,7 @@ public class GetLogsTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"beginDate\":\"00000000_000000\", \"endDate\":\"99999999_235959\", \"logLevelReq\":\"ErrorsOnly\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"beginDate\":\"00000000_000000\", \"endDate\":\"99999999_235959\", \"logLevelReq\":\"ErrorsOnly\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetLogs", jsonPayload);
@@ -232,7 +232,7 @@ public class GetLogsTest {
         DAO2.deleteUser(login, true);
         
         //Résultat attendu
-        String ExpResult = "[{\"id\":\"2\", \"servlet\":\"Test2\", \"ip\":\"2.2.2.2\", \"login\":\"Maxime\", \"droits\":\"Admin\", \"date\":\"24/11/2024 | 01:29:00\"}]";
+        String ExpResult = "[{\"id\":\"2\", \"servlet\":\"Test2\", \"ip\":\"2.2.2.2\", \"login\":\"Maxime\", \"droits\":\"Admin\", \"date\":\"24/11/2024 | 01:29:00\", \"erreur\":\"erreur\"}]";
         
         //Résultat
         System.out.println("resultat testGetLogs5 : "+result+" | exp : "+ExpResult);

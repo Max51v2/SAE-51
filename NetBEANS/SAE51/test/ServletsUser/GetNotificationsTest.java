@@ -24,8 +24,8 @@ public class GetNotificationsTest {
         DAONotifications.deleteNotifications(true);
         
         //Ajout de notifications
-        DAONotifications.addNotification("test1", "test content 1", "Hell Wallker/Admin1",1, true);
-        DAONotifications.addNotification("test2", "test content 2", "Hell Wallker",1, true);
+        DAONotifications.addNotification("test1", "test content 1", 1, true);
+        DAONotifications.addNotification("test2", "test content 2", 1, true);
     }
     
     @After
@@ -58,7 +58,7 @@ public class GetNotificationsTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetNotifications", jsonPayload);
@@ -102,7 +102,7 @@ public class GetNotificationsTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetNotifications", jsonPayload);
@@ -146,7 +146,7 @@ public class GetNotificationsTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetNotifications", jsonPayload);
@@ -190,7 +190,7 @@ public class GetNotificationsTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"Test\":\"true\"}";
+        String jsonPayload = "{\"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetNotifications", jsonPayload);

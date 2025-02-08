@@ -7,7 +7,7 @@ token = sessionStorage.getItem('token');
 
 
 // Attend que le test de Tomcat soit terminé
-document.addEventListener("TomcatTestFinished", function() {
+document.addEventListener("TomcattestFinished", function() {
 
     //Si le serveur Tomcat est actif alors on vérifie le token
     if (window.TomcatOK === true) {
@@ -30,7 +30,7 @@ document.addEventListener("TomcatTestFinished", function() {
         }
         
         //Arrêt de l'évènement
-        document.removeEventListener("TomcatTestFinished", arguments.callee);
+        document.removeEventListener("TomcattestFinished", arguments.callee);
     }
 });
 
@@ -43,7 +43,7 @@ function TokenCheck(){
         fetch(`https://${window.ServerIP}:8443/SAE51/CheckToken`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ token: token, Test: false })
+            body: JSON.stringify({ token: token, test: false })
         })
         .then(response => response.json())
         .then(CheckTokenResult);
@@ -88,7 +88,7 @@ function GetRedirection(){
     fetch(`https://${window.ServerIP}:8443/SAE51/GetRedirection`, {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=UTF-8" },
-        body: JSON.stringify({ token: token, currentPage: window.currentPage, Test: false })
+        body: JSON.stringify({ token: token, currentPage: window.currentPage, test: false })
         }).then(response => response.json())
         .then(GetRedirectionResult);
 }

@@ -952,7 +952,6 @@ public class DAOusers {
      */
     public String getLogin(){
         String loginLogBackup = loginLog;
-        loginLog = "Aucun";
         
         return loginLogBackup;
     }

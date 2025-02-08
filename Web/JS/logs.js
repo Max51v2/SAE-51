@@ -29,7 +29,7 @@ document.addEventListener("TokenCheckFinished", function() {
             const bodyData = {
                 logLevelReq: logLevel,
                 token: token,
-                Test: test,
+                test: test,
                 beginDate: formatDate(new Date(beginDate)),
                 endDate: requestDate // Utiliser la date actuelle pour la date de fin
             };
@@ -38,7 +38,7 @@ document.addEventListener("TokenCheckFinished", function() {
 
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/GetLogs`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify(bodyData)
             });
 

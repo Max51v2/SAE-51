@@ -3,11 +3,10 @@ package ServletsPC;
 import Autre.AddLog;
 import DAO.DAOPC;
 import DAO.DAOusers;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
+import JSON.GetTHEJSON;
+import JSON.Jackson;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,14 +48,11 @@ public class ChangePCState extends HttpServlet {
         DAO.DAOusers DAO = new DAOusers();
 
         //Nom du servlet
-        String servletName = "ChangePCState";
+        String servletName = request.getServletPath().substring(request.getServletPath().lastIndexOf("/")+1);
         
         //Récuperation du JSON envoyé
-        BufferedReader reader = request.getReader();
-        Gson gsonRequest = new Gson();
-        
-        //Convertion des données du JSON dans un objet Java
-        JSON.GetJSONInfoPC json = gsonRequest.fromJson(reader, JSON.GetJSONInfoPC.class);
+        Jackson jack = new Jackson();
+        GetTHEJSON json = jack.GetServletJSON(request);
         
         //Données envoyées par la requête
         Integer id = json.getId();
@@ -128,7 +124,7 @@ public class ChangePCState extends HttpServlet {
         //Log
         loginLog = DAO.getLogin();
         AddLog addLog = new AddLog();
-        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
+        addLog.addLog(jsonString, request, loginLog, TestBoolean, servletName, rights);
 
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

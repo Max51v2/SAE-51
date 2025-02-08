@@ -19,8 +19,8 @@ document.addEventListener("TokenCheckFinished", async function () {
         try {
             response = await fetch(`https://${window.ServerIP}:8443/SAE51/GetNotifications`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: token, Test: "false" })
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
+                body: JSON.stringify({ token: token, test: "false" })
             });
 
             console.log("Réponse du serveur reçue");

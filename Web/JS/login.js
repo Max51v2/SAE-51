@@ -29,7 +29,7 @@ async function Refresh(){
     console.clear()
 
     //Rechargement des scripts
-    console.log("login => Event : TomcatTestFinished => Reload TokenCheck.js et URL.js");
+    console.log("login => Event : TomcattestFinished => Reload TokenCheck.js et URL.js");
     reloadScript("TokenCheck");
     reloadScript("URL");
 }
@@ -39,7 +39,7 @@ function Wait(ms) {
 }
 
 
-document.addEventListener("TomcatTestFinished", (event) => {
+document.addEventListener("TomcattestFinished", (event) => {
 
     //Si le test du serveur Tomcat a échoué
     if (window.TomcatOK == false) {
@@ -75,7 +75,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
         fetch(`https://${window.ServerIP}:8443/SAE51/CheckPassword`, {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=UTF-8" },
-        body: JSON.stringify({ login: login, password: password, Test: false })
+        body: JSON.stringify({ login: login, password: password, test: false })
         }).then(response => response.json())
         .then(CheckPasswordResult);
     };
@@ -94,7 +94,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
             fetch(`https://${window.ServerIP}:8443/SAE51/GetRedirection`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ token: currentToken, currentPage: window.currentPage, Test: false })
+            body: JSON.stringify({ token: currentToken, currentPage: window.currentPage, test: false })
             }).then(response => response.json())
             .then(GetRedirectionResult);
         }

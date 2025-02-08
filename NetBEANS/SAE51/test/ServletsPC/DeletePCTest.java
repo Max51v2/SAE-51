@@ -62,7 +62,7 @@ public class DeletePCTest {
         DAO3.addPCStaticInfo(id, cpu_model, cores, threads, maximum_frequency, ram_quantity, dimm_quantity, dimm_speed, storage_device_number, storage_space, network_int_number, network_int_speed, os, version, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"id\":\""+id+"\", \"token\":\"10101010101010101010101010101010\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"id\":\""+id+"\", \"token\":\"10101010101010101010101010101010\", \"test\":\""+Test+"\"}";
         
         //Requête au servlet
         req.doRequest("http://localhost:8080/SAE51/DeletePC", jsonPayload);
@@ -140,7 +140,7 @@ public class DeletePCTest {
         DAO3.addPCStaticInfo(id, cpu_model, cores, threads, maximum_frequency, ram_quantity, dimm_quantity, dimm_speed, storage_device_number, storage_space, network_int_number, network_int_speed, os, version, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"id\":\""+id+"\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"id\":\""+id+"\", \"test\":\""+Test+"\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/DeletePC", jsonPayload);
@@ -210,7 +210,7 @@ public class DeletePCTest {
         DAO3.addPCStaticInfo(id, cpu_model, cores, threads, maximum_frequency, ram_quantity, dimm_quantity, dimm_speed, storage_device_number, storage_space, network_int_number, network_int_speed, os, version, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"id\":\""+id+"\", \"token\":\"10101010101010101010101010101010\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"id\":\""+id+"\", \"token\":\"10101010101010101010101010101010\", \"test\":\""+Test+"\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/DeletePC", jsonPayload);

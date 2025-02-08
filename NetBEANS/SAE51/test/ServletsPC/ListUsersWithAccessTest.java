@@ -57,7 +57,7 @@ public class ListUsersWithAccessTest {
         DAO3.addPC(id1, IP, "Pierre/Paul/Admin1/Jacques", Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"01010101010101010101010101010101\", \"id\":\""+id1+"\", \"hasAccess\":\"true\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"01010101010101010101010101010101\", \"id\":\""+id1+"\", \"hasAccess\":\"true\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/ListUsersWithAccess", jsonPayload);
@@ -124,7 +124,7 @@ public class ListUsersWithAccessTest {
         DAO3.addPC(id1, IP, "Pierre/Paul/Admin1/Jacques", Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"01010101010101010101010101010101\", \"id\":\""+id1+"\", \"hasAccess\":\"false\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"01010101010101010101010101010101\", \"id\":\""+id1+"\", \"hasAccess\":\"false\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/ListUsersWithAccess", jsonPayload);
@@ -181,7 +181,7 @@ public class ListUsersWithAccessTest {
         DAO3.addPC(id1, IP, "Pierre/Paul/Admin1/Jacques", Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"01010101010101010101010101010101\", \"id\":\""+id1+"\", \"hasAccess\":\"false\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"01010101010101010101010101010101\", \"id\":\""+id1+"\", \"hasAccess\":\"false\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/ListUsersWithAccess", jsonPayload);
@@ -237,7 +237,7 @@ public class ListUsersWithAccessTest {
         DAO3.addPC(id1, IP, "Pierre/Paul/Admin1/Jacques", Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"id\":\""+id1+"\", \"hasAccess\":\"false\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"id\":\""+id1+"\", \"hasAccess\":\"false\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/ListUsersWithAccess", jsonPayload);

@@ -38,7 +38,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
         fetch(`https://${window.ServerIP}:8443/SAE51/GetCheckIntervall`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ token: token, Test: false })
+            body: JSON.stringify({ token: token, test: false })
         })
         .then(response => response.json())
         .then(GetCheckIntervallResult);
@@ -84,7 +84,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
             fetch(`https://${window.ServerIP}:8443/SAE51/GetTokenStatus`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ token: token, Test: false })
+                body: JSON.stringify({ token: token, test: false })
             })
             .then(response => response.json())
             .then(GetTokenStatusResult);
@@ -146,7 +146,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
         fetch(`https://${window.ServerIP}:8443/SAE51/DeleteToken`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ login: login, token: token, Test: false })
+            body: JSON.stringify({ login: login, token: token, test: false })
         }).then(response => response.json())
         .then(DeleteTokenResult);
     }
@@ -179,7 +179,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
         fetch(`https://${window.ServerIP}:8443/SAE51/CheckToken`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ token: token, Test: false })
+            body: JSON.stringify({ token: token, test: false })
         })
         .then(response => response.json())
         .then(CheckTokenResult);

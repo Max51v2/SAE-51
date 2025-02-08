@@ -2,8 +2,8 @@ package ServletsUser;
 
 import Autre.AddLog;
 import DAO.DAOusers;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
+import JSON.GetTHEJSON;
+import JSON.Jackson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -44,22 +44,19 @@ public class GetRedirection extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         
         //Nom du servlet
-        String servletName = "GetRedirection";
+        String servletName = request.getServletPath().substring(request.getServletPath().lastIndexOf("/")+1);
         
         DAOusers DAO = new DAOusers();
         
         //Récuperation du JSON envoyé
-        BufferedReader reader = request.getReader();
-        Gson gsonRequest = new Gson();
-        
-        // Convertion des données du JSON dans un objet Java
-        JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfoUsers.class);
+        Jackson jack = new Jackson();
+        GetTHEJSON json = jack.GetServletJSON(request);
         
         //Données
-        String currentPage = user.getCurrentPage();
-        Boolean TestBoolean = Boolean.valueOf(user.getTest());
+        String currentPage = json.getCurrentPage();
+        Boolean TestBoolean = Boolean.valueOf(json.getTest());
         String rights = "Aucun";
-        String token = user.getToken();
+        String token = json.getToken();
         String redirect = "";
         String jsonString = "";
         String loginLog = "Aucun";
@@ -108,7 +105,7 @@ public class GetRedirection extends HttpServlet {
         //Log
         loginLog = DAO.getLogin();
         AddLog addLog = new AddLog();
-        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
+        addLog.addLog(jsonString, request, loginLog, TestBoolean, servletName, rights);
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

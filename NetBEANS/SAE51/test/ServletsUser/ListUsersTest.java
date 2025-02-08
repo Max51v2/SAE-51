@@ -38,7 +38,7 @@ public class ListUsersTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/ListUsers", jsonPayload);
@@ -82,7 +82,7 @@ public class ListUsersTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"Test\":\"true\"}";
+        String jsonPayload = "{\"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/ListUsers", jsonPayload);
@@ -126,7 +126,7 @@ public class ListUsersTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/ListUsers", jsonPayload);

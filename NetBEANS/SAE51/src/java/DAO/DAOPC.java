@@ -200,7 +200,7 @@ public class DAOPC {
         String IP="";
         Integer id=null;
         String droits = "";
-        String JSONString="";
+        String JSONString="Pas de PC dans la BD";
         
         //Selection de la BD
         changeConnection(Test);
@@ -218,7 +218,7 @@ public class DAOPC {
                 Integer c = 1;
                 
                 // Ouvrir le tableau JSON
-                JSONString += "[";
+                JSONString = "[";
 
                 while (resultSet.next()) {
                     droits = resultSet.getString("droits");
@@ -1805,7 +1805,7 @@ public class DAOPC {
         //Vérification de la présence d'une entrée
         Boolean idExist = doIDExistThresholds(idPC, Test);
         if(idExist == false){
-            DAON.addNotification("Info PC N°"+idPC, "Les seuils ne sont pas définis", users, idPC, Test);
+            DAON.addNotification("Info PC N°"+idPC, "Les seuils ne sont pas définis", idPC, Test);
             
             return messages;
         }
@@ -1939,7 +1939,7 @@ public class DAOPC {
         Integer c=0;
         while(c < messages.size()){
             
-            DAON.addNotification("Alerte PC N°"+idPC, messages.get(c), users, idPC, Test);
+            DAON.addNotification("Alerte PC N°"+idPC, messages.get(c), idPC, Test);
             
             c += 1;
         }

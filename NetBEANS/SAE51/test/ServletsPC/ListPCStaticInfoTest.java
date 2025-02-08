@@ -67,7 +67,7 @@ public class ListPCStaticInfoTest {
         DAO3.addPCStaticInfo(id2, cpu_model, cores, threads, maximum_frequency, ram_quantity, dimm_quantity, dimm_speed, storage_device_number, storage_space, network_int_number, network_int_speed, os, version, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\"123456789\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\"123456789\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/ListPCStaticInfo", jsonPayload);
@@ -143,7 +143,7 @@ public class ListPCStaticInfoTest {
         DAO3.addPCStaticInfo(id2, cpu_model, cores, threads, maximum_frequency, ram_quantity, dimm_quantity, dimm_speed, storage_device_number, storage_space, network_int_number, network_int_speed, os, version, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\"123456789\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\"123456789\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/ListPCStaticInfo", jsonPayload);
@@ -219,7 +219,7 @@ public class ListPCStaticInfoTest {
         DAO3.addPCStaticInfo(id2, cpu_model, cores, threads, maximum_frequency, ram_quantity, dimm_quantity, dimm_speed, storage_device_number, storage_space, network_int_number, network_int_speed, os, version, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\"123456789\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\"123456789\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/ListPCStaticInfo", jsonPayload);
@@ -295,7 +295,7 @@ public class ListPCStaticInfoTest {
         DAO3.addPCStaticInfo(id2, cpu_model, cores, threads, maximum_frequency, ram_quantity, dimm_quantity, dimm_speed, storage_device_number, storage_space, network_int_number, network_int_speed, os, version, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\"123456789\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\"123456789\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/ListPCStaticInfo", jsonPayload);

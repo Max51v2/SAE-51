@@ -47,7 +47,7 @@ function FecthAccessiblePages(){
         fetch(`https://${window.ServerIP}:8443/SAE51/GetAccessiblePages`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ token: token, Test: false })
+            body: JSON.stringify({ token: token, test: false })
         }).then(response => response.json())
         .then(FecthAccessiblePagesResult);
     }

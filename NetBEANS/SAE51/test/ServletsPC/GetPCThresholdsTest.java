@@ -61,7 +61,7 @@ public class GetPCThresholdsTest {
         DAO3.addThresholds(id, CPUUtilization, CPUTemp, CPUConsumption, RAMUtilization, storageLoad, storageLeft, storageTemp, storageErrors, networkLatency, networkBandwith, fanSpeed, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\""+id+"\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\""+id+"\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/GetPCThresholds", jsonPayload);
@@ -131,7 +131,7 @@ public class GetPCThresholdsTest {
         DAO3.addThresholds(id, CPUUtilization, CPUTemp, CPUConsumption, RAMUtilization, storageLoad, storageLeft, storageTemp, storageErrors, networkLatency, networkBandwith, fanSpeed, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/GetPCThresholds", jsonPayload);
@@ -202,7 +202,7 @@ public class GetPCThresholdsTest {
         DAO3.addThresholds(id, CPUUtilization, CPUTemp, CPUConsumption, RAMUtilization, storageLoad, storageLeft, storageTemp, storageErrors, networkLatency, networkBandwith, fanSpeed, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\""+id+"\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\""+id+"\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/GetPCThresholds", jsonPayload);
@@ -272,7 +272,7 @@ public class GetPCThresholdsTest {
         DAO3.addThresholds(id, CPUUtilization, CPUTemp, CPUConsumption, RAMUtilization, storageLoad, storageLeft, storageTemp, storageErrors, networkLatency, networkBandwith, fanSpeed, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\""+id+"\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\""+id+"\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/GetPCThresholds", jsonPayload);
@@ -344,7 +344,7 @@ public class GetPCThresholdsTest {
         DAO3.deleteDuplicateThresholds(id, Test);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\""+id+"\", \"Test\":\""+Test+"\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"id\":\""+id+"\", \"test\":\""+Test+"\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/GetPCThresholds", jsonPayload);

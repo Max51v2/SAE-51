@@ -40,7 +40,7 @@ public class CheckPasswordTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"login\":\"Admin1\", \"password\":\"leffe\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"login\":\"Admin1\", \"password\":\"leffe\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/CheckPassword", jsonPayload);
@@ -86,7 +86,7 @@ public class CheckPasswordTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"password\":\"leffe\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"password\":\"leffe\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/CheckPassword", jsonPayload);
@@ -132,7 +132,7 @@ public class CheckPasswordTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"login\":\"Jeff\", \"password\":\"leffe\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"login\":\"Jeff\", \"password\":\"leffe\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/CheckPassword", jsonPayload);
@@ -178,7 +178,7 @@ public class CheckPasswordTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"login\":\"Admin1\", \"password\":\"Heineken\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"login\":\"Admin1\", \"password\":\"Heineken\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/CheckPassword", jsonPayload);

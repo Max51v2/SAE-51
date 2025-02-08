@@ -103,7 +103,7 @@ public class DAOLogs {
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
     public String getLogsFromPeriod(String beginDate, String endDate, String logLevelReq, Boolean Test){
-        String RequeteSQL="SELECT * FROM logs ORDER BY id ASC";
+        String RequeteSQL="SELECT * FROM logs ORDER BY id DESC";
         Integer id=null;
         String prenom="";
         String servlet="";

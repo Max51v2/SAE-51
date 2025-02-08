@@ -230,8 +230,6 @@ Modifications : Maxime VALLET
 |    |
 |    |   sudo apt install gh
 |    |   sudo apt install git
-|    |   gh auth login
-|    |      => github.com > https > y > web browser
 |    |
 |    |   gh repo clone Max51v2/SAE-51 /home/$USER/Bureau/SAE-51
 |    |   /home/$USER/Bureau/SAE-51/Serveur/AutoInstall.sh

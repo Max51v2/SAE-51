@@ -2,8 +2,8 @@ package ServletsUser;
 
 import Autre.AddLog;
 import DAO.DAOusers;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
+import JSON.GetTHEJSON;
+import JSON.Jackson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -45,22 +45,19 @@ public class SetPassword extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         
         //Nom du servlet
-        String servletName = "SetPassword";
+        String servletName = request.getServletPath().substring(request.getServletPath().lastIndexOf("/")+1);
         
         DAOusers DAO = new DAOusers();
         
         //Récuperation du JSON envoyé
-        BufferedReader reader = request.getReader();
-        Gson gsonRequest = new Gson();
-        
-        // Convertion des données du JSON dans un objet Java
-        JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfoUsers.class);
+        Jackson jack = new Jackson();
+        GetTHEJSON json = jack.GetServletJSON(request);
         
         //Données
-        String token = user.getToken();
-        String password = user.getPassword();
-        String target = user.getTarget();
-        Boolean TestBoolean = Boolean.valueOf(user.getTest());
+        String token = json.getToken();
+        String password = json.getPassword();
+        String target = json.getTarget();
+        Boolean TestBoolean = Boolean.valueOf(json.getTest());
         String rights = "Aucun";
         String hashedPassword = "";
         String login = "";
@@ -136,7 +133,7 @@ public class SetPassword extends HttpServlet {
         //Log
         loginLog = DAO.getLogin();
         AddLog addLog = new AddLog();
-        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
+        addLog.addLog(jsonString, request, loginLog, TestBoolean, servletName, rights);
         
         System.out.println(jsonString);
         

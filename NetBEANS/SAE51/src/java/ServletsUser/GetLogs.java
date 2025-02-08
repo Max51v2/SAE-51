@@ -3,8 +3,8 @@ package ServletsUser;
 import Autre.AddLog;
 import DAO.DAOLogs;
 import DAO.DAOusers;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
+import JSON.GetTHEJSON;
+import JSON.Jackson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -54,24 +54,21 @@ public class GetLogs extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         
         //Nom du servlet
-        String servletName = "GetLogs";
+        String servletName = request.getServletPath().substring(request.getServletPath().lastIndexOf("/")+1);
         
         DAO.DAOusers DAO = new DAOusers();
         DAOLogs log = new DAOLogs();
         
         //Récuperation du JSON envoyé
-        BufferedReader reader = request.getReader();
-        Gson gsonRequest = new Gson();
-        
-        //Convertion des données du JSON dans un objet Java
-        JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfoUsers.class);
+        Jackson jack = new Jackson();
+        GetTHEJSON json = jack.GetServletJSON(request);
         
         //Données envoyées par la requête
-        String token = user.getToken();
-        String beginDate = user.getBeginDate();
-        String endDate = user.getEndDate();
-        String logLevelReq = user.getLogLevelReq();
-        Boolean TestBoolean = Boolean.valueOf(user.getTest());
+        String token = json.getToken();
+        String beginDate = json.getBeginDate();
+        String endDate = json.getEndDate();
+        String logLevelReq = json.getLogLevelReq();
+        Boolean TestBoolean = Boolean.valueOf(json.getTest());
 
         //Données
         String rights = "Aucun";
@@ -127,7 +124,7 @@ public class GetLogs extends HttpServlet {
         //Log
         loginLog = DAO.getLogin();
         AddLog addLog = new AddLog();
-        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
+        addLog.addLog(jsonString, request, loginLog, TestBoolean, servletName, rights);
 
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

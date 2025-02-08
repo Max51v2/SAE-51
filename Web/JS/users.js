@@ -15,7 +15,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
         fetch(`https://${window.ServerIP}:8443/SAE51/ListUsers`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ token: token, Test: false })
+            body: JSON.stringify({ token: token, test: false })
         })
         .then(response => response.json())
         .then(users => {
@@ -66,7 +66,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
             droits: formData.get("droits"),
             password: formData.get("MDP"),
             token: token,
-            Test : "false"
+            test : "false"
         };
 
         fetch(`https://${window.ServerIP}:8443/SAE51/AddUser`, {
@@ -97,7 +97,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
             fetch(`https://${window.ServerIP}:8443/SAE51/DeleteUser`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ login: login, token: token, Test: false })
+                body: JSON.stringify({ login: login, token: token, test: false })
             })
             .then(response => response.json())
             .then(result => {
@@ -119,7 +119,7 @@ document.addEventListener("TokenCheckFinished", (event) => {
             fetch(`https://${window.ServerIP}:8443/SAE51/SetPassword`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ target: login, password: newPassword, token: token, Test: false })
+                body: JSON.stringify({ target: login, password: newPassword, token: token, test: false })
             })
             .then(response => response.json())
             .then(result => {

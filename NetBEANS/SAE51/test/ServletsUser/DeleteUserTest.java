@@ -40,7 +40,7 @@ public class DeleteUserTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"login\":\""+login+"\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"login\":\""+login+"\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         req.doRequest("http://localhost:8080/SAE51/DeleteUser", jsonPayload);
@@ -92,7 +92,7 @@ public class DeleteUserTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/DeleteUser", jsonPayload);
@@ -138,7 +138,7 @@ public class DeleteUserTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"login\":\""+login+"\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"login\":\""+login+"\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/DeleteUser", jsonPayload);
@@ -184,7 +184,7 @@ public class DeleteUserTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"login\":\"Jeff\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"login\":\"Jeff\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/DeleteUser", jsonPayload);

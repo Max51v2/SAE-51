@@ -268,7 +268,6 @@ CREATE TABLE logs (
 CREATE TABLE notification (
     description text,
     content text,
-    users text,
     date text,
     idpc integer,
     idmsg SERIAL
@@ -502,7 +501,6 @@ CREATE TABLE pc_static_info (
 CREATE TABLE notification (
     description text,
     content text,
-    users text,
     date text,
     idpc integer,
     idmsg SERIAL

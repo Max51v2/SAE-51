@@ -124,15 +124,20 @@ document.addEventListener("DOMContentLoaded", function() {
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPC`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ token: token, Test: test })
+                body: JSON.stringify({ token: token, test: test })
             });
 
             const data = await response.json();
 
             if (data.erreur) {
-                console.error(`Erreur: ${data.erreur}`);
-                alert(`Erreur: ${data.erreur}`);
-                return;
+                if(data.erreur === "Pas de PC dans la BD"){
+                    return;
+                }
+                else{
+                    console.error(`Erreur: ${data.erreur}`);
+                    alert(`Erreur: ${data.erreur}`);
+                    return;
+                }
             }
             else{
                 console.log("Liste des chargée");
@@ -199,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStaticInfo`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ id: pcId, token: token, Test: test })
+                body: JSON.stringify({ id: pcId, token: token, test: test })
             });
 
             const data = await response.json();
@@ -260,7 +265,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCDynInfo`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json; charset=UTF-8" },
-                        body: JSON.stringify({ id: pcId, token: token, Test: test })
+                        body: JSON.stringify({ id: pcId, token: token, test: test })
                     });
             
                     if (!response.ok) {
@@ -310,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCDynInfo`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ id: pcId, token: token, Test: test })
+                body: JSON.stringify({ id: pcId, token: token, test: test })
             });
     
             if (!response.ok) {
@@ -447,7 +452,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 const response = await fetch(`https://${window.ServerIP}:8443/SAE51/IsDynamicInfoUpToDate`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json; charset=UTF-8" },
-                    body: JSON.stringify({ id: pcId, date: date, time: time, token: token, Test: test })
+                    body: JSON.stringify({ id: pcId, date: date, time: time, token: token, test: test })
                 });
 
                 const data = await response.json();
@@ -567,7 +572,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const response = await fetch(`https://${window.ServerIP}:8443/SAE51/DeletePC`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ token:token, id: pcId, Test: test })
+                body: JSON.stringify({ token:token, id: pcId, test: test })
             });
 
             const result = await response.json();
@@ -592,7 +597,7 @@ document.addEventListener("DOMContentLoaded", function() {
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListPCStatus`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ token: token, Test: test })
+            body: JSON.stringify({ token: token, test: test })
         });
 
         data = await response.json();
@@ -684,7 +689,7 @@ document.addEventListener("DOMContentLoaded", function() {
             response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListUsersWithAccess`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ id: pcId, hasAccess: "true", token: token, Test: test })
+                body: JSON.stringify({ id: pcId, hasAccess: "true", token: token, test: test })
             });
 
             data = await response.json();
@@ -710,7 +715,7 @@ document.addEventListener("DOMContentLoaded", function() {
             response = await fetch(`https://${window.ServerIP}:8443/SAE51/ListUsersWithAccess`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ id: pcId, hasAccess: "false", token: token, Test: test })
+                body: JSON.stringify({ id: pcId, hasAccess: "false", token: token, test: test })
             });
 
             data = await response.json();
@@ -837,7 +842,7 @@ document.addEventListener("DOMContentLoaded", function() {
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/AddUserToPC`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ id: idPc, login: login, token: token, Test: test })
+            body: JSON.stringify({ id: idPc, login: login, token: token, test: test })
         });
 
         data = await response.json();
@@ -861,8 +866,8 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log(`Retrait des droits à \"${login}\" (ID : ${idPc})`);
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/DeleteUserFromPC`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: idPc, login: login, token: token, Test: test })
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
+            body: JSON.stringify({ id: idPc, login: login, token: token, test: test })
         });
 
         data = await response.json();
@@ -913,8 +918,8 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log(`Récupération des seuils (ID : ${idPc})`);
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/GetPCThresholds`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: idPc, token: token, Test: test })
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
+            body: JSON.stringify({ id: idPc, token: token, test: test })
         });
 
         data = await response.json();
@@ -965,11 +970,11 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log(`Envoi des seuils (ID : ${idPc})`);
         response = await fetch(`https://${window.ServerIP}:8443/SAE51/SetThresholds`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=UTF-8" },
             body: JSON.stringify({ CPUUtilization: CPUUtilization, RAMUtilization: RAMUtilization,
                 storageLoad: storageLoad, networkBandwith: networkBandwidth, 
                 fanSpeed: fanSpeed, CPUTemp: CPUTemp, CPUConsumption: CPUConsumption, storageLeft: storageLeft, 
-                storageTemp: storageTemp, storageErrors: storageErrors, networkLatency: networkLatency, id: idPc, token: token, Test: test })
+                storageTemp: storageTemp, storageErrors: storageErrors, networkLatency: networkLatency, id: idPc, token: token, test: test })
         });
 
         data = await response.json();

@@ -2,8 +2,8 @@ package ServletsUser;
 
 import Autre.AddLog;
 import DAO.DAOusers;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
+import JSON.GetTHEJSON;
+import JSON.Jackson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -43,20 +43,17 @@ public class CheckToken extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         
         //Nom du servlet
-        String servletName = "CheckToken";
+        String servletName = request.getServletPath().substring(request.getServletPath().lastIndexOf("/")+1);
         
         DAOusers DAO = new DAOusers();
         
         //Récuperation du JSON envoyé
-        BufferedReader reader = request.getReader();
-        Gson gsonRequest = new Gson();
-        
-        // Convertion des données du JSON dans un objet Java
-        JSON.GetJSONInfoUsers user = gsonRequest.fromJson(reader, JSON.GetJSONInfoUsers.class);
+        Jackson jack = new Jackson();
+        GetTHEJSON json = jack.GetServletJSON(request);
         
         //Données
-        String token = user.getToken();
-        Boolean TestBoolean = Boolean.valueOf(user.getTest());
+        String token = json.getToken();
+        Boolean TestBoolean = Boolean.valueOf(json.getTest());
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
@@ -85,8 +82,8 @@ public class CheckToken extends HttpServlet {
         
         
         //Droits d'infos sur l'utilisateur pour les logger (exclusif à ce servlet)
-        JSON.GetJSONInfoUsers JSONlog = gsonRequest.fromJson(jsonString, JSON.GetJSONInfoUsers.class);
-        String rights = JSONlog.getDroits();
+        json = jack.GetStringJSON(jsonString);
+        String rights = json.getDroits();
         if(rights == null){
             rights = "Aucun";
         }
@@ -98,9 +95,9 @@ public class CheckToken extends HttpServlet {
         
         
         //Log
-        loginLog = DAO.getLogin();
-        AddLog addLog = new AddLog();
-        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
+        //loginLog = DAO.getLogin();
+        //AddLog addLog = new AddLog();
+        //addLog.addLog(jsonString, request, loginLog, TestBoolean, servletName, rights);
         
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {

@@ -31,7 +31,7 @@ document.addEventListener("TokenCheckFinished", () => {
         fetch(`https://${window.ServerIP}:8443/SAE51/SetPassword`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({ target: userLogin, password: newPassword, token: token, Test: false })
+            body: JSON.stringify({ target: userLogin, password: newPassword, token: token, test: false })
         })
         .then(response => response.json())
         .then(result => {

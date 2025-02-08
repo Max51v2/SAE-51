@@ -40,7 +40,7 @@ public class AddUserTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"nom\":\"Blakowicz\", \"prenom\":\"Stan\", \"login\":\"Hell walker\", \"droits\":\"Admin\", \"password\":\"666\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"nom\":\"Blakowicz\", \"prenom\":\"Stan\", \"login\":\"Hell walker\", \"droits\":\"Admin\", \"password\":\"666\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         req.doRequest("http://localhost:8080/SAE51/AddUser", jsonPayload);
@@ -90,7 +90,7 @@ public class AddUserTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"nom\":\"Blakowicz\", \"prenom\":\"Stan\", \"droits\":\"Admin\", \"password\":\"666\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"nom\":\"Blakowicz\", \"prenom\":\"Stan\", \"droits\":\"Admin\", \"password\":\"666\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/AddUser", jsonPayload);
@@ -136,7 +136,7 @@ public class AddUserTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"nom\":\"Blakowicz\", \"prenom\":\"Stan\", \"login\":\"Hell walker\", \"droits\":\"Admin\", \"password\":\"666\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"nom\":\"Blakowicz\", \"prenom\":\"Stan\", \"login\":\"Hell walker\", \"droits\":\"Admin\", \"password\":\"666\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/AddUser", jsonPayload);
@@ -182,7 +182,7 @@ public class AddUserTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"nom\":\"Blakowicz\", \"prenom\":\"Stan\", \"login\":\"Hell walker\", \"droits\":\"Admin\", \"password\":\"666\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"nom\":\"Blakowicz\", \"prenom\":\"Stan\", \"login\":\"Hell walker\", \"droits\":\"Admin\", \"password\":\"666\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/AddUser", jsonPayload);

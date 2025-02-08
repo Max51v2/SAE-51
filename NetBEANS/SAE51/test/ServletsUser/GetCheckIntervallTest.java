@@ -39,7 +39,7 @@ public class GetCheckIntervallTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetCheckIntervall", jsonPayload);
@@ -86,7 +86,7 @@ public class GetCheckIntervallTest {
         DAO.addUserWithToken(login, nom, prenom, role, hashedPassword, tokenLifeCycle, token, true);
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"Test\":\"true\"}";
+        String jsonPayload = "{\"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetCheckIntervall", jsonPayload);
@@ -123,7 +123,7 @@ public class GetCheckIntervallTest {
         ProjectConfig conf = new ProjectConfig();
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"token\":\"0000000000000000000000000000000\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"token\":\"0000000000000000000000000000000\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/GetCheckIntervall", jsonPayload);

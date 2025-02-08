@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  *
@@ -53,12 +54,11 @@ public class DAONotifications {
      * 
      * @param description     Description courte du type de notif
      * @param content       contenu de la notification
-     * @param users     utilisateurs qui ont accès à la notif (même format que pour l'accès aux pc "login1/.../loginN")
      * @param idPC      id du pc
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void addNotification(String description, String content, String users, Integer idPC, Boolean Test){
-        String RequeteSQL="INSERT INTO notification (description, content, users, date, idpc) VALUES (?, ?, ?, ?, ?)";
+    public void addNotification(String description, String content, Integer idPC, Boolean Test){
+        String RequeteSQL="INSERT INTO notification (description, content, date, idpc) VALUES (?, ?, ?, ?)";
         
         Boolean exist = doNotifExist(content, idPC, Test);
         
@@ -82,9 +82,8 @@ public class DAONotifications {
             //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
             preparedStatement.setString(1, description);
             preparedStatement.setString(2, content);
-            preparedStatement.setString(3, users);
-            preparedStatement.setString(4, date);
-            preparedStatement.setInt(5, idPC);
+            preparedStatement.setString(3, date);
+            preparedStatement.setInt(4, idPC);
             
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();
@@ -125,7 +124,7 @@ public class DAONotifications {
     
     
     /**
-     * Renvoi les logs contenu dans la BD
+     * Renvoi les notifications contenues dans la BD
      * 
      * @param userLogin     Login des notifs de l'utilisateur donné
      * @param BypassAuth        bypass l'auth et renvoi toutes les notifs
@@ -133,10 +132,12 @@ public class DAONotifications {
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
     public String getNotifications(String userLogin, Boolean BypassAuth, Boolean Test){
-        String RequeteSQL="SELECT description, content, users, date FROM notification ORDER BY idmsg ASC";
+        String RequeteSQL="SELECT description, content, idpc, date FROM notification ORDER BY idmsg ASC";
+        DAOPC daoPC = new DAOPC();
         String content="";
         String description="";
-        String users="";
+        Boolean access = false;
+        Integer idPC = -1;
         String date = "";
         String JSONString="";
         
@@ -159,11 +160,12 @@ public class DAONotifications {
 
                 while (resultSet.next()) {
                     //Récupération de la liste d'utilisateurs ayant accès à la notif
-                    users = resultSet.getString("users");
+                    idPC = resultSet.getInt("idpc");
+                    access = daoPC.getUserPCAccess(idPC, userLogin, Test);
                     
                     
                     //Si l'utilisateur se situe dans la liste des utilisateurs qui ont accès au pc (et bypass false)
-                    if(users.contains(userLogin) == true && BypassAuth == false){
+                    if(access == true && BypassAuth == false){
                         
                         //Récupération de la notification
                         description = resultSet.getString("description");

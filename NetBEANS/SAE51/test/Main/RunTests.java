@@ -10,7 +10,6 @@ package Main;
  */
 import Autre.TokenExpirationTest;
 import Autre.Warning;
-import DAO.DAONotificationsTest;
 import DAO.DAOusersTest;
 import ServletsPC.DeletePCTest;
 import ServletsPC.GetPCThresholdsTest;
@@ -53,7 +52,6 @@ import ServletsUser.SetPasswordTest;
     GetTokenStatusTest.class,
     GetCheckIntervallTest.class,
     GetAccessiblePagesTest.class,
-    DAONotificationsTest.class,
     GetNotificationsTest.class,
     ListUsersWithAccessTest.class,
     GetPCThresholdsTest.class,

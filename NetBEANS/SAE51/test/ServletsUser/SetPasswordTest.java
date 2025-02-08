@@ -50,13 +50,13 @@ public class SetPasswordTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"target\":\"Utilisateur1\", \"password\":\"Heineken\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"target\":\"Utilisateur1\", \"password\":\"Heineken\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         req.doRequest("http://localhost:8080/SAE51/SetPassword", jsonPayload);
         
         //JSON qui contient tous les paramètres à envoyer au servlet (test de connexion avec le nouveau MDP)
-        jsonPayload = "{\"login\":\"Utilisateur1\", \"password\":\"Heineken\", \"Test\":\"true\"}";
+        jsonPayload = "{\"login\":\"Utilisateur1\", \"password\":\"Heineken\", \"test\":\"true\"}";
         
         //Résultat obtenu
         String result = req.doRequest("http://localhost:8080/SAE51/CheckPassword", jsonPayload);
@@ -113,7 +113,7 @@ public class SetPasswordTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"password\":\"Heineken\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"password\":\"Heineken\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/SetPassword", jsonPayload);
@@ -170,7 +170,7 @@ public class SetPasswordTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"target\":\"Utilisateur1\", \"password\":\"Heineken\", \"token\":\"10101010101010101010101010101010\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"target\":\"Utilisateur1\", \"password\":\"Heineken\", \"token\":\"10101010101010101010101010101010\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/SetPassword", jsonPayload);
@@ -227,7 +227,7 @@ public class SetPasswordTest {
         
         
         //JSON qui contient tous les paramètres à envoyer au servlet
-        String jsonPayload = "{\"target\":\"Admin1\", \"password\":\"Heineken\", \"token\":\"01010101010101010101010101010101\", \"Test\":\"true\"}";
+        String jsonPayload = "{\"target\":\"Admin1\", \"password\":\"Heineken\", \"token\":\"01010101010101010101010101010101\", \"test\":\"true\"}";
         
         //Requête au servlet
         String result = req.doRequest("http://localhost:8080/SAE51/SetPassword", jsonPayload);
