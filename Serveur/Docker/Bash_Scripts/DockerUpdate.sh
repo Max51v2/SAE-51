@@ -17,14 +17,14 @@ else
 fi
 
 #Arrêt et suppression des conteneurs
-sudo /home/$1/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
+/home/$1/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
     
 echo "MAJ des images Docker :"
-sudo docker pull ghcr.io/max51v2/tomcat_sae51:latest
+docker pull ghcr.io/max51v2/tomcat_sae51:latest
 echo
-sudo docker pull ghcr.io/max51v2/psql_sae51:latest
+docker pull ghcr.io/max51v2/psql_sae51:latest
 echo
-sudo docker pull ghcr.io/max51v2/nginx_sae51:latest
+docker pull ghcr.io/max51v2/nginx_sae51:latest
 
 #Démarrage des conteneurs
-sudo /home/$1/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStart.sh "$1"
+/home/$1/Bureau/SAE-51/Serveur/Docker/Bash_Scripts/DockerStart.sh "$1"

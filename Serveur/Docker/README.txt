@@ -1,5 +1,5 @@
 #Auteur : Maxime VALLET
-#Version : 3.0
+#Version : 3.2
 
 
 # à faire : Monter le contenu de la BD PostgreSQL sur un volume partagé afin qu'il ne soit pas effacé à chaque fois que le conteneur est recréé
@@ -106,3 +106,10 @@ d) Onglet Docker > section images > clique gauche sur l'image > push > GitHub > 
 
 V) Suppression des conteneurs
 docker rmi -f $(docker images -aq)
+
+VI) Utilisation d'autres clés SSL
+Si vous souhaitez utiliser des clés autres que celles qui sont générées automatiquement, il faut faire ceci dans "/certs" :
+    - ajouter votre clé nommée SAE51.key
+    - ajouter votre clé nommée SAE51.certs
+    - supprimer SAE51.p12
+Il faut ensuite build le conteneur et votre clé devrait être celle utilisée pour Nginx, Tomcat et le serveur TCP.

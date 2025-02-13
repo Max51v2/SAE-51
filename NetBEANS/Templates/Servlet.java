@@ -1,5 +1,5 @@
 //Auteur : Maxime VALLET
-//Version : 2.4
+//Version : 3.0
 
 
 //Ce qui est entre crochets est à modifier ou retirer selon la situation
@@ -8,8 +8,8 @@
 package [?];
 
 import Autre.ProjectConfig;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
+import JSON.GetTHEJSON;
+import JSON.Jackson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -53,14 +53,11 @@ public class [nomServlet] extends HttpServlet {
         DAO.DAOusers DAO = new DAOusers();
 
         //Nom du servlet
-        String servletName = "[NomServlet]";
+        String servletName = request.getServletPath().substring(request.getServletPath().lastIndexOf("/")+1);
         
         //Récuperation du JSON envoyé
-        BufferedReader reader = request.getReader();
-        Gson gsonRequest = new Gson();
-        
-        //Convertion des données du JSON dans un objet Java
-        JSON.GetJSONInfo[?] json = gsonRequest.fromJson(reader, JSON.GetJSONInfo[?].class);
+        Jackson jack = new Jackson();
+        GetTHEJSON json = jack.GetServletJSON(request);
         
         //Données envoyées par la requête
         String [?] = json.get[?]();
@@ -105,8 +102,8 @@ public class [nomServlet] extends HttpServlet {
         //Log
         loginLog = DAO.getLogin();
         AddLog addLog = new AddLog();
-        addLog.addLog(gsonRequest, request, loginLog, jsonString, TestBoolean, servletName, rights);
-
+        addLog.addLog(jsonString, request, loginLog, TestBoolean, servletName, rights);
+        
         //Envoi des données
         try (PrintWriter out = response.getWriter()) {
             out.print(jsonString);
