@@ -19,8 +19,12 @@ fi
 
 #Arrêt des conteneurs
 echo "Arrêt et suppression des conteneurs existants :"
-docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
+docker stop tomcat_sae51
+docker stop nginx_sae51
+docker stop psql_sae51
+docker rmi tomcat_sae51
+docker rmi nginx_sae51
+docker rmi psql_sae51
 
 clear
 

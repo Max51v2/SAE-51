@@ -3,7 +3,7 @@
 #Version 1.0
 
 #Info : Faites ATTENTION à l'emplacement de l'installation du JDK car tomcat vérifie la validité de celui-ci selon le chemin où il se situe (c'est débile.......)
-#utilisé ici : emplacement où apt installe openjdk
+#utilisé ici : emplacement où apt installe openjdk 
 mkdir /usr/lib/jvm/
 cd /usr/lib/jvm/
 mkdir ./openjdk

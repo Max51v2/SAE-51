@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 
 #Créé et maintenu par Maxime VALLET
 LABEL maintainer="max.vallet@outlook.fr"
-LABEL org.opencontainers.image.source=https://github.com/max51v2/SAE-51
+LABEL org.opencontainers.image.source=https://ghcr.io/max51v2/psql_sae51
 
 #Variables d'environnement
 ENV PG_MAJOR=15

@@ -1,6 +1,6 @@
 #!/bin/bash
 #Auteur : Maxime VALLET
-#Version 1.0
+#Version 1.0 
 
 cd /conf
 
